@@ -1,0 +1,124 @@
+body {
+  font-family: "Lato", sans-serif;
+  padding-bottom: 30px;
+}
+
+#updateDiv,#passwordDiv{
+  background-color: whitesmoke;
+  align-self: center;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: 70px;
+}
+input{
+  height: 30px;
+font-size: 20px;
+}
+.sidenav {
+  height: 100%;
+  width: 280px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgba(142, 0, 0, 0.82);
+  overflow-x: hidden;
+  padding-top: 80px;
+  margin-bottom: 3px;
+
+}
+
+#infoDiv {
+  padding-top: 80px;
+  margin-left: 400px;
+}
+#passwordDiv{
+  padding-top: 80px;
+  margin-left: 400px;
+}
+#updateDiv {
+  padding-top: 80px;
+  margin-left: 400px;
+}
+
+#errorLabel,#errorLabel1 ,#errorLabel2 ,#errorLabel3,#errorLabel4,#errorLabel5,#errorLabel6{
+
+  color: red;
+  font-weight: bold;
+}
+
+#succesLabel,#succesLabel2 {
+  color: green;
+}
+
+li {
+
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: rgba(193, 193, 193, 0.82);
+  list-style: none;
+
+}
+
+p {
+  margin-top: 40px;
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  margin-bottom: 400px;
+
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: rgba(193, 193, 193, 0.82);
+  display: block;
+
+}
+
+.sidenav a:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.main {
+  margin-left: 280px;
+  font-size: 28px;
+  padding: 0px 10px;
+  margin-bottom: 30px;
+}
+
+p, li {
+  animation-duration: 1s;
+  animation-name: slidein;
+  animation-iteration-count: 1;
+}
+
+@keyframes slidein {
+  from {
+    margin-left: -100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+
+}
+
+.form-error{
+  background-color: rgba(240, 172, 172, .4)  !important;
+  color: black;
+}
+
+.help-block{
+  color: darkred !important;
+  font-weight: bold !important;
+  display: inline !important;
+}

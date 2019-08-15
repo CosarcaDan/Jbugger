@@ -1,0 +1,36 @@
+<span *ngIf="utilService.routeIfNotLoggedIn()">
+<div class="column justify-content-center">
+  <div *ngIf="roleList">
+    <div class="table-responsive">
+      <table class="table table-hover table-dark table-striped shadow p-3 mb-5 rounded">
+        <thead style="background-color: darkred; border-color: darkred;">
+        <tr>
+          <th scope="col" translate>demo.Type</th>
+          <th scope="col" translate>demo.Permissions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let role of roleList" #row>
+          <td>{{ role.type }}</td>
+          <td>
+            <mat-form-field *ngIf="isDone">
+              <mat-select placeholder="{{ 'demo.Click to edit'| translate }}"  [formControl]="getFormControlForRole(role)" multiple (selectionChange)="updateRole(role)">
+                <mat-select-trigger style="color: white;" #formControl="">
+                  <span *ngIf="getFormControlForRole(role).value.length == 1; else elseblock">
+                    {{ getFormControlForRole(role).value.length }}   {{ "demo.Permission"| translate}}
+                  </span>
+                  <ng-template #elseblock>
+                    {{ getFormControlForRole(role).value.length }}  {{ "demo.Permissions"| translate}}
+                  </ng-template>
+                </mat-select-trigger>
+                <mat-option *ngFor="let permission of permissionsList"  [value]="permission" >{{permission.type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</span>

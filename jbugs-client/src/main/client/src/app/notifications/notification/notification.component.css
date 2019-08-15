@@ -1,0 +1,32 @@
+p {
+  margin-top: 1em;
+}
+
+i {
+  position: relative;
+  float: right;
+  right: 0;
+  cursor: pointer;
+}
+
+.background-tint {
+  background-color: rgba(139,0,0,.2);
+  font-weight: bold;
+}
+
+.background-tint h5 {
+  font-weight: bold;
+}
+
+::-webkit-scrollbar {
+  width: 0;  /* remove scrollbar space */
+  background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
+}
+
+.spinner::ng-deep circle {
+  stroke: darkred;
+}
