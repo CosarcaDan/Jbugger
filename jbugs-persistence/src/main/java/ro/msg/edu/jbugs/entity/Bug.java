@@ -44,14 +44,16 @@ public class Bug implements Serializable {
     @Column(name = "targetDate")
     private Date targetDate;
 
+
+    //ToDo verify if enum works with DB
     @Column(name = "status")
-    private String status;
+    private Status status;
 
     @Column(name = "fixedVersion")
     private String fixedVersion;
 
     @Column(name = "severity")
-    private String severity;
+    private Severity severity;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "CREATED_ID")
@@ -102,11 +104,11 @@ public class Bug implements Serializable {
         this.targetDate = targetDate;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -118,14 +120,15 @@ public class Bug implements Serializable {
         this.fixedVersion = fixedVersion;
     }
 
-    public String getSeverity() {
+    public Severity getSeverity() {
         return severity;
     }
 
-    public void setSeverity(String severity) {
+    public void setSeverity(Severity severity) {
         this.severity = severity;
     }
 
+    //todo posibil doar numele -> scapam de userDto incomplet prin eliminarea buclei infinite
     public User getCreated() {
         return created;
     }
@@ -134,11 +137,20 @@ public class Bug implements Serializable {
         this.created = created;
     }
 
+    //todo posibil doar numele
     public User getAssigned() {
         return assigned;
     }
 
     public void setAssigned(User assigned) {
         this.assigned = assigned;
+    }
+
+    public enum Status{
+        NEW, IN_PROGRESS, FIXED, CLOSED, REJECTED, INFONEEDED
+    }
+
+    public enum Severity{
+        CRITICAL, HIGH, MEDIUM, LOW
     }
 }

@@ -89,7 +89,7 @@
             </div>
 
 
-            <div class="form-group has-float-label" *ngIf="bug.status === 'Fixed'">
+            <div class="form-group has-float-label" *ngIf="bug.status === 'FIXED'">
               <div *ngIf="toValidate || fixedVersion.touched || assignedTo.touched">
                 <div class="help-block"
                      *ngIf="fixedVersion?.errors && fixedVersion?.errors['required']" style="margin-top: 15px">

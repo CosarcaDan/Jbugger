@@ -20,9 +20,9 @@ public class BugDtoMapping {
         bug.setDescription(bugDto.getDescription());
         bug.setVersion(bugDto.getVersion());
         bug.setTargetDate(bugDto.getTargetDate());
-        bug.setStatus(bugDto.getStatus());
+        bug.setStatus(Bug.Status.valueOf(bugDto.getStatus()));
         bug.setFixedVersion(bugDto.getFixedVersion());
-        bug.setSeverity(bugDto.getSeverity());
+        bug.setSeverity(Bug.Severity.valueOf(bugDto.getSeverity()));
         bug.setCreated(creator);
         bug.setAssigned(assigned);
         return bug;
@@ -35,9 +35,9 @@ public class BugDtoMapping {
         bugDto.setDescription(bug.getDescription());
         bugDto.setVersion(bug.getVersion());
         bugDto.setTargetDate(bug.getTargetDate());
-        bugDto.setStatus(bug.getStatus());
+        bugDto.setStatus(bug.getStatus().toString());
         bugDto.setFixedVersion(bug.getFixedVersion());
-        bugDto.setSeverity(bug.getSeverity());
+        bugDto.setSeverity(bug.getSeverity().toString());
         UserDto userCreatorDto = UserDtoMapping.userToUserDtoIncomplet(bug.getCreated());
         bugDto.setCreated(userCreatorDto);
         UserDto userAssignedDto = UserDtoMapping.userToUserDtoIncomplet(bug.getAssigned());
@@ -52,9 +52,9 @@ public class BugDtoMapping {
         bugDto.setDescription(bug.getDescription());
         bugDto.setVersion(bug.getVersion());
         bugDto.setTargetDate(bug.getTargetDate());
-        bugDto.setStatus(bug.getStatus());
+        bugDto.setStatus(bug.getStatus().toString());
         bugDto.setFixedVersion(bug.getFixedVersion());
-        bugDto.setSeverity(bug.getSeverity());
+        bugDto.setSeverity(bug.getSeverity().toString());
         return bugDto;
     }
 }

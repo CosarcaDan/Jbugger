@@ -29,7 +29,6 @@ public class User implements Serializable {
     public static final String QUERY_REMOVE_AFTER_USERNAME = "removeAfterUsername";
     public static final String QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD = "userLogin";
     public static final String QUERY_COUNT_USER_NAME_UNIQUE = "checkUserNameUnique";
-    public static final String QUERY_FIND_USER_COUNTER = "QueryFindUserCounter";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,6 +68,17 @@ public class User implements Serializable {
     @ManyToMany(targetEntity = Role.class, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = {@JoinColumn(name= "role_id")})
     private List<Role> roleList;
+
+    public User(Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
+        this.counter = counter;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.password = password;
+        this.username = username;
+        this.status = status;
+    }
 
     public User() {
     }

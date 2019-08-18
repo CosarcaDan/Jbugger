@@ -402,12 +402,12 @@ export class BugsViewComponent implements OnInit {
 
   getStatusFormControl(bug: Bug){
     let allStates = [
-      {key: 'Open', values: ['Open','InProgress','Rejected']},
-      {key: 'InProgress', values: ['InProgress','Rejected','Fixed','InfoNeeded']},
-      {key: 'Rejected', values: ['Rejected','Closed']},
-      {key: 'Fixed', values: ['Fixed','Closed']},
-      {key: 'InfoNeeded', values: ['InfoNeeded','InProgress']},
-      {key: 'Closed', values: []}
+      {key: 'Open', values: ['Open','IN_PROGRESS','REJECTED']},
+      {key: 'IN_PROGRESS', values: ['IN_PROGRESS','REJECTED','FIXED','InfoNeeded']},
+      {key: 'REJECTED', values: ['REJECTED','CLOSED']},
+      {key: 'FIXED', values: ['FIXED','CLOSED']},
+      {key: 'InfoNeeded', values: ['InfoNeeded','IN_PROGRESS']},
+      {key: 'CLOSED', values: []}
     ];
 
     let possibleStates = allStates.find(s => s.values.findIndex( v => v == bug.status) != -1).values;

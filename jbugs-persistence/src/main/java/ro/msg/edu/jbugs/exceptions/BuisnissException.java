@@ -7,6 +7,10 @@ package ro.msg.edu.jbugs.exceptions;
  * @since 19.1.2
  */
 public class BuisnissException extends Exception {
+    public BuisnissException(BuisnissException e) {
+
+    }
+
     public String getErrorCode() {
         return errorCode;
     }

@@ -61,6 +61,8 @@ public class BugRepo {
         return bugList;
     }
 
+    //Todo criteri de cautare si posibil paginarea
+
     public User getCreator(Bug bug){
         return bug.getCreated();
     }

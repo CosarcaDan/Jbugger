@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Document me.
@@ -140,6 +141,28 @@ public class UserDto implements Serializable {
         this.email = email;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(id, userDto.id) &&
+                Objects.equals(counter, userDto.counter) &&
+                Objects.equals(firstName, userDto.firstName) &&
+                Objects.equals(lastName, userDto.lastName) &&
+                Objects.equals(email, userDto.email) &&
+                Objects.equals(mobileNumber, userDto.mobileNumber) &&
+                Objects.equals(password, userDto.password) &&
+                Objects.equals(username, userDto.username) &&
+                Objects.equals(status, userDto.status) &&
+                Objects.equals(createdBy, userDto.createdBy) &&
+                Objects.equals(assignedTo, userDto.assignedTo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, counter, firstName, lastName, email, mobileNumber, password, username, status, createdBy, assignedTo);
+    }
 
     @Override
     public String toString() {

@@ -4,6 +4,7 @@ import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +34,15 @@ public class UserDtoMapping {
     }
 
     public static UserDto userToUserDtoComplet(User user){
-        List<BugDto> bugsCreatedDto = user.getCreatedBy().stream().map(BugDtoMapping::bugToBugDtoIncomplet).collect(Collectors.toList());
-        List<BugDto> bugsAssignedDto = user.getAssignedTo().stream().map(BugDtoMapping::bugToBugDtoIncomplet).collect(Collectors.toList());
+        List<BugDto> bugsCreatedDto = new ArrayList<>();
+        List<BugDto> bugsAssignedDto = new ArrayList<>();
+
+        if (user.getCreatedBy() != null) {
+            bugsCreatedDto = user.getCreatedBy().stream().map(BugDtoMapping::bugToBugDtoIncomplet).collect(Collectors.toList());
+        }
+        if (user.getAssignedTo() != null) {
+            bugsAssignedDto = user.getAssignedTo().stream().map(BugDtoMapping::bugToBugDtoIncomplet).collect(Collectors.toList());
+        }
         return new UserDto(user.getId(),user.getCounter(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getMobileNumber(),user.getPassword(),user.getUsername(),user.getStatus(),bugsCreatedDto,bugsAssignedDto);
     }
 

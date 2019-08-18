@@ -158,19 +158,19 @@ public class TestServlet extends HttpServlet {
     private void addBugsDefault() {
         UserDto userDto = userService.findUser(1);
         UserDto userDto2 = userService.findUser(2);
-        BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", new Date("1/1/2012"), "active", "v14", "low", userDto, userDto2);
+        BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", new Date("1/1/2012"), "active", "v14", "LOW", userDto, userDto2);
         addBug(bugDto);
         userDto = userService.findUser(1);
         userDto2 = userService.findUser(1);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", new Date("1/1/2017"), "active", "v14", "low", userDto, userDto2);
+        bugDto = new BugDto(0, "title1", "desc1", "v1", new Date("1/1/2017"), "active", "v14", "LOW", userDto, userDto2);
         addBug(bugDto);
         userDto = userService.findUser(2);
         userDto2 = userService.findUser(1);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", new Date("1/1/2016"), "active", "v14", "low", userDto, userDto2);
+        bugDto = new BugDto(0, "title1", "desc1", "v1", new Date("1/1/2016"), "active", "v14", "LOW", userDto, userDto2);
         addBug(bugDto);
         userDto = userService.findUser(2);
         userDto2 = userService.findUser(2);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", new Date("1/1/2002"), "active", "v14", "low", userDto, userDto2);
+        bugDto = new BugDto(0, "title1", "desc1", "v1", new Date("1/1/2002"), "active", "v14", "LOW", userDto, userDto2);
         addBug(bugDto);
     }
 

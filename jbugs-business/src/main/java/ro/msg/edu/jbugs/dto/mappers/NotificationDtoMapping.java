@@ -16,9 +16,9 @@ public class NotificationDtoMapping {
         Notification notification = new Notification();
         notification.setId(notificationDto.getId());
         notification.setDate(notificationDto.getDate());
-        notification.setMessage(notification.getMessage());
-        notification.setType(notification.getType());
-        notification.setUrl(notification.getUrl());
+        notification.setMessage(notificationDto.getMessage());
+        notification.setType(Notification.NotificationType.valueOf(notificationDto.getType()));
+        notification.setUrl(notificationDto.getUrl());
         User user = UserDtoMapping.userDtoToUser(notificationDto.getUserDto());
         notification.setUser(user);
         return notification;
@@ -26,7 +26,7 @@ public class NotificationDtoMapping {
 
     public static NotificationDto notificationTonotificationDto(Notification notification) {
         UserDto userDto = UserDtoMapping.userToUserDtoIncomplet(notification.getUser());
-        NotificationDto notificationDto = new NotificationDto(notification.getId(),notification.getDate(),notification.getMessage(),notification.getType(),notification.getUrl(),userDto);
+        NotificationDto notificationDto = new NotificationDto(notification.getId(),notification.getDate(),notification.getMessage(),notification.getType().toString(),notification.getUrl(),userDto);
         return notificationDto;
     }
 }
