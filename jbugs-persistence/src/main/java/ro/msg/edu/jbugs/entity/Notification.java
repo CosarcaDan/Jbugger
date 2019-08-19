@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -27,7 +28,7 @@ public class Notification implements Serializable {
     private Integer id;
 
     @Column(name = "date")
-    private Date date;
+    private Timestamp date;
 
     @Column(name = "message")
     private String message;
@@ -45,7 +46,7 @@ public class Notification implements Serializable {
     public Notification() {
     }
 
-    public Notification(Date date, String message, NotificationType type, String url, User user) {
+    public Notification(Timestamp date, String message, NotificationType type, String url, User user) {
         this.date = date;
         this.message = message;
         this.type = type;
@@ -61,11 +62,11 @@ public class Notification implements Serializable {
         this.id = id;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

@@ -3,6 +3,7 @@ package ro.msg.edu.jbugs.dto;
 import ro.msg.edu.jbugs.entity.Bug;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -18,14 +19,14 @@ public class BugDto implements Serializable {
     private String title;
     private String description;
     private String version;
-    private Date targetDate;
+    private Timestamp targetDate;
     private String status;
     private String fixedVersion;
     private String severity;
     private UserDto created;
     private UserDto assigned;
 
-    public BugDto(Integer id, String title, String description, String version, Date targetDate, String status, String fixedVersion, String severity, UserDto created, UserDto assigned) {
+    public BugDto(Integer id, String title, String description, String version, Timestamp targetDate, String status, String fixedVersion, String severity, UserDto created, UserDto assigned) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -73,11 +74,11 @@ public class BugDto implements Serializable {
         this.version = version;
     }
 
-    public Date getTargetDate() {
+    public Timestamp getTargetDate() {
         return targetDate;
     }
 
-    public void setTargetDate(Date targetDate) {
+    public void setTargetDate(Timestamp targetDate) {
         this.targetDate = targetDate;
     }
 

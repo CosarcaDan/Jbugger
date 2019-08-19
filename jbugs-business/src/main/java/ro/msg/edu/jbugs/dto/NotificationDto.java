@@ -3,6 +3,7 @@ package ro.msg.edu.jbugs.dto;
 import ro.msg.edu.jbugs.dto.UserDto;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -13,13 +14,13 @@ import java.util.Date;
  */
 public class NotificationDto {
     private Integer id;
-    private Date date;
+    private Timestamp date;
     private String message;
     private String type;
     private String url;
     private UserDto userDto;
 
-    public NotificationDto(Integer id, Date date, String message, String type, String url, UserDto userDto) {
+    public NotificationDto(Integer id, Timestamp date, String message, String type, String url, UserDto userDto) {
         this.id = id;
         this.date = date;
         this.message = message;
@@ -36,11 +37,11 @@ public class NotificationDto {
         this.id = id;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
