@@ -18,6 +18,7 @@ import java.util.List;
 
 @Stateless
 public class UserRepo {
+
     @PersistenceContext(unitName = "jbugs-persistence")
     private EntityManager entityManager;
 
@@ -84,6 +85,14 @@ public class UserRepo {
     //ToDo dezactivarea de user
     //ToDo refactor functia de stergere
     public Integer deleteUserAfterUserName(String username) throws BuisnissException {
+        throw new BuisnissException("Invalid Username", "msg-003");
+    }
+
+
+    //This function delete a User and all related activities(Notification, Bugs, Comments) and should
+    // not be used in the context of the specification instead user the deactivateUser function.
+    //ToDo refactor functia de stergere
+    public Integer deleteUserAfterUserNamePermanently(String username) throws BuisnissException {
         Integer result = -1;
         User user = findeUserAfterUsername(username);
         if (user != null) {
@@ -127,6 +136,15 @@ public class UserRepo {
         }
     }
 
+    public void activateUser(User user) {
+        user.setStatus(true);
+    }
+
+    public void deactivateUser(User user) {
+        user.setStatus(false);
+    }
+
+
     public User resetLoginFailCounter(User user) throws BuisnissException {
         user.setCounter(0);
         return user;
@@ -135,29 +153,22 @@ public class UserRepo {
     //ToDo reactivate User
 
 
-    //toDo move to service
-    public void passwordFailed(String username) throws BuisnissException {
-        User user = findeUserAfterUsername(username);
-        if (user.getCounter() < 5) {
-            user.setCounter(user.getCounter() + 1);
-            if (user.getCounter() == 5) {
-                user.setStatus(false);
-                throw new BuisnissException("Password failed to may times, User deactivated", "msg - 003");
-            }
-        }else {
-            throw new BuisnissException("User Inactive", "msg - 005");
-        }
+
+
+
+    public User updateUser(User newDataUser) throws BuisnissException {
+        User user = findeUserAfterUsername(newDataUser.getUsername());
+        user.setCounter(newDataUser.getCounter());
+        user.setFirstName(newDataUser.getFirstName());
+        user.setLastName(newDataUser.getLastName());
+        user.setEmail(newDataUser.getEmail());
+        user.setMobileNumber(newDataUser.getMobileNumber());
+        user.setPassword(newDataUser.getPassword());
+        user.setStatus(newDataUser.getStatus());
+        return user;
+
     }
 
-    //ToDO sterge add si delete defaults
-    public Boolean deleteDefault() throws Exception {
-
-        Integer result1 = deleteUserAfterUserName("toBeDeleted");
-        Integer result2 = deleteUserAfterUserName("toBeDeleted2");
-        return result1 == 1 && result2 == 1;
-    }
-
-    ///////////////
 
     public List<Bug> getAllCreatedBugs(User user) {
         return user.getCreatedBy();

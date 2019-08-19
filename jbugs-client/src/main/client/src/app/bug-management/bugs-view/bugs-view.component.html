@@ -47,7 +47,7 @@
               <i class="fas fa-sort-down" *ngIf="askedForSort['description'] && ascendingSort['description']"></i>
           </th>
           <th scope="col" (click)="doSort('fixedVersion')" class="sortable" style="width: 150px;">
-              <span >{{'demo.Fixed version' | translate }}</span>
+              <span >{{'demo.FIXED version' | translate }}</span>
               <i class="fas fa-sort" *ngIf="!askedForSort['fixedVersion']"></i>
               <i class="fas fa-sort-up" *ngIf="askedForSort['fixedVersion'] && !ascendingSort['fixedVersion']"></i>
               <i class="fas fa-sort-down" *ngIf="askedForSort['fixedVersion'] && ascendingSort['fixedVersion']"></i>
@@ -191,7 +191,7 @@
             </div>
           </td>
           <td>
-            <div *ngIf=" bug.status !='Closed' ">
+            <div *ngIf=" bug.status !='CLOSED' ">
               <i tooltip="Edit bug" data-placement="right" class="material-icons" data-toggle="modal" data-target="#editModal" (click)="passDataToEditModal(bug)"
                  style="font-size: 24px;"> edit</i>
             </div>

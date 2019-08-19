@@ -69,6 +69,17 @@ public class User implements Serializable {
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = {@JoinColumn(name= "role_id")})
     private List<Role> roleList;
 
+    public User(Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
+        this.counter = counter;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.password = password;
+        this.username = username;
+        this.status = status;
+    }
+
     public User() {
     }
 

@@ -1,0 +1,59 @@
+package ro.msg.edu.jbugs.validators;
+
+import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.UserDto;
+import ro.msg.edu.jbugs.entity.Bug;
+import ro.msg.edu.jbugs.entity.User;
+import ro.msg.edu.jbugs.exceptions.BuisnissException;
+
+public class Validator {
+
+    public static void validateUser(UserDto user) throws BuisnissException {
+        if (!validateName(user.getFirstName())){
+            throw new BuisnissException("Firstname invalid", "msg - 013");
+        }
+        if(!validateName(user.getLastName())){
+            throw new BuisnissException("Lastname invalid", "msg - 014");
+        }
+        if(!validateDEPhoneNumber(user.getMobileNumber()) && !validateROPhoneNumber(user.getMobileNumber())){
+            throw new BuisnissException("Phone number invalid", "msg - 015");
+        }
+        if(!validateEmail(user.getEmail())){
+            throw new BuisnissException("Invalid Email", "msg - 016");
+        }
+    }
+
+    public static void validateBug(BugDto bug) throws BuisnissException {
+        if(!validateDescription(bug.getDescription())) {
+            throw new BuisnissException("Description to short", "msg - 017");
+        }
+        if(!validateVersion(bug.getVersion())){
+            throw new BuisnissException("Version Format Invalid", "msg - 018");
+        }
+    }
+
+
+    static boolean validateEmail(String email){
+        return email.matches("^[a-zA-Z0-9-_.]*@msggroup\\.com$");
+    }
+
+    static boolean validateROPhoneNumber(String phonenumber){
+        return phonenumber.matches("^(004|\\+4)?07[0-9]{8}$");
+    }
+
+    static boolean validateDEPhoneNumber(String phonenumber){
+        return phonenumber.matches("^(\\+49)?1(5[12579]|6[023]|7[0-9])[0-9]{7}$");
+    }
+
+    static boolean validateName(String name){
+        return name.matches("^[A-ZÜÄÖÂÎĂȚȘ][a-zA-Zșțăîâäöüß]{1,30}[- ]?[a-zșțăîâäöüßA-ZÜÄÖÂÎĂȚȘ]{0,30}[a-zșțăîâäöüß]$");
+    }
+
+    static boolean validateDescription(String description){
+        return description.length() >= 250;
+    }
+
+    static boolean validateVersion(String version){
+        return version.matches("^(0|[1-9][0-9]?)\\.(0|[1-9][0-9]?)\\.(0|[1-9][0-9]?)$");
+    }
+}

@@ -1,5 +1,7 @@
 package ro.msg.edu.jbugs.dto;
 
+import ro.msg.edu.jbugs.entity.Bug;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,6 +12,8 @@ import java.util.Date;
  * @since 19.1.2
  */
 public class BugDto implements Serializable {
+
+    //todo BugDto should be String to prevent dependencies from upper level(Higher than business) whit persistence
     private Integer id;
     private String title;
     private String description;

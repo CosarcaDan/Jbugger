@@ -22,6 +22,8 @@ import java.io.IOException;
  */
 @Stateless
 public class NotificationService {
+    //Todo delete all old notification (see commentService)
+
     @EJB
     private NotificationRepo notificationRepo;
 
@@ -38,6 +40,7 @@ public class NotificationService {
         return notificationDto;
     }
 
+    //todo what?
     private void sendNotification(String text) throws IOException {
         //maby try with resource? or finally
         try {

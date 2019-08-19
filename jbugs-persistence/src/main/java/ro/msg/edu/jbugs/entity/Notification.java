@@ -17,6 +17,10 @@ import java.util.Date;
 )
 public class Notification implements Serializable {
     public static final String DELETE_NOTIFICATION_AFTER_USER_ID = "deleteNotificationAfterUserId";
+
+    //Todo query for all notificatoins belonging to a user after username
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -29,7 +33,7 @@ public class Notification implements Serializable {
     private String message;
 
     @Column(name = "type")
-    private String type;
+    private NotificationType type;
 
     @Column(name = "url")
     private String url;
@@ -41,7 +45,7 @@ public class Notification implements Serializable {
     public Notification() {
     }
 
-    public Notification(Date date, String message, String type, String url, User user) {
+    public Notification(Date date, String message, NotificationType type, String url, User user) {
         this.date = date;
         this.message = message;
         this.type = type;
@@ -73,11 +77,11 @@ public class Notification implements Serializable {
         this.message = message;
     }
 
-    public String getType() {
+    public NotificationType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(NotificationType type) {
         this.type = type;
     }
 
@@ -95,5 +99,9 @@ public class Notification implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public enum NotificationType{
+        WELCOME_NEW_USER, USER_UPDATED, USER_DELETED, BUG_UPDATED, BUG_CLOSED, BUG_STATUS_UPDATED, USER_DEACTIVATED
     }
 }

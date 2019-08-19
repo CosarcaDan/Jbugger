@@ -182,21 +182,21 @@ export class EditBugComponent implements OnInit {
 
   getPossibleStates(bug: Bug) {
     let allStates = [
-      {key: 'Open', values: ['Open', 'InProgress', 'Rejected']},
-      {key: 'InProgress', values: ['InProgress', 'Rejected', 'Fixed', 'InfoNeeded']},
-      {key: 'Rejected', values: ['Rejected', 'Closed']},
-      {key: 'Fixed', values: ['Fixed', 'Closed']},
-      {key: 'InfoNeeded', values: ['InfoNeeded', 'InProgress']},
-      {key: 'Closed', values: ['Closed']}
+      {key: 'Open', values: ['Open', 'IN_PROGRESS', 'REJECTED']},
+      {key: 'IN_PROGRESS', values: ['IN_PROGRESS', 'REJECTED', 'FIXED', 'InfoNeeded']},
+      {key: 'REJECTED', values: ['REJECTED', 'CLOSED']},
+      {key: 'FIXED', values: ['FIXED', 'CLOSED']},
+      {key: 'InfoNeeded', values: ['InfoNeeded', 'IN_PROGRESS']},
+      {key: 'CLOSED', values: ['CLOSED']}
     ];
 
     let allStatesWithoutBugCloseRights = [
-      {key: 'Open', values: ['Open', 'InProgress', 'Rejected']},
-      {key: 'InProgress', values: ['InProgress', 'Rejected', 'Fixed', 'InfoNeeded']},
-      {key: 'Rejected', values: ['Rejected']},
-      {key: 'Fixed', values: ['Fixed']},
-      {key: 'InfoNeeded', values: ['InfoNeeded', 'InProgress']},
-      {key: 'Closed', values: ['Closed']}
+      {key: 'Open', values: ['Open', 'IN_PROGRESS', 'REJECTED']},
+      {key: 'IN_PROGRESS', values: ['IN_PROGRESS', 'REJECTED', 'FIXED', 'InfoNeeded']},
+      {key: 'REJECTED', values: ['REJECTED']},
+      {key: 'FIXED', values: ['FIXED']},
+      {key: 'InfoNeeded', values: ['InfoNeeded', 'IN_PROGRESS']},
+      {key: 'CLOSED', values: ['CLOSED']}
     ];
 
     let status;

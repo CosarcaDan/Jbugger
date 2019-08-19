@@ -58,7 +58,7 @@ export class DetailBugComponent implements OnInit {
       { title: 'Status', dataKey: 'status' },
       { title: 'Severity', dataKey: 'severity' },
       { title: 'Target date', dataKey: 'date' },
-      { title: 'Fixed in version', dataKey: 'fixedVersion' },
+      { title: 'FIXED in version', dataKey: 'fixedVersion' },
     ];
     let row = [
       {

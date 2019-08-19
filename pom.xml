@@ -173,7 +173,6 @@
                 <module>jbugs-business</module>
                 <module>jbugs-client</module>
                 <module>jbugs-ear</module>
-                <module>jbugs-auth</module>
             </modules>
 
             <build>
