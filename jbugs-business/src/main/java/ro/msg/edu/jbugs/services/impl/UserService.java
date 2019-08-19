@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  * @since 19.1.2
  */
 @Stateless
-@Interceptors(CallDurationInterceptor.class)
 public class UserService {
 
     @EJB
@@ -105,7 +104,9 @@ public class UserService {
             user = userRepo.login(userDto.getUsername(), encriptedPassword);
             userRepo.resetLoginFailCounter(user);
         }catch (BuisnissException ex){
-            user = userRepo.passwordFailed(userDto.getUsername());
+            userRepo.passwordFailed(userDto.getUsername());
+            throw ex;
+
         }
         return UserDtoMapping.userToUserDtoIncomplet(user);
 

@@ -18,9 +18,6 @@ import java.util.List;
 
 @Stateless
 public class UserRepo {
-    //todo rezolva problema cu new User din dtoMapping care salveaza mai multe entitati in db. Alternativa partea de Cascade sau sa incercam sa maneguim Userul primit la addUser
-
-
     @PersistenceContext(unitName = "jbugs-persistence")
     private EntityManager entityManager;
 
@@ -43,8 +40,22 @@ public class UserRepo {
         return user;
     }
 
+
+    //toDo sterge sau trateaza posibila exceptie
     public User findUser(Integer id) throws EntityNotFoundException {
         return entityManager.getReference(User.class, id);
+    }
+
+
+    public User findeUserAfterUsername(String username) throws BuisnissException {
+        Query query = entityManager.createNamedQuery(User.QUERY_SELECT_AFTER_USERNAME);
+        query.setParameter("username", username);
+        try {
+            User user = (User) query.getSingleResult();
+            return user;
+        } catch (NoResultException | NonUniqueResultException ex) {
+            throw new BuisnissException("no user wit given username", "msg-003");
+        }
     }
 
     public List<User> getAllUser() {
@@ -54,6 +65,7 @@ public class UserRepo {
     }
 
 
+    //toDo pastreaza ca si un delete permanent sau sterge
     public Boolean getAllDToBeDeleted() throws Exception {
 
         Query query = entityManager.createNamedQuery(User.QUERY_SELECT_AFTER_USERNAME);
@@ -68,17 +80,9 @@ public class UserRepo {
         return user1 != 1 && user2 != 1;
     }
 
-    public User findeUserAfterUsername(String username) throws BuisnissException {
-        Query query = entityManager.createNamedQuery(User.QUERY_SELECT_AFTER_USERNAME);
-        query.setParameter("username", username);
-        try {
-            User user = (User) query.getSingleResult();
-            return user;
-        } catch (NoResultException | NonUniqueResultException ex) {
-            throw new BuisnissException("no user wit given username", "msg-003");
-        }
-    }
 
+    //ToDo dezactivarea de user
+    //ToDo refactor functia de stergere
     public Integer deleteUserAfterUserName(String username) throws BuisnissException {
         Integer result = -1;
         User user = findeUserAfterUsername(username);
@@ -97,6 +101,8 @@ public class UserRepo {
         return result;
     }
 
+
+    //ToDo Posibil sa facem username in bd unique si sa nu mai folosim functia?
     public boolean isUsernameUnique(String username) {
         Query query = entityManager.createNamedQuery(User.QUERY_COUNT_USER_NAME_UNIQUE);
         query.setParameter("username", username);
@@ -115,7 +121,6 @@ public class UserRepo {
         query.setParameter("password", password);
         try {
             User user = (User) query.getSingleResult();
-            //user.setCounter(0);
             return user;
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new BuisnissException("login Failed", "msg-001");
@@ -127,20 +132,24 @@ public class UserRepo {
         return user;
     }
 
+    //ToDo reactivate User
 
 
-    public User passwordFailed(String username) throws BuisnissException {
+    //toDo move to service
+    public void passwordFailed(String username) throws BuisnissException {
         User user = findeUserAfterUsername(username);
-        if (user.getCounter() == 4) {
-            user.setStatus(false);
-            throw new BuisnissException("Password failed to may times, User deactivated", "msg - 003");
-        } else {
+        if (user.getCounter() < 5) {
             user.setCounter(user.getCounter() + 1);
-            return user;
+            if (user.getCounter() == 5) {
+                user.setStatus(false);
+                throw new BuisnissException("Password failed to may times, User deactivated", "msg - 003");
+            }
+        }else {
+            throw new BuisnissException("User Inactive", "msg - 005");
         }
     }
 
-
+    //ToDO sterge add si delete defaults
     public Boolean deleteDefault() throws Exception {
 
         Integer result1 = deleteUserAfterUserName("toBeDeleted");

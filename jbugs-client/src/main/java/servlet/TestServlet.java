@@ -5,6 +5,7 @@ import ro.msg.edu.jbugs.dto.NotificationDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
 import ro.msg.edu.jbugs.entity.User;
+import ro.msg.edu.jbugs.exceptions.BuisnissException;
 import ro.msg.edu.jbugs.services.impl.NotificationService;
 import ro.msg.edu.jbugs.timer.TimerBean;
 import ro.msg.edu.jbugs.services.impl.BugService;
@@ -59,28 +60,33 @@ public class TestServlet extends HttpServlet {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         try {
-            //UserDto userDto = new UserDto(0, 0, "fn1", "ln1", "email1", "0123456", "pswd1", "username1", true);
-            //addUserDefault();
-           // UserDto userdtoReturned = addUser(userDto);
-            //userService.login(userdtoReturned);
-            //userService.deleteUser(userdtoReturned);
-            addNotification(2);
-            out.println("<h1> done <h1>");
-            //userService.defaultTest();
+            //UserDto userDtosave = new UserDto(0,1,"fn3","ln3","email3","077777777777","password3","",true);
+            List<UserDto> userDtoList = getAllUser();
+            for (UserDto userDto:userDtoList){
+                out.println(userDto);
+                out.println("<br>");
+            }
+            UserDto loginDto = new UserDto(0,0,"","","","","password","fn3l",true);
+            try {
+                UserDto userFound = userService.login(loginDto);
+                out.println(userFound);
+                out.println("<br>");
+            }catch (BuisnissException e){
+                out.println(e.getMessage());
+            }
+
+
+
+
         } catch (Exception e) {
             out.println(e.getStackTrace());
         }
 
-        //printRaport(out);
-        //Integer result = bugService.deleteOldBugs();
-        //addBugsDefault();
-        //addCommentDefault();
-        //Integer reuslt = deleteOldComments();
-        //timmerBean.atSchedule();
+
 
 
         out.println("<h1>" + "" + "</h1> <br>");
-        //out.println("<h1>" + userDto.getCreatedBy().size() + "</h1>");
+
     }
 
 

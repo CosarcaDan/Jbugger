@@ -29,7 +29,6 @@ public class User implements Serializable {
     public static final String QUERY_REMOVE_AFTER_USERNAME = "removeAfterUsername";
     public static final String QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD = "userLogin";
     public static final String QUERY_COUNT_USER_NAME_UNIQUE = "checkUserNameUnique";
-    public static final String QUERY_FIND_USER_COUNTER = "QueryFindUserCounter";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
