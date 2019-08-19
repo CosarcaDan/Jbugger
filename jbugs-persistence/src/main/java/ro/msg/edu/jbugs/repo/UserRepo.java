@@ -2,7 +2,7 @@ package ro.msg.edu.jbugs.repo;
 
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
-import ro.msg.edu.jbugs.exceptions.BuisnissException;
+import ro.msg.edu.jbugs.exceptions.BusinessException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -47,14 +47,14 @@ public class UserRepo {
         return entityManager.getReference(User.class, id);
     }
 
-    public User findeUserAfterUsername(String username) throws BuisnissException {
+    public User findeUserAfterUsername(String username) throws BusinessException {
         Query query = entityManager.createNamedQuery(User.QUERY_SELECT_AFTER_USERNAME);
         query.setParameter("username", username);
         try {
             User user = (User) query.getSingleResult();
             return user;
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new BuisnissException("Invalid Username", "msg-003");
+            throw new BusinessException("Invalid Username", "msg-003");
         }
     }
 
@@ -68,7 +68,7 @@ public class UserRepo {
     //This function delete a User and all related activities(Notification, Bugs, Comments) and should
     // not be used in the context of the specification instead user the deactivateUser function.
     //ToDo refactor functia de stergere
-    public Integer deleteUserAfterUserNamePermanently(String username) throws BuisnissException {
+    public Integer deleteUserAfterUserNamePermanently(String username) throws BusinessException {
         Integer result = -1;
         User user = findeUserAfterUsername(username);
         if (user != null) {
@@ -99,7 +99,7 @@ public class UserRepo {
         }
     }
 
-    public User login(String username, String password) throws BuisnissException {
+    public User login(String username, String password) throws BusinessException {
         Query query = entityManager.createNamedQuery(User.QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD);
         query.setParameter("username", username);
         query.setParameter("password", password);
@@ -107,7 +107,7 @@ public class UserRepo {
             User user = (User) query.getSingleResult();
             return user;
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new BuisnissException("login Failed", "msg-001");
+            throw new BusinessException("login Failed", "msg-001");
         }
     }
 
@@ -120,7 +120,7 @@ public class UserRepo {
     }
 
 
-    public User resetLoginFailCounter(User user) throws BuisnissException {
+    public User resetLoginFailCounter(User user) throws BusinessException {
         user.setCounter(0);
         return user;
     }
@@ -128,7 +128,7 @@ public class UserRepo {
 
 
 
-    public User updateUser(User newDataUser) throws BuisnissException {
+    public User updateUser(User newDataUser) throws BusinessException {
         User user = findeUserAfterUsername(newDataUser.getUsername());
         user.setCounter(newDataUser.getCounter());
         user.setFirstName(newDataUser.getFirstName());

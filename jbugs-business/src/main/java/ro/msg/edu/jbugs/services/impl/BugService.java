@@ -1,6 +1,6 @@
 package ro.msg.edu.jbugs.services.impl;
 
-import ro.msg.edu.jbugs.exceptions.BuisnissException;
+import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.repo.BugRepo;
 import ro.msg.edu.jbugs.repo.UserRepo;
 import ro.msg.edu.jbugs.dto.BugDto;
@@ -33,7 +33,7 @@ public class BugService {
     @EJB
     private UserRepo userRepo;
 
-    public BugDto addBug(BugDto bugDto) throws BuisnissException {
+    public BugDto addBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
         User creator = userRepo.findUser(bugDto.getCreated().getId());
         User assigned = userRepo.findUser(bugDto.getAssigned().getId());
@@ -62,7 +62,7 @@ public class BugService {
         return result;
     }
 
-    public BugDto updateStatusBug(BugDto bugDto) throws BuisnissException {
+    public BugDto updateStatusBug(BugDto bugDto) throws BusinessException {
         Bug bug = bugRepo.findBug(bugDto.getId());
         Bug.Status newStatus = Bug.Status.valueOf(bugDto.getStatus());
         if (bug.getStatus().equals(Bug.Status.NEW)) {
@@ -91,22 +91,22 @@ public class BugService {
                 return BugDtoMapping.bugToBugDtoIncomplet(bug);
             }
         }
-        throw new BuisnissException("Invalid Bug Status progression", "msg - 011");
+        throw new BusinessException("Invalid Bug Status progression", "msg - 011");
 
     }
 
-    public BugDto closeBug(BugDto bugDto) throws BuisnissException {
+    public BugDto closeBug(BugDto bugDto) throws BusinessException {
         Bug bug = bugRepo.findBug(bugDto.getId());
         if (bug.getStatus().equals(Bug.Status.CLOSED))
-            throw new BuisnissException("Bug already closed", "msg - 010");
+            throw new BusinessException("Bug already closed", "msg - 010");
         if (!bug.getStatus().equals(Bug.Status.FIXED) && !(bug.getStatus().equals(Bug.Status.REJECTED)))
-            throw new BuisnissException("Bug has to to FIXED or REJECTED in order to be CLOSED", "msg - 011");
+            throw new BusinessException("Bug has to to FIXED or REJECTED in order to be CLOSED", "msg - 011");
         bug.setStatus(Bug.Status.CLOSED);
         return BugDtoMapping.bugToBugDtoIncomplet(bug);
     }
 
     //Todo Validations
-    public BugDto updateBug(BugDto bugDto) throws BuisnissException {
+    public BugDto updateBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
         Bug bug = bugRepo.findBug(bugDto.getId());
         bug.setTitle(bugDto.getTitle());

@@ -4,31 +4,31 @@ import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
-import ro.msg.edu.jbugs.exceptions.BuisnissException;
+import ro.msg.edu.jbugs.exceptions.BusinessException;
 
 public class Validator {
 
-    public static void validateUser(UserDto user) throws BuisnissException {
+    public static void validateUser(UserDto user) throws BusinessException {
         if (!validateName(user.getFirstName())){
-            throw new BuisnissException("Firstname invalid", "msg - 013");
+            throw new BusinessException("Firstname invalid", "msg - 013");
         }
         if(!validateName(user.getLastName())){
-            throw new BuisnissException("Lastname invalid", "msg - 014");
+            throw new BusinessException("Lastname invalid", "msg - 014");
         }
         if(!validateDEPhoneNumber(user.getMobileNumber()) && !validateROPhoneNumber(user.getMobileNumber())){
-            throw new BuisnissException("Phone number invalid", "msg - 015");
+            throw new BusinessException("Phone number invalid", "msg - 015");
         }
         if(!validateEmail(user.getEmail())){
-            throw new BuisnissException("Invalid Email", "msg - 016");
+            throw new BusinessException("Invalid Email", "msg - 016");
         }
     }
 
-    public static void validateBug(BugDto bug) throws BuisnissException {
+    public static void validateBug(BugDto bug) throws BusinessException {
         if(!validateDescription(bug.getDescription())) {
-            throw new BuisnissException("Description to short", "msg - 017");
+            throw new BusinessException("Description to short", "msg - 017");
         }
         if(!validateVersion(bug.getVersion())){
-            throw new BuisnissException("Version Format Invalid", "msg - 018");
+            throw new BusinessException("Version Format Invalid", "msg - 018");
         }
     }
 

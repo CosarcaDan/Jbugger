@@ -6,8 +6,8 @@ package ro.msg.edu.jbugs.exceptions;
  * @author msg systems AG; User Name.
  * @since 19.1.2
  */
-public class BuisnissException extends Exception {
-    public BuisnissException(BuisnissException e) {
+public class BusinessException extends Exception {
+    public BusinessException(BusinessException e) {
 
     }
 
@@ -21,12 +21,12 @@ public class BuisnissException extends Exception {
 
     private String errorCode;
 
-    public BuisnissException(String s,String errorCode) {
+    public BusinessException(String s,String errorCode) {
         super(s);
         this.errorCode = errorCode;
     }
 
-    public BuisnissException(String s, Throwable throwable) {
+    public BusinessException(String s, Throwable throwable) {
         super(s, throwable);
     }
 }
