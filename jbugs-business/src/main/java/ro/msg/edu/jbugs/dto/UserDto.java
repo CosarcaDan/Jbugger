@@ -1,5 +1,8 @@
 package ro.msg.edu.jbugs.dto;
 
+import com.google.gson.Gson;
+
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +13,7 @@ import java.util.Objects;
  * @author msg systems AG; User Name.
  * @since 19.1.2
  */
+@XmlRootElement
 public class UserDto implements Serializable {
     private Integer id;
     private Integer counter;
@@ -22,6 +26,8 @@ public class UserDto implements Serializable {
     private Boolean status;
     private List<BugDto> createdBy;
     private List<BugDto> assignedTo;
+
+
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -87,6 +93,11 @@ public class UserDto implements Serializable {
 
         this.createdBy = createdBy;
         this.assignedTo = assignTo;
+    }
+    public UserDto(UserLoginDto uld)
+    {
+        this.username=uld.getUsername();
+        this.password=uld.getPassword();
     }
 
     public UserDto(Integer id, Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
@@ -179,5 +190,11 @@ public class UserDto implements Serializable {
                 ", createdBy=" + createdBy +
                 ", assignedTo=" + assignedTo +
                 '}';
+    }
+    public static UserDto fromString(String JSON)
+    {
+        Gson g = new Gson();
+        UserDto result =g.fromJson(JSON,UserDto.class);
+        return result;
     }
 }

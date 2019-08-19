@@ -7,7 +7,7 @@ import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
 import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
-import ro.msg.edu.jbugs.exceptions.BuisnissException;
+import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.repo.UserRepo;
 import ro.msg.edu.jbugs.validators.Validator;
 
@@ -39,7 +39,7 @@ public class UserService {
     private NotificationService notificationService;
 
     //ToDo validate Data
-    public User addUser(UserDto userDto) throws IOException, BuisnissException {
+    public User addUser(UserDto userDto) throws IOException, BusinessException {
         Validator.validateUser(userDto);
         userDto.setUsername(generateUserName(userDto.getFirstName(), userDto.getLastName()));
         userDto.setPassword(Hashing.sha256().hashString(userDto.getPassword(), StandardCharsets.UTF_8).toString());
@@ -54,13 +54,13 @@ public class UserService {
         return newUser;
     }
 
-    public UserDto findUser(Integer id) throws BuisnissException {
+    public UserDto findUser(Integer id) throws BusinessException {
         try {
             User user = userRepo.findUser(id);
             UserDto userDto = UserDtoMapping.userToUserDtoComplet(user);
             return userDto;
         } catch (EntityNotFoundException ex) {
-            throw new BuisnissException("No User found with given Id", "msg - 006");
+            throw new BusinessException("No User found with given Id", "msg - 006");
         }
     }
 
@@ -71,26 +71,26 @@ public class UserService {
     }
 
     //todo maybe get username instead of id
-    public List<BugDto> getAllCreatedBugs(Integer id) throws BuisnissException {
+    public List<BugDto> getAllCreatedBugs(Integer id) throws BusinessException {
         try {
             User user = userRepo.findUser(id);
             List<Bug> bugList = userRepo.getAllCreatedBugs(user);
             List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
             return bugDtoList;
         } catch (EntityNotFoundException ex) {
-            throw new BuisnissException("No User found with given Id", "msg - 006");
+            throw new BusinessException("No User found with given Id", "msg - 006");
         }
     }
 
     //todo maybe get username instead of id
-    public List<BugDto> getAllAssignedBugs(Integer id) throws BuisnissException {
+    public List<BugDto> getAllAssignedBugs(Integer id) throws BusinessException {
         try {
             User user = userRepo.findUser(id);
             List<Bug> bugList = userRepo.getAllAssignedBugs(user);
             List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
             return bugDtoList;
         } catch (EntityNotFoundException ex) {
-            throw new BuisnissException("No User found with given Id", "msg - 006");
+            throw new BusinessException("No User found with given Id", "msg - 006");
         }
     }
 
@@ -117,36 +117,36 @@ public class UserService {
 
     }
 
-    public UserDto login(UserDto userDto) throws BuisnissException {
+    public UserDto login(UserDto userDto) throws BusinessException {
         String encriptedPassword = Hashing.sha256().hashString(userDto.getPassword(), StandardCharsets.UTF_8).toString();
         User user;
         try {
             user = userRepo.login(userDto.getUsername(), encriptedPassword);
             userRepo.resetLoginFailCounter(user);
-        } catch (BuisnissException ex) {
+        } catch (BusinessException ex) {
             passwordFailed(userDto.getUsername());
             throw ex;
         }
         return UserDtoMapping.userToUserDtoIncomplet(user);
     }
 
-    public void passwordFailed(String username) throws BuisnissException {
+    public void passwordFailed(String username) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
         if (user.getCounter() < 5) {
             user.setCounter(user.getCounter() + 1); //todo do in repo increse counter
             if (user.getCounter() == 5) {
                 user.setStatus(false);
-                throw new BuisnissException("Password failed to may times, User deactivated", "msg - 003");
+                throw new BusinessException("Password failed to may times, User deactivated", "msg - 003");
             }
         } else {
-            throw new BuisnissException("User Inactiv", "msg - 005");
+            throw new BusinessException("User Inactiv", "msg - 005");
         }
     }
 
-    public UserDto activateUser(String username) throws BuisnissException {
+    public UserDto activateUser(String username) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
         if (user.getStatus()) {
-            throw new BuisnissException("User already activ", "msg - 007");
+            throw new BusinessException("User already activ", "msg - 007");
         } else {
             userRepo.activateUser(user);
             return UserDtoMapping.userToUserDtoIncomplet(user);
@@ -154,15 +154,15 @@ public class UserService {
     }
 
 
-    public UserDto deactivateUser(String username) throws BuisnissException {
+    public UserDto deactivateUser(String username) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
         if (!user.getStatus()) {
-            throw new BuisnissException("User already deactivated", "msg - 008");
+            throw new BusinessException("User already deactivated", "msg - 008");
         }
         if (user.getAssignedTo() != null && !user.getAssignedTo().isEmpty()) {
             for (Bug bug : user.getAssignedTo()) {
                 if (!bug.getStatus().equals(Bug.Status.CLOSED))
-                    throw new BuisnissException("User still has unclosed bugs", "msg - 009");
+                    throw new BusinessException("User still has unclosed bugs", "msg - 009");
             }
         }
         userRepo.deactivateUser(user);
@@ -173,12 +173,12 @@ public class UserService {
 
     //This function delete a User and all related activities(Notification, Bugs, Comments) and should
     // not be used in the context of the specification instead user the deactivateUser function.
-    public Integer deleteUser(UserDto userDto) throws BuisnissException {
+    public Integer deleteUser(UserDto userDto) throws BusinessException {
         return userRepo.deleteUserAfterUserNamePermanently(userDto.getUsername());
     }
 
     //toDo validate data
-    public UserDto updateUser(UserDto userDto) throws BuisnissException {
+    public UserDto updateUser(UserDto userDto) throws BusinessException {
         Validator.validateUser(userDto);
         User newDataUser = UserDtoMapping.userDtoToUser(userDto);
         return UserDtoMapping.userToUserDtoIncomplet(userRepo.updateUser(newDataUser));

@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -31,6 +32,16 @@ public class CommentRepo {
         query.setParameter("date", date);
         Integer result = query.executeUpdate();
         return result;
+    }
+    public Integer removeOld()
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -360);
+        java.sql.Date oneYear = new java.sql.Date(cal.getTimeInMillis());
+        Query query = entityManager.createNamedQuery(Comment.REMOVE_OLD_COMMENTS);
+        query.setParameter("expiryDate",oneYear);
+        int update = query.executeUpdate();
+        return update;
     }
 
     public Integer deleteCommentAfterUserId(User user) {

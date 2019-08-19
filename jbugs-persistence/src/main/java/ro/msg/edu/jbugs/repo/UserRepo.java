@@ -2,7 +2,7 @@ package ro.msg.edu.jbugs.repo;
 
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
-import ro.msg.edu.jbugs.exceptions.BuisnissException;
+import ro.msg.edu.jbugs.exceptions.BusinessException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -18,6 +18,7 @@ import java.util.List;
 
 @Stateless
 public class UserRepo {
+
 
     @PersistenceContext(unitName = "jbugs-persistence")
     private EntityManager entityManager;
@@ -42,20 +43,18 @@ public class UserRepo {
     }
 
 
-    //toDo sterge sau trateaza posibila exceptie
     public User findUser(Integer id) throws EntityNotFoundException {
         return entityManager.getReference(User.class, id);
     }
 
-
-    public User findeUserAfterUsername(String username) throws BuisnissException {
+    public User findeUserAfterUsername(String username) throws BusinessException {
         Query query = entityManager.createNamedQuery(User.QUERY_SELECT_AFTER_USERNAME);
         query.setParameter("username", username);
         try {
             User user = (User) query.getSingleResult();
             return user;
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new BuisnissException("no user wit given username", "msg-003");
+            throw new BusinessException("Invalid Username", "msg-003");
         }
     }
 
@@ -66,33 +65,10 @@ public class UserRepo {
     }
 
 
-    //toDo pastreaza ca si un delete permanent sau sterge
-    public Boolean getAllDToBeDeleted() throws Exception {
-
-        Query query = entityManager.createNamedQuery(User.QUERY_SELECT_AFTER_USERNAME);
-        query.setParameter("username", "toBeDeleted");
-        //modifica la getSIngleResult
-        //User user1 = (User)query.getSingleResult();
-        int user1 = query.getFirstResult();
-        query.setParameter("username", "toBeDeleted2");
-        //modifica la getSIngleResult
-        //User user2 = (User)query.getSingleResult();
-        int user2 = query.getFirstResult();
-        return user1 != 1 && user2 != 1;
-    }
-
-
-    //ToDo dezactivarea de user
-    //ToDo refactor functia de stergere
-    public Integer deleteUserAfterUserName(String username) throws BuisnissException {
-        throw new BuisnissException("Invalid Username", "msg-003");
-    }
-
-
     //This function delete a User and all related activities(Notification, Bugs, Comments) and should
     // not be used in the context of the specification instead user the deactivateUser function.
     //ToDo refactor functia de stergere
-    public Integer deleteUserAfterUserNamePermanently(String username) throws BuisnissException {
+    public Integer deleteUserAfterUserNamePermanently(String username) throws BusinessException {
         Integer result = -1;
         User user = findeUserAfterUsername(username);
         if (user != null) {
@@ -110,7 +86,6 @@ public class UserRepo {
         return result;
     }
 
-
     //ToDo Posibil sa facem username in bd unique si sa nu mai folosim functia?
     public boolean isUsernameUnique(String username) {
         Query query = entityManager.createNamedQuery(User.QUERY_COUNT_USER_NAME_UNIQUE);
@@ -124,7 +99,7 @@ public class UserRepo {
         }
     }
 
-    public User login(String username, String password) throws BuisnissException {
+    public User login(String username, String password) throws BusinessException {
         Query query = entityManager.createNamedQuery(User.QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD);
         query.setParameter("username", username);
         query.setParameter("password", password);
@@ -132,7 +107,7 @@ public class UserRepo {
             User user = (User) query.getSingleResult();
             return user;
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new BuisnissException("login Failed", "msg-001");
+            throw new BusinessException("login Failed", "msg-001");
         }
     }
 
@@ -140,23 +115,20 @@ public class UserRepo {
         user.setStatus(true);
     }
 
-    public void deactivateUser(User user) {
+    public void deactivateUser(User user){
         user.setStatus(false);
     }
 
 
-    public User resetLoginFailCounter(User user) throws BuisnissException {
+    public User resetLoginFailCounter(User user) throws BusinessException {
         user.setCounter(0);
         return user;
     }
 
-    //ToDo reactivate User
 
 
 
-
-
-    public User updateUser(User newDataUser) throws BuisnissException {
+    public User updateUser(User newDataUser) throws BusinessException {
         User user = findeUserAfterUsername(newDataUser.getUsername());
         user.setCounter(newDataUser.getCounter());
         user.setFirstName(newDataUser.getFirstName());
@@ -177,6 +149,7 @@ public class UserRepo {
     public List<Bug> getAllAssignedBugs(User user) {
         return user.getAssignedTo();
     }
+
 
 
 }

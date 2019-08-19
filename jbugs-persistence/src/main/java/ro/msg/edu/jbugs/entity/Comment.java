@@ -16,10 +16,12 @@ import java.util.Date;
 @Table(name = "comments")
 @NamedQueries({
         @NamedQuery(name = Comment.DELETE_OLD_COMMENT, query = "delete from Comment c where c.date < :date "),
+        @NamedQuery(name = Comment.REMOVE_OLD_COMMENTS,query = "delete from Comment c where c.date< :expiryDate "),
         @NamedQuery(name = Comment.DELETE_COMMENT_AFTER_USER_ID, query = "delete from Comment c where c.user = :user")
 })
 public class Comment implements Serializable {
     public static final String DELETE_OLD_COMMENT = "deleteOldComment";
+    public static final String REMOVE_OLD_COMMENTS = "remove old comments";
     public static final String DELETE_COMMENT_AFTER_USER_ID = "deleteCommentAfterUserID";
 
     @Id

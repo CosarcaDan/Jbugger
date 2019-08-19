@@ -5,7 +5,7 @@ import ro.msg.edu.jbugs.dto.NotificationDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
 import ro.msg.edu.jbugs.entity.User;
-import ro.msg.edu.jbugs.exceptions.BuisnissException;
+import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.services.impl.NotificationService;
 import ro.msg.edu.jbugs.timer.TimerBean;
 import ro.msg.edu.jbugs.services.impl.BugService;
@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -57,22 +59,21 @@ public class TestServlet extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
-        try {
-            //UserDto userDto = new UserDto(0, 0, "fn1", "ln1", "email1", "0123456", "pswd1", "username1", true);
-            //addUserDefault();
-           // UserDto userdtoReturned = addUser(userDto);
-            //userService.login(userdtoReturned);
-            //userService.deleteUser(userdtoReturned);
-            addNotification(2);
-            out.println("<h1> done <h1>");
-            //userService.defaultTest();
-        } catch (Exception e) {
-            out.println(e.getStackTrace());
-        }
-
+            try{
+                UserDto userDto = new UserDto(1,1,"Fnt","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
+//                addUserDefault();
+                UserDto userdtoReturned = addUser(userDto);
+//            userService.login(userdtoReturned);
+                //userService.deleteUser(userdtoReturned);
+//                addNotification(2);
+                out.println("<h1> done <h1>");
+            } catch (BusinessException e) {
+                System.out.println(e.getMessage()+e.getErrorCode());
+            }
+        //userService.defaultTest();
         //printRaport(out);
         //Integer result = bugService.deleteOldBugs();
         //addBugsDefault();
@@ -88,12 +89,12 @@ public class TestServlet extends HttpServlet {
 
 
 
-    private UserDto addUser(UserDto userDto) throws IOException, BuisnissException {
+    private UserDto addUser(UserDto userDto) throws IOException, BusinessException {
         userService.addUser(userDto);
         return userDto;
     }
 
-    private UserDto findUser(Integer id) throws BuisnissException {
+    private UserDto findUser(Integer id) throws BusinessException {
         UserDto userDto1 = userService.findUser(id);
         return userDto1;
     }
@@ -103,7 +104,7 @@ public class TestServlet extends HttpServlet {
         return userDtoList;
     }
 
-    private BugDto addBug(BugDto bugDto) throws BuisnissException {
+    private BugDto addBug(BugDto bugDto) throws BusinessException {
         bugService.addBug(bugDto);
         return bugDto;
     }
@@ -112,14 +113,14 @@ public class TestServlet extends HttpServlet {
         return bugService.findBug(id);
     }
 
-    private List<BugDto> getAllBugCretedBy(Integer id) throws BuisnissException {
+    private List<BugDto> getAllBugCretedBy(Integer id) throws BusinessException {
         return userService.getAllCreatedBugs(id);
     }
 
 
-    private void addNotification(Integer userId) throws BuisnissException {
+    private void addNotification(Integer userId) throws BusinessException {
         UserDto userDto = userService.findUser(userId);
-        NotificationDto notificationDto = new NotificationDto(0,Timestamp.valueOf(""),"Hello","myType","noFound",userDto);
+        NotificationDto notificationDto = new NotificationDto(0,new Timestamp(Calendar.getInstance().getTimeInMillis()),"Hello","myType","noFound",userDto);
         try {
             notificationService.addNotification(notificationDto);
         } catch (IOException e) {
@@ -128,7 +129,7 @@ public class TestServlet extends HttpServlet {
 
     }
 
-    private void printRaport(PrintWriter out) throws IOException, BuisnissException {
+    private void printRaport(PrintWriter out) throws IOException, BusinessException {
         System.out.println("Hello");
         List<UserDto> userDtoList = getAllUser();
         List<BugDto> createdByUser;
@@ -143,21 +144,21 @@ public class TestServlet extends HttpServlet {
 
     }
 
-    private void defaultAddAll() throws IOException, BuisnissException {
+    private void defaultAddAll() throws IOException, BusinessException {
         //persist.xml restart line on
         addUserDefault();
         addBugsDefault();
         addCommentDefault();
     }
 
-    private void addUserDefault() throws IOException, BuisnissException {
+    private void addUserDefault() throws IOException, BusinessException {
         UserDto userDto1 = new UserDto(0, 0, "fn1", "ln1", "email1", "0123456", "pswd1", "username1", true);
         UserDto userDto2 = new UserDto(0, 0, "fn2", "ln2", "email2", "0123456", "pswd2", "username2", true);
         userService.addUser(userDto1);
         userService.addUser(userDto2);
     }
 
-    private void addBugsDefault() throws BuisnissException {
+    private void addBugsDefault() throws BusinessException {
         UserDto userDto = userService.findUser(1);
         UserDto userDto2 = userService.findUser(2);
         BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2012"), "active", "v14", "LOW", userDto, userDto2);
@@ -176,7 +177,7 @@ public class TestServlet extends HttpServlet {
         addBug(bugDto);
     }
 
-    private void addCommentDefault() throws BuisnissException {
+    private void addCommentDefault() throws BusinessException {
         UserDto user1 = findUser(1);
         UserDto user2 = findUser(2);
         BugDto bug1 = findBug(1);
