@@ -64,7 +64,7 @@ public class UserRESTController {
     @Produces(MediaType.TEXT_PLAIN)
     public String testToken(String token){
         Claims claims = TokenManager.decodeJWT(token);
-        String subject = claims.get("subject").toString();
+        String subject = claims.get("sub").toString();
         return "good token "+subject;
     }
 
