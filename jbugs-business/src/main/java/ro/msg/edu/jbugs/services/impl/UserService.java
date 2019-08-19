@@ -133,7 +133,7 @@ public class UserService {
     public void passwordFailed(String username) throws BuisnissException {
         User user = userRepo.findeUserAfterUsername(username);
         if (user.getCounter() < 5) {
-            user.setCounter(user.getCounter() + 1);
+            user.setCounter(user.getCounter() + 1); //todo do in repo increse counter
             if (user.getCounter() == 5) {
                 user.setStatus(false);
                 throw new BuisnissException("Password failed to may times, User deactivated", "msg - 003");

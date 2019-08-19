@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Document me.
  *
- * @author msg systems AG; User Name.
+ * @author msg systems AG; UserLogin Name.
  * @since 19.1.2
  */
 
@@ -133,7 +133,7 @@ public class TestServlet extends HttpServlet {
         List<UserDto> userDtoList = getAllUser();
         List<BugDto> createdByUser;
         for (UserDto userDto : userDtoList) {
-            out.println("User: " + userDto.getUsername() + " Created :<br>");
+            out.println("UserLogin: " + userDto.getUsername() + " Created :<br>");
             createdByUser = getAllBugCretedBy(userDto.getId());
             for (BugDto bugDto : createdByUser) {
                 out.println(bugDto.getId() + ", " + bugDto.getTitle() + ", " + bugDto.getCreated().getId() + ", " + bugDto.getFixedVersion() + "<br>");
