@@ -2,7 +2,7 @@ package ro.msg.edu.jbugs.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * Document me.
@@ -42,7 +42,7 @@ public class Bug implements Serializable {
     private String version;
 
     @Column(name = "targetDate")
-    private Date targetDate;
+    private Timestamp targetDate;
 
 
     //ToDo verify if enum works with DB
@@ -96,11 +96,11 @@ public class Bug implements Serializable {
         this.version = version;
     }
 
-    public Date getTargetDate() {
+    public Timestamp getTargetDate() {
         return targetDate;
     }
 
-    public void setTargetDate(Date targetDate) {
+    public void setTargetDate(Timestamp targetDate) {
         this.targetDate = targetDate;
     }
 

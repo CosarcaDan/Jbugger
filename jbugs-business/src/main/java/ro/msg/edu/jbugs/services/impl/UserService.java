@@ -1,13 +1,14 @@
 package ro.msg.edu.jbugs.services.impl;
 
 import com.google.common.hash.Hashing;
-import ro.msg.edu.jbugs.dto.*;
+import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
 import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
-import ro.msg.edu.jbugs.exceptions.BuisnissException;
-import ro.msg.edu.jbugs.repo.UserRepo;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
+import ro.msg.edu.jbugs.exceptions.BuisnissException;
+import ro.msg.edu.jbugs.repo.UserRepo;
 import ro.msg.edu.jbugs.validators.Validator;
 
 import javax.ejb.EJB;
@@ -15,7 +16,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 

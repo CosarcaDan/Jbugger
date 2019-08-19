@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -30,7 +31,7 @@ public class Comment implements Serializable {
     private String text;
 
     @Column(name = "date")
-    private Date date;
+    private Timestamp date;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
@@ -43,7 +44,7 @@ public class Comment implements Serializable {
     public Comment() {
     }
 
-    public Comment(String text, Date date, User user, Bug bug) {
+    public Comment(String text, Timestamp date, User user, Bug bug) {
         this.text = text;
         this.date = date;
         this.user = user;
@@ -70,7 +71,7 @@ public class Comment implements Serializable {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
