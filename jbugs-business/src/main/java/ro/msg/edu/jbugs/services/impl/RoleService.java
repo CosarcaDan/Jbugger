@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.services.impl;
 
 import ro.msg.edu.jbugs.dto.PermissionDto;
 import ro.msg.edu.jbugs.dto.RoleDto;
+import ro.msg.edu.jbugs.dto.mappers.PermissionDtoMapping;
 import ro.msg.edu.jbugs.dto.mappers.RoleDtoMapping;
 import ro.msg.edu.jbugs.entity.Permission;
 import ro.msg.edu.jbugs.entity.Role;
@@ -10,6 +11,8 @@ import ro.msg.edu.jbugs.repo.RoleRepo;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Document me.
@@ -39,7 +42,15 @@ public class RoleService {
     {
         Permission permission = permissionRepo.findPermission(permissionDto.getId());
         roleRepo.addPermissionToRole(RoleDtoMapping.roleDtoToRole(roleDto),permission);
-
+    }
+    public List<RoleDto> getAllRoles()
+    {
+        return roleRepo.getAllRoles().stream().map(role -> RoleDtoMapping.roleToRoleDto(role)).collect(Collectors.toList());
+    }
+    public List<PermissionDto> getPermissionsByRole(RoleDto roleDto)
+    {
+        return roleRepo.getPermissionsByRole(RoleDtoMapping.roleDtoToRole(roleDto))
+                .stream().map(permission -> PermissionDtoMapping.permissionToPermissionDto(permission)).collect(Collectors.toList());
     }
 
 //    public void addRole(){

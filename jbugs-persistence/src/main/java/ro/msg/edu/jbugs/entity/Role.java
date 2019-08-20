@@ -12,8 +12,15 @@ import java.util.List;
  */
 @Entity
 @Table(name = "roles")
+@NamedQueries({
+        @NamedQuery(name = Role.GET_ALL_ROLES, query = "select r from Role r"),
+        @NamedQuery(name = Role.GET_PERMISSIONS_BY_ROLE, query = " select p from Role r " +
+                "inner join r.permissionList p on r.id = p.id where r.id = :id")
+})
 public class Role implements Serializable {
 
+    public static final String GET_ALL_ROLES = "get all roles";
+    public static final String GET_PERMISSIONS_BY_ROLE = "get permissions by role";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
