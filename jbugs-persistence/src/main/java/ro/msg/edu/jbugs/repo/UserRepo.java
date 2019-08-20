@@ -1,6 +1,8 @@
 package ro.msg.edu.jbugs.repo;
 
 import ro.msg.edu.jbugs.entity.Bug;
+import ro.msg.edu.jbugs.entity.Permission;
+import ro.msg.edu.jbugs.entity.Role;
 import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 
@@ -151,5 +153,17 @@ public class UserRepo {
     }
 
 
-
+    public void addRoleToUser(User userinp, Role role) {
+        User user = entityManager.find(User.class, userinp.getId());
+        user.addRole(role);
+        entityManager.merge(role);
+        entityManager.flush();
+    }
+    public List<Permission> findUserPermissions(String username)
+    {
+        TypedQuery<Permission> query = entityManager.createNamedQuery(User.GET_USER_PERMISSIONS, Permission.class);
+        query.setParameter("username",username);
+        List<Permission> resultList = query.getResultList();
+        return resultList;
+    }
 }

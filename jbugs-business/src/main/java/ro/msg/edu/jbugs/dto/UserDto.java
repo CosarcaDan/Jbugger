@@ -94,12 +94,10 @@ public class UserDto implements Serializable {
         this.createdBy = createdBy;
         this.assignedTo = assignTo;
     }
-    public UserDto(UserLoginDto uld)
-    {
+    public UserDto(UserLoginDto uld) {
         this.username=uld.getUsername();
         this.password=uld.getPassword();
     }
-
     public UserDto(Integer id, Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
         this.id = id;
         this.counter = counter;

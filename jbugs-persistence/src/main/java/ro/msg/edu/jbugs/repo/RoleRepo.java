@@ -1,5 +1,6 @@
 package ro.msg.edu.jbugs.repo;
 
+import ro.msg.edu.jbugs.entity.Permission;
 import ro.msg.edu.jbugs.entity.Role;
 
 import javax.ejb.Stateless;
@@ -28,4 +29,10 @@ public class RoleRepo {
     }
 
 
+    public void addPermissionToRole(Role roleimp, Permission permission) {
+        Role role = entityManager.find(Role.class, roleimp.getId());
+        role.addPermission(permission);
+        entityManager.merge(role);
+        entityManager.flush();
+    }
 }

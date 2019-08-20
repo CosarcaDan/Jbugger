@@ -1,13 +1,8 @@
 package servlet;
 
-import ro.msg.edu.jbugs.dto.BugDto;
-import ro.msg.edu.jbugs.dto.NotificationDto;
-import ro.msg.edu.jbugs.dto.UserDto;
+import ro.msg.edu.jbugs.dto.*;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
-import ro.msg.edu.jbugs.services.impl.BugService;
-import ro.msg.edu.jbugs.services.impl.CommentService;
-import ro.msg.edu.jbugs.services.impl.NotificationService;
-import ro.msg.edu.jbugs.services.impl.UserService;
+import ro.msg.edu.jbugs.services.impl.*;
 import ro.msg.edu.jbugs.timer.TimerBean;
 
 import javax.ejb.EJB;
@@ -47,6 +42,11 @@ public class TestServlet extends HttpServlet {
     @EJB
     TimerBean timmerBean;
 
+    @EJB
+    RoleService roleService;
+    @EJB
+    PermissionService permissionService;
+
 
     @Override
     public void init() throws ServletException {
@@ -58,27 +58,40 @@ public class TestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
-        //try{
-        UserDto userDto = new UserDto(1, 1, "Fnts", "Lnts", "et@msggroup.com", "+40712345678", "pt", "unt", true);
+            try{
+                UserDto userDto = new UserDto(1,1,"Fnt","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
 //                addUserDefault();
-//        try {
-        // UserDto userdtoReturned = addUser(userDto);
-//        } catch (BusinessException e) {
-//            e.printStackTrace();
-//        }
+                UserDto userdtoReturned = addUser(userDto);
 //            userService.login(userdtoReturned);
                 //userService.deleteUser(userdtoReturned);
 //                addNotification(2);
-//                out.println("<h1> done <h1>");
-//            } catch (BusinessException e) {
-//                System.out.println(e.getMessage()+e.getErrorCode());
-//            }
-
-
-
+                PermissionDto pdto= new PermissionDto();
+                pdto.setId(1);
+                pdto.setType("USER_MANAGEMENT");
+                pdto.setDescription("test desc");
+                permissionService.addPermission(pdto);
+                RoleDto rdto = new RoleDto();
+                rdto.setId(1);
+                rdto.setType("admin");
+                roleService.addRole(rdto);
+                roleService.addPermissionToRole(rdto,pdto);
+                userService.addRoleToUser(userDto,rdto);
+                out.println(userService.getUserPermissionsByUsername("fntl"));
+                out.println("<h1> done <h1>");
+            } catch (BusinessException e) {
+                System.out.println(e.getMessage()+e.getErrorCode());
+            }
+        //userService.defaultTest();
+        //printRaport(out);
+        //Integer result = bugService.deleteOldBugs();
+        //addBugsDefault();
+        //addCommentDefault();
+        //Integer reuslt = deleteOldComments();
+        //timmerBean.atSchedule();
 
 
         out.println("<h1>" + "" + "</h1> <br>");
+        //out.println("<h1>" + userDto.getCreatedBy().size() + "</h1>");
     }
 
 
