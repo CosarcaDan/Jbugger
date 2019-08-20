@@ -136,7 +136,7 @@ public class UserService {
             user.setCounter(user.getCounter() + 1); //todo do in repo increse counter
             if (user.getCounter() == 5) {
                 user.setStatus(false);
-                throw new BusinessException("Password failed to may times, User deactivated", "msg - 003");
+                throw new BusinessException("Password failed too may times, User deactivated", "msg - 003");
             }
         } else {
             throw new BusinessException("User Inactiv", "msg - 005");

@@ -26,6 +26,5 @@ public class LoggingInterceptor {
             logger.info("Exiting method "+ic.getTarget().toString()+" "+ic.getMethod().getName()+".");
         }
         return obj;
-
     }
 }
