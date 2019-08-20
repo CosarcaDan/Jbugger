@@ -11,12 +11,14 @@ import {MenubarModule} from "primeng/menubar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ChartModule} from "primeng/chart";
 import {TabViewModule} from "primeng/primeng";
+import { AddBugComponent } from './mainPage/bugs-management/add-bug/add-bug.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
+    AddBugComponent,
 
   ],
   imports: [
