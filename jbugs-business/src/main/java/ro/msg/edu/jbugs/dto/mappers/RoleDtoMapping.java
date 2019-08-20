@@ -15,6 +15,6 @@ public class RoleDtoMapping {
         RoleDto result = new RoleDto();
         result.setId(role.getId());
         result.setType(role.getType());
-        return null;
+        return result;
     }
 }

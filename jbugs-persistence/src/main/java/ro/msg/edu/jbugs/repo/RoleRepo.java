@@ -6,6 +6,8 @@ import ro.msg.edu.jbugs.entity.Role;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 /**
  * Document me.
@@ -34,5 +36,17 @@ public class RoleRepo {
         role.addPermission(permission);
         entityManager.merge(role);
         entityManager.flush();
+    }
+    public List<Role> getAllRoles()
+    {
+        TypedQuery<Role> query = entityManager.createNamedQuery(Role.GET_ALL_ROLES, Role.class);
+        return query.getResultList();
+    }
+
+    public List<Permission> getPermissionsByRole(Role role)
+    {
+        TypedQuery<Permission> query = entityManager.createNamedQuery(Role.GET_PERMISSIONS_BY_ROLE, Permission.class);
+        query.setParameter("id",role.getId());
+        return query.getResultList();
     }
 }
