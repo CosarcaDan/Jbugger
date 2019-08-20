@@ -68,4 +68,8 @@ public class Permission implements Serializable {
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
     }
+
+    public void addRoleSimple(Role role) {
+        this.roleList.add(role);
+    }
 }

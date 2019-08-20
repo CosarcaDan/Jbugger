@@ -62,8 +62,8 @@ public class UserRESTController {
     @Path("/ttoken")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String testToken(String token){
-        Claims claims = TokenManager.decodeJWT(token);
+    public String testToken(String mytoken, @HeaderParam("Authorization") String token){
+        Claims claims = TokenManager.decodeJWT(token.split(" ")[1]);
         String subject = claims.get("sub").toString();
         return "good token "+subject;
     }

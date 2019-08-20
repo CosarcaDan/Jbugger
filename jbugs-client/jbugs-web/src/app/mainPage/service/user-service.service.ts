@@ -19,7 +19,7 @@ export class UserServiceService {
   }
 
   login(username:string, password:string) {
-    this.user = {username,password};
+    this.user = {username, password};
     this.http.post<UserLogin>(this.base_url,this.user)
   }
 }

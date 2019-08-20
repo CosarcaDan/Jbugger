@@ -69,4 +69,13 @@ public class Role implements Serializable {
     public void setUserList(List<User> userList) {
         this.userList = userList;
     }
+
+    public void addPermission(Permission permission) {
+        permission.addRoleSimple(this);
+        this.permissionList.add(permission);
+    }
+
+    public void addUserSimple(User user) {
+        this.userList.add(user);
+    }
 }
