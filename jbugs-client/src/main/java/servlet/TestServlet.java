@@ -62,28 +62,27 @@ public class TestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
-            try{
-                UserDto userDto = new UserDto(1,1,"Fnt","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
+            //try{
+                UserDto userDto = new UserDto(1,1,"Fnts","Lnts","et@msggroup.com","+40712345678","pt","unt",true);
 //                addUserDefault();
-                UserDto userdtoReturned = addUser(userDto);
+//        try {
+           // UserDto userdtoReturned = addUser(userDto);
+//        } catch (BusinessException e) {
+//            e.printStackTrace();
+//        }
 //            userService.login(userdtoReturned);
                 //userService.deleteUser(userdtoReturned);
 //                addNotification(2);
-                out.println("<h1> done <h1>");
-            } catch (BusinessException e) {
-                System.out.println(e.getMessage()+e.getErrorCode());
-            }
-        //userService.defaultTest();
-        //printRaport(out);
-        //Integer result = bugService.deleteOldBugs();
-        //addBugsDefault();
-        //addCommentDefault();
-        //Integer reuslt = deleteOldComments();
-        //timmerBean.atSchedule();
+//                out.println("<h1> done <h1>");
+//            } catch (BusinessException e) {
+//                System.out.println(e.getMessage()+e.getErrorCode());
+//            }
+
+
+
 
 
         out.println("<h1>" + "" + "</h1> <br>");
-        //out.println("<h1>" + userDto.getCreatedBy().size() + "</h1>");
     }
 
 

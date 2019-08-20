@@ -29,4 +29,9 @@ public class BusinessException extends Exception {
     public BusinessException(String s, Throwable throwable) {
         super(s, throwable);
     }
+
+    @Override
+    public String toString() {
+        return super.getMessage() + " : " + " " + this.errorCode;
+    }
 }
