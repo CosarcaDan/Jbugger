@@ -1,12 +1,16 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './mainPage/login/login.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {LoginComponent} from './mainPage/login/login.component';
 import {FormsModule} from "@angular/forms";
-import { DashboardComponent } from './mainPage/dashboard/dashboard.component';
+import {DashboardComponent} from './mainPage/dashboard/dashboard.component';
 import {HttpClientModule} from "@angular/common/http";
+import {MenubarModule} from "primeng/menubar";
+
+import {ButtonModule, ChartModule, InputTextModule, TabViewModule,} from "primeng/primeng";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -17,9 +21,15 @@ import {HttpClientModule} from "@angular/common/http";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    InputTextModule,
+    ButtonModule,
+    ChartModule,
+    MenubarModule,
+    TabViewModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -20,7 +20,7 @@ export class AppComponent {
 
 
   constructor(private router: Router, private translate: TranslateService,
-              private userService: UserService, private notificationService : NotificationService,
+              private userService: UserService, private notificationService: NotificationService,
               public utilService: UtilService) {
     translate.setDefaultLang('en');
   }
@@ -63,8 +63,9 @@ export class AppComponent {
     }
     this.notificationComponent.clear();
   }
-  initialize(){
-    if(this.notificationService.wasInstantiatedForOld() == false)
+
+  initialize() {
+    if (this.notificationService.wasInstantiatedForOld() == false)
       this.notificationComponent.ngOnInit();
   }
 
@@ -72,9 +73,9 @@ export class AppComponent {
     this.translate.use(language);
   }
 
-  getNewNotifications(){
-    this.notificationService.getNewNotifications().subscribe(notification=>{
-      this.newNotificationList=notification;
+  getNewNotifications() {
+    this.notificationService.getNewNotifications().subscribe(notification => {
+      this.newNotificationList = notification;
     })
   }
 
