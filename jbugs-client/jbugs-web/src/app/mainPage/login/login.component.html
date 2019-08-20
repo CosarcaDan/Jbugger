@@ -7,14 +7,14 @@
            required
            id="username">
     <div class="alert alert-danger"
-         *ngIf="form.get('username').touched && username.invalid">
-        <div *ngIf="username.errors.required">
+         *ngIf="form.get('username').touched && form.get('username').invalid">
+      <div *ngIf="form.get('username').errors.required">
           Username is required!
         </div>
-      <div *ngIf="username.errors.cannotContainSpace">
+      <div *ngIf="form.get('username').errors.cannotContainSpace">
         Username cannot contain any space!
       </div>
-      <div *ngIf="username.errors.cannotContainUpperCaseLetter">
+      <div *ngIf="form.get('username').errors.cannotContainUpperCaseLetter">
         Username cannot contain any upper case letter!
       </div>
       </div>
@@ -29,8 +29,8 @@
              required
       >
       <div class="alert alert-danger"
-           *ngIf="password.touched && password.invalid">
-        <div *ngIf="password.errors.required">
+           *ngIf="form.get('password').touched && form.get('password').invalid">
+        <div *ngIf="form.get('password').errors.required">
           Password is required!
         </div>
       </div>
