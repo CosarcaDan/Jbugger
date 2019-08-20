@@ -62,6 +62,9 @@ public class TestServlet extends HttpServlet {
                 UserDto userDto = new UserDto(1,1,"Fnt","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
 //                addUserDefault();
                 UserDto userdtoReturned = addUser(userDto);
+                UserDto userDto1 = new UserDto(1,1,"Peter","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
+//                addUserDefault();
+                userdtoReturned = addUser(userDto1);
 //            userService.login(userdtoReturned);
                 //userService.deleteUser(userdtoReturned);
 //                addNotification(2);

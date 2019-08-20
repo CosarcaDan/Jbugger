@@ -14,6 +14,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,39 +27,54 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     @EJB
     PermissionService permissionService;
 
+    @EJB
+    PathPolicy pathPolicy;
     @Override
     public void filter(ContainerRequestContext ctx) throws IOException {
 
-        if(ctx.getUriInfo().getPath().contains("login") || (ctx.getUriInfo().getPath().equals("users")))
+//        List<String> permissionsRequired = pathPolicy.getPathPermissions().get(ctx.getUriInfo().getPath());
+        HashMap<String, List<String>> permissions = pathPolicy.getPathPermissions();
+        String path= ctx.getUriInfo().getPath();
+        List<String> permissionsRequired = permissions.get(path);
+
+        if(permissionsRequired.size() == 0)
             return;
+        else
+        {
 
-        if (ctx.getLanguage() != null && "EN".equals(ctx.getLanguage()
-                .getLanguage())) {
+            String rawheader = ctx.getHeaderString("Authorization");
+            if(rawheader.equals("") || rawheader == null)
+            {
+                ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Authorization header missing!")
+                        .build());
+                return;
+            }
+            String header=rawheader.split(" ")[1];
+            if(checkAccess(ctx.getUriInfo().getPath(),header,permissionsRequired))
+                return;
+            else
+                ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Permissions missing")
+                        .build());
 
-            ctx.abortWith(Response.status(Response.Status.FORBIDDEN)
-                    .entity("Cannot access")
-                    .build());
         }
-        String header=ctx.getHeaderString("Authorization").split(" ")[1];
-        System.out.println(checkAccess(ctx.getUriInfo().getPath(),header));
+
+
     }
 
-    private boolean checkAccess(String path, String token)
+    private boolean checkAccess(String path, String token, List<String> permissions)
     {
         String username=TokenManager.decodeJWT(token).getSubject();
-        List<Permission> permissions = userService.getUserPermissionsByUsername(username);
-//        List<UserDto> allusers = userService.getAllUser();
-//        Optional<UserDto> userDto = allusers.stream().filter(s -> s.getUsername() != username).findFirst();
-//        System.out.println(userDto.toString());
-//        return true;
-        if(path.contains("ttoken")) {
-            if(permissions.stream().anyMatch(s->s.getType().equals("USER_MANAGEMENT")))
+        List<Permission> userPermissions = userService.getUserPermissionsByUsername(username);
+        return permissions.stream().allMatch(s->{
+            if(userPermissions.stream().anyMatch(ss->ss.getType().equals(s)))
             {
                 return true;
             }
             else
                 return false;
-        }
-        return true;
+        });
+
     }
 }
