@@ -49,7 +49,7 @@ public class UserRESTController {
 //        System.out.println(user.toString());
 //    }
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response login(UserDto user) {
         Gson gson = new GsonBuilder().create();
         try {
@@ -60,7 +60,6 @@ public class UserRESTController {
         } catch (BusinessException e) {
 
             String error = gson.toJson(e);
-            //mapper.writeValueAsString(userList);
             return Response.status(500).entity(error).build();
         }
     }

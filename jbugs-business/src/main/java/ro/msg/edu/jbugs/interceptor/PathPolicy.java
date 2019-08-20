@@ -20,6 +20,10 @@ public class PathPolicy {
         perissions.add("PERMISSION_MANAGEMENT");
         pathPermissions.put("roles",new ArrayList<>(perissions));
 
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("roles/permissions",new ArrayList<>(perissions));
+
         pathPermissions.put("users/login",new ArrayList<>());
 
         perissions.clear();

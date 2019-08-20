@@ -64,3 +64,4 @@ pom.xml.tag
 /**/target
 
 .scannerwork
+classes/production/Jbugger/META-INF/Jbugger.kotlin_module

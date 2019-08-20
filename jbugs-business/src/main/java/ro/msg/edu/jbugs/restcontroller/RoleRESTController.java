@@ -1,16 +1,18 @@
 package ro.msg.edu.jbugs.restcontroller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import ro.msg.edu.jbugs.dto.PermissionDto;
 import ro.msg.edu.jbugs.dto.RoleDto;
+import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
 import ro.msg.edu.jbugs.services.impl.RoleService;
 
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/roles")
@@ -26,4 +28,22 @@ public class RoleRESTController {
     public List<RoleDto> getAll(){
         return roleService.getAllRoles();
     }
+
+    @POST
+    @Path("/permissions")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(RoleDto role) {
+        Gson gson = new GsonBuilder().create();
+        try {
+        List<PermissionDto> result = roleService.getPermissionsByRole(role);
+            String response = gson.toJson(result);
+            return Response.status(200).entity(response).build();
+        } catch (Exception e) {
+
+            String error = gson.toJson(e);
+            return Response.status(500).entity(error).build();
+        }
+    }
+
 }

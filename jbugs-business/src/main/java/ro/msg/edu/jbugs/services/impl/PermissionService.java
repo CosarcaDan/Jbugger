@@ -21,6 +21,7 @@ public class PermissionService {
 
     public void addPermission(PermissionDto permissionDto){
         Permission permission = PermissionDtoMapping.permissionDtoToPermission(permissionDto);
+        permission.setId(null);
         permissionRepo.addPermission(permission);
     }
 
