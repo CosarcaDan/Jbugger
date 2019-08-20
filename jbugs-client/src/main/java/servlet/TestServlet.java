@@ -81,6 +81,11 @@ public class TestServlet extends HttpServlet {
                 userService.addRoleToUser(userDto,rdto);
                 out.println(userService.getUserPermissionsByUsername("fntl"));
                 out.println("<h1> done <h1>");
+
+                roleService.getAllRoles().forEach(r ->out.println(r.toString()));
+
+                out.println(roleService.getPermissionsByRole(rdto));
+
             } catch (BusinessException e) {
                 System.out.println(e.getMessage()+e.getErrorCode());
             }
