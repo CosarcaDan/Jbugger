@@ -1,44 +1,88 @@
+import {FormBuilder} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserServiceService} from '../service/user-service.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LoginValidators} from './login.validators';
+import {UserLogin} from '../models/userLogin';
+//import {Token} from "../models/token";
+//import {BackendError} from "../models/backendError";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers:[ UserServiceService ]
+  providers: [UserServiceService]
 })
 export class LoginComponent implements OnInit {
 
-  //username:string;
-  //password:string;
-  form: FormGroup;
+  //username: string;
+  //password: string;
 
-  login() {
-    console.log('Login: ', this.username.value, ' ', this.password.value);
-    //todo rest request if result ok redirect to main
-    this.router.navigate(['/dashboard']);
+  users: any [];
+  userlogin: UserLogin;
+  //token: Token;
+  //backendError:BackendError;
+
+
+  login(form) {
+    // this.username = form.value.username;
+    // this.password = form.value.password;
+    // this.userlogin = {username: this.username, password: this.password};
+    // //todo rest request if result ok redirect to main
+    // this.userService.login(this.userlogin).subscribe((data: {}) => {
+    //   // @ts-ignore
+    //   this.token = data;
+    //   console.log(this.token.value);
+    //
+    //   this.userService.httpOptionsWithAuth = {
+    //     headers: new HttpHeaders({
+    //       'Content-Type':  'application/json',
+    //       'Authorization': this.token.value,
+    //     })
+    //   };
+    //   sessionStorage.setItem("token",this.token.value);
+    //   this.router.navigate(['/dashboard']);
+    // },(error1:{}) => {
+    //     // @ts-ignore
+    //   this.backendError = error1.error;
+    //   console.log("Error",this.backendError);
+    //   alert(this.backendError.detailMessage);
+    // })
+    //
+
+  }
+
+  ngOnInit(): void {
   }
 
   constructor(private router: Router, private userService: UserServiceService, private fb: FormBuilder) {
-    this.form = fb.group({
-      username: [null, [Validators.required, LoginValidators.cannotContainSpace,
-        LoginValidators.cannotContainUpperCaseLetter]],
-      password: [null, [Validators.required]]
-    });
+    // this.form = fb.group({
+    //   username: [null, [Validators.required, LoginValidators.cannotContainSpace,
+    //     LoginValidators.cannotContainUpperCaseLetter]],
+    //   password: [null, [Validators.required]]
+    // });
   }
 
-  get username() {
-    return this.form.get('username');
-  }
+  // get username() {
+  //   return this.form.get('username');
+  // }
+  //
+  // get password() {
+  //   return this.form.get('password');
+  // }
+  //
+  // ngOnInit() {
+  //   this.getUseres();
+  // }
+  //
+  // getUseres() {
+  //   this.users = [];
+  //   this.userService.getUsers().subscribe((data: {}) => {
+  //     console.log(data);
+  //     // @ts-ignore
+  //     this.users = data;
+  //   });
+  // }
+  //
 
-  get password() {
-    return this.form.get('password');
-  }
-
-  ngOnInit() {
-  }
 
 }
