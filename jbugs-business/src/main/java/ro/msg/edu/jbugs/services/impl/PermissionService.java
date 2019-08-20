@@ -1,5 +1,11 @@
 package ro.msg.edu.jbugs.services.impl;
 
+import ro.msg.edu.jbugs.dto.PermissionDto;
+import ro.msg.edu.jbugs.dto.mappers.PermissionDtoMapping;
+import ro.msg.edu.jbugs.entity.Permission;
+import ro.msg.edu.jbugs.repo.PermissionRepo;
+
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
@@ -10,17 +16,17 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class PermissionService {
-//    @EJB
-//    private PermissionRepo permissionRepo;
-//
-//    public void addPermission(PermissionDto permissionDto){
-//        Permission permission = PermissionDtoMapping.permissionDtoTopermission(permissionDto);
-//        permissionRepo.addPermission(permission);
-//    }
-//
-//    public PermissionDto findPermission(Integer id){
-//        Permission permission = permissionRepo.findPermission(id);
-//        PermissionDto permissionDto = PermissionDtoMapping.permissionTopermissionDto(permission);
-//        return permissionDto;
-//    }
+    @EJB
+    private PermissionRepo permissionRepo;
+
+    public void addPermission(PermissionDto permissionDto) {
+        Permission permission = PermissionDtoMapping.permissionDtoToPermission(permissionDto);
+        permissionRepo.addPermission(permission);
+    }
+
+    public PermissionDto findPermission(Integer id) {
+        Permission permission = permissionRepo.findPermission(id);
+        PermissionDto permissionDto = PermissionDtoMapping.permissionToPermissionDto(permission);
+        return permissionDto;
+    }
 }

@@ -2,12 +2,16 @@ package ro.msg.edu.jbugs.services.impl;
 
 import com.google.common.hash.Hashing;
 import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.RoleDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
 import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
 import ro.msg.edu.jbugs.entity.Bug;
+import ro.msg.edu.jbugs.entity.Permission;
+import ro.msg.edu.jbugs.entity.Role;
 import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
+import ro.msg.edu.jbugs.repo.RoleRepo;
 import ro.msg.edu.jbugs.repo.UserRepo;
 import ro.msg.edu.jbugs.validators.Validator;
 
@@ -36,6 +40,9 @@ public class UserService {
     private UserRepo userRepo;
 
     @EJB
+    private RoleRepo roleRepo;
+
+    @EJB
     private NotificationService notificationService;
 
     //ToDo validate Data
@@ -62,6 +69,20 @@ public class UserService {
         } catch (EntityNotFoundException ex) {
             throw new BusinessException("No User found with given Id", "msg - 006");
         }
+    }
+
+    public UserDto findUser(String username) throws BusinessException {
+        try {
+            User user = userRepo.findeUserAfterUsername(username);
+            UserDto userDto = UserDtoMapping.userToUserDtoComplet(user);
+            return userDto;
+        } catch (EntityNotFoundException ex) {
+            throw new BusinessException("No User found with given Id", "msg - 006");
+        }
+    }
+
+    public List<Permission> getUserPermissionsByUsername(String username) {
+        return userRepo.findUserPermissions(username);
     }
 
     public List<UserDto> getAllUser() {
@@ -136,7 +157,7 @@ public class UserService {
             user.setCounter(user.getCounter() + 1); //todo do in repo increse counter
             if (user.getCounter() == 5) {
                 user.setStatus(false);
-                throw new BusinessException("Password failed to may times, User deactivated", "msg - 003");
+                throw new BusinessException("Password failed too may times, User deactivated", "msg - 003");
             }
         } else {
             throw new BusinessException("User Inactiv", "msg - 005");
@@ -182,6 +203,11 @@ public class UserService {
         Validator.validateUser(userDto);
         User newDataUser = UserDtoMapping.userDtoToUser(userDto);
         return UserDtoMapping.userToUserDtoIncomplet(userRepo.updateUser(newDataUser));
+    }
+
+    public void addRoleToUser(UserDto userDto, RoleDto roleDto) {
+        Role role = roleRepo.findRole(roleDto.getId());
+        userRepo.addRoleToUser(UserDtoMapping.userDtoToUser(userDto), role);
     }
 
 }

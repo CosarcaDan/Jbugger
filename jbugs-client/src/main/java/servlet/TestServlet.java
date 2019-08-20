@@ -1,16 +1,9 @@
 package servlet;
 
-import ro.msg.edu.jbugs.dto.BugDto;
-import ro.msg.edu.jbugs.dto.NotificationDto;
-import ro.msg.edu.jbugs.dto.UserDto;
-import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
-import ro.msg.edu.jbugs.entity.User;
+import ro.msg.edu.jbugs.dto.*;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
-import ro.msg.edu.jbugs.services.impl.NotificationService;
+import ro.msg.edu.jbugs.services.impl.*;
 import ro.msg.edu.jbugs.timer.TimerBean;
-import ro.msg.edu.jbugs.services.impl.BugService;
-import ro.msg.edu.jbugs.services.impl.CommentService;
-import ro.msg.edu.jbugs.services.impl.UserService;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -21,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,6 +42,11 @@ public class TestServlet extends HttpServlet {
     @EJB
     TimerBean timmerBean;
 
+    @EJB
+    RoleService roleService;
+    @EJB
+    PermissionService permissionService;
+
 
     @Override
     public void init() throws ServletException {
@@ -69,6 +65,18 @@ public class TestServlet extends HttpServlet {
 //            userService.login(userdtoReturned);
                 //userService.deleteUser(userdtoReturned);
 //                addNotification(2);
+                PermissionDto pdto = new PermissionDto();
+                pdto.setId(1);
+                pdto.setType("USER_MANAGEMENT");
+                pdto.setDescription("test desc");
+                permissionService.addPermission(pdto);
+                RoleDto rdto = new RoleDto();
+                rdto.setId(1);
+                rdto.setType("admin");
+                roleService.addRole(rdto);
+                roleService.addPermissionToRole(rdto, pdto);
+                userService.addRoleToUser(userDto, rdto);
+                out.println(userService.getUserPermissionsByUsername("fntl"));
                 out.println("<h1> done <h1>");
             } catch (BusinessException e) {
                 System.out.println(e.getMessage()+e.getErrorCode());
