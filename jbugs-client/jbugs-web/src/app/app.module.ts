@@ -7,6 +7,10 @@ import {LoginComponent} from './mainPage/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DashboardComponent} from './mainPage/dashboard/dashboard.component';
 import {HttpClientModule} from '@angular/common/http';
+import {MenubarModule} from "primeng/menubar";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ChartModule} from "primeng/chart";
+import {TabViewModule} from "primeng/primeng";
 
 @NgModule({
   declarations: [
@@ -17,10 +21,15 @@ import {HttpClientModule} from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MenubarModule,
+    ChartModule,
+    TabViewModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
