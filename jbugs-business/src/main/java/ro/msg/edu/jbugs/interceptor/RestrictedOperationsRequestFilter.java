@@ -29,7 +29,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     @Override
     public void filter(ContainerRequestContext ctx) throws IOException {
 
-        if(ctx.getUriInfo().getPath().contains("login"))
+        if(ctx.getUriInfo().getPath().contains("login") || (ctx.getUriInfo().getPath().equals("users")))
             return;
 
         if (ctx.getLanguage() != null && "EN".equals(ctx.getLanguage()
