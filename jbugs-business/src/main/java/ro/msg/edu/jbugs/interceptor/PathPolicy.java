@@ -14,12 +14,17 @@ public class PathPolicy {
         List<String> perissions= new ArrayList<>();
         perissions.add("USER_MANAGEMENT");
         pathPermissions.put("users/ttoken",new ArrayList<>(perissions));
+
         perissions.clear();
         perissions.add("USER_MANAGEMENT");
+        perissions.add("PERMISSION_MANAGEMENT");
         pathPermissions.put("roles",new ArrayList<>(perissions));
 
         pathPermissions.put("users/login",new ArrayList<>());
-        pathPermissions.put("users",new ArrayList<>());
+
+        perissions.clear();
+        perissions.add("USER_MANAGEMENT");
+        pathPermissions.put("users",new ArrayList<>(perissions));
     }
 
     public HashMap<String, List<String>> getPathPermissions() {

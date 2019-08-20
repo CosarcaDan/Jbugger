@@ -57,7 +57,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     {
         String username=TokenManager.decodeJWT(token).getSubject();
         List<Permission> userPermissions = userService.getUserPermissionsByUsername(username);
-        return permissions.stream().allMatch(s->{
+        return permissions.stream().anyMatch(s->{
             if(userPermissions.stream().anyMatch(ss->ss.getType().equals(s)))
             {
                 return true;
