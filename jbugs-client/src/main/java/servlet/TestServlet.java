@@ -1,9 +1,6 @@
 package servlet;
 
 import ro.msg.edu.jbugs.dto.*;
-import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
-import ro.msg.edu.jbugs.entity.Permission;
-import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.services.impl.*;
 import ro.msg.edu.jbugs.timer.TimerBean;
@@ -17,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -60,3 +60,5 @@ pom.xml.tag
 **.factorypath
 **/.idea/
 /**/target
+
+jbugs-persistance/src/main/resources/META-INF/persistence.xml

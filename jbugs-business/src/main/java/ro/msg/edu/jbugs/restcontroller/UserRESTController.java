@@ -44,6 +44,7 @@ public class UserRESTController {
 //
 //        System.out.println(user.toString());
 //    }
+    @Consumes({MediaType.APPLICATION_JSON})
     @Produces(MediaType.TEXT_PLAIN)
     public String login(UserDto user){
         try
@@ -62,10 +63,10 @@ public class UserRESTController {
     @Path("/ttoken")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String testToken(String mytoken, @HeaderParam("Authorization") String token){
-        Claims claims = TokenManager.decodeJWT(token.split(" ")[1]);
+    public String testToken(String token){
+        Claims claims = TokenManager.decodeJWT(token);
         String subject = claims.get("sub").toString();
-        return "good token "+subject;
+        return "good token " + subject;
     }
 
 
