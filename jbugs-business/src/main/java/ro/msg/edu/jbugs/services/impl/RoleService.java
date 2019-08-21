@@ -46,12 +46,17 @@ public class RoleService {
     }
 
     public List<RoleDto> getAllRoles() {
-        return roleRepo.getAllRoles().stream().map(role -> RoleDtoMapping.roleToRoleDto(role)).collect(Collectors.toList());
+        return roleRepo.getAllRoles().stream().map(RoleDtoMapping::roleToRoleDto).collect(Collectors.toList());
     }
 
     public List<PermissionDto> getPermissionsByRole(RoleDto roleDto) {
         return roleRepo.getPermissionsByRole(RoleDtoMapping.roleDtoToRole(roleDto))
-                .stream().map(permission -> PermissionDtoMapping.permissionToPermissionDto(permission)).collect(Collectors.toList());
+                .stream().map(PermissionDtoMapping::permissionToPermissionDto).collect(Collectors.toList());
+    }
+
+    public void removePermissionToRole(RoleDto roleDto, PermissionDto permissionDto) {
+        Permission permission = permissionRepo.findPermission(permissionDto.getId());
+        roleRepo.removePermissionToRole(RoleDtoMapping.roleDtoToRole(roleDto), permission);
     }
 
 //    public void addRole(){

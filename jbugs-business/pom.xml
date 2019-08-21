@@ -12,6 +12,10 @@
     <description>Business layer</description>
     <packaging>ejb</packaging>
 
+    <properties>
+        <jackson.jaxrs.json.glassfish.version>2.27</jackson.jaxrs.json.glassfish.version>
+    </properties>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>

@@ -1,5 +1,7 @@
 package ro.msg.edu.jbugs.dto;
 
+import com.google.gson.Gson;
+
 public class PermissionDto {
     private Integer id;
     private String description;
@@ -27,5 +29,11 @@ public class PermissionDto {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public static PermissionDto fromString(String JSON) {
+        Gson g = new Gson();
+        PermissionDto result = g.fromJson(JSON, PermissionDto.class);
+        return result;
     }
 }

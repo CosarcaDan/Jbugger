@@ -31,11 +31,13 @@ public class RoleRepo {
     }
 
 
-    public void addPermissionToRole(Role roleimp, Permission permission) {
-        Role role = entityManager.find(Role.class, roleimp.getId());
+    public Role addPermissionToRole(Role roleinp, Permission permission) {
+        Role role = entityManager.find(Role.class, roleinp.getId());
         role.addPermission(permission);
         entityManager.merge(role);
         entityManager.flush();
+        return role;
+
     }
 
     public List<Role> getAllRoles() {
@@ -48,9 +50,16 @@ public class RoleRepo {
 //        query.setParameter("id",role.getId());
 //        return query.getResultList();
         role = entityManager.find(Role.class, role.getId());
-        List<Permission> result = role.getPermissionList();
-        return result;
+        return role.getPermissionList();
 
 
+    }
+
+    public Role removePermissionToRole(Role roleinp, Permission permission) {
+        Role role = entityManager.find(Role.class, roleinp.getId());
+        role.removePermission(permission);
+        entityManager.merge(role);
+        entityManager.flush();
+        return role;
     }
 }
