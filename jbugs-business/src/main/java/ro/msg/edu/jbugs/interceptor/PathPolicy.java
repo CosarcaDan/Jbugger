@@ -20,7 +20,31 @@ public class PathPolicy {
         perissions.add("PERMISSION_MANAGEMENT");
         pathPermissions.put("roles",new ArrayList<>(perissions));
 
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("roles/permissions", new ArrayList<>(perissions));
+
         pathPermissions.put("users/login",new ArrayList<>());
+
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("permissions", new ArrayList<>(perissions));
+
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("roles/add-permissions", new ArrayList<>(perissions));
+
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("roles/remove-permissions", new ArrayList<>(perissions));
+
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("permissions/not-in-role", new ArrayList<>(perissions));
+
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("permissions/in-role", new ArrayList<>(perissions));
 
         perissions.clear();
         perissions.add("USER_MANAGEMENT");

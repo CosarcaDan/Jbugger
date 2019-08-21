@@ -5,7 +5,6 @@ import {UserServiceService} from '../service/user-service.service';
 import {UserLogin} from '../models/userLogin';
 import {Token} from '../models/token';
 import {BackendError} from '../models/backendError';
-import {HttpHeaders} from '@angular/common/http';
 import {LoginValidators} from './login.validators';
 
 @Component({
@@ -24,13 +23,6 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
 
-  constructor(private router: Router, private userService: UserServiceService, private fb: FormBuilder) {
-    this.form = fb.group({
-      username: [null, [Validators.required, LoginValidators.cannotContainSpace,
-        LoginValidators.cannotContainUpperCaseLetter]],
-      password: [null, [Validators.required]]
-    });
-  }
 
   login() {
     this.username = this.form.get('username').value.toString();
@@ -41,12 +33,6 @@ export class LoginComponent implements OnInit {
       // @ts-ignore
       this.token = data;
       console.log(this.token.value);
-      this.userService.httpOptionsWithAuth = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Authorization': this.token.value,
-        })
-      };
       sessionStorage.setItem('token', this.token.value);
       this.router.navigate(['/dashboard']);
     }, (error1: {}) => {
@@ -55,10 +41,22 @@ export class LoginComponent implements OnInit {
       console.log('Error', this.backendError);
       alert(this.backendError.detailMessage);
     });
+
+
   }
 
+
+  constructor(private router: Router, private userService: UserServiceService, private fb: FormBuilder) {
+    this.form = fb.group({
+      username: [null, [Validators.required, LoginValidators.cannotContainSpace,
+        LoginValidators.cannotContainUpperCaseLetter]],
+      password: [null, [Validators.required]]
+    });
+  }
+
+
   ngOnInit() {
-    //this.getUseres();
+    this.getUseres();
   }
 
   getUseres() {

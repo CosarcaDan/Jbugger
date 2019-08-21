@@ -6,8 +6,9 @@ import {AppComponent} from './app.component';
 import {LoginComponent} from './mainPage/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DashboardComponent} from './mainPage/dashboard/dashboard.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AddUserComponent} from './user-management/add-user/add-user.component';
+import {AuthInterceptor} from './mainPage/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,11 @@ import {AddUserComponent} from './user-management/add-user/add-user.component';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
