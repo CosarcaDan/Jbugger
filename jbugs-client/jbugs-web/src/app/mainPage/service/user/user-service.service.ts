@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {UserLogin} from '../models/userLogin';
+import {UserLogin} from '../../models/userLogin';
 
 import {map} from 'rxjs/operators';
-import {Token} from '../models/token';
-import {Header} from '../models/header';
+import {Token} from '../../models/token';
+import {Header} from '../../models/header';
 
 
 @Injectable({

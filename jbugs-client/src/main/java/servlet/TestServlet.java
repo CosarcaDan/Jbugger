@@ -1,8 +1,6 @@
 package servlet;
 
-import ro.msg.edu.jbugs.dto.BugDto;
-import ro.msg.edu.jbugs.dto.NotificationDto;
-import ro.msg.edu.jbugs.dto.UserDto;
+import ro.msg.edu.jbugs.dto.*;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.services.impl.*;
 import ro.msg.edu.jbugs.timer.TimerBean;
@@ -64,22 +62,37 @@ public class TestServlet extends HttpServlet {
                 UserDto userDto = new UserDto(1,1,"Fnt","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
 //                addUserDefault();
                 UserDto userdtoReturned = addUser(userDto);
+                UserDto userDto1 = new UserDto(2, 1, "Peter", "Lnt", "et@msggroup.com", "+40712345678", "pt", "unt", true);
+//                addUserDefault();
+                userdtoReturned = addUser(userDto1);
 //            userService.login(userdtoReturned);
                 //userService.deleteUser(userdtoReturned);
 //                addNotification(2);
-//                PermissionDto pdto = new PermissionDto();
-//                pdto.setId(1);
-//                pdto.setType("USER_MANAGEMENT");
-//                pdto.setDescription("test desc");
-//                permissionService.addPermission(pdto);
-//                RoleDto rdto = new RoleDto();
-//                rdto.setId(1);
-//                rdto.setType("admin");
-//                roleService.addRole(rdto);
-//                roleService.addPermissionToRole(rdto, pdto);
-//                userService.addRoleToUser(userDto, rdto);
-//                out.println(userService.getUserPermissionsByUsername("fntl"));
-//                out.println("<h1> done <h1>");
+                PermissionDto pdto = new PermissionDto();
+                pdto.setId(1);
+                pdto.setType("USER_MANAGEMENT");
+                pdto.setDescription("test desc");
+                permissionService.addPermission(pdto);
+                PermissionDto pdto1 = new PermissionDto();
+                pdto1.setId(2);
+                pdto1.setType("PERMISSION_MANAGEMENT");
+                pdto1.setDescription("test desc");
+                permissionService.addPermission(pdto1);
+                RoleDto rdto = new RoleDto();
+                rdto.setId(1);
+                rdto.setType("admin");
+                roleService.addRole(rdto);
+                roleService.addPermissionToRole(rdto, pdto);
+                roleService.addPermissionToRole(rdto, pdto1);
+                userService.addRoleToUser(userDto, rdto);
+                out.println(userService.getUserPermissionsByUsername("fntl"));
+                out.println("<h1> done <h1>");
+
+                roleService.getAllRoles().forEach(r -> out.println(r.toString()));
+
+                out.println(roleService.getPermissionsByRole(rdto));
+                out.println(userService.getUserPermissionsByUsername("fntl"));
+
             } catch (BusinessException e) {
                 System.out.println(e.getMessage()+e.getErrorCode());
             }
@@ -147,7 +160,7 @@ public class TestServlet extends HttpServlet {
             out.println("UserLogin: " + userDto.getUsername() + " Created :<br>");
             createdByUser = getAllBugCretedBy(userDto.getId());
             for (BugDto bugDto : createdByUser) {
-                out.println(bugDto.getId() + ", " + bugDto.getTitle() + ", " + bugDto.getCreated().getId() + ", " + bugDto.getFixedVersion() + "<br>");
+                out.println(bugDto.getId() + ", " + bugDto.getTitle() + ", " + bugDto.getCreated() + ", " + bugDto.getFixedVersion() + "<br>");
             }
             out.println("------------------------------------<br>");
         }
@@ -171,19 +184,19 @@ public class TestServlet extends HttpServlet {
     private void addBugsDefault() throws BusinessException {
         UserDto userDto = userService.findUser(1);
         UserDto userDto2 = userService.findUser(2);
-        BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2012"), "active", "v14", "LOW", userDto, userDto2);
+        BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2012"), "active", "v14", "LOW", userDto.getUsername(), userDto2.getUsername());
         addBug(bugDto);
         userDto = userService.findUser(1);
         userDto2 = userService.findUser(1);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2017"), "active", "v14", "LOW", userDto, userDto2);
+        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2017"), "active", "v14", "LOW", userDto.getUsername(), userDto2.getUsername());
         addBug(bugDto);
         userDto = userService.findUser(2);
         userDto2 = userService.findUser(1);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2016"), "active", "v14", "LOW", userDto, userDto2);
+        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2016"), "active", "v14", "LOW", userDto.getUsername(), userDto2.getUsername());
         addBug(bugDto);
         userDto = userService.findUser(2);
         userDto2 = userService.findUser(2);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2002"), "active", "v14", "LOW", userDto, userDto2);
+        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2002"), "active", "v14", "LOW", userDto.getUsername(), userDto2.getUsername());
         addBug(bugDto);
     }
 

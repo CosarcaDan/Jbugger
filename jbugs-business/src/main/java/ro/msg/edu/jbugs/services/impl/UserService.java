@@ -81,7 +81,7 @@ public class UserService {
         }
     }
 
-    public List<Permission> getUserPermissionsByUsername(String username) {
+    public List<Permission> getUserPermissionsByUsername(String username) throws BusinessException {
         return userRepo.findUserPermissions(username);
     }
 
