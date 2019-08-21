@@ -6,7 +6,6 @@ import io.jsonwebtoken.Claims;
 import ro.msg.edu.jbugs.MyToken;
 import ro.msg.edu.jbugs.TokenManager;
 import ro.msg.edu.jbugs.dto.UserDto;
-import ro.msg.edu.jbugs.dto.UserRolesContainer;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
 import ro.msg.edu.jbugs.services.impl.UserService;
@@ -35,7 +34,7 @@ public class UserRESTController {
     @POST
     @Path("/login")
     @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response login(UserDto user) {
         Gson gson = new GsonBuilder().create();
         try {
@@ -46,39 +45,7 @@ public class UserRESTController {
         } catch (BusinessException e) {
 
             String error = gson.toJson(e);
-            //mapper.writeValueAsString(userList);
             return Response.status(500).entity(error).build();
-        }
-    }
-
-    @POST
-    @Path("/add")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response addUser(UserRolesContainer userRolesContainer) {
-        Gson gson = new GsonBuilder().create();
-        try {
-            userService.addUser(userRolesContainer.getUserDto());
-            userService.addRolesToUser(userRolesContainer.getUserDto(), userRolesContainer.getRoleDtos());
-            String response = gson.toJson("The new user was successfully added!");
-            return Response.status(200)
-                    .header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Credentials", "true")
-                    .header("Access-Control-Allow-Headers",
-                            "origin, content-type, accept, authorization")
-                    .header("Access-Control-Allow-Methods",
-                            "GET, POST, PUT, DELETE, OPTIONS, HEAD").
-                            entity(response).build();
-        } catch (BusinessException e) {
-            String error = gson.toJson(e);
-            return Response.status(500)
-                    .header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Credentials", "true")
-                    .header("Access-Control-Allow-Headers",
-                            "origin, content-type, accept, authorization")
-                    .header("Access-Control-Allow-Methods",
-                            "GET, POST, PUT, DELETE, OPTIONS, HEAD").
-                            entity(error).build();
         }
     }
 
