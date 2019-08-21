@@ -17,6 +17,7 @@ import {
   InputTextModule,
   MultiSelectModule,
   PaginatorModule,
+  SelectButtonModule,
   SidebarModule,
   SliderModule,
   TabViewModule
@@ -24,6 +25,9 @@ import {
 import {AddBugComponent} from './mainPage/bugs-management/add-bug/add-bug.component';
 import {GetBugsComponent} from './mainPage/bugs-management/get-bugs/get-bugs.component';
 import {TableModule} from "primeng/table";
+import {EditBugComponent} from './mainPage/bugs-management/edit-bug/edit-bug.component';
+import {ToastModule} from "primeng/toast";
+import {GetBugsModule} from "./mainPage/bugs-management/get-bugs/get-bugs.module";
 
 @NgModule({
   declarations: [
@@ -32,6 +36,7 @@ import {TableModule} from "primeng/table";
     DashboardComponent,
     AddBugComponent,
     GetBugsComponent,
+    EditBugComponent,
 
   ],
   imports: [
@@ -52,7 +57,10 @@ import {TableModule} from "primeng/table";
     PaginatorModule,
     MultiSelectModule,
     CalendarModule,
-    FileUploadModule
+    FileUploadModule,
+    ToastModule,
+    GetBugsModule,
+    SelectButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -21,28 +21,33 @@
                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
         <input *ngSwitchCase="'version'" pInputText type="text"
                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
-        <input *ngSwitchCase="'targetDate'" pInputText type="text"
-               (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
         <!--          calendar-->
+        <p-calendar *ngSwitchCase="'targetDate'" pInputText
+                    (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"></p-calendar>
 
         <p-dropdown *ngSwitchCase="'status'" [options]="status" [style]="{'width':'100%'}"
                     (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
-        <!--        <p-multiSelect *ngSwitchCase="'color'" [options]="colors" defaultLabel="All Colors" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>-->
+
         <input *ngSwitchCase="'fixedVersion'" pInputText type="text"
                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
-        <input *ngSwitchCase="'severity'" pInputText type="text"
-               (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+        <p-multiSelect *ngSwitchCase="'severity'" [options]="severity" defaultLabel="All severities"
+                       (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
         <input *ngSwitchCase="'created'" pInputText type="text"
                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
         <input *ngSwitchCase="'assigned'" pInputText type="text"
                (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+
       </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr [pSelectableRow]="rowData">
-      <td *ngFor="let col of columns">
+      <td *ngFor="let col of columns" [ngSwitch]="col.field">
         {{rowData[col.field]}}
+        <button *ngSwitchCase="'button'" pButton label="Edit" icon="pi pi-info-circle" style="margin-left:.25em"
+                (click)="show()"></button>
+        <button *ngSwitchCase="'button'" pButton label="Delete" class="ui-button-raised ui-button-warning"
+                style="margin-left:.25em"></button>
       </td>
     </tr>
   </ng-template>

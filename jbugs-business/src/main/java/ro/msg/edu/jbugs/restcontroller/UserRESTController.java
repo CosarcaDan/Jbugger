@@ -30,6 +30,7 @@ public class UserRESTController {
     public List<UserDto> getAll(){
         return userService.getAllUser();
     }
+
     @POST
     @Path("/login")
 //    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

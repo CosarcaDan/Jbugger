@@ -10,6 +10,8 @@ export class DashboardComponent implements OnInit {
 
   items: MenuItem[];
   display;
+  countries: any[];
+  selectedCountry: any;
 
   constructor() {
   }
@@ -47,6 +49,11 @@ export class DashboardComponent implements OnInit {
         label: 'Permission management',
         icon: 'pi pi-fw pi-star'
       }
+    ];
+
+    this.countries = [
+      {label: 'Romanian', value: 'Romanian', icon: 'fa fa-fw '},
+      {label: 'English', value: 'English', icon: 'fa fa-fw'},
     ];
   }
 }

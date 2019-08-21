@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  * @author msg systems AG; User Name.
  * @since 19.1.2
  */
+
 @Stateless
 public class BugService {
 
@@ -35,8 +36,8 @@ public class BugService {
         Validator.validateBug(bugDto);
         User creator = userRepo.findeUserAfterUsername(bugDto.getCreated());
         User assigned = userRepo.findeUserAfterUsername(bugDto.getAssigned());
+        bugDto.setStatus("NEW");
         Bug bug = BugDtoMapping.bugDtoToBug(bugDto, creator, assigned);
-        bug.setStatus(Bug.Status.NEW);
         return BugDtoMapping.bugToBugDtoComplet(bugRepo.addBug(bug));
     }
 

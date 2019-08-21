@@ -1,67 +1,43 @@
 import {Component, OnInit} from '@angular/core';
-import {Interface} from "../../models/bug";
-import {SelectItem} from "primeng/api";
+import {DialogService, SelectItem} from "primeng/api";
+import {Router} from "@angular/router";
+import {BugServiceService} from "../../service/bug/bug-service.service";
+import {Bug} from "../../models/bug";
+import {EditBugComponent} from "../edit-bug/edit-bug.component";
 
 @Component({
   selector: 'app-get-bugs',
   templateUrl: './get-bugs.component.html',
-  styleUrls: ['./get-bugs.component.css']
+  styleUrls: ['./get-bugs.component.css'],
+  providers: [BugServiceService, DialogService],
+
 })
 export class GetBugsComponent implements OnInit {
-
-  bugs: Interface[];
 
   cols: any[];
 
   status: SelectItem[];
 
-  yearFilter: number;
+  severity: SelectItem[];
 
   yearTimeout: any;
 
-  constructor() {
+  bugs: Bug[];
+
+  constructor(private router: Router, private bugServices: BugServiceService, public dialogService: DialogService) {
   }
 
   ngOnInit() {
+    this.getBugs()
+  }
 
-    this.bugs = [
-      {
-        id: 1,
-        title: 'Bug1',
-        description: 'I am a bug',
-        version: '1.0',
-        targetDate: new Date("2019-08-25"),
-        status: 'in progress',
-        fixedVersion: '1.1',
-        severity: 'low',
-        created: 'Mihai',
-        assigned: 'Gabriela'
-      },
-      {
-        id: 2,
-        title: 'Bug2',
-        description: 'I am a bug',
-        version: '2.1',
-        targetDate: new Date("2019-08-30"),
-        status: 'finished',
-        fixedVersion: '2.3',
-        severity: 'high',
-        created: 'Mihaela',
-        assigned: 'Gabi'
-      },
-      {
-        id: 3,
-        title: 'Bug3',
-        description: 'I am a bug',
-        version: '1.5',
-        targetDate: new Date("2019-09-25"),
-        status: 'in progress',
-        fixedVersion: '1.6',
-        severity: 'low',
-        created: 'Mihai',
-        assigned: 'Gabriela'
-      }
-    ];
+  getBugs() {
+    this.bugs = [];
+    this.bugServices.getBugs().subscribe((data: {}) => {
+      console.log(data);
+      // @ts-ignore
+      this.bugs = data;
+    });
 
     this.cols = [
       {field: 'title', header: 'Title'},
@@ -72,7 +48,8 @@ export class GetBugsComponent implements OnInit {
       {field: 'fixedVersion', header: 'Fixed Version'},
       {field: 'severity', header: 'Severity'},
       {field: 'created', header: 'Created by'},
-      {field: 'assigned', header: 'Assigned to'}
+      {field: 'assigned', header: 'Assigned to'},
+      {field: 'button', header: ''}
     ];
 
     this.status = [
@@ -84,6 +61,14 @@ export class GetBugsComponent implements OnInit {
       {label: 'Rejected', value: 'rejected'},
       {label: 'Info Needed', value: 'info needed'}
     ];
+
+    this.severity = [
+      {label: 'All Severities', value: null},
+      {label: 'LOW', value: 'LOW'},
+      {label: 'MEDIUM', value: 'MEDIUM'},
+      {label: 'HIGH', value: 'HIGH'},
+      {label: 'CRITICAL', value: 'CRITICAL'},
+    ]
   }
 
   onYearChange(event, dt) {
@@ -94,5 +79,12 @@ export class GetBugsComponent implements OnInit {
     this.yearTimeout = setTimeout(() => {
       dt.filter(event.value, 'year', 'gt');
     }, 250);
+  }
+
+  show() {
+    this.dialogService.open(EditBugComponent, {
+      header: 'Edit a bug',
+      width: '70%'
+    });
   }
 }
