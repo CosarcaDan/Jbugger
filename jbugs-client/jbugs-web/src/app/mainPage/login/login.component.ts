@@ -1,18 +1,17 @@
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {UserServiceService} from '../service/user-service.service';
+import {UserService} from '../service/user/user.service';
 import {UserLogin} from '../models/userLogin';
 import {Token} from '../models/token';
 import {BackendError} from '../models/backendError';
-import {HttpHeaders} from '@angular/common/http';
 import {LoginValidators} from './login.validators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [UserServiceService]
+  providers: [UserService]
 })
 export class LoginComponent implements OnInit {
 
@@ -46,8 +45,7 @@ export class LoginComponent implements OnInit {
   }
 
 
-
-  constructor(private router: Router, private userService: UserServiceService, private fb: FormBuilder) {
+  constructor(private router: Router, private userService: UserService, private fb: FormBuilder) {
     this.form = fb.group({
       username: [null, [Validators.required, LoginValidators.cannotContainSpace,
         LoginValidators.cannotContainUpperCaseLetter]],
@@ -58,9 +56,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
   }
-
-
-
 
 
 }

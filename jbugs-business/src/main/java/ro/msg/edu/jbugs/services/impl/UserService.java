@@ -70,6 +70,7 @@ public class UserService {
             throw new BusinessException("No User found with given Id", "msg - 006");
         }
     }
+
     public UserDto findUser(String username) throws BusinessException {
         try {
             User user = userRepo.findeUserAfterUsername(username);
@@ -79,6 +80,7 @@ public class UserService {
             throw new BusinessException("No User found with given Id", "msg - 006");
         }
     }
+
     public List<Permission> getUserPermissionsByUsername(String username) throws BusinessException {
         return userRepo.findUserPermissions(username);
     }
@@ -203,10 +205,9 @@ public class UserService {
         return UserDtoMapping.userToUserDtoIncomplet(userRepo.updateUser(newDataUser));
     }
 
-    public void addRoleToUser(UserDto userDto, RoleDto roleDto)
-    {
+    public void addRoleToUser(UserDto userDto, RoleDto roleDto) {
         Role role = roleRepo.findRole(roleDto.getId());
-        userRepo.addRoleToUser(UserDtoMapping.userDtoToUser(userDto),role);
+        userRepo.addRoleToUser(UserDtoMapping.userDtoToUser(userDto), role);
     }
 
 }

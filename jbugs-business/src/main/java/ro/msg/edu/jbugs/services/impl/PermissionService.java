@@ -23,20 +23,19 @@ public class PermissionService {
     @EJB
     private PermissionRepo permissionRepo;
 
-    public void addPermission(PermissionDto permissionDto){
+    public void addPermission(PermissionDto permissionDto) {
         Permission permission = PermissionDtoMapping.permissionDtoToPermission(permissionDto);
         permission.setId(null);
         permissionRepo.addPermission(permission);
     }
 
-    public PermissionDto findPermission(Integer id){
+    public PermissionDto findPermission(Integer id) {
         Permission permission = permissionRepo.findPermission(id);
         PermissionDto permissionDto = PermissionDtoMapping.permissionToPermissionDto(permission);
         return permissionDto;
     }
 
-    public List<PermissionDto> getAllPermissions()
-    {
+    public List<PermissionDto> getAllPermissions() {
         return permissionRepo.getAllPermissions().stream().map(PermissionDtoMapping::permissionToPermissionDto).collect(Collectors.toList());
 
     }

@@ -16,7 +16,7 @@ import java.util.List;
 
 @Path("/permissions")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_FORM_URLENCODED})
+@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
 @Interceptors(LoggingInterceptor.class)
 public class PermissionRESTController {
     @EJB
@@ -24,7 +24,7 @@ public class PermissionRESTController {
 
 
     @GET
-    public List<PermissionDto> getAll(){
+    public List<PermissionDto> getAll() {
         return permissionService.getAllPermissions();
     }
 

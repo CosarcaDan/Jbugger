@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ro.msg.edu.jbugs.dto.PermissionDto;
 import ro.msg.edu.jbugs.dto.RoleDto;
-import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
 import ro.msg.edu.jbugs.services.impl.RoleService;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 @Path("/roles")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_FORM_URLENCODED})
+@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
 @Interceptors(LoggingInterceptor.class)
 public class RoleRESTController {
     @EJB
@@ -34,7 +33,7 @@ public class RoleRESTController {
 //    }
 
     @GET
-    public List<RoleDto> getAll(){
+    public List<RoleDto> getAll() {
         return roleService.getAllRoles();
     }
 
@@ -54,15 +53,16 @@ public class RoleRESTController {
             return Response.status(500).entity(error).build();
         }
     }
+
     @POST
     @Path("/add-permissions")
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addPermissionsToRole(@NotNull @FormParam("role")RoleDto role,@NotNull @FormParam("permissions") String permissions) {
+    public Response addPermissionsToRole(@NotNull @FormParam("role") RoleDto role, @NotNull @FormParam("permissions") String permissions) {
         Gson gson = new GsonBuilder().create();
         try {
             PermissionDto[] list = gson.fromJson(permissions, PermissionDto[].class);
-            Arrays.stream(list).forEach(permission -> roleService.addPermissionToRole(role,permission));
+            Arrays.stream(list).forEach(permission -> roleService.addPermissionToRole(role, permission));
             String response = gson.toJson("All OK!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
@@ -71,15 +71,16 @@ public class RoleRESTController {
             return Response.status(500).entity(error).build();
         }
     }
+
     @POST
     @Path("/remove-permissions")
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response removePermissionsToRole(@NotNull @FormParam("role")RoleDto role,@NotNull @FormParam("permissions") String permissions) {
+    public Response removePermissionsToRole(@NotNull @FormParam("role") RoleDto role, @NotNull @FormParam("permissions") String permissions) {
         Gson gson = new GsonBuilder().create();
         try {
             PermissionDto[] list = gson.fromJson(permissions, PermissionDto[].class);
-            Arrays.stream(list).forEach(permission -> roleService.removePermissionToRole(role,permission));
+            Arrays.stream(list).forEach(permission -> roleService.removePermissionToRole(role, permission));
             String response = gson.toJson("All OK!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {

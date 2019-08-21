@@ -42,6 +42,7 @@ public  class TokenManager {
         //Builds the JWT and serializes it to a compact, URL-safe string
         return builder.compact();
     }
+
     public static Claims decodeJWT(String jwt) {
         //This line will throw an exception if it is not a signed JWS (as expected)
         Claims claims = Jwts.parser()

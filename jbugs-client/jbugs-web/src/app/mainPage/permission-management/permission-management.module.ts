@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AddPermissionComponent } from './add-permission/add-permission.component';
-import { RemovePermissionComponent } from './remove-permission/remove-permission.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AddPermissionComponent} from './add-permission/add-permission.component';
+import {RemovePermissionComponent} from './remove-permission/remove-permission.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MultiSelectModule} from "primeng/primeng";
-
 
 
 @NgModule({
@@ -19,4 +18,5 @@ import {MultiSelectModule} from "primeng/primeng";
     MultiSelectModule
   ]
 })
-export class PermissionManagementModule { }
+export class PermissionManagementModule {
+}

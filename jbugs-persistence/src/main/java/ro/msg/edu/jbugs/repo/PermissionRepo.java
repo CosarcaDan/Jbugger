@@ -7,7 +7,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,11 +38,11 @@ public class PermissionRepo {
 
     public List<Permission> getPermissionsNotInRole(Role role) {
         TypedQuery<Permission> query = entityManager.createNamedQuery(Permission.GET_ALL_PERMISSIONS, Permission.class);
-        return query.getResultList().stream().filter(permission -> !(permission.getRoleList().size()!=0 && permission.getRoleList().stream().anyMatch(role1 -> role1.getId().equals(role.getId())))).collect(Collectors.toList());
+        return query.getResultList().stream().filter(permission -> !(permission.getRoleList().size() != 0 && permission.getRoleList().stream().anyMatch(role1 -> role1.getId().equals(role.getId())))).collect(Collectors.toList());
     }
 
     public List<Permission> getPermissionsInRole(Role role) {
         TypedQuery<Permission> query = entityManager.createNamedQuery(Permission.GET_ALL_PERMISSIONS, Permission.class);
-        return query.getResultList().stream().filter(permission -> (permission.getRoleList().size()!=0 && permission.getRoleList().stream().anyMatch(role1 -> role1.getId().equals(role.getId())))).collect(Collectors.toList());
+        return query.getResultList().stream().filter(permission -> (permission.getRoleList().size() != 0 && permission.getRoleList().stream().anyMatch(role1 -> role1.getId().equals(role.getId())))).collect(Collectors.toList());
     }
 }

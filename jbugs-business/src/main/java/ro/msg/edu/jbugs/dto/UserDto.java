@@ -94,6 +94,7 @@ public class UserDto implements Serializable {
         this.createdBy = createdBy;
         this.assignedTo = assignTo;
     }
+
     public UserDto(UserLoginDto uld) {
         this.username=uld.getUsername();
         this.password=uld.getPassword();

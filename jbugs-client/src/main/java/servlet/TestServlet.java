@@ -59,21 +59,21 @@ public class TestServlet extends HttpServlet {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
             try{
-                UserDto userDto = new UserDto(1,1,"Fnt","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
+                UserDto userDto = new UserDto(1, 1, "Fnt", "Lnt", "et@msggroup.com", "+40712345678", "pt", "unt", true);
 //                addUserDefault();
                 UserDto userdtoReturned = addUser(userDto);
-                UserDto userDto1 = new UserDto(2,1,"Peter","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
+                UserDto userDto1 = new UserDto(2, 1, "Peter", "Lnt", "et@msggroup.com", "+40712345678", "pt", "unt", true);
 //                addUserDefault();
                 userdtoReturned = addUser(userDto1);
 //            userService.login(userdtoReturned);
                 //userService.deleteUser(userdtoReturned);
 //                addNotification(2);
-                PermissionDto pdto= new PermissionDto();
+                PermissionDto pdto = new PermissionDto();
                 pdto.setId(1);
                 pdto.setType("USER_MANAGEMENT");
                 pdto.setDescription("test desc");
                 permissionService.addPermission(pdto);
-                PermissionDto pdto1= new PermissionDto();
+                PermissionDto pdto1 = new PermissionDto();
                 pdto1.setId(2);
                 pdto1.setType("PERMISSION_MANAGEMENT");
                 pdto1.setDescription("test desc");
@@ -83,17 +83,17 @@ public class TestServlet extends HttpServlet {
                 rdto.setType("admin");
                 roleService.addRole(rdto);
 //                roleService.addPermissionToRole(rdto,pdto);
-                roleService.addPermissionToRole(rdto,pdto1);
-                userService.addRoleToUser(userDto,rdto);
+                roleService.addPermissionToRole(rdto, pdto1);
+                userService.addRoleToUser(userDto, rdto);
                 out.println(userService.getUserPermissionsByUsername("fntl"));
                 out.println("<h1> done </h1>");
 
-                permissionService.getAllPermissions().forEach(p -> out.println("<p>"+p.getId()+"</p>"));
+                permissionService.getAllPermissions().forEach(p -> out.println("<p>" + p.getId() + "</p>"));
 
                 out.println("<br><br>");
-                roleService.getPermissionsByRole(rdto).forEach(p -> out.println("<p> ByRole:"+p.getId()+"</p>"));
+                roleService.getPermissionsByRole(rdto).forEach(p -> out.println("<p> ByRole:" + p.getId() + "</p>"));
                 List<PermissionDto> res = permissionService.getPermissionsNotInRole(rdto);
-                res.forEach(p -> out.println("<p> Not in Role:"+p.getId()+"</p>"));
+                res.forEach(p -> out.println("<p> Not in Role:" + p.getId() + "</p>"));
 
             } catch (BusinessException e) {
                 System.out.println(e.getMessage()+e.getErrorCode());
@@ -135,7 +135,8 @@ public class TestServlet extends HttpServlet {
     }
 
     private BugDto findBug(Integer id) {
-        return bugService.findBug(id);
+        //return bugService.findBug(id);
+        return null;
     }
 
     private List<BugDto> getAllBugCretedBy(Integer id) throws BusinessException {
@@ -162,7 +163,7 @@ public class TestServlet extends HttpServlet {
             out.println("UserLogin: " + userDto.getUsername() + " Created :<br>");
             createdByUser = getAllBugCretedBy(userDto.getId());
             for (BugDto bugDto : createdByUser) {
-                out.println(bugDto.getId() + ", " + bugDto.getTitle() + ", " + bugDto.getCreated().getId() + ", " + bugDto.getFixedVersion() + "<br>");
+                // out.println(bugDto.getId() + ", " + bugDto.getTitle() + ", " + bugDto.getCreated().getId() + ", " + bugDto.getFixedVersion() + "<br>");
             }
             out.println("------------------------------------<br>");
         }
@@ -184,22 +185,22 @@ public class TestServlet extends HttpServlet {
     }
 
     private void addBugsDefault() throws BusinessException {
-        UserDto userDto = userService.findUser(1);
-        UserDto userDto2 = userService.findUser(2);
-        BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2012"), "active", "v14", "LOW", userDto, userDto2);
-        addBug(bugDto);
-        userDto = userService.findUser(1);
-        userDto2 = userService.findUser(1);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2017"), "active", "v14", "LOW", userDto, userDto2);
-        addBug(bugDto);
-        userDto = userService.findUser(2);
-        userDto2 = userService.findUser(1);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2016"), "active", "v14", "LOW", userDto, userDto2);
-        addBug(bugDto);
-        userDto = userService.findUser(2);
-        userDto2 = userService.findUser(2);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2002"), "active", "v14", "LOW", userDto, userDto2);
-        addBug(bugDto);
+//        UserDto userDto = userService.findUser(1);
+//        UserDto userDto2 = userService.findUser(2);
+//        BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2012"), "active", "v14", "LOW", userDto, userDto2);
+//        addBug(bugDto);
+//        userDto = userService.findUser(1);
+//        userDto2 = userService.findUser(1);
+//        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2017"), "active", "v14", "LOW", userDto, userDto2);
+//        addBug(bugDto);
+//        userDto = userService.findUser(2);
+//        userDto2 = userService.findUser(1);
+//        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2016"), "active", "v14", "LOW", userDto, userDto2);
+//        addBug(bugDto);
+//        userDto = userService.findUser(2);
+//        userDto2 = userService.findUser(2);
+//        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2002"), "active", "v14", "LOW", userDto, userDto2);
+//        addBug(bugDto);
     }
 
     private void addCommentDefault() throws BusinessException {

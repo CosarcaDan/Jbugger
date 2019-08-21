@@ -28,35 +28,35 @@ public class RoleService {
     @EJB
     private PermissionRepo permissionRepo;
 
-    public void addRole(RoleDto roleDto){
+    public void addRole(RoleDto roleDto) {
         Role role = RoleDtoMapping.roleDtoToRole(roleDto);
         role.setId(null);
         roleRepo.addRole(role);
     }
 
-    public RoleDto findRole(Integer id){
+    public RoleDto findRole(Integer id) {
         Role role = roleRepo.findRole(id);
         RoleDto roleDto = RoleDtoMapping.roleToRoleDto(role);
         return roleDto;
     }
-    public void addPermissionToRole(RoleDto roleDto, PermissionDto permissionDto)
-    {
+
+    public void addPermissionToRole(RoleDto roleDto, PermissionDto permissionDto) {
         Permission permission = permissionRepo.findPermission(permissionDto.getId());
-        roleRepo.addPermissionToRole(RoleDtoMapping.roleDtoToRole(roleDto),permission);
+        roleRepo.addPermissionToRole(RoleDtoMapping.roleDtoToRole(roleDto), permission);
     }
-    public List<RoleDto> getAllRoles()
-    {
+
+    public List<RoleDto> getAllRoles() {
         return roleRepo.getAllRoles().stream().map(RoleDtoMapping::roleToRoleDto).collect(Collectors.toList());
     }
-    public List<PermissionDto> getPermissionsByRole(RoleDto roleDto)
-    {
+
+    public List<PermissionDto> getPermissionsByRole(RoleDto roleDto) {
         return roleRepo.getPermissionsByRole(RoleDtoMapping.roleDtoToRole(roleDto))
                 .stream().map(PermissionDtoMapping::permissionToPermissionDto).collect(Collectors.toList());
     }
 
     public void removePermissionToRole(RoleDto roleDto, PermissionDto permissionDto) {
         Permission permission = permissionRepo.findPermission(permissionDto.getId());
-        roleRepo.removePermissionToRole(RoleDtoMapping.roleDtoToRole(roleDto),permission);
+        roleRepo.removePermissionToRole(RoleDtoMapping.roleDtoToRole(roleDto), permission);
     }
 
 //    public void addRole(){

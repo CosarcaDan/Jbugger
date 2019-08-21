@@ -88,6 +88,6 @@ public class Role implements Serializable {
 
     public void removePermission(Permission permission) {
         permission.removeRoleSimple(this);
-        this.permissionList.removeIf(p->p.getId().equals(permission.getId()));
+        this.permissionList.removeIf(p -> p.getId().equals(permission.getId()));
     }
 }
