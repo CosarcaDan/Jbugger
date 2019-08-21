@@ -21,12 +21,12 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [{
       path: '',
-      redirectTo: "bugs",
+      redirectTo: "bugsAdd",
       pathMatch: 'full',
     },
       {
-        path: 'bugs',
-        component: GetBugsComponent,
+        path: 'bugsAdd',
+        component: AddBugComponent,
       }
     ]
   }

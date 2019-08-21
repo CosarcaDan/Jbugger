@@ -15,6 +15,7 @@ export class AddBugComponent implements OnInit {
 
   constructor(fb:FormBuilder) {
     this.form = fb.group({title:[]});
+    this.severitys = ["LOW","MEDIUM","HIGH","URGENT"];
   }
 
   ngOnInit() {

@@ -140,7 +140,7 @@ public class TestServlet extends HttpServlet {
         return bugDto;
     }
 
-    private BugDto findBug(Integer id) {
+    private BugDto findBug(Integer id) throws BusinessException {
         return bugService.findBug(id);
     }
 
