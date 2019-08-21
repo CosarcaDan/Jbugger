@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {UserServiceService} from '../../mainPage/service/user-service.service';
 import {RoleServiceService} from '../../mainPage/service/role-service.service';
 import {Role} from '../models/role';
 import {BackendError} from '../../mainPage/models/backendError';
 import {AddUserValidators} from './add-user.validators';
 import {UserAdd} from '../models/userAdd';
 import {Token} from '../../mainPage/models/token';
+import {UserService} from '../../mainPage/service/user/user.service';
 
 @Component({
   selector: 'app-add-user',
@@ -35,7 +35,7 @@ export class AddUserComponent implements OnInit {
     {id: 3, type: 'Tester', checked: false}
   ];
 
-  constructor(private router: Router, private userService: UserServiceService,
+  constructor(private router: Router, private userService: UserService,
               private roleService: RoleServiceService, private fb: FormBuilder) {
     this.form = fb.group({
       firstname: [null, [Validators.required, AddUserValidators.validateName]],

@@ -13,7 +13,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.List;
 import java.util.stream.Collectors;
-
 /**
  * Document me.
  *
@@ -22,17 +21,15 @@ import java.util.stream.Collectors;
  */
 @Stateless
 public class RoleService {
-
     @EJB
     private RoleRepo roleRepo;
     @EJB
     private PermissionRepo permissionRepo;
-
     public void addRole(RoleDto roleDto){
         Role role = RoleDtoMapping.roleDtoToRole(roleDto);
+        role.setId(null);
         roleRepo.addRole(role);
     }
-
     public RoleDto findRole(Integer id){
         Role role = roleRepo.findRole(id);
         RoleDto roleDto = RoleDtoMapping.roleToRoleDto(role);
@@ -45,14 +42,18 @@ public class RoleService {
     }
     public List<RoleDto> getAllRoles()
     {
-        return roleRepo.getAllRoles().stream().map(role -> RoleDtoMapping.roleToRoleDto(role)).collect(Collectors.toList());
+        return roleRepo.getAllRoles().stream().map(RoleDtoMapping::roleToRoleDto).collect(Collectors.toList());
     }
     public List<PermissionDto> getPermissionsByRole(RoleDto roleDto)
     {
         return roleRepo.getPermissionsByRole(RoleDtoMapping.roleDtoToRole(roleDto))
-                .stream().map(permission -> PermissionDtoMapping.permissionToPermissionDto(permission)).collect(Collectors.toList());
+                .stream().map(PermissionDtoMapping::permissionToPermissionDto).collect(Collectors.toList());
     }
 
+    public void removePermissionToRole(RoleDto roleDto, PermissionDto permissionDto) {
+        Permission permission = permissionRepo.findPermission(permissionDto.getId());
+        roleRepo.removePermissionToRole(RoleDtoMapping.roleDtoToRole(roleDto), permission);
+    }
 //    public void addRole(){
 //        Role role = new Role("");
 //        roleRepo.addRole(role);

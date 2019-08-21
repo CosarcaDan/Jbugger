@@ -1,18 +1,18 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {UserLogin} from '../models/userLogin';
+import {UserLogin} from '../../models/userLogin';
 
 import {map} from 'rxjs/operators';
-import {Token} from '../models/token';
-import {UserAdd} from '../../user-management/models/userAdd';
-import {Role} from '../../user-management/models/role';
+import {Token} from '../../models/token';
+import {UserAdd} from '../../../user-management/models/userAdd';
+import {Role} from '../../models/role';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserServiceService {
+export class UserService {
   base_url: string = 'http://localhost:8080/jbugs/services/users';
 
   constructor(private http: HttpClient) { }
