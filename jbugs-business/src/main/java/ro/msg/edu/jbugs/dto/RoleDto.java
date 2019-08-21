@@ -2,9 +2,19 @@ package ro.msg.edu.jbugs.dto;
 
 import com.google.gson.Gson;
 
-public class RoleDto {
+import java.io.Serializable;
+
+public class RoleDto implements Serializable {
     private Integer id;
     private String type;
+
+    public RoleDto() {
+    }
+
+    public RoleDto(Integer id, String type) {
+        this.id = id;
+        this.type = type;
+    }
 
     public Integer getId() {
         return id;

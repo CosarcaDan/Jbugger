@@ -1,6 +1,11 @@
 export interface UserAdd {
-  firstname: string;
-  lastname: string;
-  mobile: string;
+  id: number;
+  counter: number;
+  firstName: string;
+  lastName: string;
   email: string;
+  mobileNumber: string;
+  password: string;
+  username: string;
+  status: string;
 }
