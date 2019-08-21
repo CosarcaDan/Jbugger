@@ -6,10 +6,9 @@ import {Router} from "@angular/router";
 import {ExcelService} from "../services/excel.service";
 import {FilterPipe} from "../../filter.pipe";
 import {ToastrService} from "ngx-toastr";
-import {User, UserService} from "../../user-management/services/user.service";
+import {UserService} from "../../user-management/services/user.service";
 import {UtilService} from "../../shared/util.service";
 import {Error} from "../../communication/communication.component";
-import {EditBugComponent} from "../edit-bug/edit-bug.component";
 
 @Component({
   selector: 'app-bugs-view',
