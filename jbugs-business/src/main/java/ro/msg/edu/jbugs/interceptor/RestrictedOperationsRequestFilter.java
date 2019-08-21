@@ -25,6 +25,8 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     @Override
     public void filter(ContainerRequestContext ctx){
 
+        if(ctx.getMethod().equals("OPTIONS"))return;
+
         HashMap<String, List<String>> permissions = pathPolicy.getPathPermissions();
         String path= ctx.getUriInfo().getPath();
         if(!permissions.containsKey(path))
@@ -44,12 +46,10 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
             String rawheader = ctx.getHeaderString("Authorization");
             if(rawheader == null )
             {
-                if(rawheader.equals("")){
-                ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("Authorization header missing!")
-                        .build());
-                return;
-                }
+                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                            .entity("Authorization header missing!")
+                            .build());
+                    return;
             }
             else
             {
@@ -60,6 +60,12 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                                 .build());
                         return;
                     }
+                }
+                if(rawheader.equals("")){
+                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                            .entity("Authorization header missing!")
+                            .build());
+                    return;
                 }
             }
             String header=rawheader.split(" ")[1];

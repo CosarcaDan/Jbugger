@@ -82,16 +82,18 @@ public class TestServlet extends HttpServlet {
                 rdto.setId(1);
                 rdto.setType("admin");
                 roleService.addRole(rdto);
-                roleService.addPermissionToRole(rdto,pdto);
+//                roleService.addPermissionToRole(rdto,pdto);
                 roleService.addPermissionToRole(rdto,pdto1);
                 userService.addRoleToUser(userDto,rdto);
                 out.println(userService.getUserPermissionsByUsername("fntl"));
-                out.println("<h1> done <h1>");
+                out.println("<h1> done </h1>");
 
-                roleService.getAllRoles().forEach(r ->out.println(r.toString()));
+                permissionService.getAllPermissions().forEach(p -> out.println("<p>"+p.getId()+"</p>"));
 
-                out.println(roleService.getPermissionsByRole(rdto));
-                out.println(userService.getUserPermissionsByUsername("fntl"));
+                out.println("<br><br>");
+                roleService.getPermissionsByRole(rdto).forEach(p -> out.println("<p> ByRole:"+p.getId()+"</p>"));
+                List<PermissionDto> res = permissionService.getPermissionsNotInRole(rdto);
+                res.forEach(p -> out.println("<p> Not in Role:"+p.getId()+"</p>"));
 
             } catch (BusinessException e) {
                 System.out.println(e.getMessage()+e.getErrorCode());

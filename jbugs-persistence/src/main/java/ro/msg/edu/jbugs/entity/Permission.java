@@ -12,7 +12,11 @@ import java.util.List;
  */
 @Entity
 @Table(name = "permissions")
+@NamedQueries({
+        @NamedQuery(name = Permission.GET_ALL_PERMISSIONS, query = "select p from Permission p")
+})
 public class Permission implements Serializable {
+    public static final String GET_ALL_PERMISSIONS = "get all permissions";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -71,5 +75,9 @@ public class Permission implements Serializable {
 
     public void addRoleSimple(Role role) {
         this.roleList.add(role);
+    }
+
+    public void removeRoleSimple(Role role) {
+        this.roleList.removeIf(r -> r.getId().equals(role.getId()));
     }
 }

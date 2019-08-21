@@ -28,11 +28,11 @@ export class UserServiceService {
 
   public login(user: UserLogin): Observable<Token> {
     // @ts-ignore
-    return this.http.post<any>(this.base_url + '/login', user, this.httpOptionsWithoutAuth).pipe(map(this.extractData));
+    return this.http.post<any>(this.base_url + '/login', user).pipe(map(this.extractData));
   }
 
   public getUsers(): Observable<any> {
-    return this.http.get(this.base_url, this.httpOptionsWithoutAuth).pipe(map(this.extractData));
+    return this.http.get(this.base_url).pipe(map(this.extractData));
   }
 
   private extractData(res: Response) {

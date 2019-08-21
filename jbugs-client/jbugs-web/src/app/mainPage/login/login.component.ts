@@ -34,13 +34,6 @@ export class LoginComponent implements OnInit {
       // @ts-ignore
       this.token = data;
       console.log(this.token.value);
-
-      this.userService.httpOptionsWithAuth = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Authorization': this.token.value,
-        })
-      };
       sessionStorage.setItem('token', this.token.value);
       this.router.navigate(['/dashboard']);
     }, (error1: {}) => {
