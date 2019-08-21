@@ -3,6 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {LoginComponent} from "./mainPage/login/login.component";
 import {DashboardComponent} from "./mainPage/dashboard/dashboard.component";
 import {AddBugComponent} from "./mainPage/bugs-management/add-bug/add-bug.component";
+import {GetBugsComponent} from "./mainPage/bugs-management/get-bugs/get-bugs.component";
 
 
 const routes: Routes = [
@@ -18,7 +19,16 @@ const routes: Routes = [
   {
     path: "dashboard",
     component: DashboardComponent,
-    children: []
+    children: [{
+      path: '',
+      redirectTo: "bugs",
+      pathMatch: 'full',
+    },
+      {
+        path: 'bugs',
+        component: GetBugsComponent,
+      }
+    ]
   }
 ];
 

@@ -25,10 +25,10 @@ public class Validator {
 
     public static void validateBug(BugDto bug) throws BusinessException {
         if(!validateDescription(bug.getDescription())) {
-            throw new BusinessException("Description to short", "msg - 017");
+            //throw new BusinessException("Description to short", "msg - 017");
         }
         if(!validateVersion(bug.getVersion())){
-            throw new BusinessException("Version Format Invalid", "msg - 018");
+           // throw new BusinessException("Version Format Invalid", "msg - 018");
         }
     }
 
