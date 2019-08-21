@@ -25,16 +25,15 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     @Override
     public void filter(ContainerRequestContext ctx){
 
-        if(ctx.getMethod().equals("OPTIONS"))return;
+        if (ctx.getMethod().equals("OPTIONS")) return;
 
         HashMap<String, List<String>> permissions = pathPolicy.getPathPermissions();
         String path= ctx.getUriInfo().getPath();
-        if(!permissions.containsKey(path))
-        {
-                ctx.abortWith(Response.status(Response.Status.NOT_FOUND)
-                        .entity("Policy not found!")
-                        .build());
-                return;
+        if (!permissions.containsKey(path)) {
+            ctx.abortWith(Response.status(Response.Status.NOT_FOUND)
+                    .entity("Policy not found!")
+                    .build());
+            return;
         }
         List<String> permissionsRequired = permissions.get(path);
 
@@ -44,16 +43,14 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
         {
 
             String rawheader = ctx.getHeaderString("Authorization");
-            if(rawheader == null )
+            if (rawheader == null)
             {
-                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                            .entity("Authorization header missing!")
-                            .build());
-                    return;
-            }
-            else
-            {
-                if(!rawheader.contains(" ")) {
+                ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Authorization header missing!")
+                        .build());
+                return;
+            } else {
+                if (!rawheader.contains(" ")) {
                     if (rawheader.equals("")) {
                         ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                                 .entity("Authorization header wrong format!")
@@ -61,7 +58,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                         return;
                     }
                 }
-                if(rawheader.equals("")){
+                if (rawheader.equals("")) {
                     ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                             .entity("Authorization header missing!")
                             .build());
@@ -69,14 +66,13 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                 }
             }
             String header=rawheader.split(" ")[1];
-            if(TokenManager.decodeJWT(header).getExpiration().toInstant().toEpochMilli() < Calendar.getInstance().getTime().toInstant().toEpochMilli())
-            {
+            if (TokenManager.decodeJWT(header).getExpiration().toInstant().toEpochMilli() < Calendar.getInstance().getTime().toInstant().toEpochMilli()) {
                 ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                         .entity("Auth Token Expired")
                         .build());
             }
             try {
-                if(checkAccess(header,permissionsRequired))
+                if (checkAccess(header, permissionsRequired))
                     return;
                 else
                     ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)

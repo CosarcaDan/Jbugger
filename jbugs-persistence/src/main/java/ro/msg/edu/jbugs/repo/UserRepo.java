@@ -9,7 +9,6 @@ import ro.msg.edu.jbugs.exceptions.BusinessException;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -128,9 +127,6 @@ public class UserRepo {
         return user;
     }
 
-
-
-
     public User updateUser(User newDataUser) throws BusinessException {
         User user = findeUserAfterUsername(newDataUser.getUsername());
         user.setCounter(newDataUser.getCounter());
@@ -141,9 +137,7 @@ public class UserRepo {
         user.setPassword(newDataUser.getPassword());
         user.setStatus(newDataUser.getStatus());
         return user;
-
     }
-
 
     public List<Bug> getAllCreatedBugs(User user) {
         return user.getCreatedBy();
@@ -160,13 +154,11 @@ public class UserRepo {
         entityManager.merge(role);
         entityManager.flush();
     }
-    public List<Permission> findUserPermissions(String username) throws BusinessException {
-        User user = findeUserAfterUsername(username);
-        List<Role> roleList = user.getRoleList();
-        List<Permission> resultList = new ArrayList<>();
-        roleList.forEach(r -> {
-            r.getPermissionList().forEach(permission -> resultList.add(permission));
-        });
+
+    public List<Permission> findUserPermissions(String username) {
+        TypedQuery<Permission> query = entityManager.createNamedQuery(User.GET_USER_PERMISSIONS, Permission.class);
+        query.setParameter("username", username);
+        List<Permission> resultList = query.getResultList();
         return resultList;
     }
 }

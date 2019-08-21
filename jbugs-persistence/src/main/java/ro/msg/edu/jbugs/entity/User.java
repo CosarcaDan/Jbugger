@@ -20,15 +20,15 @@ import java.util.Objects;
         @NamedQuery(name = User.QUERY_REMOVE_AFTER_USERNAME,query = "delete from User u where u.username = :username"),
         @NamedQuery(name = User.QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD, query = "select u from User u where u.username = :username and u.password = :password and u.status = 1"),
         @NamedQuery(name = User.QUERY_COUNT_USER_NAME_UNIQUE, query = "select count(u) from User u where u.username = :username "),
-//        @NamedQuery(name = User.GET_USER_PERMISSIONS, query = "Select  p\n" +
-//                "From User u\n" +
-//                "inner join u.roleList ur on u.id = ur.id\n" +
-//                "inner join Role r on ur.id = r.id\n" +
-//                "inner join r.permissionList rp on rp.id = r.id\n" +
-//                "inner join Permission p on p.id = rp.id\n" +
-//                "where u.id in (select us.id\n" +
-//                "                from User us\n" +
-//                "                where us.username = :username)")
+        @NamedQuery(name = User.GET_USER_PERMISSIONS, query = "Select  p\n" +
+                "From User u\n" +
+                "inner join u.roleList ur on u.id = ur.id\n" +
+                "inner join Role r on ur.id = r.id\n" +
+                "inner join r.permissionList rp on rp.id = r.id\n" +
+                "inner join Permission p on p.id = rp.id\n" +
+                "where u.id in (select us.id\n" +
+                "                from User us\n" +
+                "                where us.username = :username)")
 
 
 })
@@ -38,7 +38,7 @@ public class User implements Serializable {
     public static final String QUERY_REMOVE_AFTER_USERNAME = "removeAfterUsername";
     public static final String QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD = "userLogin";
     public static final String QUERY_COUNT_USER_NAME_UNIQUE = "checkUserNameUnique";
-//    public static final String GET_USER_PERMISSIONS = "get user permissions";
+    public static final String GET_USER_PERMISSIONS = "get user permissions";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -91,14 +91,6 @@ public class User implements Serializable {
     }
 
     public User() {
-    }
-
-    public List<Role> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
     }
 
     public List<Bug> getCreatedBy() {

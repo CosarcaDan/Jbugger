@@ -6,10 +6,11 @@ import {AppComponent} from './app.component';
 import {LoginComponent} from './mainPage/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DashboardComponent} from './mainPage/dashboard/dashboard.component';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import {PermissionManagementModule} from "./mainPage/permission-management/permission-management.module";
-import {AuthInterceptor} from "./mainPage/interceptors/auth.interceptor";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AddUserComponent} from './user-management/add-user/add-user.component';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {PermissionManagementModule} from './mainPage/permission-management/permission-management.module';
+import {AuthInterceptor} from './mainPage/interceptors/auth.interceptor';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MultiSelectModule} from 'primeng/multiselect';
 
 @NgModule({
@@ -17,6 +18,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
     AppComponent,
     LoginComponent,
     DashboardComponent,
+    AddUserComponent,
 
   ],
   imports: [
@@ -30,9 +32,9 @@ import {MultiSelectModule} from 'primeng/multiselect';
     MultiSelectModule
   ],
   providers: [{
-    provide : HTTP_INTERCEPTORS,
+    provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
-    multi   : true,
+    multi: true,
   }],
   bootstrap: [AppComponent]
 })

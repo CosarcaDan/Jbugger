@@ -5,7 +5,6 @@ import {UserServiceService} from '../service/user-service.service';
 import {UserLogin} from '../models/userLogin';
 import {Token} from '../models/token';
 import {BackendError} from '../models/backendError';
-import {HttpHeaders} from '@angular/common/http';
 import {LoginValidators} from './login.validators';
 
 @Component({
@@ -44,7 +43,6 @@ export class LoginComponent implements OnInit {
 
 
   }
-
 
 
   constructor(private router: Router, private userService: UserServiceService, private fb: FormBuilder) {
