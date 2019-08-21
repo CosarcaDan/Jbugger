@@ -11,6 +11,7 @@ import ro.msg.edu.jbugs.validators.Validator;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,10 +42,15 @@ public class BugService {
         return BugDtoMapping.bugToBugDtoComplet(bugRepo.addBug(bug));
     }
 
-    public BugDto findBug(Integer id) {
-        Bug bug = bugRepo.findBug(id);
-        BugDto bugDto = BugDtoMapping.bugToBugDtoComplet(bug);
-        return bugDto;
+    public BugDto findBug(Integer id) throws BusinessException {
+        try {
+            Bug bug = bugRepo.findBug(id);
+            BugDto bugDto = BugDtoMapping.bugToBugDtoComplet(bug);
+            return bugDto;
+        } catch (EntityNotFoundException ex) {
+            throw new BusinessException("Bug with given id not found", "msg - 020");
+        }
+
     }
 
 

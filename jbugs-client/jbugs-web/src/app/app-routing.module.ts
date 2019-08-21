@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from "./mainPage/login/login.component";
 import {DashboardComponent} from "./mainPage/dashboard/dashboard.component";
-import {GetBugsComponent} from "./mainPage/bugs-management/get-bugs/get-bugs.component";
+import {AddBugComponent} from "./mainPage/bugs-management/add-bug/add-bug.component";
 
 
 const routes: Routes = [
@@ -20,12 +20,12 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [{
       path: '',
-      redirectTo: "bugs",
+      redirectTo: "bugsAdd",
       pathMatch: 'full',
     },
       {
-        path: 'bugs',
-        component: GetBugsComponent,
+        path: 'bugsAdd',
+        component: AddBugComponent,
       }
     ]
   }
