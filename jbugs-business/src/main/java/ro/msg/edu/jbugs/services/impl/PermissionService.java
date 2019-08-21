@@ -44,4 +44,8 @@ public class PermissionService {
     public List<PermissionDto> getPermissionsNotInRole(RoleDto role) {
         return permissionRepo.getPermissionsNotInRole(RoleDtoMapping.roleDtoToRole(role)).stream().map(PermissionDtoMapping::permissionToPermissionDto).collect(Collectors.toList());
     }
+
+    public List<PermissionDto> getPermissionsInRole(RoleDto role) {
+        return permissionRepo.getPermissionsInRole(RoleDtoMapping.roleDtoToRole(role)).stream().map(PermissionDtoMapping::permissionToPermissionDto).collect(Collectors.toList());
+    }
 }

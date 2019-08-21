@@ -41,4 +41,9 @@ public class PermissionRepo {
         TypedQuery<Permission> query = entityManager.createNamedQuery(Permission.GET_ALL_PERMISSIONS, Permission.class);
         return query.getResultList().stream().filter(permission -> !(permission.getRoleList().size()!=0 && permission.getRoleList().stream().anyMatch(role1 -> role1.getId().equals(role.getId())))).collect(Collectors.toList());
     }
+
+    public List<Permission> getPermissionsInRole(Role role) {
+        TypedQuery<Permission> query = entityManager.createNamedQuery(Permission.GET_ALL_PERMISSIONS, Permission.class);
+        return query.getResultList().stream().filter(permission -> (permission.getRoleList().size()!=0 && permission.getRoleList().stream().anyMatch(role1 -> role1.getId().equals(role.getId())))).collect(Collectors.toList());
+    }
 }

@@ -45,4 +45,21 @@ public class PermissionRESTController {
         }
     }
 
+    @POST
+    @Path("/in-role")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPermissionsInRole(RoleDto role) {
+        Gson gson = new GsonBuilder().create();
+        try {
+            List<PermissionDto> result = permissionService.getPermissionsInRole(role);
+            String response = gson.toJson(result);
+            return Response.status(200).entity(response).build();
+        } catch (Exception e) {
+
+            String error = gson.toJson(e);
+            return Response.status(500).entity(error).build();
+        }
+    }
+
 }

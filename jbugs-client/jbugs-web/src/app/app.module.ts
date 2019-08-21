@@ -9,6 +9,8 @@ import {DashboardComponent} from './mainPage/dashboard/dashboard.component';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {PermissionManagementModule} from "./mainPage/permission-management/permission-management.module";
 import {AuthInterceptor} from "./mainPage/interceptors/auth.interceptor";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import {AuthInterceptor} from "./mainPage/interceptors/auth.interceptor";
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    PermissionManagementModule
+    PermissionManagementModule,
+    BrowserAnimationsModule,
+    MultiSelectModule
   ],
   providers: [{
     provide : HTTP_INTERCEPTORS,

@@ -43,6 +43,10 @@ public class PathPolicy {
         pathPermissions.put("permissions/not-in-role",new ArrayList<>(perissions));
 
         perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("permissions/in-role",new ArrayList<>(perissions));
+
+        perissions.clear();
         perissions.add("USER_MANAGEMENT");
         pathPermissions.put("users",new ArrayList<>(perissions));
     }

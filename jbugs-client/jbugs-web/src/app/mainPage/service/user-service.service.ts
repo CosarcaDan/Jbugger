@@ -13,16 +13,6 @@ import {Header} from '../models/header';
 })
 export class UserServiceService {
   base_url: string = 'http://localhost:8080/jbugs/services/users';
-  user :UserLogin;
-
-  httpOptionsWithoutAuth = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    })
-  };
-
-  public httpOptionsWithAuth: Header;
-
 
   constructor(private http: HttpClient) { }
 

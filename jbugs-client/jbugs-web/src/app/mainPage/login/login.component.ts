@@ -17,7 +17,6 @@ import {LoginValidators} from './login.validators';
 export class LoginComponent implements OnInit {
 
   form: FormGroup;
-  users: any [];
   userlogin: UserLogin;
   token: Token;
   backendError: BackendError;
@@ -58,17 +57,9 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getUseres();
   }
 
-  getUseres() {
-    this.users = [];
-    this.userService.getUsers().subscribe((data: {}) => {
-      console.log(data);
-      // @ts-ignore
-      this.users = data;
-    });
-  }
+
 
 
 
