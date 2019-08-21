@@ -18,9 +18,9 @@ import java.util.List;
 @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_FORM_URLENCODED})
 @Interceptors(LoggingInterceptor.class)
 public class RoleRESTController {
+
     @EJB
     private RoleService roleService;
-
 
     @GET
     public List<RoleDto> getAll(){

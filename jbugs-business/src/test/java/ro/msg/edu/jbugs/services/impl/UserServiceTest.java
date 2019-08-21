@@ -15,7 +15,6 @@ import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.repo.UserRepo;
 
 import javax.persistence.EntityNotFoundException;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class UserServiceTest {
 
     @Test
     public void addUserTestSucces() throws IOException, BusinessException {
-        UserDto tempUserDto = new UserDto(1,1,"Fnt","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
+        UserDto tempUserDto = new UserDto(2, 1, "Fnt", "Lnt", "et@msggroup.com", "+40712345678", "pt", "unt", true);
         when(userRepo.addUser(UserDtoMapping.userDtoToUser(tempUserDto))).thenReturn(UserDtoMapping.userDtoToUser(tempUserDto));
         when(userRepo.isUsernameUnique("fntl")).thenReturn(true);
         userService.addUser(tempUserDto);

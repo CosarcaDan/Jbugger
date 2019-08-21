@@ -18,7 +18,6 @@ import ro.msg.edu.jbugs.validators.Validator;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,10 +45,13 @@ public class UserService {
     private NotificationService notificationService;
 
     //ToDo validate Data
-    public User addUser(UserDto userDto) throws IOException, BusinessException {
+    public User addUser(UserDto userDto) throws BusinessException {
         Validator.validateUser(userDto);
         userDto.setUsername(generateUserName(userDto.getFirstName(), userDto.getLastName()));
-        userDto.setPassword(Hashing.sha256().hashString(userDto.getPassword(), StandardCharsets.UTF_8).toString());
+        String defaultPassword = "defaultPass";
+        userDto.setPassword(Hashing.sha256().hashString(defaultPassword, StandardCharsets.UTF_8).toString());
+        userDto.setCounter(0);
+        userDto.setStatus(true);
         User user = UserDtoMapping.userDtoToUser(userDto);
         User newUser = userRepo.addUser(user);
         //todo userDto without password
@@ -57,7 +59,6 @@ public class UserService {
         //todo notification type ENUM
         //NotificationDto notificationDto = new NotificationDto(0, new Date(), "Welcome new User", "WelcomeNewUser", "noUrl", newUserDto);
         //notificationService.addNotification(notificationDto);
-
         return newUser;
     }
 
@@ -210,4 +211,9 @@ public class UserService {
         userRepo.addRoleToUser(UserDtoMapping.userDtoToUser(userDto),role);
     }
 
+    public void addRolesToUser(UserDto userDto, List<RoleDto> rolesDto) {
+        for (RoleDto roleDto : rolesDto) {
+            addRoleToUser(userDto, roleDto);
+        }
+    }
 }

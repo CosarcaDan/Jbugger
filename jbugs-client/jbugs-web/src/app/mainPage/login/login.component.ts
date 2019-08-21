@@ -24,6 +24,13 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
 
+  constructor(private router: Router, private userService: UserServiceService, private fb: FormBuilder) {
+    this.form = fb.group({
+      username: [null, [Validators.required, LoginValidators.cannotContainSpace,
+        LoginValidators.cannotContainUpperCaseLetter]],
+      password: [null, [Validators.required]]
+    });
+  }
 
   login() {
     this.username = this.form.get('username').value.toString();
@@ -34,7 +41,6 @@ export class LoginComponent implements OnInit {
       // @ts-ignore
       this.token = data;
       console.log(this.token.value);
-
       this.userService.httpOptionsWithAuth = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -49,23 +55,10 @@ export class LoginComponent implements OnInit {
       console.log('Error', this.backendError);
       alert(this.backendError.detailMessage);
     });
-
-
   }
-
-
-
-  constructor(private router: Router, private userService: UserServiceService, private fb: FormBuilder) {
-    this.form = fb.group({
-      username: [null, [Validators.required, LoginValidators.cannotContainSpace,
-        LoginValidators.cannotContainUpperCaseLetter]],
-      password: [null, [Validators.required]]
-    });
-  }
-
 
   ngOnInit() {
-    this.getUseres();
+    //this.getUseres();
   }
 
   getUseres() {

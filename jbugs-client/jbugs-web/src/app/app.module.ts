@@ -7,12 +7,14 @@ import {LoginComponent} from './mainPage/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DashboardComponent} from './mainPage/dashboard/dashboard.component';
 import {HttpClientModule} from '@angular/common/http';
+import {AddUserComponent} from './user-management/add-user/add-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
+    AddUserComponent,
 
   ],
   imports: [

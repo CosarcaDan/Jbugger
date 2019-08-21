@@ -22,23 +22,31 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     PathPolicy pathPolicy;
     @Override
     public void filter(ContainerRequestContext ctx){
-
         HashMap<String, List<String>> permissions = pathPolicy.getPathPermissions();
         String path= ctx.getUriInfo().getPath();
         List<String> permissionsRequired = permissions.get(path);
-
         if(permissionsRequired.size() == 0)
             return;
         else
         {
-
             String rawheader = ctx.getHeaderString("Authorization");
-            if(rawheader == null || rawheader.equals(""))
+            if (rawheader == null)
             {
-                ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("Authorization header missing!")
-                        .build());
-                return;
+                if (rawheader.equals("")) {
+                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                            .entity("Authorization header missing!")
+                            .build());
+                    return;
+                }
+            } else {
+                if (!rawheader.contains(" ")) {
+                    if (rawheader.equals("")) {
+                        ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                                .entity("Authorization header wrong format!")
+                                .build());
+                        return;
+                    }
+                }
             }
             String header=rawheader.split(" ")[1];
             if(checkAccess(header,permissionsRequired))
@@ -47,10 +55,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                 ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                         .entity("Permissions missing")
                         .build());
-
         }
-
-
     }
 
     private boolean checkAccess(String token, List<String> permissions)

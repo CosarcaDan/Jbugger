@@ -127,9 +127,6 @@ public class UserRepo {
         return user;
     }
 
-
-
-
     public User updateUser(User newDataUser) throws BusinessException {
         User user = findeUserAfterUsername(newDataUser.getUsername());
         user.setCounter(newDataUser.getCounter());
@@ -140,9 +137,7 @@ public class UserRepo {
         user.setPassword(newDataUser.getPassword());
         user.setStatus(newDataUser.getStatus());
         return user;
-
     }
-
 
     public List<Bug> getAllCreatedBugs(User user) {
         return user.getCreatedBy();
