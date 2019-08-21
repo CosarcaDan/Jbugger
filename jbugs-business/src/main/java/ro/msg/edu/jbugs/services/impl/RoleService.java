@@ -30,6 +30,7 @@ public class RoleService {
 
     public void addRole(RoleDto roleDto){
         Role role = RoleDtoMapping.roleDtoToRole(roleDto);
+        role.setId(null);
         roleRepo.addRole(role);
     }
 

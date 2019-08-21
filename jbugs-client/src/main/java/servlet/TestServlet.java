@@ -62,7 +62,7 @@ public class TestServlet extends HttpServlet {
                 UserDto userDto = new UserDto(1,1,"Fnt","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
 //                addUserDefault();
                 UserDto userdtoReturned = addUser(userDto);
-                UserDto userDto1 = new UserDto(1,1,"Peter","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
+                UserDto userDto1 = new UserDto(2,1,"Peter","Lnt","et@msggroup.com","+40712345678","pt","unt",true);
 //                addUserDefault();
                 userdtoReturned = addUser(userDto1);
 //            userService.login(userdtoReturned);
@@ -73,11 +73,17 @@ public class TestServlet extends HttpServlet {
                 pdto.setType("USER_MANAGEMENT");
                 pdto.setDescription("test desc");
                 permissionService.addPermission(pdto);
+                PermissionDto pdto1= new PermissionDto();
+                pdto1.setId(2);
+                pdto1.setType("PERMISSION_MANAGEMENT");
+                pdto1.setDescription("test desc");
+                permissionService.addPermission(pdto1);
                 RoleDto rdto = new RoleDto();
                 rdto.setId(1);
                 rdto.setType("admin");
                 roleService.addRole(rdto);
                 roleService.addPermissionToRole(rdto,pdto);
+                roleService.addPermissionToRole(rdto,pdto1);
                 userService.addRoleToUser(userDto,rdto);
                 out.println(userService.getUserPermissionsByUsername("fntl"));
                 out.println("<h1> done <h1>");
@@ -85,6 +91,7 @@ public class TestServlet extends HttpServlet {
                 roleService.getAllRoles().forEach(r ->out.println(r.toString()));
 
                 out.println(roleService.getPermissionsByRole(rdto));
+                out.println(userService.getUserPermissionsByUsername("fntl"));
 
             } catch (BusinessException e) {
                 System.out.println(e.getMessage()+e.getErrorCode());

@@ -79,8 +79,7 @@ public class UserService {
             throw new BusinessException("No User found with given Id", "msg - 006");
         }
     }
-    public List<Permission> getUserPermissionsByUsername(String username)
-    {
+    public List<Permission> getUserPermissionsByUsername(String username) throws BusinessException {
         return userRepo.findUserPermissions(username);
     }
 
