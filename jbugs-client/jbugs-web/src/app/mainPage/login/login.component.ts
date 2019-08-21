@@ -75,6 +75,4 @@ export class LoginComponent implements OnInit {
       this.users = data;
     });
   }
-
-
 }

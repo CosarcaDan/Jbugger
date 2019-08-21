@@ -9,7 +9,7 @@ import {DashboardComponent} from './mainPage/dashboard/dashboard.component';
 import {HttpClientModule} from "@angular/common/http";
 import {MenubarModule} from "primeng/menubar";
 
-import {ButtonModule, ChartModule, InputTextModule, TabViewModule,} from "primeng/primeng";
+import {ButtonModule, ChartModule, InputTextModule, SidebarModule, TabViewModule,} from "primeng/primeng";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
@@ -30,7 +30,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     ButtonModule,
     ChartModule,
     MenubarModule,
-    TabViewModule
+    TabViewModule,
+    SidebarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -9,6 +9,7 @@ import {MenuItem} from 'primeng/api';
 export class DashboardComponent implements OnInit {
 
   items: MenuItem[];
+  display;
 
   constructor() {
   }
@@ -16,81 +17,36 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.items = [
       {
-        label: 'File',
-        icon: 'pi pi-fw pi-file',
+        label: 'User management',
+        icon: 'pi pi-fw pi-user',
         items: [{
-          label: 'New',
-          icon: 'pi pi-fw pi-plus',
-          items: [
-            {label: 'Project'},
-            {label: 'Other'},
-          ]
+          label: 'Add',
+          icon: 'pi pi-fw pi-user-plus',
         },
-          {label: 'Open'},
-          {separator: true},
-          {label: 'Quit'}
-        ]
-      },
-      {
-        label: 'Edit',
-        icon: 'pi pi-fw pi-pencil',
-        items: [
-          {label: 'Delete', icon: 'pi pi-fw pi-trash'},
-          {label: 'Refresh', icon: 'pi pi-fw pi-refresh'}
-        ]
-      },
-      {
-        label: 'Help',
-        icon: 'pi pi-fw pi-question',
-        items: [
           {
-            label: 'Contents'
+            label: 'View all',
+            icon: 'pi pi-fw pi-users'
           },
+        ]
+      },
+      {
+        label: 'Bug management',
+        icon: 'pi pi-fw pi pi-th-large',
+        items: [
+          {label: 'Add', icon: 'pi pi-fw pi-plus'},
+          {label: 'View all', icon: 'pi pi-fw pi-pencil'},
           {
-            label: 'Search',
-            icon: 'pi pi-fw pi-search',
+            label: 'Export', icon: 'pi pi-fw pi-eject',
             items: [
-              {
-                label: 'Text',
-                items: [
-                  {
-                    label: 'Workspace'
-                  }
-                ]
-              },
-              {
-                label: 'File'
-              }
-            ]
+              {label: 'Excel', icon: 'pi pi-fw pi-list'},
+              {label: 'PDF', icon: 'pi pi-fw pi-file'}]
           }
         ]
       },
       {
-        label: 'Actions',
-        icon: 'pi pi-fw pi-cog',
-        items: [
-          {
-            label: 'Edit',
-            icon: 'pi pi-fw pi-pencil',
-            items: [
-              {label: 'Save', icon: 'pi pi-fw pi-save'},
-              {label: 'Update', icon: 'pi pi-fw pi-save'},
-            ]
-          },
-          {
-            label: 'Other',
-            icon: 'pi pi-fw pi-tags',
-            items: [
-              {label: 'Delete', icon: 'pi pi-fw pi-minus'}
-            ]
-          }
-        ]
-      },
-      {separator: true},
-      {
-        label: 'Quit', icon: 'pi pi-fw pi-times'
+        label: 'Permission management',
+        icon: 'pi pi-fw pi-star'
       }
     ];
   }
-
 }

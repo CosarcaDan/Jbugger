@@ -1,6 +1,8 @@
 package servlet;
 
-import ro.msg.edu.jbugs.dto.*;
+import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.NotificationDto;
+import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.services.impl.*;
 import ro.msg.edu.jbugs.timer.TimerBean;
@@ -65,19 +67,19 @@ public class TestServlet extends HttpServlet {
 //            userService.login(userdtoReturned);
                 //userService.deleteUser(userdtoReturned);
 //                addNotification(2);
-                PermissionDto pdto = new PermissionDto();
-                pdto.setId(1);
-                pdto.setType("USER_MANAGEMENT");
-                pdto.setDescription("test desc");
-                permissionService.addPermission(pdto);
-                RoleDto rdto = new RoleDto();
-                rdto.setId(1);
-                rdto.setType("admin");
-                roleService.addRole(rdto);
-                roleService.addPermissionToRole(rdto, pdto);
-                userService.addRoleToUser(userDto, rdto);
-                out.println(userService.getUserPermissionsByUsername("fntl"));
-                out.println("<h1> done <h1>");
+//                PermissionDto pdto = new PermissionDto();
+//                pdto.setId(1);
+//                pdto.setType("USER_MANAGEMENT");
+//                pdto.setDescription("test desc");
+//                permissionService.addPermission(pdto);
+//                RoleDto rdto = new RoleDto();
+//                rdto.setId(1);
+//                rdto.setType("admin");
+//                roleService.addRole(rdto);
+//                roleService.addPermissionToRole(rdto, pdto);
+//                userService.addRoleToUser(userDto, rdto);
+//                out.println(userService.getUserPermissionsByUsername("fntl"));
+//                out.println("<h1> done <h1>");
             } catch (BusinessException e) {
                 System.out.println(e.getMessage()+e.getErrorCode());
             }
