@@ -23,10 +23,10 @@ public class BugDto implements Serializable {
     private String status;
     private String fixedVersion;
     private String severity;
-    private UserDto created;
-    private UserDto assigned;
+    private String created;
+    private String assigned;
 
-    public BugDto(Integer id, String title, String description, String version, Timestamp targetDate, String status, String fixedVersion, String severity, UserDto created, UserDto assigned) {
+    public BugDto(Integer id, String title, String description, String version, Timestamp targetDate, String status, String fixedVersion, String severity, String created, String assigned) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -106,19 +106,19 @@ public class BugDto implements Serializable {
         this.severity = severity;
     }
 
-    public UserDto getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(UserDto created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 
-    public UserDto getAssigned() {
+    public String getAssigned() {
         return assigned;
     }
 
-    public void setAssigned(UserDto assigned) {
+    public void setAssigned(String assigned) {
         this.assigned = assigned;
     }
 
@@ -133,8 +133,8 @@ public class BugDto implements Serializable {
                 ", status='" + status + '\'' +
                 ", fixedVersion='" + fixedVersion + '\'' +
                 ", severity='" + severity + '\'' +
-                ", created=" + created.getId() + " - "+created.getUsername()  +
-                ", assigned=" + assigned.getId() +" - " + assigned.getUsername() +
+                ", created=" + created +
+                ", assigned=" + assigned+
                 '}';
     }
 }

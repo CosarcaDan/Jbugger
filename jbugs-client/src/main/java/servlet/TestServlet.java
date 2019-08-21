@@ -153,7 +153,7 @@ public class TestServlet extends HttpServlet {
             out.println("UserLogin: " + userDto.getUsername() + " Created :<br>");
             createdByUser = getAllBugCretedBy(userDto.getId());
             for (BugDto bugDto : createdByUser) {
-                out.println(bugDto.getId() + ", " + bugDto.getTitle() + ", " + bugDto.getCreated().getId() + ", " + bugDto.getFixedVersion() + "<br>");
+                out.println(bugDto.getId() + ", " + bugDto.getTitle() + ", " + bugDto.getCreated() + ", " + bugDto.getFixedVersion() + "<br>");
             }
             out.println("------------------------------------<br>");
         }
@@ -177,19 +177,19 @@ public class TestServlet extends HttpServlet {
     private void addBugsDefault() throws BusinessException {
         UserDto userDto = userService.findUser(1);
         UserDto userDto2 = userService.findUser(2);
-        BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2012"), "active", "v14", "LOW", userDto, userDto2);
+        BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2012"), "active", "v14", "LOW", userDto.getUsername(), userDto2.getUsername());
         addBug(bugDto);
         userDto = userService.findUser(1);
         userDto2 = userService.findUser(1);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2017"), "active", "v14", "LOW", userDto, userDto2);
+        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2017"), "active", "v14", "LOW", userDto.getUsername(), userDto2.getUsername());
         addBug(bugDto);
         userDto = userService.findUser(2);
         userDto2 = userService.findUser(1);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2016"), "active", "v14", "LOW", userDto, userDto2);
+        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2016"), "active", "v14", "LOW", userDto.getUsername(), userDto2.getUsername());
         addBug(bugDto);
         userDto = userService.findUser(2);
         userDto2 = userService.findUser(2);
-        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2002"), "active", "v14", "LOW", userDto, userDto2);
+        bugDto = new BugDto(0, "title1", "desc1", "v1", Timestamp.valueOf("1/1/2002"), "active", "v14", "LOW", userDto.getUsername(), userDto2.getUsername());
         addBug(bugDto);
     }
 

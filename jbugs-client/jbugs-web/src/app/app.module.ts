@@ -10,8 +10,9 @@ import {HttpClientModule} from '@angular/common/http';
 import {MenubarModule} from "primeng/menubar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ChartModule} from "primeng/chart";
-import {TabViewModule} from "primeng/primeng";
+import {CalendarModule, FileUploadModule, TabViewModule} from "primeng/primeng";
 import { AddBugComponent } from './mainPage/bugs-management/add-bug/add-bug.component';
+import { GetBugsComponent } from './mainPage/bugs-management/get-bugs/get-bugs.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { AddBugComponent } from './mainPage/bugs-management/add-bug/add-bug.comp
     LoginComponent,
     DashboardComponent,
     AddBugComponent,
+    GetBugsComponent,
 
   ],
   imports: [
@@ -30,7 +32,9 @@ import { AddBugComponent } from './mainPage/bugs-management/add-bug/add-bug.comp
     ReactiveFormsModule,
     MenubarModule,
     ChartModule,
-    TabViewModule
+    TabViewModule,
+    CalendarModule,
+    FileUploadModule
 
   ],
   providers: [],

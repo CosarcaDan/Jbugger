@@ -11,7 +11,7 @@
       <div *ngIf="form.get('title').errors.required">
         Title is required!
       </div>
-      <div *ngIf="form.get('title').errors.cannotContainSpace">
+      <div *ngIf="form.get('title').errors.required">
         Title
       </div>
     </div>
@@ -26,20 +26,100 @@
               formControlName="description"
               class="form-control"
               required></textarea>
+
+
     <div class="alert alert-danger"
          *ngIf="form.get('description').touched && form.get('description').invalid">
       <div *ngIf="form.get('description').errors.required">
         Description is required!
       </div>
-      <div *ngIf="form.get('description').errors.cannotContainSpace">
+      <div *ngIf="form.get('description').errors.required">
         Minimul lenght has 250 Characters!
       </div>
     </div>
   </div>
 
   <div class="form-group">
+    <label for="version">Version</label>
+    <input type="text"
+           id="version"
+           name="version"
+           class="form-control"
+           required
+           formControlName="version"
+    >
+    <div class="alert alert-danger"
+         *ngIf="form.get('version').touched && form.get('version').invalid">
+      <div *ngIf="form.get('version').errors.required">
+        Description is required!
+      </div>
+      <div *ngIf="form.get('version').errors.required">
+        Entered Version Format invalid! Ex: 1.12.123
+      </div>
+    </div>
+  </div>
 
-</div>
+
+
+  <div class="form-group">
+    <label for="reversion">Fix in Version</label>
+    <input type="text"
+           id="reversion"
+           name="reversion"
+           class="form-control"
+           required
+           formControlName="reversion"
+    >
+    <div class="alert alert-danger"
+         *ngIf="form.get('reversion').touched && form.get('reversion').invalid">
+      <div *ngIf="form.get('reversion').errors.required">
+        Description is required!
+      </div>
+      <div *ngIf="form.get('reversion').errors.required">
+        Entered Version Format invalid! Ex: 1.12.123
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" >
+    <label>Target Date</label>
+    <div class="ui-g-12 ui-md-4">
+      <h3>Icon</h3>
+      <p-calendar [(ngModel)]="date" [showIcon]="true"></p-calendar>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="severity">Severity</label>
+    <select class="form-control"
+            id="severity"
+            name="severity"
+            [(ngModel)]="severitys">
+
+      <option *ngFor="let severity of severitys" [ngValue]="defaultSeverity"> <!--eror not a problem on this line -->
+        {{defaultSeverity}}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Created by</label>
+    <!-- To do when we have get All user Component on add that component -->
+  </div>
+
+  <div class="form-group">
+    <label>Assigned by</label>
+    <!-- To do when we have get All user Component on add that component -->
+  </div>
+
+  <div class="form-group">
+    <label >Attachments</label>
+    <p-fileUpload mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>
+
+  </div>
+
+
+
 
 
 </form>

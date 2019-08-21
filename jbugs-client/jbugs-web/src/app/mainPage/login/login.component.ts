@@ -1,7 +1,7 @@
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {UserServiceService} from '../service/user-service.service';
+import {UserServiceService} from '../service/user/user-service.service';
 import {UserLogin} from '../models/userLogin';
 import {Token} from '../models/token';
 import {BackendError} from '../models/backendError';
@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
           'Authorization': this.token.value,
         })
       };
+      console.log("Header",this.userService.httpOptionsWithAuth);
       sessionStorage.setItem('token', this.token.value);
       this.router.navigate(['/dashboard']);
     }, (error1: {}) => {
@@ -65,7 +66,7 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getUseres();
+
   }
 
   getUseres() {
