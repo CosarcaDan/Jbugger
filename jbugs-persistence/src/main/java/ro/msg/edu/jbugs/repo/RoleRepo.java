@@ -39,14 +39,13 @@ public class RoleRepo {
         return role;
 
     }
-    public List<Role> getAllRoles()
-    {
+
+    public List<Role> getAllRoles() {
         TypedQuery<Role> query = entityManager.createNamedQuery(Role.GET_ALL_ROLES, Role.class);
         return query.getResultList();
     }
 
-    public List<Permission> getPermissionsByRole(Role role)
-    {
+    public List<Permission> getPermissionsByRole(Role role) {
 //        TypedQuery<Permission> query = entityManager.createNamedQuery(Role.GET_PERMISSIONS_BY_ROLE, Permission.class);
 //        query.setParameter("id",role.getId());
 //        return query.getResultList();

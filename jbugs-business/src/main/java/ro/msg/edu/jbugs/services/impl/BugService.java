@@ -1,18 +1,25 @@
 package ro.msg.edu.jbugs.services.impl;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.collection.PdfTargetDictionary;
+import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
+import ro.msg.edu.jbugs.entity.Attachment;
+import ro.msg.edu.jbugs.entity.Bug;
+import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.repo.BugRepo;
 import ro.msg.edu.jbugs.repo.UserRepo;
-import ro.msg.edu.jbugs.dto.BugDto;
-import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
-import ro.msg.edu.jbugs.interceptor.CallDurationInterceptor;
-import ro.msg.edu.jbugs.entity.Bug;
-import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.validators.Validator;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.interceptor.Interceptors;
+import javax.persistence.EntityNotFoundException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,9 +30,11 @@ import java.util.stream.Collectors;
  * @author msg systems AG; User Name.
  * @since 19.1.2
  */
+
 @Stateless
 public class BugService {
 
+    private String filesprefix="files/";
 
     @EJB
     private BugRepo bugRepo;
@@ -35,17 +44,22 @@ public class BugService {
 
     public BugDto addBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
-        User creator = userRepo.findUser(bugDto.getCreated().getId());
-        User assigned = userRepo.findUser(bugDto.getAssigned().getId());
+        User creator = userRepo.findeUserAfterUsername(bugDto.getCreated());
+        User assigned = userRepo.findeUserAfterUsername(bugDto.getAssigned());
+        bugDto.setStatus("NEW");
         Bug bug = BugDtoMapping.bugDtoToBug(bugDto, creator, assigned);
-        bug.setStatus(Bug.Status.NEW);
-        return BugDtoMapping.bugToBugDtoIncomplet(bugRepo.addBug(bug));
+        return BugDtoMapping.bugToBugDtoComplet(bugRepo.addBug(bug));
     }
 
-    public BugDto findBug(Integer id) {
-        Bug bug = bugRepo.findBug(id);
-        BugDto bugDto = BugDtoMapping.bugToBugDtoComplet(bug);
-        return bugDto;
+    public BugDto findBug(Integer id) throws BusinessException {
+        try {
+            Bug bug = bugRepo.findBug(id);
+            BugDto bugDto = BugDtoMapping.bugToBugDtoComplet(bug);
+            return bugDto;
+        } catch (EntityNotFoundException ex) {
+            throw new BusinessException("Bug with given id not found", "msg - 020");
+        }
+
     }
 
 
@@ -68,27 +82,27 @@ public class BugService {
         if (bug.getStatus().equals(Bug.Status.NEW)) {
             if (newStatus.equals(Bug.Status.REJECTED) || newStatus.equals(Bug.Status.IN_PROGRESS)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoIncomplet(bug);
+                return BugDtoMapping.bugToBugDtoComplet(bug);
             }
         } else if (bug.getStatus().equals(Bug.Status.IN_PROGRESS)) {
             if (newStatus.equals(Bug.Status.REJECTED) || newStatus.equals(Bug.Status.INFONEEDED) || newStatus.equals(Bug.Status.FIXED)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoIncomplet(bug);
+                return BugDtoMapping.bugToBugDtoComplet(bug);
             }
         } else if (bug.getStatus().equals(Bug.Status.INFONEEDED)) {
             if (newStatus.equals(Bug.Status.IN_PROGRESS)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoIncomplet(bug);
+                return BugDtoMapping.bugToBugDtoComplet(bug);
             }
         } else if (bug.getStatus().equals(Bug.Status.FIXED)) {
             if (newStatus.equals(Bug.Status.NEW) || newStatus.equals(Bug.Status.CLOSED)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoIncomplet(bug);
+                return BugDtoMapping.bugToBugDtoComplet(bug);
             }
         } else if ((bug.getStatus().equals(Bug.Status.REJECTED))) {
             if (newStatus.equals(Bug.Status.CLOSED)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoIncomplet(bug);
+                return BugDtoMapping.bugToBugDtoComplet(bug);
             }
         }
         throw new BusinessException("Invalid Bug Status progression", "msg - 011");
@@ -102,7 +116,7 @@ public class BugService {
         if (!bug.getStatus().equals(Bug.Status.FIXED) && !(bug.getStatus().equals(Bug.Status.REJECTED)))
             throw new BusinessException("Bug has to to FIXED or REJECTED in order to be CLOSED", "msg - 011");
         bug.setStatus(Bug.Status.CLOSED);
-        return BugDtoMapping.bugToBugDtoIncomplet(bug);
+        return BugDtoMapping.bugToBugDtoComplet(bug);
     }
 
     //Todo Validations
@@ -116,9 +130,153 @@ public class BugService {
         bug.setFixedVersion(bugDto.getFixedVersion());
         bug.setSeverity(Bug.Severity.valueOf(bugDto.getSeverity()));
         updateStatusBug(bugDto);
-        return BugDtoMapping.bugToBugDtoIncomplet(bug); //todo see if status has been schanged
+        return BugDtoMapping.bugToBugDtoComplet(bug); //todo see if status has been schanged
     }
 
     //ToDo export bug excel
+
+    public String makePDF(BugDto bugDto) throws IOException, DocumentException {
+        Bug bug = bugRepo.findBug(bugDto.getId());
+
+        Document document = new Document();
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filesprefix+bug.getTitle()+".pdf"));
+
+        document.open();
+        Font titleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.NORMAL, BaseColor.BLACK);
+        Chunk titleChunk = new Chunk("Bug #"+bug.getId(), titleFont);
+
+        Paragraph titleParagraph = new Paragraph();
+        titleParagraph.add(titleChunk);
+        titleParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(titleParagraph);
+
+        Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Regular.ttf",
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
+        Chunk subtitleChunk = new Chunk(bug.getTitle(), subtitleFont);
+
+        Paragraph subtitleParagraph = new Paragraph();
+        subtitleParagraph.add(subtitleChunk);
+        subtitleParagraph.setAlignment(Element.ALIGN_CENTER);
+        subtitleParagraph.setMultipliedLeading(2.0f);
+        subtitleParagraph.setSpacingAfter(2.5f);
+        document.add(subtitleParagraph);
+
+
+        List<Paragraph> paragraphList = new ArrayList<>();
+        newElement("Description", bug.getDescription()).forEach(p -> paragraphList.add(p));
+        paragraphList.add(newShortElement("Version: ",bug.getVersion()));
+        paragraphList.add(newShortElement("Target date: ",bug.getTargetDate().toString()));
+        paragraphList.add(newShortElement("Status: ",bug.getStatus().name()));
+        paragraphList.add(newShortElement("Fixed version: ",bug.getFixedVersion()));
+        paragraphList.add(newShortElement("Severity: ",bug.getSeverity().name()));
+        paragraphList.add(newShortElement("Created by: ",bug.getCreated().getUsername()));
+        paragraphList.add(newShortElement("Assigned to: ",bug.getAssigned().getUsername()));
+        addAttachments(writer,bug).forEach(p -> paragraphList.add(p));
+
+        for (int i =0 ; i<paragraphList.size();++i) {
+            document.add(paragraphList.get(i));
+        }
+
+        document.close();
+
+        return "http://localhost:8080/jbugs/services/files/download/"+bug.getTitle()+".pdf";
+//        manipulatePdf("iTextHelloWorld.pdf","ManiTextHelloWorld.pdf",(String[]) bug.getAttachments().stream().map(Attachment::getAttContent).toArray(String[]::new));
+
+    }
+
+    private List<Paragraph> newElement(String title,String text)
+    {
+        ArrayList<Paragraph> result = new ArrayList<>();
+        Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
+        Font font = FontFactory.getFont("/fonts/Roboto-Regular.ttf",
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.BLACK);
+        Chunk subtitleChunk = new Chunk(title, subtitleFont);
+
+        Paragraph subtitleParagraph = new Paragraph();
+        subtitleParagraph.add(subtitleChunk);
+        subtitleParagraph.setAlignment(Element.ALIGN_LEFT);
+        subtitleParagraph.setMultipliedLeading(2.0f);
+//        subtitleParagraph.setSpacingAfter(1.2f);
+
+        result.add(subtitleParagraph);
+
+        Chunk textChunk = new Chunk(text, font);
+
+        Paragraph textParagraph = new Paragraph();
+        textParagraph.add(textChunk);
+        textParagraph.setAlignment(Element.ALIGN_LEFT);
+        textParagraph.setMultipliedLeading(1.0f);
+        textParagraph.setSpacingAfter(1.2f);
+
+        result.add(textParagraph);
+
+        return result;
+    }
+    private Paragraph newShortElement(String title,String text)
+    {
+        Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
+        Font font = FontFactory.getFont("/fonts/Roboto-Regular.ttf",
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
+        Chunk subtitleChunk = new Chunk(title, subtitleFont);
+        Chunk textChunk = new Chunk(text, font);
+
+        Paragraph result = new Paragraph();
+        result.add(subtitleChunk);
+        result.add(textChunk);
+        result.setAlignment(Element.ALIGN_LEFT);
+        result.setMultipliedLeading(2.0f);
+
+        return result;
+    }
+
+    private List<Paragraph> addAttachments(PdfWriter writer,Bug bug)
+    {
+        ArrayList<Paragraph> result = new ArrayList<>();
+        Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
+        Font font = FontFactory.getFont("/fonts/Roboto-Regular.ttf",
+                BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.BLACK);
+        Chunk subtitleChunk = new Chunk("Attachments", subtitleFont);
+
+        Paragraph subtitleParagraph = new Paragraph();
+        subtitleParagraph.add(subtitleChunk);
+        subtitleParagraph.setAlignment(Element.ALIGN_LEFT);
+        subtitleParagraph.setMultipliedLeading(2.0f);
+
+        result.add(subtitleParagraph);
+
+
+        bug.getAttachments().forEach(attachment -> {
+
+            PdfFileSpecification fs = null;
+            PdfAnnotation att = null;
+            try {
+                fs = PdfFileSpecification.fileEmbedded(
+                        writer, filesprefix+attachment.getAttContent(), attachment.getAttContent(), null);
+//                writer.addFileAttachment(String.format("Content: %s", attachment.getAttContent()), fs);
+                att =
+                        PdfAnnotation.createFileAttachment(writer, null,attachment.getAttContent(), fs);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Chunk textChunk = new Chunk(attachment.getAttContent(), font);
+            Chunk attChunk = new Chunk("  OPEN  ",font);
+            attChunk.setAnnotation(att);
+            Paragraph textParagraph = new Paragraph();
+            textParagraph.add(textChunk);
+            textParagraph.add(attChunk);
+            textParagraph.setAlignment(Element.ALIGN_LEFT);
+            textParagraph.setMultipliedLeading(1.0f);
+            textParagraph.setSpacingAfter(1.2f);
+
+            result.add(textParagraph);
+        });
+
+        return result;
+    }
 
 }

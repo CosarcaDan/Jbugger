@@ -1,3 +1,16 @@
-<p>dashboard works!</p>
-<app-add-permission></app-add-permission>
-<app-remove-permission></app-remove-permission>
+<p-menubar [model]="items">
+  <div>
+    <p-selectButton [options]="countries" [(ngModel)]="selectedCountry"></p-selectButton>
+    <button pButton label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>
+  </div>
+</p-menubar>
+
+<p-sidebar [(visible)]="display" position="right" styleClass="ui-sidebar-md">
+  Notifications
+</p-sidebar>
+
+
+<button id="notification" type="text" (click)="display = true" pButton class="ui-button-rounded ui-button-success"
+        label="Notifications"></button>
+
+<router-outlet></router-outlet>

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RemovePermissionComponent } from './remove-permission.component';
+import {RemovePermissionComponent} from './remove-permission.component';
 
 describe('RemovePermissionComponent', () => {
   let component: RemovePermissionComponent;
@@ -8,9 +8,9 @@ describe('RemovePermissionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RemovePermissionComponent ]
+      declarations: [RemovePermissionComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

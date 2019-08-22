@@ -2,8 +2,6 @@ package ro.msg.edu.jbugs.validators;
 
 import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.UserDto;
-import ro.msg.edu.jbugs.entity.Bug;
-import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 
 public class Validator {
@@ -25,10 +23,10 @@ public class Validator {
 
     public static void validateBug(BugDto bug) throws BusinessException {
         if(!validateDescription(bug.getDescription())) {
-            throw new BusinessException("Description to short", "msg - 017");
+            //throw new BusinessException("Description to short", "msg - 017");
         }
         if(!validateVersion(bug.getVersion())){
-            throw new BusinessException("Version Format Invalid", "msg - 018");
+            // throw new BusinessException("Version Format Invalid", "msg - 018");
         }
     }
 

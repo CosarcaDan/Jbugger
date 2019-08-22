@@ -23,37 +23,32 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     @EJB
     PathPolicy pathPolicy;
     @Override
-    public void filter(ContainerRequestContext ctx){
+    public void filter(ContainerRequestContext ctx) {
 
-        if(ctx.getMethod().equals("OPTIONS"))return;
+        if (ctx.getMethod().equals("OPTIONS")) return;
 
         HashMap<String, List<String>> permissions = pathPolicy.getPathPermissions();
-        String path= ctx.getUriInfo().getPath();
-        if(!permissions.containsKey(path))
-        {
-                ctx.abortWith(Response.status(Response.Status.NOT_FOUND)
-                        .entity("Policy not found!")
-                        .build());
-                return;
+        String path = ctx.getUriInfo().getPath();
+        if (!permissions.containsKey(path)) {
+            ctx.abortWith(Response.status(Response.Status.NOT_FOUND)
+                    .entity("Policy not found!")
+                    .build());
+            return;
         }
         List<String> permissionsRequired = permissions.get(path);
 
-        if(permissionsRequired.size() == 0)
+        if (permissionsRequired.size() == 0)
             return;
-        else
-        {
+        else {
 
             String rawheader = ctx.getHeaderString("Authorization");
-            if(rawheader == null )
-            {
-                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                            .entity("Authorization header missing!")
-                            .build());
-                    return;
-            }
-            else
-            {
-                if(!rawheader.contains(" ")) {
+            if (rawheader == null) {
+                ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Authorization header missing!")
+                        .build());
+                return;
+            } else {
+                if (!rawheader.contains(" ")) {
                     if (rawheader.equals("")) {
                         ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                                 .entity("Authorization header wrong format!")
@@ -61,22 +56,21 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                         return;
                     }
                 }
-                if(rawheader.equals("")){
+                if (rawheader.equals("")) {
                     ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                             .entity("Authorization header missing!")
                             .build());
                     return;
                 }
             }
-            String header=rawheader.split(" ")[1];
-            if(TokenManager.decodeJWT(header).getExpiration().toInstant().toEpochMilli() < Calendar.getInstance().getTime().toInstant().toEpochMilli())
-            {
+            String header = rawheader.split(" ")[1];
+            if (TokenManager.decodeJWT(header).getExpiration().toInstant().toEpochMilli() < Calendar.getInstance().getTime().toInstant().toEpochMilli()) {
                 ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                         .entity("Auth Token Expired")
                         .build());
             }
             try {
-                if(checkAccess(header,permissionsRequired))
+                if (checkAccess(header, permissionsRequired))
                     return;
                 else
                     ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
@@ -94,15 +88,10 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     }
 
     private boolean checkAccess(String token, List<String> permissions) throws BusinessException {
-        String username=TokenManager.decodeJWT(token).getSubject();
+        String username = TokenManager.decodeJWT(token).getSubject();
         List<Permission> userPermissions = userService.getUserPermissionsByUsername(username);
-        return permissions.stream().anyMatch(s->{
-            if(userPermissions.stream().anyMatch(ss->ss.getType().equals(s)))
-            {
-                return true;
-            }
-            else
-                return false;
+        return permissions.stream().anyMatch(s -> {
+            return userPermissions.stream().anyMatch(ss -> ss.getType().equals(s));
         });
 
     }

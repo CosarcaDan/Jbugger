@@ -160,6 +160,7 @@ public class UserRepo {
         entityManager.merge(role);
         entityManager.flush();
     }
+
     public List<Permission> findUserPermissions(String username) throws BusinessException {
         User user = findeUserAfterUsername(username);
         List<Role> roleList = user.getRoleList();

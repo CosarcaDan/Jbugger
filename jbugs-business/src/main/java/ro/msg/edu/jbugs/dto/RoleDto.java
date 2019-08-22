@@ -21,10 +21,10 @@ public class RoleDto {
     public void setType(String type) {
         this.type = type;
     }
-    public static RoleDto fromString(String JSON)
-    {
+
+    public static RoleDto fromString(String JSON) {
         Gson g = new Gson();
-        RoleDto result =g.fromJson(JSON,RoleDto.class);
+        RoleDto result = g.fromJson(JSON, RoleDto.class);
         return result;
     }
 }

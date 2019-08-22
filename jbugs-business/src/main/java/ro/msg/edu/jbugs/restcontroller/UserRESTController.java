@@ -30,24 +30,9 @@ public class UserRESTController {
     public List<UserDto> getAll(){
         return userService.getAllUser();
     }
+
     @POST
     @Path("/login")
-//    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//    public void login(@FormParam("username") String username,
-//                      @FormParam("password") String password){
-//        UserLoginDto userLoginDto = new UserLoginDto(username,password);
-//        UserDto user= new UserDto(userLoginDto);
-//        try
-//        {
-//            UserDto loged_in = userService.login(user);
-//
-//        }
-//        catch (BusinessException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println(user.toString());
-//    }
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(UserDto user) {

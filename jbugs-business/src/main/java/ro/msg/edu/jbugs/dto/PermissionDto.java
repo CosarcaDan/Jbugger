@@ -30,10 +30,10 @@ public class PermissionDto {
     public void setType(String type) {
         this.type = type;
     }
-    public static PermissionDto fromString(String JSON)
-    {
+
+    public static PermissionDto fromString(String JSON) {
         Gson g = new Gson();
-        PermissionDto result =g.fromJson(JSON,PermissionDto.class);
+        PermissionDto result = g.fromJson(JSON, PermissionDto.class);
         return result;
     }
 }
