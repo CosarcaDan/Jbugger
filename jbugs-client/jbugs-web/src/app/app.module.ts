@@ -14,6 +14,7 @@ import {ChartModule} from "primeng/chart";
 import {
   ButtonModule,
   CalendarModule,
+  DialogModule,
   FileUploadModule,
   InputTextModule,
   MultiSelectModule,
@@ -26,10 +27,10 @@ import {
 import {AddBugComponent} from './mainPage/bugs-management/add-bug/add-bug.component';
 import {GetBugsComponent} from './mainPage/bugs-management/get-bugs/get-bugs.component';
 import {TableModule} from "primeng/table";
-import {EditBugComponent} from './mainPage/bugs-management/edit-bug/edit-bug.component';
 import {ToastModule} from "primeng/toast";
 import {GetBugsModule} from "./mainPage/bugs-management/get-bugs/get-bugs.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {GetUserComponent} from './mainPage/user-management/get-user/get-user.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     DashboardComponent,
     AddBugComponent,
     GetBugsComponent,
-    EditBugComponent,
+    GetUserComponent,
 
   ],
   imports: [
@@ -66,6 +67,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     ToastModule,
     GetBugsModule,
     SelectButtonModule,
+    DialogModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

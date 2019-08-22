@@ -4,6 +4,7 @@ import {LoginComponent} from "./mainPage/login/login.component";
 import {DashboardComponent} from "./mainPage/dashboard/dashboard.component";
 import {AddBugComponent} from "./mainPage/bugs-management/add-bug/add-bug.component";
 import {GetBugsComponent} from "./mainPage/bugs-management/get-bugs/get-bugs.component";
+import {GetUserComponent} from "./mainPage/user-management/get-user/get-user.component";
 
 
 const routes: Routes = [
@@ -26,12 +27,16 @@ const routes: Routes = [
     },
       {
         path: 'bugsAdd',
-        component: AddBugComponent,
+        component: AddBugComponent
       },
       {
         path: 'bugs',
         component: GetBugsComponent
-      }
+      },
+      {
+        path: 'users',
+        component: GetUserComponent
+      },
     ]
   }
 ];
