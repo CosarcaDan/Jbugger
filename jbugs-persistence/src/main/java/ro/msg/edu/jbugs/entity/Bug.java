@@ -17,7 +17,20 @@ import java.sql.Timestamp;
         @NamedQuery(name = Bug.GET_ALL_BUGS, query = "select b from Bug b"),
         @NamedQuery(name = Bug.DELETE_OLD_BUGS, query = "delete from Bug b where b.targetDate < :date"),
         @NamedQuery(name = Bug.FINDE_BUG_AFTER_USER_ID, query = "select b from Bug b where b.created = :user or b.assigned = :user"),
-        @NamedQuery(name = Bug.DELETE_BUG_AFTER_USER_ID, query = "delete from Bug b where b.created = :user or b.assigned = :user")
+        @NamedQuery(name = Bug.DELETE_BUG_AFTER_USER_ID, query = "delete from Bug b where b.created = :user or b.assigned = :user"),
+
+        @NamedQuery(name = Bug.SEARCH_CRITERIA_WITH_STATUS_AND_SEVERITY, query = "select b from Bug b where " +
+                "b.status = :status and b.severity = :severity and b.created.username like :creator and b.assigned.username like :assigned"),
+
+        @NamedQuery(name = Bug.SEARCH_CRITERIA_WITH_STATUS, query = "select b from Bug b where " +
+                "b.status = :status and b.created.username like :creator and b.assigned.username like :assigned"),
+
+        @NamedQuery(name = Bug.SEARCH_CRITERIA_WITH_SEVERITY, query = "select b from Bug b where " +
+                "b.severity = :severity and b.created.username like :creator and b.assigned.username like :assigned"),
+
+        @NamedQuery(name = Bug.SEARCH_CRITERIA_WITHOUT_STATUS_AND_SEVERITY, query = "select b from Bug b where " +
+                "b.created.username like :creator and b.assigned.username like :assigned"),
+
 })
 public class Bug implements Serializable {
 
@@ -25,6 +38,10 @@ public class Bug implements Serializable {
     public static final String DELETE_OLD_BUGS = "deleteOldBugs";
     public static final String DELETE_BUG_AFTER_USER_ID = "deleteBugAfterUserId";
     public static final String FINDE_BUG_AFTER_USER_ID = "Finde_BUG_AFTER_USER_ID";
+    public static final String SEARCH_CRITERIA_WITH_STATUS_AND_SEVERITY = "SearchCriteriaWithStatusAndSeverity";
+    public static final String SEARCH_CRITERIA_WITH_STATUS = "SearchCriteriaWithStatus";
+    public static final String SEARCH_CRITERIA_WITH_SEVERITY = "SearchCriteriaWithSeverity";
+    public static final String SEARCH_CRITERIA_WITHOUT_STATUS_AND_SEVERITY = "SearchCriteriaWithOutStatusAndSeverity";
 
 
     @Id

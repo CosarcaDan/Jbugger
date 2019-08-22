@@ -67,5 +67,5 @@ pom.xml.tag
 classes/production/Jbugger/META-INF/Jbugger.kotlin_module
 
 
-node_modules
+./node_modules
 
