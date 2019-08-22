@@ -56,17 +56,6 @@ export class GetBugsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getBugs()
-  }
-
-  getBugs() {
-    this.bugs = [];
-    this.bugServices.getBugs().subscribe((data: {}) => {
-      console.log(data);
-      // @ts-ignore
-      this.bugs = data;
-    });
-
     this.cols = [
       {field: 'title', header: 'Title'},
       {field: 'description', header: 'Description'},
@@ -81,17 +70,17 @@ export class GetBugsComponent implements OnInit {
     ];
 
     this.status = [
-      {label: 'All Statuses', value: null},
-      {label: 'New', value: 'new'},
-      {label: 'In progress', value: 'in progress'},
-      {label: 'Fixed', value: 'fixed'},
-      {label: 'Closed', value: 'closed'},
-      {label: 'Rejected', value: 'rejected'},
-      {label: 'Info Needed', value: 'info needed'}
+      {label: 'All Statuses', value: ''},
+      {label: 'New', value: 'NEW'},
+      {label: 'In progress', value: 'IN_PROGRESS'},
+      {label: 'Fixed', value: 'FIXED'},
+      {label: 'Closed', value: 'CLOSED'},
+      {label: 'Rejected', value: 'REJECTED'},
+      {label: 'Info Needed', value: 'INFONEEDED'}
     ];
 
     this.severity = [
-      {label: 'All Severities', value: null},
+      {label: 'All Severities', value: ''},
       {label: 'LOW', value: 'LOW'},
       {label: 'MEDIUM', value: 'MEDIUM'},
       {label: 'HIGH', value: 'HIGH'},
@@ -99,8 +88,32 @@ export class GetBugsComponent implements OnInit {
     ]
   }
 
-  search() {
+  getBugs() {
+    this.bugs = [];
+    this.bugServices.getBugs().subscribe((data: {}) => {
+      console.log(data);
+      // @ts-ignore
+      this.bugs = data;
+
+      for (var bug of this.bugs) {
+        var date = new Date(bug.targetDate);
+        bug.targetDate = date
+      }
+    });
+  }
+
+
+  public search() {
     console.log(this.bugSearchCrit);
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data: {}) => {
+      // @ts-ignore
+      this.bugs = data;
+
+      for (var bug of this.bugs) {
+        var date = new Date(bug.targetDate);
+        bug.targetDate = date
+      }
+    })
   }
 
   add() {

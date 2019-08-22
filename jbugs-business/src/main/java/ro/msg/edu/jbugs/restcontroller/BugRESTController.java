@@ -12,6 +12,7 @@ import javax.interceptor.Interceptors;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * Document me.
@@ -65,6 +66,17 @@ public class BugRESTController {
     }
 
     @POST
+    public Response getBugsAfterSearchCriteria(BugDto bugDto) {
+        try {
+            List<BugDto> list = bugService.getBugsAfterCriteris(bugDto);
+            return Response.status(200).entity(list).build();
+        } catch (Exception ex) {
+            return Response.status(500).entity(ex.getMessage()).build();
+        }
+    }
+
+
+    @POST
     @Path("addBug")
     public Response addBug(BugDto bugDto) {
         try {
@@ -103,12 +115,6 @@ public class BugRESTController {
             return Response.status(500).entity(responseError).build();
         }
     }
-
-
-
-
-
-
 
 
 }

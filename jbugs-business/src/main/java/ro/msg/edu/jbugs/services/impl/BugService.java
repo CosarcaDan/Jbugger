@@ -53,11 +53,45 @@ public class BugService {
 
     }
 
-
     public List<BugDto> getAllBug() {
         List<Bug> bugList = bugRepo.getAllBugs();
         List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
         return bugDtoList;
+    }
+
+    public List<BugDto> getBugsAfterCriteris(BugDto bugSearchCriteria) {
+        String creator;
+        String assigned;
+        List<Bug> bugList;
+        Bug.Status status;
+        Bug.Severity severity;
+        try {
+            creator = userRepo.findeUserAfterUsername(bugSearchCriteria.getCreated()).getUsername();
+        } catch (BusinessException e) {
+            creator = "%";
+        }
+        try {
+            assigned = userRepo.findeUserAfterUsername(bugSearchCriteria.getAssigned()).getUsername();
+        } catch (BusinessException e) {
+            assigned = "%";
+        }
+        if (bugSearchCriteria.getSeverity().equals("") || bugSearchCriteria.getStatus().equals("")) {
+            if (!bugSearchCriteria.getStatus().equals("")) {
+                status = Bug.Status.valueOf(bugSearchCriteria.getStatus());
+                bugList = bugRepo.getBugsAfterSearchCriteriaWithStatus(status, creator, assigned);
+            } else if (!bugSearchCriteria.getSeverity().equals("")) {
+                severity = Bug.Severity.valueOf(bugSearchCriteria.getSeverity());
+                bugList = bugRepo.getBugsAfterSearchCriteriaWithSeverity(severity, creator, assigned);
+            } else {
+                bugList = bugRepo.getBugsAfterSearchCriteriaUsers(creator, assigned);
+            }
+        } else {
+            severity = Bug.Severity.valueOf(bugSearchCriteria.getSeverity());
+            status = Bug.Status.valueOf(bugSearchCriteria.getStatus());
+            bugList = bugRepo.getBugsAfterSearchCriteriaWithSeverityAndStatus(severity, status, creator, assigned);
+        }
+
+        return bugList.stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
     }
 
     public Integer deleteOldBugs() {

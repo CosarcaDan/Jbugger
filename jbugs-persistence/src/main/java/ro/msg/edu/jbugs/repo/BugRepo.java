@@ -63,6 +63,42 @@ public class BugRepo {
 
     //Todo criteri de cautare si posibil paginarea
 
+
+    public List<Bug> getBugsAfterSearchCriteriaWithSeverityAndStatus(Bug.Severity severity, Bug.Status status, String creator, String assigned) {
+        Query query = entityManager.createNamedQuery(Bug.SEARCH_CRITERIA_WITH_STATUS_AND_SEVERITY);
+        query.setParameter("severity", severity);
+        query.setParameter("status", status);
+        query.setParameter("creator", creator);
+        query.setParameter("assigned", assigned);
+        return query.getResultList();
+    }
+
+
+    public List<Bug> getBugsAfterSearchCriteriaUsers(String creator, String assigned) {
+        Query query = entityManager.createNamedQuery(Bug.SEARCH_CRITERIA_WITHOUT_STATUS_AND_SEVERITY);
+        query.setParameter("creator", creator);
+        query.setParameter("assigned", assigned);
+        return query.getResultList();
+    }
+
+
+    public List<Bug> getBugsAfterSearchCriteriaWithSeverity(Bug.Severity severity, String creator, String assigned) {
+        Query query = entityManager.createNamedQuery(Bug.SEARCH_CRITERIA_WITH_SEVERITY);
+        query.setParameter("severity", severity);
+        query.setParameter("creator", creator);
+        query.setParameter("assigned", assigned);
+        return query.getResultList();
+    }
+
+    public List<Bug> getBugsAfterSearchCriteriaWithStatus(Bug.Status status, String creator, String assigned) {
+        Query query = entityManager.createNamedQuery(Bug.SEARCH_CRITERIA_WITH_STATUS);
+        query.setParameter("status", status);
+        query.setParameter("creator", creator);
+        query.setParameter("assigned", assigned);
+        return query.getResultList();
+    }
+
+
     public User getCreator(Bug bug){
         return bug.getCreated();
     }
@@ -70,5 +106,4 @@ public class BugRepo {
     public User getAssigned(Bug bug){
         return bug.getAssigned();
     }
-
 }
