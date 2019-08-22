@@ -45,9 +45,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
         }
         List<String> permissionsRequired = permissions.get(thePath.get(0));
 
-        if (permissionsRequired.size() == 0)
-            return;
-        else {
+        if (permissionsRequired.size() != 0){
 
             String rawheader = ctx.getHeaderString("Authorization");
             if (rawheader == null) {
@@ -63,12 +61,6 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                                 .build());
                         return;
                     }
-                }
-                if (rawheader.equals("")) {
-                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                            .entity("Authorization header missing!")
-                            .build());
-                    return;
                 }
             }
             String header = rawheader.split(" ")[1];
