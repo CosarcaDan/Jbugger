@@ -27,10 +27,15 @@ public class PathPolicy {
         pathPermissions.put("users/login", new ArrayList<>());
 
         pathPermissions.put("bugs", new ArrayList<>());
+        pathPermissions.put("files/upload", new ArrayList<>());
 
         perissions.clear();
         perissions.add("PERMISSION_MANAGEMENT");
         pathPermissions.put("permissions", new ArrayList<>(perissions));
+
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^bugs/[1234567890]+$", new ArrayList<>(perissions));
 
         perissions.clear();
         perissions.add("PERMISSION_MANAGEMENT");

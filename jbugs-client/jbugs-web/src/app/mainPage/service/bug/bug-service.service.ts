@@ -34,5 +34,11 @@ export class BugServiceService {
     return this.http.post<any>(this.base_url, bugCriteria).pipe(map(this.extractData));
   }
 
+  public deleteBugAfterId(id:number){
+    return this.http.delete<any>(this.base_url + "/" +id).pipe(map(this.extractData));
+  }
+
+
+
 
 }

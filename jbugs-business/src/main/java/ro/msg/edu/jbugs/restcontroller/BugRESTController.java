@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.restcontroller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.itextpdf.text.DocumentException;
 import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
@@ -13,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.io.IOException;
 
 /**
  * Document me.
@@ -115,6 +117,29 @@ public class BugRESTController {
             return Response.status(500).entity(responseError).build();
         }
     }
+
+    @POST
+    @Path("/getPDF")
+    public Response getPDF(BugDto bugDto)
+    {
+        Gson gson = new GsonBuilder().create();
+        try {
+            String pdf = bugService.makePDF(bugDto);
+            String response = gson.toJson(pdf);
+            return Response.status(200).entity(response).build();
+        }  catch (DocumentException e) {
+            String responseError = gson.toJson(e);
+            return Response.status(500).entity(responseError).build();
+        } catch (IOException e) {
+            String responseError = gson.toJson(e);
+            return Response.status(500).entity(responseError).build();
+        }
+    }
+
+
+
+
+
 
 
 }
