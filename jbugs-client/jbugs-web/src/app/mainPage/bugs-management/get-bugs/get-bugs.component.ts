@@ -37,6 +37,11 @@ export class GetBugsComponent implements OnInit {
       console.log(data);
       // @ts-ignore
       this.bugs = data;
+
+      for (var bug of this.bugs){
+        var date = new Date(bug.targetDate);
+        bug.targetDate = date
+      }
     });
 
     this.cols = [

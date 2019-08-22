@@ -42,8 +42,9 @@
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr [pSelectableRow]="rowData">
-      <td *ngFor="let col of columns" [ngSwitch]="col.field">
-        {{rowData[col.field]}}
+      <td *ngFor="let col of columns" [ngSwitch]="col.field" >
+
+        {{rowData[col.field] | date:'short'}}
         <button *ngSwitchCase="'button'" pButton label="Edit" icon="pi pi-info-circle" style="margin-left:.25em"
                 (click)="show()"></button>
         <button *ngSwitchCase="'button'" pButton label="Delete" class="ui-button-raised ui-button-warning"
