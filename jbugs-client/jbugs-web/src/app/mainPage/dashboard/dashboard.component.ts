@@ -34,16 +34,6 @@ export class DashboardComponent implements OnInit {
       {
         label: 'Bug management',
         icon: 'pi pi-fw pi pi-th-large',
-        items: [
-          {label: 'Add', icon: 'pi pi-fw pi-plus'},
-          {label: 'View all', icon: 'pi pi-fw pi-pencil'},
-          {
-            label: 'Export', icon: 'pi pi-fw pi-eject',
-            items: [
-              {label: 'Excel', icon: 'pi pi-fw pi-list'},
-              {label: 'PDF', icon: 'pi pi-fw pi-file'}]
-          }
-        ]
       },
       {
         label: 'Permission management',

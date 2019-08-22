@@ -121,7 +121,7 @@ export class GetBugsComponent implements OnInit {
   }
 
   export() {
-
+    
   }
 
   delete() {
