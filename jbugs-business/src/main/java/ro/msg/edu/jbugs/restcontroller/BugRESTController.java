@@ -3,10 +3,12 @@ package ro.msg.edu.jbugs.restcontroller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.itextpdf.text.DocumentException;
+import ro.msg.edu.jbugs.dto.AttachmentDto;
 import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
+import ro.msg.edu.jbugs.services.impl.AttachmentService;
 import ro.msg.edu.jbugs.services.impl.BugService;
 import ro.msg.edu.jbugs.services.impl.UserService;
 
@@ -36,6 +38,9 @@ public class BugRESTController {
 
     @EJB
     UserService userService;
+
+    @EJB
+    AttachmentService attachmentService;
 
     @GET
     public Response getAll() {
@@ -88,7 +93,7 @@ public class BugRESTController {
     @Path("/add")
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(@NotNull @FormParam("bug") BugDto bug) {
+    public Response add(@NotNull @FormParam("bug") BugDto bug, @NotNull @FormParam("attachment") AttachmentDto attachment) {
         Gson gson = new GsonBuilder().create();
         try {
             //clients sends username for the createdBy field and we need its id
@@ -105,7 +110,9 @@ public class BugRESTController {
             bug.setAssigned(idAssigned.toString());
 
             //adds the bug
-            bugService.addBug(bug);
+            BugDto bugAdded = bugService.addBug(bug);
+            attachmentService.addAttachment(attachment, bugAdded);
+
             String response = gson.toJson("All OK!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {

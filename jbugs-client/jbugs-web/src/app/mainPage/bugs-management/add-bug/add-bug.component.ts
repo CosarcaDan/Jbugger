@@ -5,6 +5,8 @@ import {UserAdd} from '../../../user-management/models/userAdd';
 import {UserService} from '../../service/user/user.service';
 import {BugServiceService} from '../../service/bug/bug-service.service';
 import {Bug} from '../../models/bug';
+import {FileService} from '../../service/file/file.service';
+import {Attachment} from '../../models/attachment';
 
 @Component({
   selector: 'app-add-bug',
@@ -19,7 +21,8 @@ export class AddBugComponent implements OnInit {
   currentStatus;
   allUsers: Array<UserAdd>;
   loggedUsername = sessionStorage.getItem('username');
-  loading: boolean = false;
+  uploadedFileName: string;
+  myAtt;
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
   //bug attributes
@@ -40,10 +43,11 @@ export class AddBugComponent implements OnInit {
     {type: 'CRITICAL'},
   ];
 
-  constructor(private fb: FormBuilder, private userService: UserService, private bugService: BugServiceService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private bugService: BugServiceService,
+              private fileService: FileService) {
     this.form = fb.group({
       title: [null, [Validators.required,]],
-      description: [null, [Validators.required, Validators.minLength(2)]],
+      description: [null, [Validators.required, Validators.minLength(250)]],
       version: [null, [BugValidators.validateVersion]],
       fixedVersion: [null, [BugValidators.validateVersion]],
       targetDate: [null, []],
@@ -51,7 +55,7 @@ export class AddBugComponent implements OnInit {
       createdBy: [null, []],
       status: [null, []],
       assignedTo: [null, []],
-      attachment: null,
+      attachments: ['', Validators.required],
     });
   }
 
@@ -69,7 +73,6 @@ export class AddBugComponent implements OnInit {
       for (let dataKey of data) {
         this.allUsers.push(dataKey);
       }
-      console.log('roleset: ', this.allUsers);
     });
   }
 
@@ -96,39 +99,39 @@ export class AddBugComponent implements OnInit {
       created: this.created,
       assigned: this.assigned
     };
-    this.uploadFile();
-    this.bugService.add(bugToBeAdded);
+
+    let attachmentToBeAdded: Attachment = {
+      id: null,
+      attContent: this.uploadedFileName,
+    };
+    this.fileUpload();
+    this.bugService.add(bugToBeAdded, attachmentToBeAdded);
+    this.clearFile();
   }
 
   onFileChange(event) {
-    let reader = new FileReader();
-    if (event.target.files && event.target.files.length > 0) {
-      let file = event.target.files[0];
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.form.get('attachment').setValue({
-          filename: file.name,
-          filetype: file.type,
-          value: (<string> reader.result).split(',')[1]
-        });
-      };
+    if (event.target.files.length > 0) {
+      let files = event.target.files;
+      this.uploadedFileName = files[0].name;
+      this.myAtt = files;
     }
   }
 
-  uploadFile() {
-    const formModel = this.form.value;
-    this.loading = true;
-    // In a real-world app you'd have a http request / service call here like
-    // this.http.post('apiUrl', formModel)
-    setTimeout(() => {
-      console.log(formModel);
-      alert('done!');
-      this.loading = false;
-    }, 1000);
+  private prepareSave(): any {
+    let input = new FormData();
+    input.append('file', this.myAtt[0]);
+    return input;
+  }
+
+  fileUpload() {
+    const formModel = this.prepareSave();
+    console.log(formModel.get('file'));
+    this.fileService.uploadFile(formModel);
   }
 
   clearFile() {
-    this.form.get('attachment').setValue(null);
+    this.form.get('attachments').setValue(null);
     this.fileInput.nativeElement.value = '';
   }
+
 }

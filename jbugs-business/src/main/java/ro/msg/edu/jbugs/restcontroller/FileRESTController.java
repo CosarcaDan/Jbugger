@@ -34,7 +34,7 @@ public class FileRESTController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String output = "File successfully uploaded to : " + fileLocation;
+        String output = "File successfully uploaded!";
         return Response.status(200).entity(output).build();
     }
 

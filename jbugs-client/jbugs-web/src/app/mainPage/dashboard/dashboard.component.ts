@@ -37,7 +37,17 @@ export class DashboardComponent implements OnInit {
       },
       {
         label: 'Permission management',
-        icon: 'pi pi-fw pi-star'
+        icon: 'pi pi-fw pi-star',
+        items: [
+          {
+            label: 'Add permission',
+            icon: 'pi pi-fw pi-plus'
+          },
+          {
+            label: 'Delete permission',
+            icon: 'pi pi-fw pi-minus'
+          }
+        ]
       }
     ];
 

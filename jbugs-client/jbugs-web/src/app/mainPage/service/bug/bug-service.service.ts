@@ -16,11 +16,13 @@ export class BugServiceService {
     })
   };
 
-  public add(bug) {
+  public add(bug, attachment) {
     console.log(bug);
     let body = new HttpParams()
-      .set('bug', JSON.stringify(bug));
+      .set('bug', JSON.stringify(bug))
+      .set('attachment', JSON.stringify(attachment));
     console.log('body', body.get('bug'));
+    console.log('body', body.get('attachment'));
     this.http.post(this.base_url + '/add', body).subscribe();
   }
 

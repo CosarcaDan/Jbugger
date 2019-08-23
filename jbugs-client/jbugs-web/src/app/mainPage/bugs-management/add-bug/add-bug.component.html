@@ -129,12 +129,13 @@
       </option>
     </select>
   </div>
-  <label for="attachment">Attachment:</label>
+
+  <label for="attachments">Attachments:</label>
   <input type="file"
-         id="attachment"
+         id="attachments"
          (change)="onFileChange($event)"
          #fileInput
-         formControlName="attachment"
+         formControlName="attachments"
   >
 
   <br>
