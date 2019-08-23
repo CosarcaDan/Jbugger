@@ -121,7 +121,9 @@ export class GetBugsComponent implements OnInit {
   }
 
   export() {
-    
+    this.bugServices.exportInPdf(this.bug).subscribe(s => {
+      window.open(s.toString(), '_self');
+    })
   }
 
   delete() {

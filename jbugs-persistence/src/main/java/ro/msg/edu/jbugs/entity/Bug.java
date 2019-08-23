@@ -3,6 +3,7 @@ package ro.msg.edu.jbugs.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Document me.
@@ -80,6 +81,17 @@ public class Bug implements Serializable {
     @JoinColumn(name = "ASSIGNED_ID")
     private User assigned;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_bug")
+    private List<Attachment> attachments;
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }
 
     public Integer getId() {
         return id;

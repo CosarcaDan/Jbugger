@@ -27,6 +27,7 @@ public class PathPolicy {
         pathPermissions.put("users/login", new ArrayList<>());
 
         pathPermissions.put("bugs", new ArrayList<>());
+        pathPermissions.put("files/upload", new ArrayList<>());
 
         perissions.clear();
         perissions.add("PERMISSION_MANAGEMENT");

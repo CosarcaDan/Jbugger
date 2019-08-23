@@ -37,5 +37,4 @@ export class BugServiceService {
   public exportInPdf(bug: Bug) {
     return this.http.post<any>(this.base_url + '/getPDF', bug).pipe(map(this.extractData));
   }
-
 }
