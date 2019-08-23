@@ -7,8 +7,8 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url == 'http://localhost:8080/jbugs/services/roles/add-permissions' ||
       req.url == 'http://localhost:8080/jbugs/services/roles/remove-permissions' ||
-      req.url == 'http://localhost:8080/jbugs/services/users/add'
-    ) {
+      req.url == 'http://localhost:8080/jbugs/services/users/add' ||
+      req.url == 'http://localhost:8080/jbugs/services/bugs/add') {
       req = req.clone({
         setHeaders: {
           'Content-Type': 'application/x-www-form-urlencoded',

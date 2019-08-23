@@ -52,6 +52,11 @@ public class PathPolicy {
         perissions.add("USER_MANAGEMENT");
         pathPermissions.put("users/add", new ArrayList<>(perissions));
         pathPermissions.put("users", new ArrayList<>(perissions));
+
+        perissions.clear();
+        perissions.add("BUG_MANAGEMENT");
+        pathPermissions.put("bugs/add", new ArrayList<>(perissions));
+        pathPermissions.put("bugs", new ArrayList<>(perissions));
     }
 
     public HashMap<String, List<String>> getPathPermissions() {

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Bug} from '../../models/bug';
@@ -16,6 +16,13 @@ export class BugServiceService {
     })
   };
 
+  public add(bug) {
+    console.log(bug);
+    let body = new HttpParams()
+      .set('bug', JSON.stringify(bug));
+    console.log('body', body.get('bug'));
+    this.http.post(this.base_url + '/add', body).subscribe();
+  }
 
   constructor(private http: HttpClient) {
   }

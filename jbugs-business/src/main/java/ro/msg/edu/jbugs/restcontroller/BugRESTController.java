@@ -3,12 +3,15 @@ package ro.msg.edu.jbugs.restcontroller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
 import ro.msg.edu.jbugs.services.impl.BugService;
+import ro.msg.edu.jbugs.services.impl.UserService;
 
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -27,6 +30,9 @@ import javax.ws.rs.core.Response;
 public class BugRESTController {
     @EJB
     BugService bugService;
+
+    @EJB
+    UserService userService;
 
     @GET
     public Response getAll() {
@@ -65,15 +71,32 @@ public class BugRESTController {
     }
 
     @POST
-    @Path("addBug")
-    public Response addBug(BugDto bugDto) {
+    @Path("/add")
+    @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response add(@NotNull @FormParam("bug") BugDto bug) {
+        Gson gson = new GsonBuilder().create();
         try {
-            bugService.addBug(bugDto);
-            return Response.status(200).build();
-        } catch (BusinessException e) {
-            Gson gson = new GsonBuilder().create();
-            String responseError = gson.toJson(e);
-            return Response.status(500).entity(responseError).build();
+            //clients sends username for the createdBy field and we need its id
+            String usernameCreated = bug.getCreated();
+            UserDto userCreated = userService.findUser(usernameCreated);
+            Integer id = userCreated.getId();
+
+            //client sends username for assignedTo field and we need its id
+            String usernameAssigned = bug.getAssigned();
+            UserDto userAssigned = userService.findUser(usernameAssigned);
+            Integer idAssigned = userAssigned.getId();
+
+            bug.setCreated(id.toString());
+            bug.setAssigned(idAssigned.toString());
+
+            //adds the bug
+            bugService.addBug(bug);
+            String response = gson.toJson("All OK!");
+            return Response.status(200).entity(response).build();
+        } catch (Exception e) {
+            String error = gson.toJson(e);
+            return Response.status(500).entity(error).build();
         }
     }
 
@@ -103,6 +126,4 @@ public class BugRESTController {
             return Response.status(500).entity(responseError).build();
         }
     }
-
-
 }
