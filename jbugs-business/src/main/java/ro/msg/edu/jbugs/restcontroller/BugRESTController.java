@@ -13,8 +13,8 @@ import javax.interceptor.Interceptors;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.List;
+import java.io.IOException;
 
 /**
  * Document me.
@@ -134,5 +134,11 @@ public class BugRESTController {
             return Response.status(500).entity(responseError).build();
         }
     }
+
+
+
+
+
+
 
 }

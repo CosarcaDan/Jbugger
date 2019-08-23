@@ -1,7 +1,7 @@
 <p-menubar [model]="items">
   <div>
     <p-selectButton [options]="countries" [(ngModel)]="selectedCountry"></p-selectButton>
-    <button pButton label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>
+    <button pButton (click)="logout()" label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>
   </div>
 </p-menubar>
 
