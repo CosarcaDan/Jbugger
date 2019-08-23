@@ -38,6 +38,10 @@ export class BugServiceService {
     return this.http.delete<any>(this.base_url + "/" +id).pipe(map(this.extractData));
   }
 
+  public saveEditBug(bug:Bug){
+    return this.http.put(this.base_url + '/' + bug.id + '/' + 'edit',bug).pipe(map(this.extractData));
+  }
+
 
 
 

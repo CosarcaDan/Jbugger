@@ -163,7 +163,8 @@ public class BugService {
         bug.setTargetDate(bugDto.getTargetDate());
         bug.setFixedVersion(bugDto.getFixedVersion());
         bug.setSeverity(Bug.Severity.valueOf(bugDto.getSeverity()));
-        updateStatusBug(bugDto);
+        if (!bug.getStatus().equals(Bug.Status.valueOf(bugDto.getStatus())))
+            updateStatusBug(bugDto);
         return BugDtoMapping.bugToBugDtoComplet(bug); //todo see if status has been schanged
     }
 
