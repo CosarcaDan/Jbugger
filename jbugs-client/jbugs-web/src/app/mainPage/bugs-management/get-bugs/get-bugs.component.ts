@@ -117,6 +117,7 @@ export class GetBugsComponent implements OnInit {
   }
 
   add() {
+
   }
 
   export() {
