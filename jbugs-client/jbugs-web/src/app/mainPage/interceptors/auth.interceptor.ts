@@ -26,19 +26,39 @@ export class AuthInterceptor implements HttpInterceptor {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Access-Control-Expose-Headers': 'Authorization, Content-Disposition',
           }
+            < <<<<<< HEAD
         });
       } else {
 
-        req = req.clone({
-          setHeaders: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Access-Control-Expose-Headers': 'Authorization',
-          }
-        });
+      ======
+        =
       }
+    );
+}
+
+else
+{
+>>>>>>>
+  1574;
+  b28240e8d130906088047ee10ea7c35790fb;
+  req = req.clone({
+    setHeaders: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+      'Access-Control-Expose-Headers': 'Authorization',
     }
+  });
+  <<<<<<< HEAD
+}
+    }
+======
+=
+}
+}
+>>>>>>>
+1574;
+b28240e8d130906088047ee10ea7c35790fb;
     console.log('setting auth token', `Bearer ${sessionStorage.getItem('token')}`);
     return next.handle(req);
   }

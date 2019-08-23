@@ -1,11 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from './mainPage/login/login.component';
-import {DashboardComponent} from './mainPage/dashboard/dashboard.component';
-import {AddBugComponent} from './mainPage/bugs-management/add-bug/add-bug.component';
-import {GetBugsComponent} from './mainPage/bugs-management/get-bugs/get-bugs.component';
-import {GetUserComponent} from './mainPage/user-management/get-user/get-user.component';
-import {AddPermissionComponent} from './mainPage/permission-management/add-permission/add-permission.component';
+import {LoginComponent} from "./mainPage/login/login.component";
+import {DashboardComponent} from "./mainPage/dashboard/dashboard.component";
+import {AddBugComponent} from "./mainPage/bugs-management/add-bug/add-bug.component";
+import {GetBugsComponent} from "./mainPage/bugs-management/get-bugs/get-bugs.component";
+import {GetUserComponent} from "./mainPage/user-management/get-user/get-user.component";
+import {AddPermissionComponent} from "./mainPage/permission-management/add-permission/add-permission.component";
+import {RemovePermissionComponent} from "./mainPage/permission-management/remove-permission/remove-permission.component";
 
 
 const routes: Routes = [
@@ -19,20 +20,20 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'dashboard',
+    path: "dashboard",
     component: DashboardComponent,
-    children: [{
-      path: '',
-      redirectTo: 'bugsAdd',
-      pathMatch: 'full',
-    },
+    children: [
       {
-        path: 'bugsAdd',
+        path: 'bugs/add',
         component: AddBugComponent
       },
       {
         path: 'bugs',
         component: GetBugsComponent
+      },
+      {
+        path: 'bugsAdd',
+        component: AddBugComponent
       },
       {
         path: 'users',
@@ -41,6 +42,10 @@ const routes: Routes = [
       {
         path: 'permissions/add',
         component: AddPermissionComponent
+      },
+      {
+        path: 'permissions/remove',
+        component: RemovePermissionComponent
       },
     ]
   }

@@ -65,5 +65,6 @@ export class RemovePermissionComponent implements OnInit {
     let role = this.roles.find(r => r.id == this.selectedRole);
     let permissions = this.selectedPermissions.map(p => this.permissions.find((pp) => pp.id == p));
     this.roleService.removePermissionToRole(role, permissions);
+    this.getNewPermissions(role.id);
   }
 }

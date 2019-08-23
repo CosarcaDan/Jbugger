@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" (keyup.enter)="login()">
   <div class="form-group">
     <label for="username">Username </label>
     <input type="text"
@@ -39,8 +39,10 @@
   <button class="btn btn-primary"
           type="button"
           (click)="login()"
+
           [disabled]="form.invalid">Login
   </button>
 </form>
 
-<button class="btn btn-primary" type="button" (click)="getUseres()">Greet</button>
+
+<!--<button class="btn btn-primary" type="button" (click)="getUseres()">Greet</button>-->

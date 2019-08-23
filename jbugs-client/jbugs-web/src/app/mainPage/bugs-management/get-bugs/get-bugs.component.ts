@@ -17,11 +17,22 @@ export class GetBugsComponent implements OnInit {
 
   status: SelectItem[];
 
+  statusNew: SelectItem[];
+
+  statusInProgress: SelectItem[];
+
+  statusInfoNeeded: SelectItem[];
+
+  statusRejected: SelectItem[];
+
+  statusFixed: SelectItem[];
+
   severity: SelectItem[];
 
   bugs: Bug[];
 
   newBug: boolean;
+
 
   bugSearchCrit: Bug = {
     id: 0,
@@ -37,6 +48,7 @@ export class GetBugsComponent implements OnInit {
   };
 
   displayDialog: boolean;
+
   bug: Bug = {
     id: 0,
     title: '',
@@ -90,6 +102,34 @@ export class GetBugsComponent implements OnInit {
       {label: 'Info Needed', value: 'INFONEEDED'}
     ];
 
+    this.statusNew = [
+      {label: 'New', value: 'NEW'},
+      {label: 'In progress', value: 'IN_PROGRESS'},
+      {label: 'Rejected', value: 'REJECTED'}
+    ];
+
+    this.statusInProgress = [
+      {label: 'In progress', value: 'IN_PROGRESS'},
+      {label: 'Fixed', value: 'FIXED'},
+      {label: 'Rejected', value: 'REJECTED'},
+      {label: 'Info Needed', value: 'INFONEEDED'}
+    ];
+
+    this.statusInfoNeeded = [
+      {label: 'In progress', value: 'IN_PROGRESS'},
+      {label: 'Info Needed', value: 'INFONEEDED'}
+    ];
+
+    this.statusRejected = [
+      {label: 'Rejected', value: 'REJECTED'},
+    ];
+
+    this.statusFixed = [
+      {label: 'Fixed', value: 'FIXED'},
+    ];
+
+
+
     this.severity = [
       {label: 'All Severities', value: ''},
       {label: 'LOW', value: 'LOW'},
@@ -124,15 +164,42 @@ export class GetBugsComponent implements OnInit {
 
   delete(id: number) {
     console.log('deleted' + id);
-    this.bugServices.deleteBugAfterId(id).subscribe((data: {}) => {
-    }, (error1 => {
-      console.log('Error', error1);
-    }));
+    <<<<<<< HEAD
+      this.bugServices.deleteBugAfterId(id).subscribe((data: {}) => {
+      }, (error1 => {
+        console.log('Error', error1);
+      }));
+  ======
+    =
+      this.bugServices.deleteBugAfterId(id).subscribe(
+        (data: {}) => {
+          alert('Bug closed Complete');
+        },
+        (error1 => {
+          console.log('Error', error1);
+          alert('update failed :' + error1.error.detailMessage);
+        }));
+    this.displayDialog = false;
+    this.search();
+  >>>>>>>
+    1574;
+    b28240e8d130906088047ee10ea7c35790fb;
   }
 
   save() {
     console.log('saved');
+    this.bugServices.saveEditBug(this.bug).subscribe(
+      (data: {}) => {
+        alert('Edit Bugs Complete');
+      },
+      (error2 => {
+        console.log('Error', error2);
+        alert('update failed :' + error2.error.detailMessage);
+      })
+    );
 
+    this.displayDialog = false;
+    this.search();
   }
 
   onRowSelect(event) {

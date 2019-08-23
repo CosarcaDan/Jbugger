@@ -5,7 +5,6 @@
   <ng-template pTemplate="caption">
     <div style="text-align: right">
       <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-      <button type="button" pButton (click)="add()" label="Add"></button>
 
       <input type="text" pInputText size="20" placeholder="Created by"
              [(ngModel)]="bugSearchCrit.created">
@@ -66,6 +65,13 @@
       </td>
     </tr>
   </ng-template>
+
+  <ng-template pTemplate="summary" let-rowData>
+    <div style="text-align:left">
+      <button type="button" pButton (click)="add()" label="Add"></button>
+    </div>
+  </ng-template>
+
 </p-table>
 
 <p-dialog header="Bug Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
@@ -97,10 +103,24 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="statusEdit">Status</label>
+        <label>Status</label>
       </div>
-      <div class="ui-g-8">
-        <input pInputText id="statusEdit" [(ngModel)]="bug.status"/>
+      <div class="ui-g-8" [ngSwitch]="bug.status">
+        <p-dropdown id="statusEditNEW" appendTo="body" [options]="statusNew" [style]="{'width':'100%'}"
+                    *ngSwitchCase="'NEW'"
+                    [(ngModel)]="bug.status"></p-dropdown>
+        <p-dropdown id="statusEditINPROGRESS" appendTo="body" [options]="statusInProgress" [style]="{'width':'100%'}"
+                    *ngSwitchCase="'IN_PROGRESS'"
+                    [(ngModel)]="bug.status"></p-dropdown>
+        <p-dropdown id="statusEditINFONEEDED" appendTo="body" [options]="statusInfoNeeded" [style]="{'width':'100%'}"
+                    *ngSwitchCase="'INFONEEDED'"
+                    [(ngModel)]="bug.status"></p-dropdown>
+        <p-dropdown id="statusEditREJECTED" appendTo="body" [options]="statusRejected" [style]="{'width':'100%'}"
+                    *ngSwitchCase="'REJECTED'"
+                    [(ngModel)]="bug.status"></p-dropdown>
+        <p-dropdown id="statusEditFIXED" appendTo="body" [options]="statusFixed" [style]="{'width':'100%'}"
+                    *ngSwitchCase="'FIXED'"
+                    [(ngModel)]="bug.status"></p-dropdown>
       </div>
     </div>
     <div class="ui-g-12">
@@ -116,7 +136,8 @@
         <label for="severityEdit">Severity</label>
       </div>
       <div class="ui-g-8">
-        <input pInputText id="severityEdit" [(ngModel)]="bug.severity"/>
+        <p-dropdown id="severityEdit" appendTo="body" [options]="severity" [style]="{'width':'100%'}"
+                    [(ngModel)]="bug.severity"></p-dropdown>
       </div>
     </div>
     <div class="ui-g-12">

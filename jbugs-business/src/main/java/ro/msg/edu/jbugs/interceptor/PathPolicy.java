@@ -31,8 +31,14 @@ public class PathPolicy {
         pathPermissions.put("^permissions.*", new ArrayList<>(perissions));
 
         perissions.clear();
-        perissions.add("PERMISSION_MANAGEMENT");
+        perissions.add("PERMISSION_MANAGEMENT"); //change CloseBug_MGMT
         pathPermissions.put("^bugs/[1234567890]+$", new ArrayList<>(perissions));
+
+        pathPermissions.put("^bugs/[1234567890]+/edit", new ArrayList<>(perissions)); // tobe bugMgmt
+
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^bugs/.*", new ArrayList<>(perissions));
 
         perissions.clear();
         perissions.add("PERMISSION_MANAGEMENT");
