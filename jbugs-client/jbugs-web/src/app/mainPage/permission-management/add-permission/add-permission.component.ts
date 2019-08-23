@@ -65,5 +65,6 @@ export class AddPermissionComponent implements OnInit {
     let role = this.roles.find(r => r.id == this.selectedRole);
     let permissions = this.selectedPermissions.map(p => this.permissions.find((pp) => pp.id == p));
     this.roleService.addPermissionToRole(role, permissions);
+    this.getNewPermissions(role.id);
   }
 }
