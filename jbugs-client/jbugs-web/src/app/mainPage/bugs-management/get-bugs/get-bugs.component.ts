@@ -158,14 +158,15 @@ export class GetBugsComponent implements OnInit {
   }
 
   add() {
-
   }
 
   export() {
-
+    this.bugServices.exportInPdf(this.bug).subscribe(s => {
+      window.open(s.toString(), '_self');
+    })
   }
 
-  delete(id:number) {
+  delete(id: number) {
     console.log('deleted' + id);
     this.bugServices.deleteBugAfterId(id).subscribe(
       (data:{}) =>{alert('Bug closed Complete')},

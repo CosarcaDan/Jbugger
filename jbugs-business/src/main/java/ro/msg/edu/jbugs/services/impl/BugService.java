@@ -1,11 +1,12 @@
 package ro.msg.edu.jbugs.services.impl;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
-import com.itextpdf.text.pdf.collection.PdfTargetDictionary;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfAnnotation;
+import com.itextpdf.text.pdf.PdfFileSpecification;
+import com.itextpdf.text.pdf.PdfWriter;
 import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
-import ro.msg.edu.jbugs.entity.Attachment;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
@@ -16,7 +17,6 @@ import ro.msg.edu.jbugs.validators.Validator;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityNotFoundException;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Stateless
 public class BugService {
 
-    private String filesprefix="files/";
+    private String filesprefix = "files/";
 
     @EJB
     private BugRepo bugRepo;
@@ -174,12 +174,12 @@ public class BugService {
         Bug bug = bugRepo.findBug(bugDto.getId());
 
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filesprefix+bug.getTitle()+".pdf"));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filesprefix + bug.getTitle() + ".pdf"));
 
         document.open();
         Font titleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.NORMAL, BaseColor.BLACK);
-        Chunk titleChunk = new Chunk("Bug #"+bug.getId(), titleFont);
+        Chunk titleChunk = new Chunk("Bug #" + bug.getId(), titleFont);
 
         Paragraph titleParagraph = new Paragraph();
         titleParagraph.add(titleChunk);
@@ -200,28 +200,27 @@ public class BugService {
 
         List<Paragraph> paragraphList = new ArrayList<>();
         newElement("Description", bug.getDescription()).forEach(p -> paragraphList.add(p));
-        paragraphList.add(newShortElement("Version: ",bug.getVersion()));
-        paragraphList.add(newShortElement("Target date: ",bug.getTargetDate().toString()));
-        paragraphList.add(newShortElement("Status: ",bug.getStatus().name()));
-        paragraphList.add(newShortElement("Fixed version: ",bug.getFixedVersion()));
-        paragraphList.add(newShortElement("Severity: ",bug.getSeverity().name()));
-        paragraphList.add(newShortElement("Created by: ",bug.getCreated().getUsername()));
-        paragraphList.add(newShortElement("Assigned to: ",bug.getAssigned().getUsername()));
-        addAttachments(writer,bug).forEach(p -> paragraphList.add(p));
+        paragraphList.add(newShortElement("Version: ", bug.getVersion()));
+        paragraphList.add(newShortElement("Target date: ", bug.getTargetDate().toString()));
+        paragraphList.add(newShortElement("Status: ", bug.getStatus().name()));
+        paragraphList.add(newShortElement("Fixed version: ", bug.getFixedVersion()));
+        paragraphList.add(newShortElement("Severity: ", bug.getSeverity().name()));
+        paragraphList.add(newShortElement("Created by: ", bug.getCreated().getUsername()));
+        paragraphList.add(newShortElement("Assigned to: ", bug.getAssigned().getUsername()));
+        addAttachments(writer, bug).forEach(p -> paragraphList.add(p));
 
-        for (int i =0 ; i<paragraphList.size();++i) {
+        for (int i = 0; i < paragraphList.size(); ++i) {
             document.add(paragraphList.get(i));
         }
 
         document.close();
 
-        return "http://localhost:8080/jbugs/services/files/download/"+bug.getTitle()+".pdf";
+        return "http://localhost:8080/jbugs/services/files/download/" + bug.getTitle() + ".pdf";
 //        manipulatePdf("iTextHelloWorld.pdf","ManiTextHelloWorld.pdf",(String[]) bug.getAttachments().stream().map(Attachment::getAttContent).toArray(String[]::new));
 
     }
 
-    private List<Paragraph> newElement(String title,String text)
-    {
+    private List<Paragraph> newElement(String title, String text) {
         ArrayList<Paragraph> result = new ArrayList<>();
         Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
@@ -249,8 +248,8 @@ public class BugService {
 
         return result;
     }
-    private Paragraph newShortElement(String title,String text)
-    {
+
+    private Paragraph newShortElement(String title, String text) {
         Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
         Font font = FontFactory.getFont("/fonts/Roboto-Regular.ttf",
@@ -267,8 +266,7 @@ public class BugService {
         return result;
     }
 
-    private List<Paragraph> addAttachments(PdfWriter writer,Bug bug)
-    {
+    private List<Paragraph> addAttachments(PdfWriter writer, Bug bug) {
         ArrayList<Paragraph> result = new ArrayList<>();
         Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
@@ -290,16 +288,16 @@ public class BugService {
             PdfAnnotation att = null;
             try {
                 fs = PdfFileSpecification.fileEmbedded(
-                        writer, filesprefix+attachment.getAttContent(), attachment.getAttContent(), null);
+                        writer, filesprefix + attachment.getAttContent(), attachment.getAttContent(), null);
 //                writer.addFileAttachment(String.format("Content: %s", attachment.getAttContent()), fs);
                 att =
-                        PdfAnnotation.createFileAttachment(writer, null,attachment.getAttContent(), fs);
+                        PdfAnnotation.createFileAttachment(writer, null, attachment.getAttContent(), fs);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             Chunk textChunk = new Chunk(attachment.getAttContent(), font);
-            Chunk attChunk = new Chunk("  OPEN  ",font);
+            Chunk attChunk = new Chunk("  OPEN  ", font);
             attChunk.setAnnotation(att);
             Paragraph textParagraph = new Paragraph();
             textParagraph.add(textChunk);

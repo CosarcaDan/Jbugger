@@ -36,8 +36,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
         List<String> thePath = keySet.stream().filter(path::matches).collect(Collectors.toList());
 
 
-
-        if (thePath.size()==0) {
+        if (thePath.size() == 0) {
             ctx.abortWith(Response.status(Response.Status.NOT_FOUND)
                     .entity("Policy not found!")
                     .build());
@@ -45,7 +44,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
         }
         List<String> permissionsRequired = permissions.get(thePath.get(0));
 
-        if (permissionsRequired.size() != 0){
+        if (permissionsRequired.size() != 0) {
 
             String rawheader = ctx.getHeaderString("Authorization");
             if (rawheader == null) {
