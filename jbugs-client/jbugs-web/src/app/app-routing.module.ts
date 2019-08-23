@@ -32,6 +32,10 @@ const routes: Routes = [
         component: GetBugsComponent
       },
       {
+        path: 'bugsAdd',
+        component: AddBugComponent
+      },
+      {
         path: 'users',
         component: GetUserComponent
       },

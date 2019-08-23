@@ -17,32 +17,32 @@ public class PathPolicy {
         pathPermissions.put("^files/download.*", new ArrayList<>());
 
 
-        List<String> permissions = new ArrayList<>();
-        permissions.add("USER_MANAGEMENT");
-        pathPermissions.put("^users.*", new ArrayList<>(permissions));
+        List<String> perissions = new ArrayList<>();
+        perissions.add("USER_MANAGEMENT");
+        pathPermissions.put("^users.*", new ArrayList<>(perissions));
 
-        permissions.clear();
-        permissions.add("USER_MANAGEMENT");
-        permissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^roles$", new ArrayList<>(permissions));
+        perissions.clear();
+        perissions.add("USER_MANAGEMENT");
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^roles$", new ArrayList<>(perissions));
 
-        permissions.clear();
-        permissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^permissions.*", new ArrayList<>(permissions));
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^permissions.*", new ArrayList<>(perissions));
 
-        permissions.clear();
-        permissions.add("PERMISSION_MANAGEMENT"); //change CloseBug_MGMT
-        pathPermissions.put("^bugs/[1234567890]+$", new ArrayList<>(permissions));
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT"); //change CloseBug_MGMT
+        pathPermissions.put("^bugs/[1234567890]+$", new ArrayList<>(perissions));
 
-        pathPermissions.put("^bugs/[1234567890]+/edit", new ArrayList<>(permissions)); // tobe bugMgmt
+        pathPermissions.put("^bugs/[1234567890]+/edit", new ArrayList<>(perissions)); // tobe bugMgmt
 
-        permissions.clear();
-        permissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^bugs/.*", new ArrayList<>(permissions));
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^bugs/.*", new ArrayList<>(perissions));
 
-        permissions.clear();
-        permissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^roles.*", new ArrayList<>(permissions));
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^roles.*", new ArrayList<>(perissions));
 
     }
 
