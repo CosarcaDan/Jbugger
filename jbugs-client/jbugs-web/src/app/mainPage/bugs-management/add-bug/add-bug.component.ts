@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BugValidators} from '../bug.validator';
 import {UserAdd} from '../../../user-management/models/userAdd';
@@ -9,15 +9,18 @@ import {Bug} from '../../models/bug';
 @Component({
   selector: 'app-add-bug',
   templateUrl: './add-bug.component.html',
-  styleUrls: ['./add-bug.component.css']
+  styleUrls: ['./add-bug.component.css'],
 })
 export class AddBugComponent implements OnInit {
+
   form: FormGroup;
   todayDate = new Date();
   currentLoggedUser;
   currentStatus;
   allUsers: Array<UserAdd>;
   loggedUsername = sessionStorage.getItem('username');
+  loading: boolean = false;
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
   //bug attributes
   title: string;
@@ -48,7 +51,7 @@ export class AddBugComponent implements OnInit {
       createdBy: [null, []],
       status: [null, []],
       assignedTo: [null, []],
-      attachment: [null, []]
+      attachment: null,
     });
   }
 
@@ -93,11 +96,39 @@ export class AddBugComponent implements OnInit {
       created: this.created,
       assigned: this.assigned
     };
+    this.uploadFile();
     this.bugService.add(bugToBeAdded);
   }
 
+  onFileChange(event) {
+    let reader = new FileReader();
+    if (event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.form.get('attachment').setValue({
+          filename: file.name,
+          filetype: file.type,
+          value: (<string> reader.result).split(',')[1]
+        });
+      };
+    }
+  }
 
+  uploadFile() {
+    const formModel = this.form.value;
+    this.loading = true;
+    // In a real-world app you'd have a http request / service call here like
+    // this.http.post('apiUrl', formModel)
+    setTimeout(() => {
+      console.log(formModel);
+      alert('done!');
+      this.loading = false;
+    }, 1000);
+  }
 
-  onBasicUpload($event: any) {
+  clearFile() {
+    this.form.get('attachment').setValue(null);
+    this.fileInput.nativeElement.value = '';
   }
 }

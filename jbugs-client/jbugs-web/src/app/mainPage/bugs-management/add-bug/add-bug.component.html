@@ -129,14 +129,13 @@
       </option>
     </select>
   </div>
-
-  <div class="form-group">
-    <label>Attachment:</label>
-    <br>
-    <p-fileUpload mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000"
-                  (onUpload)="onBasicUpload($event)"></p-fileUpload>
-
-  </div>
+  <label for="attachment">Attachment:</label>
+  <input type="file"
+         id="attachment"
+         (change)="onFileChange($event)"
+         #fileInput
+         formControlName="attachment"
+  >
 
   <br>
   <button class="btn btn-primary"
