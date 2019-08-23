@@ -14,11 +14,12 @@ public class PathPolicy {
         pathPermissions.put("^users/login$", new ArrayList<>());
         pathPermissions.put("^bugs$", new ArrayList<>());
         pathPermissions.put("^files/upload$", new ArrayList<>());
+        pathPermissions.put("^files/download.*", new ArrayList<>());
 
 
         List<String> perissions = new ArrayList<>();
         perissions.add("USER_MANAGEMENT");
-        pathPermissions.put("^users", new ArrayList<>(perissions));
+        pathPermissions.put("^users.*", new ArrayList<>(perissions));
 
         perissions.clear();
         perissions.add("USER_MANAGEMENT");
@@ -27,7 +28,7 @@ public class PathPolicy {
 
         perissions.clear();
         perissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^permissions", new ArrayList<>(perissions));
+        pathPermissions.put("^permissions.*", new ArrayList<>(perissions));
 
         perissions.clear();
         perissions.add("PERMISSION_MANAGEMENT");
@@ -35,7 +36,7 @@ public class PathPolicy {
 
         perissions.clear();
         perissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^roles", new ArrayList<>(perissions));
+        pathPermissions.put("^roles.*", new ArrayList<>(perissions));
 
     }
 
