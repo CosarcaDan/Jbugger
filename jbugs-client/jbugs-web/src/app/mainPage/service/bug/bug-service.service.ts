@@ -40,4 +40,12 @@ export class BugServiceService {
   public exportInPdf(bug: Bug) {
     return this.http.post<any>(this.base_url + '/getPDF', bug).pipe(map(this.extractData));
   }
+
+  public saveEditBug(bug:Bug){
+    return this.http.put(this.base_url + '/' + bug.id + '/' + 'edit',bug).pipe(map(this.extractData));
+  }
+
+
+
+
 }

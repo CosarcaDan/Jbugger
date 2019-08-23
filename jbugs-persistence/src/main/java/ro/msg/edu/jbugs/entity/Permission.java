@@ -25,6 +25,7 @@ public class Permission implements Serializable {
     @Column(name = "description")
     private String description;
 
+//    @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private String type;
 
