@@ -13,6 +13,8 @@ import javax.ws.rs.ext.Provider;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Provider
 public class RestrictedOperationsRequestFilter implements ContainerRequestFilter {
@@ -30,17 +32,20 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
 
         HashMap<String, List<String>> permissions = pathPolicy.getPathPermissions();
         String path = ctx.getUriInfo().getPath();
-        if (!permissions.containsKey(path)) {
+        Set<String> keySet = permissions.keySet();
+
+        List<String> thePath = keySet.stream().filter(path::matches).collect(Collectors.toList());
+
+
+        if (thePath.size() == 0) {
             ctx.abortWith(Response.status(Response.Status.NOT_FOUND)
                     .entity("Policy not found!")
                     .build());
             return;
         }
-        List<String> permissionsRequired = permissions.get(path);
+        List<String> permissionsRequired = permissions.get(thePath.get(0));
 
-        if (permissionsRequired.size() == 0)
-            return;
-        else {
+        if (permissionsRequired.size() != 0) {
 
             String rawheader = ctx.getHeaderString("Authorization");
             if (rawheader == null) {
@@ -56,12 +61,6 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                                 .build());
                         return;
                     }
-                }
-                if (rawheader.equals("")) {
-                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                            .entity("Authorization header missing!")
-                            .build());
-                    return;
                 }
             }
             String header = rawheader.split(" ")[1];

@@ -1,15 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {DialogService, SelectItem} from 'primeng/api';
+import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugServiceService} from '../../service/bug/bug-service.service';
 import {Bug} from '../../models/bug';
-import {EditBugComponent} from '../edit-bug/edit-bug.component';
 
 @Component({
   selector: 'app-get-bugs',
   templateUrl: './get-bugs.component.html',
   styleUrls: ['./get-bugs.component.css'],
-  providers: [BugServiceService, DialogService],
+  providers: [BugServiceService],
 
 })
 export class GetBugsComponent implements OnInit {
@@ -20,11 +19,40 @@ export class GetBugsComponent implements OnInit {
 
   severity: SelectItem[];
 
-  yearTimeout: any;
-
   bugs: Bug[];
 
-  constructor(private router: Router, private bugServices: BugServiceService, public dialogService: DialogService) {
+  newBug: boolean;
+
+  bugSearchCrit: Bug = {
+    id: 0,
+    title: '',
+    description: '',
+    version: '',
+    targetDate: new Date(),
+    status: '',
+    fixedVersion: '',
+    severity: '',
+    created: '',
+    assigned: ''
+  };
+
+  displayDialog: boolean;
+  bug: Bug = {
+    id: 0,
+    title: '',
+    description: '',
+    version: '',
+    targetDate: new Date(),
+    status: '',
+    fixedVersion: '',
+    severity: '',
+    created: '',
+    assigned: ''
+  };
+  selectedBug: Bug;
+
+  constructor(private router: Router, private bugServices: BugServiceService) {
+
   }
 
   ngOnInit() {
@@ -49,21 +77,21 @@ export class GetBugsComponent implements OnInit {
       {field: 'severity', header: 'Severity'},
       {field: 'created', header: 'Created by'},
       {field: 'assigned', header: 'Assigned to'},
-      {field: 'button', header: ''}
+      // {field: 'button', header: ''}
     ];
 
     this.status = [
-      {label: 'All Statuses', value: null},
-      {label: 'New', value: 'new'},
-      {label: 'In progress', value: 'in progress'},
-      {label: 'Fixed', value: 'fixed'},
-      {label: 'Closed', value: 'closed'},
-      {label: 'Rejected', value: 'rejected'},
-      {label: 'Info Needed', value: 'info needed'}
+      {label: 'All Statuses', value: ''},
+      {label: 'New', value: 'NEW'},
+      {label: 'In progress', value: 'IN_PROGRESS'},
+      {label: 'Fixed', value: 'FIXED'},
+      {label: 'Closed', value: 'CLOSED'},
+      {label: 'Rejected', value: 'REJECTED'},
+      {label: 'Info Needed', value: 'INFONEEDED'}
     ];
 
     this.severity = [
-      {label: 'All Severities', value: null},
+      {label: 'All Severities', value: ''},
       {label: 'LOW', value: 'LOW'},
       {label: 'MEDIUM', value: 'MEDIUM'},
       {label: 'HIGH', value: 'HIGH'},
@@ -71,20 +99,62 @@ export class GetBugsComponent implements OnInit {
     ];
   }
 
-  onYearChange(event, dt) {
-    if (this.yearTimeout) {
-      clearTimeout(this.yearTimeout);
-    }
+  public search() {
+    console.log(this.bugSearchCrit);
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data: {}) => {
+      // @ts-ignore
+      this.bugs = data;
 
-    this.yearTimeout = setTimeout(() => {
-      dt.filter(event.value, 'year', 'gt');
-    }, 250);
+      for (var bug of this.bugs) {
+        var date = new Date(bug.targetDate);
+        bug.targetDate = date;
+      }
+    });
   }
 
-  show() {
-    this.dialogService.open(EditBugComponent, {
-      header: 'Edit a bug',
-      width: '70%'
-    });
+  add() {
+
+  }
+
+  export() {
+
+  }
+
+  delete(id: number) {
+    console.log('deleted' + id);
+    this.bugServices.deleteBugAfterId(id).subscribe((data: {}) => {
+    }, (error1 => {
+      console.log('Error', error1);
+    }));
+  }
+
+  save() {
+    console.log('saved');
+
+  }
+
+  onRowSelect(event) {
+    this.newBug = false;
+    this.bug = this.cloneBug(event.data);
+    this.displayDialog = true;
+  }
+
+  private cloneBug(b: Bug): Bug {
+    let bug = {
+      id: 0,
+      title: '',
+      description: '',
+      version: '',
+      targetDate: new Date(),
+      status: '',
+      fixedVersion: '',
+      severity: '',
+      created: '',
+      assigned: ''
+    };
+    for (let props in b) {
+      bug[props] = b[props];
+    }
+    return bug;
   }
 }

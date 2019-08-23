@@ -1,6 +1,8 @@
 package servlet;
 
-import ro.msg.edu.jbugs.dto.*;
+import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.NotificationDto;
+import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.services.impl.*;
 import ro.msg.edu.jbugs.timer.TimerBean;
@@ -59,41 +61,51 @@ public class TestServlet extends HttpServlet {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         try {
-            UserDto userDto = new UserDto(1, 1, "Fnt", "Lnt", "et@msggroup.com", "+40712345678", "pt", "unt", true);
-//                addUserDefault();
-            UserDto userdtoReturned = addUser(userDto);
-            UserDto userDto1 = new UserDto(2, 1, "Peter", "Lnt", "et@msggroup.com", "+40712345678", "pt", "unt", true);
-//                addUserDefault();
-            userdtoReturned = addUser(userDto1);
-//            userService.login(userdtoReturned);
-            //userService.deleteUser(userdtoReturned);
-//                addNotification(2);
-            PermissionDto pdto = new PermissionDto();
-            pdto.setId(1);
-            pdto.setType("USER_MANAGEMENT");
-            pdto.setDescription("test desc");
-            permissionService.addPermission(pdto);
-            PermissionDto pdto1 = new PermissionDto();
-            pdto1.setId(2);
-            pdto1.setType("PERMISSION_MANAGEMENT");
-            pdto1.setDescription("test desc");
-            permissionService.addPermission(pdto1);
-            RoleDto rdto = new RoleDto();
-            rdto.setId(1);
-            rdto.setType("admin");
-            roleService.addRole(rdto);
-//                roleService.addPermissionToRole(rdto,pdto);
-            roleService.addPermissionToRole(rdto, pdto1);
-            userService.addRoleToUser(userDto, rdto);
-            out.println(userService.getUserPermissionsByUsername("fntl"));
-            out.println("<h1> done </h1>");
+            BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "LOW", "fntl", "fntl");
+            BugDto bugDto2 = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "HIGH", "fntsl", "fntl");
+            BugDto bugDto3 = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "URGENT", "fntl", "fntsl");
+            BugDto bugDto4 = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "LOW", "fntsl", "fntsl");
+            bugService.addBug(bugDto);
+            bugService.addBug(bugDto2);
+            bugService.addBug(bugDto3);
+            bugService.addBug(bugDto4);
 
-            permissionService.getAllPermissions().forEach(p -> out.println("<p>" + p.getId() + "</p>"));
+//                UserDto userDto = new UserDto(1, 1, "Fnt", "Lnt", "et@msggroup.com", "+40712345678", "pt", "unt", true);
+////                addUserDefault();
+//                UserDto userdtoReturned = addUser(userDto);
+//                UserDto userDto1 = new UserDto(2, 1, "Peter", "Lnt", "et@msggroup.com", "+40712345678", "pt", "unt", true);
+////                addUserDefault();
+//                userdtoReturned = addUser(userDto1);
+////            userService.login(userdtoReturned);
+//                //userService.deleteUser(userdtoReturned);
+////                addNotification(2);
+//                PermissionDto pdto = new PermissionDto();
+//                pdto.setId(1);
+//                pdto.setType("USER_MANAGEMENT");
+//                pdto.setDescription("test desc");
+//                permissionService.addPermission(pdto);
+//                PermissionDto pdto1 = new PermissionDto();
+//                pdto1.setId(2);
+//                pdto1.setType("PERMISSION_MANAGEMENT");
+//                pdto1.setDescription("test desc");
+//                permissionService.addPermission(pdto1);
+//                RoleDto rdto = new RoleDto();
+//                rdto.setId(1);
+//                rdto.setType("admin");
+//                roleService.addRole(rdto);
+////                roleService.addPermissionToRole(rdto,pdto);
+//                roleService.addPermissionToRole(rdto, pdto1);
+//                userService.addRoleToUser(userDto, rdto);
+//                out.println(userService.getUserPermissionsByUsername("fntl"));
+//                out.println("<h1> done </h1>");
+//
+//                permissionService.getAllPermissions().forEach(p -> out.println("<p>" + p.getId() + "</p>"));
+//
+//                out.println("<br><br>");
+//                roleService.getPermissionsByRole(rdto).forEach(p -> out.println("<p> ByRole:" + p.getId() + "</p>"));
+//                List<PermissionDto> res = permissionService.getPermissionsNotInRole(rdto);
+//                res.forEach(p -> out.println("<p> Not in Role:" + p.getId() + "</p>"));
 
-            out.println("<br><br>");
-            roleService.getPermissionsByRole(rdto).forEach(p -> out.println("<p> ByRole:" + p.getId() + "</p>"));
-            List<PermissionDto> res = permissionService.getPermissionsNotInRole(rdto);
-            res.forEach(p -> out.println("<p> Not in Role:" + p.getId() + "</p>"));
 
         } catch (BusinessException e) {
             System.out.println(e.getMessage() + e.getErrorCode());
