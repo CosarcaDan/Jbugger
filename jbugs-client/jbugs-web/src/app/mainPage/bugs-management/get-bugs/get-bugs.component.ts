@@ -34,6 +34,7 @@ export class GetBugsComponent implements OnInit {
   newBug: boolean;
 
 
+
   bugSearchCrit: Bug = {
     id: 0,
     title: '',
@@ -68,17 +69,6 @@ export class GetBugsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getBugs();
-  }
-
-  getBugs() {
-    this.bugs = [];
-    this.bugServices.getBugs().subscribe((data: {}) => {
-      console.log(data);
-      // @ts-ignore
-      this.bugs = data;
-    });
-
     this.cols = [
       {field: 'title', header: 'Title'},
       {field: 'description', header: 'Description'},
@@ -136,8 +126,23 @@ export class GetBugsComponent implements OnInit {
       {label: 'MEDIUM', value: 'MEDIUM'},
       {label: 'HIGH', value: 'HIGH'},
       {label: 'CRITICAL', value: 'CRITICAL'},
-    ];
+    ]
   }
+
+  getBugs() {
+    this.bugs = [];
+    this.bugServices.getBugs().subscribe((data: {}) => {
+      console.log(data);
+      // @ts-ignore
+      this.bugs = data;
+
+      for (var bug of this.bugs) {
+        var date = new Date(bug.targetDate);
+        bug.targetDate = date;
+      }
+    });
+  }
+
 
   public search() {
     console.log(this.bugSearchCrit);
@@ -149,7 +154,7 @@ export class GetBugsComponent implements OnInit {
         var date = new Date(bug.targetDate);
         bug.targetDate = date;
       }
-    });
+    })
   }
 
   add() {
@@ -159,31 +164,21 @@ export class GetBugsComponent implements OnInit {
   export() {
     this.bugServices.exportInPdf(this.bug).subscribe(s => {
       window.open(s.toString(), '_self');
-    });
+    })
   }
 
   delete(id: number) {
     console.log('deleted' + id);
-    <<<<<<< HEAD
-      this.bugServices.deleteBugAfterId(id).subscribe((data: {}) => {
-      }, (error1 => {
+    this.bugServices.deleteBugAfterId(id).subscribe(
+      (data: {}) => {
+        alert('Bug closed Complete');
+      },
+      (error1 => {
         console.log('Error', error1);
+        alert('update failed :' + error1.error.detailMessage);
       }));
-  ======
-    =
-      this.bugServices.deleteBugAfterId(id).subscribe(
-        (data: {}) => {
-          alert('Bug closed Complete');
-        },
-        (error1 => {
-          console.log('Error', error1);
-          alert('update failed :' + error1.error.detailMessage);
-        }));
     this.displayDialog = false;
     this.search();
-  >>>>>>>
-    1574;
-    b28240e8d130906088047ee10ea7c35790fb;
   }
 
   save() {
