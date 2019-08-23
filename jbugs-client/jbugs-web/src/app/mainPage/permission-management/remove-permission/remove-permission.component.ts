@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {RoleService} from "../../service/role.service";
-import {Role} from "../../models/role";
-import {Permission} from "../../models/permission";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {RoleService} from '../../service/role.service';
+import {Role} from '../../models/role';
+import {Permission} from '../../models/permission';
 
 @Component({
   selector: 'app-remove-permission',
@@ -42,7 +42,7 @@ export class RemovePermissionComponent implements OnInit {
       for (let dataKey of data) {
         this.roles.push(dataKey);
       }
-      console.log('roleset: ', this.roles)
+      console.log('roleset: ', this.roles);
     });
   }
 
@@ -57,7 +57,7 @@ export class RemovePermissionComponent implements OnInit {
       for (let dataKey of data) {
         this.permissions.push(dataKey);
       }
-      console.log('permissionset: ', this.permissions)
+      console.log('permissionset: ', this.permissions);
     });
   }
 

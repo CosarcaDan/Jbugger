@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {SelectItem} from "primeng/api";
-import {Router} from "@angular/router";
-import {BugServiceService} from "../../service/bug/bug-service.service";
-import {Bug} from "../../models/bug";
+import {SelectItem} from 'primeng/api';
+import {Router} from '@angular/router';
+import {BugServiceService} from '../../service/bug/bug-service.service';
+import {Bug} from '../../models/bug';
 
 @Component({
   selector: 'app-get-bugs',
@@ -138,7 +138,7 @@ export class GetBugsComponent implements OnInit {
 
       for (var bug of this.bugs) {
         var date = new Date(bug.targetDate);
-        bug.targetDate = date
+        bug.targetDate = date;
       }
     });
   }
@@ -152,7 +152,7 @@ export class GetBugsComponent implements OnInit {
 
       for (var bug of this.bugs) {
         var date = new Date(bug.targetDate);
-        bug.targetDate = date
+        bug.targetDate = date;
       }
     })
   }
@@ -170,8 +170,13 @@ export class GetBugsComponent implements OnInit {
   delete(id: number) {
     console.log('deleted' + id);
     this.bugServices.deleteBugAfterId(id).subscribe(
-      (data:{}) =>{alert('Bug closed Complete')},
-      (error1 => {console.log('Error', error1); alert('update failed :' + error1.error.detailMessage)}));
+      (data: {}) => {
+        alert('Bug closed Complete');
+      },
+      (error1 => {
+        console.log('Error', error1);
+        alert('update failed :' + error1.error.detailMessage);
+      }));
     this.displayDialog = false;
     this.search();
   }
@@ -180,9 +185,12 @@ export class GetBugsComponent implements OnInit {
     console.log('saved');
     this.bugServices.saveEditBug(this.bug).subscribe(
       (data: {}) => {
-        alert("Edit Bugs Complete")
+        alert('Edit Bugs Complete');
       },
-      (error2 => {console.log('Error', error2); alert('update failed :' + error2.error.detailMessage)})
+      (error2 => {
+        console.log('Error', error2);
+        alert('update failed :' + error2.error.detailMessage);
+      })
     );
 
     this.displayDialog = false;

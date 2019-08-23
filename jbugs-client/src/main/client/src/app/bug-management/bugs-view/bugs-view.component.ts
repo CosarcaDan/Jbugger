@@ -1,14 +1,14 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {Bug, BugService} from "../services/bug.service";
-import {FormControl} from "@angular/forms";
-import {PaginationInstance} from "ngx-pagination";
-import {Router} from "@angular/router";
-import {ExcelService} from "../services/excel.service";
-import {FilterPipe} from "../../filter.pipe";
-import {ToastrService} from "ngx-toastr";
-import {UserService} from "../../user-management/services/user.service";
-import {UtilService} from "../../shared/util.service";
-import {Error} from "../../communication/communication.component";
+import {Bug, BugService} from '../services/bug.service';
+import {FormControl} from '@angular/forms';
+import {PaginationInstance} from 'ngx-pagination';
+import {Router} from '@angular/router';
+import {ExcelService} from '../services/excel.service';
+import {FilterPipe} from '../../filter.pipe';
+import {ToastrService} from 'ngx-toastr';
+import {UserService} from '../../user-management/services/user.service';
+import {UtilService} from '../../shared/util.service';
+import {Error} from '../../communication/communication.component';
 
 @Component({
     selector: 'app-bugs-view',
@@ -231,11 +231,11 @@ export class BugsViewComponent implements OnInit {
             case 'id' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.id - bug2.id;
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.id - bug1.id;
                     });
                 }
@@ -249,11 +249,11 @@ export class BugsViewComponent implements OnInit {
             case 'description' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.description.toLowerCase().localeCompare(bug2.description.toLowerCase());
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.description.toLowerCase().localeCompare(bug1.description.toLowerCase());
                     });
                 }
@@ -267,11 +267,11 @@ export class BugsViewComponent implements OnInit {
             case 'fixedVersion' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.fixedVersion.toLowerCase().localeCompare(bug2.fixedVersion.toLowerCase());
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.fixedVersion.toLowerCase().localeCompare(bug1.fixedVersion.toLowerCase());
                     });
                 }
@@ -285,11 +285,11 @@ export class BugsViewComponent implements OnInit {
             case 'severity' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.severity.toLowerCase().localeCompare(bug2.severity.toLowerCase());
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.severity.toLowerCase().localeCompare(bug1.severity.toLowerCase());
                     });
                 }
@@ -303,11 +303,11 @@ export class BugsViewComponent implements OnInit {
             case 'status' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.status.toLowerCase().localeCompare(bug2.status.toLowerCase());
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.status.toLowerCase().localeCompare(bug1.status.toLowerCase());
                     });
                 }
@@ -321,11 +321,11 @@ export class BugsViewComponent implements OnInit {
             case 'targetDate' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.targetDate.toLowerCase().localeCompare(bug2.targetDate.toLowerCase());
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.targetDate.toLowerCase().localeCompare(bug1.targetDate.toLowerCase());
                     });
                 }
@@ -339,11 +339,11 @@ export class BugsViewComponent implements OnInit {
             case 'title' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.title.toLowerCase().localeCompare(bug2.title.toLowerCase());
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.title.toLowerCase().localeCompare(bug1.title.toLowerCase());
                     });
                 }
@@ -357,11 +357,11 @@ export class BugsViewComponent implements OnInit {
             case 'version' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.version.toLowerCase().localeCompare(bug2.version.toLowerCase());
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.version.toLowerCase().localeCompare(bug1.version.toLowerCase());
                     });
                 }
@@ -375,11 +375,11 @@ export class BugsViewComponent implements OnInit {
             case 'assignedTo' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.assignedTo.username.toLowerCase().localeCompare(bug2.assignedTo.username.toLowerCase());
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.assignedTo.username.toLowerCase().localeCompare(bug1.assignedTo.username.toLowerCase());
                     });
                 }
@@ -393,11 +393,11 @@ export class BugsViewComponent implements OnInit {
             case 'createdBy' : {
                 this.askedForSort[sortBy] = true;
                 if (this.ascendingSort[sortBy]) {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug1.createdBy.username.toLowerCase().localeCompare(bug2.createdBy.username.toLowerCase());
                     });
                 } else {
-                    toSortBugList.sort(function (bug1, bug2) {
+                    toSortBugList.sort(function(bug1, bug2) {
                         return bug2.createdBy.username.toLowerCase().localeCompare(bug1.createdBy.username.toLowerCase());
                     });
                 }

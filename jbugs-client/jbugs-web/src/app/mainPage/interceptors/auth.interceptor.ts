@@ -26,8 +26,8 @@ export class AuthInterceptor implements HttpInterceptor {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Access-Control-Expose-Headers': 'Authorization, Content-Disposition',
           }
-        });}
-      else{
+        });
+      } else {
         req = req.clone({
           setHeaders: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -36,7 +36,8 @@ export class AuthInterceptor implements HttpInterceptor {
             'Access-Control-Expose-Headers': 'Authorization',
           }
         });
-      }}
+      }
+    }
     console.log('setting auth token', `Bearer ${sessionStorage.getItem('token')}`);
     return next.handle(req);
   }

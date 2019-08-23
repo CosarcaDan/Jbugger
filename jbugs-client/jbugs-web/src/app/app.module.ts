@@ -4,13 +4,13 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './mainPage/login/login.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DashboardComponent} from './mainPage/dashboard/dashboard.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {PermissionManagementModule} from "./mainPage/permission-management/permission-management.module";
-import {AuthInterceptor} from "./mainPage/interceptors/auth.interceptor";
-import {MenubarModule} from "primeng/menubar";
-import {ChartModule} from "primeng/chart";
+import {PermissionManagementModule} from './mainPage/permission-management/permission-management.module';
+import {AuthInterceptor} from './mainPage/interceptors/auth.interceptor';
+import {MenubarModule} from 'primeng/menubar';
+import {ChartModule} from 'primeng/chart';
 import {
   ButtonModule,
   CalendarModule,
@@ -23,14 +23,15 @@ import {
   SidebarModule,
   SliderModule,
   TabViewModule
-} from "primeng/primeng";
+} from 'primeng/primeng';
 import {AddBugComponent} from './mainPage/bugs-management/add-bug/add-bug.component';
 import {GetBugsComponent} from './mainPage/bugs-management/get-bugs/get-bugs.component';
-import {TableModule} from "primeng/table";
-import {ToastModule} from "primeng/toast";
-import {GetBugsModule} from "./mainPage/bugs-management/get-bugs/get-bugs.module";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {TableModule} from 'primeng/table';
+import {ToastModule} from 'primeng/toast';
+import {GetBugsModule} from './mainPage/bugs-management/get-bugs/get-bugs.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GetUserComponent} from './mainPage/user-management/get-user/get-user.component';
+import {AddUserComponent} from './user-management/add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import {GetUserComponent} from './mainPage/user-management/get-user/get-user.com
     AddBugComponent,
     GetBugsComponent,
     GetUserComponent,
+    AddUserComponent
 
   ],
   imports: [
@@ -76,4 +78,5 @@ import {GetUserComponent} from './mainPage/user-management/get-user/get-user.com
   }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

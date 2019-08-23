@@ -57,18 +57,18 @@ public class TestServlet extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
-            try{
-                BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "LOW", "fntl", "fntl");
-                BugDto bugDto2 = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "HIGH", "fntsl", "fntl");
-                BugDto bugDto3 = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "URGENT", "fntl", "fntsl");
-                BugDto bugDto4 = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "LOW", "fntsl", "fntsl");
-                bugService.addBug(bugDto);
-                bugService.addBug(bugDto2);
-                bugService.addBug(bugDto3);
-                bugService.addBug(bugDto4);
+        try {
+            BugDto bugDto = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "LOW", "fntl", "fntl");
+            BugDto bugDto2 = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "HIGH", "fntsl", "fntl");
+            BugDto bugDto3 = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "URGENT", "fntl", "fntsl");
+            BugDto bugDto4 = new BugDto(0, "title1", "desc1", "v1", new Timestamp(System.currentTimeMillis()), "NEW", "v14", "LOW", "fntsl", "fntsl");
+            bugService.addBug(bugDto);
+            bugService.addBug(bugDto2);
+            bugService.addBug(bugDto3);
+            bugService.addBug(bugDto4);
 
 //                UserDto userDto = new UserDto(1, 1, "Fnt", "Lnt", "et@msggroup.com", "+40712345678", "pt", "unt", true);
 ////                addUserDefault();
@@ -107,10 +107,9 @@ public class TestServlet extends HttpServlet {
 //                res.forEach(p -> out.println("<p> Not in Role:" + p.getId() + "</p>"));
 
 
-
-            } catch (BusinessException e) {
-                System.out.println(e.getMessage()+e.getErrorCode());
-            }
+        } catch (BusinessException e) {
+            System.out.println(e.getMessage() + e.getErrorCode());
+        }
         //userService.defaultTest();
         //printRaport(out);
         //Integer result = bugService.deleteOldBugs();
@@ -123,8 +122,6 @@ public class TestServlet extends HttpServlet {
         out.println("<h1>" + "" + "</h1> <br>");
         //out.println("<h1>" + userDto.getCreatedBy().size() + "</h1>");
     }
-
-
 
 
     private UserDto addUser(UserDto userDto) throws IOException, BusinessException {
@@ -159,7 +156,7 @@ public class TestServlet extends HttpServlet {
 
     private void addNotification(Integer userId) throws BusinessException {
         UserDto userDto = userService.findUser(userId);
-        NotificationDto notificationDto = new NotificationDto(0,new Timestamp(Calendar.getInstance().getTimeInMillis()),"Hello","myType","noFound",userDto);
+        NotificationDto notificationDto = new NotificationDto(0, new Timestamp(Calendar.getInstance().getTimeInMillis()), "Hello", "myType", "noFound", userDto);
         try {
             notificationService.addNotification(notificationDto);
         } catch (IOException e) {

@@ -44,9 +44,8 @@ public class BugService {
 
     public BugDto addBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
-        User creator = userRepo.findeUserAfterUsername(bugDto.getCreated());
-        User assigned = userRepo.findeUserAfterUsername(bugDto.getAssigned());
-        bugDto.setStatus("NEW");
+        User creator = userRepo.findUser(Integer.parseInt(bugDto.getCreated()));
+        User assigned = userRepo.findUser(Integer.parseInt(bugDto.getAssigned()));
         Bug bug = BugDtoMapping.bugDtoToBug(bugDto, creator, assigned);
         return BugDtoMapping.bugToBugDtoComplet(bugRepo.addBug(bug));
     }

@@ -28,6 +28,19 @@ public class BugDtoMapping {
         return bug;
     }
 
+    public static Bug bugDtoToBugIncomplet(BugDto bugDto) {
+        Bug bug = new Bug();
+        bug.setId(bugDto.getId());
+        bug.setTitle(bugDto.getTitle());
+        bug.setDescription(bugDto.getDescription());
+        bug.setVersion(bugDto.getVersion());
+        bug.setTargetDate(bugDto.getTargetDate());
+        bug.setStatus(Bug.Status.valueOf(bugDto.getStatus()));
+        bug.setFixedVersion(bugDto.getFixedVersion());
+        bug.setSeverity(Bug.Severity.valueOf(bugDto.getSeverity()));
+        return bug;
+    }
+
     public static BugDto bugToBugDtoComplet(Bug bug) {
         BugDto bugDto = new BugDto();
         bugDto.setId(bug.getId());

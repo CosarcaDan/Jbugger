@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
       this.token = data;
       console.log(this.token.value);
       sessionStorage.setItem('token', this.token.value);
+      sessionStorage.setItem('username', this.username);
       this.router.navigate(['/dashboard']);
     }, (error1: {}) => {
       // @ts-ignore
@@ -40,8 +41,6 @@ export class LoginComponent implements OnInit {
       console.log('Error', this.backendError);
       alert(this.backendError.detailMessage);
     });
-
-
   }
 
 

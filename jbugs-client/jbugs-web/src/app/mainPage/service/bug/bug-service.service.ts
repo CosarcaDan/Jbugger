@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
-import {Bug} from "../../models/bug";
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Bug} from '../../models/bug';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,15 @@ export class BugServiceService {
     })
   };
 
+  public add(bug, attachment) {
+    console.log(bug);
+    let body = new HttpParams()
+      .set('bug', JSON.stringify(bug))
+      .set('attachment', JSON.stringify(attachment));
+    console.log('body', body.get('bug'));
+    console.log('body', body.get('attachment'));
+    this.http.post(this.base_url + '/add', body).subscribe();
+  }
 
   constructor(private http: HttpClient) {
   }
@@ -41,8 +50,8 @@ export class BugServiceService {
     return this.http.post<any>(this.base_url + '/getPDF', bug).pipe(map(this.extractData));
   }
 
-  public saveEditBug(bug:Bug){
-    return this.http.put(this.base_url + '/' + bug.id + '/' + 'edit',bug).pipe(map(this.extractData));
+  public saveEditBug(bug: Bug) {
+    return this.http.put(this.base_url + '/' + bug.id + '/' + 'edit', bug).pipe(map(this.extractData));
   }
 
 

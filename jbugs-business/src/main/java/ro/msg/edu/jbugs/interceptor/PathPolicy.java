@@ -12,7 +12,7 @@ public class PathPolicy {
     public PathPolicy() {
         this.pathPermissions = new HashMap<>();
         pathPermissions.put("^users/login$", new ArrayList<>());
-        pathPermissions.put("^bugs$", new ArrayList<>());
+        pathPermissions.put("^bugs.*", new ArrayList<>());
         pathPermissions.put("^files/upload$", new ArrayList<>());
         pathPermissions.put("^files/download.*", new ArrayList<>());
 

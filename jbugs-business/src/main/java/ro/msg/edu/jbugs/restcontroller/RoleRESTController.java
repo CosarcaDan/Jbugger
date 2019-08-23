@@ -66,7 +66,6 @@ public class RoleRESTController {
             String response = gson.toJson("All OK!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
-
             String error = gson.toJson(e);
             return Response.status(500).entity(error).build();
         }

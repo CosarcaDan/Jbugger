@@ -24,6 +24,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
 
     @EJB
     PathPolicy pathPolicy;
+
     @Override
     public void filter(ContainerRequestContext ctx) {
 
