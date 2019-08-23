@@ -172,17 +172,21 @@ export class GetBugsComponent implements OnInit {
     this.bugServices.deleteBugAfterId(id).subscribe(
       (data:{}) =>{alert('Bug closed Complete')},
       (error1 => {console.log('Error', error1); alert('update failed :' + error1.error.detailMessage)}));
+    this.displayDialog = false;
+    this.search();
   }
 
   save() {
     console.log('saved');
     this.bugServices.saveEditBug(this.bug).subscribe(
-      (data:{}) => {alert("Edit User Complete")},
+      (data: {}) => {
+        alert("Edit Bugs Complete")
+      },
       (error2 => {console.log('Error', error2); alert('update failed :' + error2.error.detailMessage)})
-    )
+    );
 
-
-
+    this.displayDialog = false;
+    this.search();
   }
 
   onRowSelect(event) {
