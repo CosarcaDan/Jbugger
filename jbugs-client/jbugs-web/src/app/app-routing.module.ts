@@ -23,16 +23,16 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [{
       path: '',
-      redirectTo: "bugsAdd",
+      redirectTo: "bugs",
       pathMatch: 'full',
     },
       {
-        path: 'bugsAdd',
-        component: AddBugComponent
-      },
-      {
         path: 'bugs',
         component: GetBugsComponent
+      },
+      {
+        path: 'bugsAdd',
+        component: AddBugComponent
       },
       {
         path: 'users',
@@ -41,7 +41,7 @@ const routes: Routes = [
       {
         path: 'permissions/add',
         component: AddPermissionComponent
-      },
+      }
     ]
   }
 ];

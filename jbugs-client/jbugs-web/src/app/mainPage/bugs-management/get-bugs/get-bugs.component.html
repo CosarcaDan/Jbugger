@@ -97,10 +97,19 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="statusEdit">Status</label>
+        <label >Status</label>
       </div>
-      <div class="ui-g-8">
-        <input pInputText id="statusEdit" [(ngModel)]="bug.status"/>
+      <div class="ui-g-8" [ngSwitch]="bug.status" >
+        <p-dropdown id="statusEditNEW"  appendTo="body"  [options]="statusNew" [style]="{'width':'100%'}" *ngSwitchCase="'NEW'"
+                    [(ngModel)]="bug.status"></p-dropdown>
+        <p-dropdown id="statusEditINPROGRESS"  appendTo="body"  [options]="statusInProgress" [style]="{'width':'100%'}" *ngSwitchCase="'IN_PROGRESS'"
+                    [(ngModel)]="bug.status"></p-dropdown>
+        <p-dropdown id="statusEditINFONEEDED"  appendTo="body"  [options]="statusInfoNeeded" [style]="{'width':'100%'}" *ngSwitchCase="'INFONEEDED'"
+                    [(ngModel)]="bug.status"></p-dropdown>
+        <p-dropdown id="statusEditREJECTED"  appendTo="body"  [options]="statusRejected" [style]="{'width':'100%'}" *ngSwitchCase="'REJECTED'"
+                    [(ngModel)]="bug.status"></p-dropdown>
+        <p-dropdown id="statusEditFIXED"  appendTo="body"  [options]="statusFixed" [style]="{'width':'100%'}" *ngSwitchCase="'FIXED'"
+                    [(ngModel)]="bug.status"></p-dropdown>
       </div>
     </div>
     <div class="ui-g-12">

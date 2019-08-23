@@ -14,6 +14,6 @@ public class BaseRESTController extends ResourceConfig {
         register(MultiPartFeature.class);
         register(JacksonJsonProvider.class);
         register(CorsFilter.class);
-        register(RestrictedOperationsRequestFilter.class);
+//        register(RestrictedOperationsRequestFilter.class);
     }
 }
