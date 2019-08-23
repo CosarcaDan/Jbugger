@@ -124,7 +124,7 @@ export class BugsViewComponent implements OnInit {
                 username: '',
                 password: ''
             }
-        };
+        }
     }
 
     getErrorMessage(selectedBug) {

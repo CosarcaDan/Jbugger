@@ -158,10 +158,4 @@ public class BugRESTController {
         }
     }
 
-
-
-
-
-
-
 }
