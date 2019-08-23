@@ -36,6 +36,10 @@ public class PathPolicy {
 
         perissions.clear();
         perissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^bugs/.*", new ArrayList<>(perissions));
+
+        perissions.clear();
+        perissions.add("PERMISSION_MANAGEMENT");
         pathPermissions.put("^roles.*", new ArrayList<>(perissions));
 
     }
