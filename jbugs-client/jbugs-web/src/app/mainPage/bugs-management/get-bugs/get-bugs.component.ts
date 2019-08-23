@@ -126,7 +126,9 @@ export class GetBugsComponent implements OnInit {
 
   delete(id:number) {
     console.log('deleted' + id);
-    this.bugServices.deleteBugAfterId(id).subscribe((data:{}) =>{}, (error1 => {console.log('Error', error1);}));
+    this.bugServices.deleteBugAfterId(id).subscribe(
+      (data:{}) =>{},
+      (error1 => {console.log('Error', error1);}));
   }
 
   save() {
