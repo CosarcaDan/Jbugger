@@ -1,4 +1,23 @@
-body {
+form {
   padding: 20px;
   max-width: 400px;
+
+  position: absolute;
+  top: 100px;
+  left: 37%;
 }
+
+label {
+  font-weight: bold;
+  text-align: left;
+  float: left;
+}
+
+button {
+  float: right;
+}
+
+
+
+
+

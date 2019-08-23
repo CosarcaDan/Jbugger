@@ -44,16 +44,7 @@ public class FileRESTController {
         final File file = new File(fileprefix + filename);
         System.out.println(fileprefix + filename);
 
-        StreamingOutput stream = new StreamingOutput() {
-            @Override
-            public void write(OutputStream output) throws IOException {
-                try {
-                    output.write(IOUtils.toByteArray(new FileInputStream(file)));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+        StreamingOutput stream = output -> output.write(IOUtils.toByteArray(new FileInputStream(file)));
 
         return Response.ok(stream, MediaType.APPLICATION_OCTET_STREAM)
                 .header("Content-Disposition", "inline; filename=\"" + file.getName() + "\"")
