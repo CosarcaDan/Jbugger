@@ -1,9 +1,8 @@
-<p>remove-permission works!</p>
 <div class="card">
   <div class="card-body">
     <form [formGroup]="angForm" novalidate>
       <div class="form-group">
-        <label class="col-md-4">Role id: </label>
+        <label class="col-md-4">Role: </label>
         <select class="form-control" formControlName="roles" [(ngModel)]="selectedRole" #role
                 (change)="getNewPermissions(role.value)">
           <option *ngFor="let opt of roles" [value]="opt.id">{{opt.type}}</option>
