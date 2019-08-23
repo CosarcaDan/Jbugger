@@ -6,7 +6,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 import ro.msg.edu.jbugs.interceptor.RestrictedOperationsRequestFilter;
 
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 
 @ApplicationPath("/services")
 public class BaseRESTController extends ResourceConfig {

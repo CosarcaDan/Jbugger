@@ -120,14 +120,13 @@ public class BugRESTController {
 
     @POST
     @Path("/getPDF")
-    public Response getPDF(BugDto bugDto)
-    {
+    public Response getPDF(BugDto bugDto) {
         Gson gson = new GsonBuilder().create();
         try {
             String pdf = bugService.makePDF(bugDto);
             String response = gson.toJson(pdf);
             return Response.status(200).entity(response).build();
-        }  catch (DocumentException e) {
+        } catch (DocumentException e) {
             String responseError = gson.toJson(e);
             return Response.status(500).entity(responseError).build();
         } catch (IOException e) {
@@ -135,11 +134,5 @@ public class BugRESTController {
             return Response.status(500).entity(responseError).build();
         }
     }
-
-
-
-
-
-
 
 }
