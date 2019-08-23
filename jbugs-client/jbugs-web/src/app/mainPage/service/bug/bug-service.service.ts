@@ -33,14 +33,15 @@ export class BugServiceService {
   public getBugsAfterSearchCriteria(bugCriteria: Bug) {
     return this.http.post<any>(this.base_url, bugCriteria).pipe(map(this.extractData));
   }
+  public deleteBugAfterId(id: number) {
+    return this.http.delete<any>(this.base_url + '/' + id).pipe(map(this.extractData));
+  }
 
   public exportInPdf(bug: Bug) {
     return this.http.post<any>(this.base_url + '/getPDF', bug).pipe(map(this.extractData));
   }
 
-  public deleteBugAfterId(id: number) {
-    return this.http.delete<any>(this.base_url + "/" + id).pipe(map(this.extractData));
-  }
+
 
   public saveEditBug(bug:Bug){
     return this.http.put(this.base_url + '/' + bug.id + '/' + 'edit',bug).pipe(map(this.extractData));
