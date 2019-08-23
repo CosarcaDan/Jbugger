@@ -28,7 +28,6 @@ export class AddUserComponent implements OnInit {
   email: string;
   selectedRoles: Role[] = [];
   role: Role;
-
   roles: Array<Role>;
 
   constructor(private router: Router, private userService: UserService,
@@ -57,7 +56,6 @@ export class AddUserComponent implements OnInit {
       for (let role of this.roles) {
         role.checked = false;
       }
-      console.log('roleset: ', this.roles);
     });
   }
 

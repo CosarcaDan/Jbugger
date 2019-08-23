@@ -21,12 +21,19 @@ export class UserService {
   }
 
   public add(user, roles) {
-    console.log(user, roles);
     let body = new HttpParams()
       .set('user', JSON.stringify(user))
       .set('roles', JSON.stringify(roles));
     console.log('body', body.get('user'));
     this.http.post(this.base_url + '/add', body).subscribe();
+  }
+
+  public edit(user, roles) {
+    console.log(user, roles);
+    let body = new HttpParams()
+      .set('user', JSON.stringify(user))
+      .set('roles', JSON.stringify(roles));
+    this.http.post(this.base_url + '/' + user.id + '/edit', body).pipe(map(this.extractData));
   }
 
   public getUsers(): Observable<any> {

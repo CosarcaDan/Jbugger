@@ -32,6 +32,7 @@ import {GetBugsModule} from './mainPage/bugs-management/get-bugs/get-bugs.module
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GetUserComponent} from './mainPage/user-management/get-user/get-user.component';
 import {AddUserComponent} from './user-management/add-user/add-user.component';
+import {EditUserComponent} from './user-management/edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {AddUserComponent} from './user-management/add-user/add-user.component';
     AddBugComponent,
     GetBugsComponent,
     GetUserComponent,
-    AddUserComponent
+    AddUserComponent,
+    EditUserComponent
 
   ],
   imports: [
