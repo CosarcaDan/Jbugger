@@ -37,13 +37,13 @@
                (input)="dt.filter($event.target.value, col.field, 'contains')">
         <!--          calendar-->
         <p-calendar appendTo="body" *ngSwitchCase="'targetDate'" [style]="{'width':'200%'}"
-                    (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"></p-calendar>
+                    (input)="dt.filter($event.target.value, col.field, 'contains')"></p-calendar>
 
         <p-multiSelect appendTo="body" *ngSwitchCase="'status'" [options]="status" [style]="{'width':'100%'}"
                     (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
 
         <input *ngSwitchCase="'fixedVersion'" pInputText size="15" type="text"
-               (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
+               (input)="dt.filter($event.target.value, col.field, 'contains')">
         <p-multiSelect appendTo="body" *ngSwitchCase="'severity'" size="15" [options]="severity"
                        defaultLabel="All severities"
                        (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>

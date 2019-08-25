@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import {UserLogin} from "../../models/userLogin";
-import {Observable} from "rxjs";
-import {Token} from "../../models/token";
-import {map, timeout} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 
@@ -43,6 +40,15 @@ export class AuthService {
       console.log('Error', error1);
     });
   }
+  public logout() {
+    console.log('un: ',this.getUsername());
+    this.http.post<any>('http://localhost:8080/jbugs/services/users/logout', {username: this.getUsername()}).subscribe((data) => {
+      sessionStorage.clear()
+      this.router.navigate(['login']);
+    }, (error1) => {
+      console.log('Error', error1.error);
+    });
+  }
   public renew(username: string) {
     this.http.post<any>('http://localhost:8080/jbugs/services/users/renew', {username: username}).subscribe((data) => {
       console.log(data);
@@ -60,7 +66,6 @@ export class AuthService {
       return data.map(p=>p.type);
     });
   }
-
   public hasPermission(permission:string){
     // console.log('isSet: ',this.cachedPermissions,'last:',this.lastPermissionUpdate,'now:',Date.now(),'reqSent:',this.requestSent);
     if((this.cachedPermissions==null || this.lastPermissionUpdate+60000<Date.now())&&!this.requestSent)
@@ -92,10 +97,10 @@ export class AuthService {
    * Input is assumed to be a base64/base64url encoded UTF-8 string.
    * Returned result is a JavaScript (UCS-2) string.
    */
-  base64Decode(data:string){
-    var dst = "";
-    var i = 0, a, b, c, d, z;
-    var len = data.length;
+  private base64Decode(data:string){
+    let dst = "";
+    let i = 0, a, b, c, d, z;
+    let len = data.length;
 
     for(; i < len - 3;i += 4){
       a = this.base64_charIndex(data.charAt(i+0));
@@ -114,12 +119,12 @@ export class AuthService {
   }
 
   // decode token
-  decodeToken(token:string){
-    var parts = token.split('.');
+  private decodeToken(token:string){
+    let parts = token.split('.');
     if(parts.length !== 3){
       throw new Error('JWT must have 3 parts');
     }
-    var decoded = this.base64Decode(parts[1]);
+    let decoded = this.base64Decode(parts[1]);
     if(decoded[decoded.length-1]!='}')
       decoded+='}';
     if(!decoded){
@@ -128,22 +133,22 @@ export class AuthService {
     return JSON.parse(decoded);
   }
 
-  getTokenExpirationDate(token:string) {
-    var decoded: any;
+  private getTokenExpirationDate(token:string) {
+    let decoded: any;
     decoded = this.decodeToken(token);
 
     if(typeof decoded.exp === "undefined") {
       return null;
     }
 
-    var date = new Date(0); // The 0 here is the key, which sets the date to the epoch
+    let date = new Date(0); // The 0 here is the key, which sets the date to the epoch
     date.setUTCSeconds(decoded.exp);
 
     return date;
   }
 
-  isTokenExpired(token:string, offsetSeconds?:number) {
-    var date = this.getTokenExpirationDate(token);
+  private isTokenExpired(token:string, offsetSeconds?:number) {
+    let date = this.getTokenExpirationDate(token);
     offsetSeconds = offsetSeconds || 0;
     if (date === null) {
       return false;
@@ -153,13 +158,5 @@ export class AuthService {
     return !(date.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)));
   }
 
-  logout() {
-    console.log('un: ',this.getUsername());
-    this.http.post<any>('http://localhost:8080/jbugs/services/users/logout', {username: this.getUsername()}).subscribe((data) => {
-      sessionStorage.clear()
-      this.router.navigate(['login']);
-    }, (error1) => {
-      console.log('Error', error1.error);
-    });
-  }
+
 }

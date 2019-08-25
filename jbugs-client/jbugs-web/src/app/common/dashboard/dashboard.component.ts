@@ -12,8 +12,8 @@ export class DashboardComponent implements OnInit {
 
   items: MenuItem[];
   display;
-  countries: any[];
-  selectedCountry: any;
+  languages: any[];
+  selectedLanguage: any;
 
   constructor(private router:Router,private authService:AuthService) {
   }
@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
       },
       {
         label: 'Permission management',
-        icon: 'pi pi-fw pi-star',
+        icon: 'pi pi-fw pi-key',
         visible:this.authService.hasPermission("PERMISSION_MANAGEMENT"),
         items: [
           {
@@ -51,9 +51,9 @@ export class DashboardComponent implements OnInit {
       }
     ];
 
-    this.countries = [
-      {label: 'Romanian', value: 'Romanian', icon: 'fa fa-fw '},
-      {label: 'English', value: 'English', icon: 'fa fa-fw'},
+    this.languages = [
+      {label: 'Romanian', value: 'Romanian', icon: 'flag-icon flag-icon-ro'},
+      {label: 'English', value: 'English', icon: 'flag-icon flag-icon-gb'},
     ];
   }
   public goto(link)

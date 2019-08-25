@@ -32,6 +32,8 @@ import {BugManagementModule} from './feature/bugs-management/bug-management.modu
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AddUserComponent} from './feature/user-management/add-user/add-user.component';
 import {UserManagementModule} from "./feature/user-management/user-management.module";
+import {AngularFontAwesomeModule} from "angular-font-awesome";
+import {NgxFlagIconCssModule} from "ngx-flag-icon-css";
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import {UserManagementModule} from "./feature/user-management/user-management.mo
     BugManagementModule,
     SelectButtonModule,
     DialogModule,
-    UserManagementModule
+    UserManagementModule,
+    AngularFontAwesomeModule,
+    NgxFlagIconCssModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

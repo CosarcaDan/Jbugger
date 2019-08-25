@@ -118,7 +118,7 @@ export class AddBugComponent implements OnInit {
     }
   }
 
-  private prepareSave(): any {
+  private prepareSave(): FormData {
     let input = new FormData();
     input.append('file', this.myAtt[0]);
     return input;
