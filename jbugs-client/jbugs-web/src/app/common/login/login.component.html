@@ -1,0 +1,52 @@
+<div class="bckg">
+  <img class="logo" src="../../../assets/e33a8523-4b75-48bd-8ba3-a0d35bc3cde1_200x200.png" height="400" width="400"/>
+  <form [formGroup]="form" (keyup.enter)="login()">
+
+  <div class="form-group">
+    <label for="username">Username </label>
+    <input type="text"
+           formControlName="username"
+           class="form-control"
+           required
+           id="username">
+    <div class="alert alert-danger"
+         *ngIf="form.get('username').touched && form.get('username').invalid">
+      <div *ngIf="form.get('username').errors.required">
+        Username is required!
+      </div>
+      <div *ngIf="form.get('username').errors.cannotContainSpace">
+        Username cannot contain any space!
+      </div>
+      <div *ngIf="form.get('username').errors.cannotContainUpperCaseLetter">
+        Username cannot contain any upper case letter!
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password </label>
+    <input type="password"
+           class="form-control"
+           id="password"
+           formControlName="password"
+           required
+    >
+    <div class="alert alert-danger"
+         *ngIf="form.get('password').touched && form.get('password').invalid">
+      <div *ngIf="form.get('password').errors.required">
+        Password is required!
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary"
+          type="button"
+          (click)="login()"
+
+          [disabled]="form.invalid">Login
+  </button>
+</form>
+</div>
+
+
+<!--<button class="btn btn-primary" type="button" (click)="getUseres()">Greet</button>-->
