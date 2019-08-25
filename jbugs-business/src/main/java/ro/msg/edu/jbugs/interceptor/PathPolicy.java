@@ -12,7 +12,6 @@ public class PathPolicy {
     public PathPolicy() {
         this.pathPermissions = new HashMap<>();
         pathPermissions.put("^users/log.*", new ArrayList<>());
-        pathPermissions.put("^bugs.*", new ArrayList<>());
         pathPermissions.put("^files/upload$", new ArrayList<>());
         pathPermissions.put("^files/download.*", new ArrayList<>());
 
@@ -31,14 +30,17 @@ public class PathPolicy {
         pathPermissions.put("^permissions.*", new ArrayList<>(permissions));
 
         permissions.clear();
-        permissions.add("PERMISSION_MANAGEMENT"); //change CloseBug_MGMT
-        pathPermissions.put("^bugs/[1234567890]+$", new ArrayList<>(permissions));
-
-        pathPermissions.put("^bugs/[1234567890]+/edit", new ArrayList<>(permissions)); // tobe bugMgmt
+        permissions.add("BUG_MANAGEMENT");
+        pathPermissions.put("^bugs", new ArrayList<>());
 
         permissions.clear();
-        permissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^bugs/.*", new ArrayList<>(permissions));
+        permissions.add("BUG_MANAGEMENT");
+        pathPermissions.put("^bugs/[1234567890]+/.*", new ArrayList<>());
+
+        permissions.clear();
+        permissions.add("BUG_CLOSE");
+        pathPermissions.put("^bugs/[1234567890]+", new ArrayList<>(permissions));
+
 
         permissions.clear();
         permissions.add("PERMISSION_MANAGEMENT");
