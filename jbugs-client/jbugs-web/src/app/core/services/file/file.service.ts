@@ -12,11 +12,7 @@ export class FileService {
   }
 
   public uploadFile(file) {
-    this.http.post(this.base_url + '/upload', file).pipe(map(this.extractData));
+    this.http.post(this.base_url + '/upload', file);
   }
 
-  private extractData(res: Response) {
-    let body = res;
-    return body || {};
-  }
 }

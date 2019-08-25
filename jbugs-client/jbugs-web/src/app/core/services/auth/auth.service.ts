@@ -15,6 +15,7 @@ export class AuthService {
 
   private cachedPermissions:string[]=null;
   private lastPermissionUpdate=Date.now();
+  private requestSent:boolean=false;
 
   getToken()
   {
@@ -51,16 +52,20 @@ export class AuthService {
     });
   }
   public getPermissions(){
+    console.log('DING!')
     this.http.post<any>('http://localhost:8080/jbugs/services/users/permissions', {username:this.getUsername()}).subscribe((data) => {
       sessionStorage.setItem('permissions',JSON.stringify(data.map(p=>p.type)));
       this.cachedPermissions=data.map(p=>p.type);
+      this.requestSent=false;
       return data.map(p=>p.type);
     });
   }
 
   public hasPermission(permission:string){
-    if(this.cachedPermissions==null || this.lastPermissionUpdate+60000<this.lastPermissionUpdate)
+    // console.log('isSet: ',this.cachedPermissions,'last:',this.lastPermissionUpdate,'now:',Date.now(),'reqSent:',this.requestSent);
+    if((this.cachedPermissions==null || this.lastPermissionUpdate+60000<Date.now())&&!this.requestSent)
     {
+      this.requestSent=true;
       this.getPermissions();
       this.lastPermissionUpdate=Date.now();
     }

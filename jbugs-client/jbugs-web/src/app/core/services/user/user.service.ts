@@ -5,6 +5,7 @@ import {UserLogin} from '../../models/userLogin';
 
 import {map} from 'rxjs/operators';
 import {Token} from '../../models/token';
+import {User} from "../../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,7 @@ export class UserService {
   }
 
   public login(user: UserLogin): Observable<Token> {
-    // @ts-ignore
-    return this.http.post<any>(this.base_url + '/login', user).pipe(map(this.extractData));
+    return this.http.post<Token>(this.base_url + '/login', user);
   }
 
   public add(user, roles) {
@@ -29,12 +29,8 @@ export class UserService {
     this.http.post(this.base_url + '/add', body).subscribe();
   }
 
-  public getUsers(): Observable<any> {
-    return this.http.get(this.base_url).pipe(map(this.extractData));
+  public getUsers(): Observable<Array<User>> {
+    return this.http.get<Array<User>>(this.base_url);
   }
 
-  private extractData(res: Response) {
-    let body = res;
-    return body || {};
-  }
 }

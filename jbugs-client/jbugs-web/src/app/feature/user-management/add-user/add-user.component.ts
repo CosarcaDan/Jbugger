@@ -8,6 +8,7 @@ import {UserService} from '../../../core/services/user/user.service';
 import {RoleService} from '../../../core/services/role/role.service';
 import {Checkedrole} from '../../../core/models/checkedrole';
 import {User} from "../../../core/models/user";
+import {Role} from "../../../core/models/role";
 
 
 @Component({
@@ -26,10 +27,10 @@ export class AddUserComponent implements OnInit {
   lastname: string;
   mobileNumber: string;
   email: string;
-  selectedRoles: Checkedrole[] = [];
-  role: Checkedrole;
+  selectedRoles: Role[] = [];
+  role: Role;
 
-  roles: Array<Checkedrole>;
+  roles: Array<Role>;
 
   constructor(private router: Router, private userService: UserService,
               private roleService: RoleService, private fb: FormBuilder) {
@@ -47,10 +48,9 @@ export class AddUserComponent implements OnInit {
   }
 
   getRoles() {
-    this.roles = new Array<Checkedrole>();
+    this.roles = new Array<Role>();
     this.roleService.getRoles().subscribe((data) => {
       console.log('data:', data);
-      // @ts-ignore
       for (let dataKey of data) {
         this.roles.push(dataKey);
       }

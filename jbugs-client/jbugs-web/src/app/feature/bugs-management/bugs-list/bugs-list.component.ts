@@ -32,7 +32,7 @@ export class BugsListComponent implements OnInit {
 
   severity: SelectItem[];
 
-  bugs: Bug[];
+  bugs: Array<Bug>;
 
   newBug: boolean;
 
@@ -134,9 +134,8 @@ export class BugsListComponent implements OnInit {
 
   getBugs() {
     this.bugs = [];
-    this.bugServices.getBugs().subscribe((data: {}) => {
+    this.bugServices.getBugs().subscribe((data) => {
       console.log(data);
-      // @ts-ignore
       this.bugs = data;
 
       for (var bug of this.bugs) {
@@ -149,8 +148,7 @@ export class BugsListComponent implements OnInit {
 
   public search() {
     console.log(this.bugSearchCrit);
-    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data: {}) => {
-      // @ts-ignore
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data) => {
       this.bugs = data;
 
       for (var bug of this.bugs) {
@@ -173,7 +171,7 @@ export class BugsListComponent implements OnInit {
   delete(id: number) {
     console.log('deleted' + id);
     this.bugServices.deleteBugAfterId(id).subscribe(
-      (data: {}) => {
+      (data) => {
         alert('Bug closed Complete');
       },
       (error1 => {
@@ -187,7 +185,7 @@ export class BugsListComponent implements OnInit {
   save() {
     console.log('saved');
     this.bugServices.saveEditBug(this.bug).subscribe(
-      (data: {}) => {
+      (data) => {
         alert('Edit Bugs Complete');
       },
       (error2 => {

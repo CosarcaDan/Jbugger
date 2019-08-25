@@ -42,7 +42,7 @@ export class AuthInterceptor implements HttpInterceptor {
         });
       }
     }
-    console.log('setting auth token', this.authService.getToken());
+    console.log('AuthInterceptor: ', req.url.split('services/')[1]);
     return next.handle(req);
   }
 }

@@ -29,29 +29,23 @@ export class BugServiceService {
   constructor(private http: HttpClient) {
   }
 
-  public getBugs(): Observable<Bug> {
-    // @ts-ignore
-    return this.http.get<Bug>(this.base_url, this.httpOptionsWithoutAuth).pipe(map(this.extractData));
+  public getBugs(): Observable<Array<Bug>> {
+    return this.http.get<Array<Bug>>(this.base_url, this.httpOptionsWithoutAuth);
   }
 
-  private extractData(res: Response) {
-    let body = res;
-    return body || {};
-  }
-
-  public getBugsAfterSearchCriteria(bugCriteria: Bug) {
-    return this.http.post<any>(this.base_url, bugCriteria).pipe(map(this.extractData));
+  public getBugsAfterSearchCriteria(bugCriteria: Bug):Observable<Array<Bug>> {
+    return this.http.post<Array<Bug>>(this.base_url, bugCriteria);
   }
   public deleteBugAfterId(id: number) {
-    return this.http.delete<any>(this.base_url + '/' + id).pipe(map(this.extractData));
+    return this.http.delete<any>(this.base_url + '/' + id);
   }
 
   public exportInPdf(bug: Bug) {
-    return this.http.post<any>(this.base_url + '/getPDF', bug).pipe(map(this.extractData));
+    return this.http.post<any>(this.base_url + '/getPDF', bug);
   }
 
   public saveEditBug(bug: Bug) {
-    return this.http.put(this.base_url + '/' + bug.id + '/' + 'edit', bug).pipe(map(this.extractData));
+    return this.http.put(this.base_url + '/' + bug.id + '/' + 'edit', bug);
   }
 
 
