@@ -1,6 +1,7 @@
 package ro.msg.edu.jbugs.dto.mappers;
 
 import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.RoleDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.entity.User;
 
@@ -30,12 +31,19 @@ public class UserDtoMapping {
         user.setPassword(userDto.getPassword());
         user.setUsername(userDto.getUsername());
         user.setStatus(userDto.getStatus());
+
+        //trial
+//        List<RoleDto> rolesDto = userDto.getRoles();
+//        List<Role> roles = new ArrayList<>();
+//        rolesDto.forEach(roleDto -> roles.add(RoleDtoMapping.roleDtoToRole(roleDto)));
+//        user.setRoleList(roles);
         return user;
     }
 
     public static UserDto userToUserDtoComplet(User user){
         List<BugDto> bugsCreatedDto = new ArrayList<>();
         List<BugDto> bugsAssignedDto = new ArrayList<>();
+        List<RoleDto> userRoles = new ArrayList<>();
 
         if (user.getCreatedBy() != null) {
             bugsCreatedDto = user.getCreatedBy().stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
@@ -43,7 +51,12 @@ public class UserDtoMapping {
         if (user.getAssignedTo() != null) {
             bugsAssignedDto = user.getAssignedTo().stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
         }
-        return new UserDto(user.getId(),user.getCounter(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getMobileNumber(),user.getPassword(),user.getUsername(),user.getStatus(),bugsCreatedDto,bugsAssignedDto);
+
+//        if (user.getRoleList() != null) {
+//            userRoles = user.getRoleList().stream().map(RoleDtoMapping::roleToRoleDto).collect(Collectors.toList());
+//        }
+        return new UserDto(user.getId(), user.getCounter(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getMobileNumber(), user.getPassword(), user.getUsername(), user.getStatus(),
+                bugsCreatedDto, bugsAssignedDto); //, userRoles);
     }
 
     public static UserDto userToUserDtoIncomplet(User user){

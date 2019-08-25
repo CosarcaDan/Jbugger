@@ -33,6 +33,8 @@ export class GetBugsComponent implements OnInit {
 
   newBug: boolean;
 
+  loadComponent: Boolean;
+
 
 
   bugSearchCrit: Bug = {
@@ -158,7 +160,7 @@ export class GetBugsComponent implements OnInit {
   }
 
   add() {
-
+    this.loadComponent = true;
   }
 
   export() {

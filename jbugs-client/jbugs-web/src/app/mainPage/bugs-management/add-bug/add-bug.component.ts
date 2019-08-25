@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BugValidators} from '../bug.validator';
-import {UserAdd} from '../../../user-management/models/userAdd';
+import {UserAdd} from '../../user-management/models/userAdd';
 import {UserService} from '../../service/user/user.service';
 import {BugServiceService} from '../../service/bug/bug-service.service';
 import {Bug} from '../../models/bug';
@@ -105,7 +105,15 @@ export class AddBugComponent implements OnInit {
       attContent: this.uploadedFileName,
     };
     this.fileUpload();
-    this.bugService.add(bugToBeAdded, attachmentToBeAdded);
+    this.bugService.add(bugToBeAdded, attachmentToBeAdded).subscribe(
+      (data: {}) => {
+        alert(data);
+      },
+      (error2 => {
+        console.log('Error', error2);
+        alert('Bug Add failed :' + error2.error.detailMessage);
+      })
+    );
     this.clearFile();
   }
 

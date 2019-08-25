@@ -68,6 +68,10 @@ public class Role implements Serializable {
         this.userList.add(user);
     }
 
+    public void deleteUserSimple(User user) {
+        this.userList.remove(user);
+    }
+
     public void removePermission(Permission permission) {
         permission.removeRoleSimple(this);
         this.permissionList.removeIf(p -> p.getId().equals(permission.getId()));

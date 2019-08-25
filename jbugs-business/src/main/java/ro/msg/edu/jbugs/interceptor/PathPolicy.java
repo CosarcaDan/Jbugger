@@ -35,6 +35,7 @@ public class PathPolicy {
         pathPermissions.put("^bugs/[1234567890]+$", new ArrayList<>(perissions));
 
         pathPermissions.put("^bugs/[1234567890]+/edit", new ArrayList<>(perissions)); // tobe bugMgmt
+        pathPermissions.put("^users/[1234567890]+/edit", new ArrayList<>(perissions)); // tobe bugMgmt
 
         perissions.clear();
         perissions.add("PERMISSION_MANAGEMENT");

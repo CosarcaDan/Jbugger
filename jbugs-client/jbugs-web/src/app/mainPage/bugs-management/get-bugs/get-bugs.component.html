@@ -69,6 +69,8 @@
   <ng-template pTemplate="summary" let-rowData>
     <div style="text-align:left">
       <button type="button" pButton (click)="add()" label="Add"></button>
+      <app-add-bug *ngIf="loadComponent">
+      </app-add-bug>
     </div>
   </ng-template>
 

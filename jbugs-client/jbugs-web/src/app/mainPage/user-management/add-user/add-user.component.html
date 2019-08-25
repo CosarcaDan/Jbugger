@@ -1,4 +1,5 @@
 <form [formGroup]="form">
+
   <div class="form-group">
     <label for="firstname">First name: </label>
     <input type="text"
@@ -11,9 +12,11 @@
       <div *ngIf="form.get('firstname').errors.required">
         First name is required!
       </div>
+      <div *ngIf="form.get('firstname').errors.validateBeginWithUpperCase">
+        First name should start with capital letter!
+      </div>
       <div *ngIf="form.get('firstname').errors.validateName">
-        First name must begin with capital letter and should contain only letters
-        and separators!
+        First name should contain only letters and separators!
       </div>
     </div>
   </div>
@@ -30,9 +33,11 @@
       <div *ngIf="form.get('lastname').errors.required">
         Last name is required!
       </div>
+      <div *ngIf="form.get('lastname').errors.validateBeginWithUpperCase">
+        Last name should start with capital letter!
+      </div>
       <div *ngIf="form.get('lastname').errors.validateName">
-        Last name must begin with capital letter and should contain only letters
-        and separators!
+        Last name should contain only letters and separators!
       </div>
     </div>
   </div>
@@ -43,6 +48,8 @@
            formControlName="mobilenumber"
            class="form-control"
            required
+           minlength="10"
+           maxlength="13"
            id="mobilenumber">
     <div class="alert alert-danger"
          *ngIf="form.get('mobilenumber').touched && form.get('mobilenumber').invalid">
@@ -52,9 +59,6 @@
       <div *ngIf="form.get('mobilenumber').errors.validateNumber">
         Mobile number must be from Germany or Romania!
       </div>
-      <!--<div *ngIf="form.get('mobilenumber').errors.validateNumber">
-        Mobile number is too long.
-      </div>-->
     </div>
   </div>
 

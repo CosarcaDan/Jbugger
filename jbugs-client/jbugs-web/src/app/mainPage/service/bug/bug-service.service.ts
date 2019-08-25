@@ -8,7 +8,7 @@ import {Bug} from '../../models/bug';
   providedIn: 'root'
 })
 export class BugServiceService {
-  base_url: string = 'http://localhost:8080/jbugs/services/bugs';
+  baseUrl: string = 'http://localhost:8080/jbugs/services/bugs';
 
   httpOptionsWithoutAuth = {
     headers: new HttpHeaders({
@@ -23,7 +23,7 @@ export class BugServiceService {
       .set('attachment', JSON.stringify(attachment));
     console.log('body', body.get('bug'));
     console.log('body', body.get('attachment'));
-    this.http.post(this.base_url + '/add', body).subscribe();
+    return this.http.post(this.baseUrl + '/add', body).pipe(map(this.extractData));
   }
 
   constructor(private http: HttpClient) {
@@ -31,7 +31,7 @@ export class BugServiceService {
 
   public getBugs(): Observable<Bug> {
     // @ts-ignore
-    return this.http.get<Bug>(this.base_url, this.httpOptionsWithoutAuth).pipe(map(this.extractData));
+    return this.http.get<Bug>(this.baseUrl, this.httpOptionsWithoutAuth).pipe(map(this.extractData));
   }
 
   private extractData(res: Response) {
@@ -40,21 +40,17 @@ export class BugServiceService {
   }
 
   public getBugsAfterSearchCriteria(bugCriteria: Bug) {
-    return this.http.post<any>(this.base_url, bugCriteria).pipe(map(this.extractData));
+    return this.http.post<any>(this.baseUrl, bugCriteria).pipe(map(this.extractData));
   }
   public deleteBugAfterId(id: number) {
-    return this.http.delete<any>(this.base_url + '/' + id).pipe(map(this.extractData));
+    return this.http.delete<any>(this.baseUrl + '/' + id).pipe(map(this.extractData));
   }
 
   public exportInPdf(bug: Bug) {
-    return this.http.post<any>(this.base_url + '/getPDF', bug).pipe(map(this.extractData));
+    return this.http.post<any>(this.baseUrl + '/getPDF', bug).pipe(map(this.extractData));
   }
 
   public saveEditBug(bug: Bug) {
-    return this.http.put(this.base_url + '/' + bug.id + '/' + 'edit', bug).pipe(map(this.extractData));
+    return this.http.put(this.baseUrl + '/' + bug.id + '/' + 'edit', bug).pipe(map(this.extractData));
   }
-
-
-
-
 }

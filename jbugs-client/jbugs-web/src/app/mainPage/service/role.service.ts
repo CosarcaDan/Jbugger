@@ -7,13 +7,13 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 })
 export class RoleService {
 
-  base_url: string = 'http://localhost:8080/jbugs/services/roles';
+  baseUrl: string = 'http://localhost:8080/jbugs/services/roles';
 
   constructor(private http: HttpClient) {
   }
 
   public getRoles(): Observable<any> {
-    return this.http.get<Observable<any>>(this.base_url);
+    return this.http.get<Observable<any>>(this.baseUrl);
   }
 
   public getPermissionsNotInRole(role): Observable<any> {
@@ -31,7 +31,7 @@ export class RoleService {
       .set('permissions', JSON.stringify(permissions));
     console.log('body', body.get('role'));
     // http://localhost:8080/jbugs/services/roles/add-permissions
-    this.http.post(this.base_url + '/add-permissions', body).subscribe();
+    this.http.post(this.baseUrl + '/add-permissions', body).subscribe();
   }
 
   private extractData(res: Response) {
@@ -45,6 +45,6 @@ export class RoleService {
       .set('role', JSON.stringify(role))
       .set('permissions', JSON.stringify(permissions));
     console.log('body', body.get('role'));
-    this.http.post(this.base_url + '/remove-permissions', body).subscribe();
+    this.http.post(this.baseUrl + '/remove-permissions', body).subscribe();
   }
 }

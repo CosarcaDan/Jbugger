@@ -31,8 +31,7 @@ import {ToastModule} from 'primeng/toast';
 import {GetBugsModule} from './mainPage/bugs-management/get-bugs/get-bugs.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GetUserComponent} from './mainPage/user-management/get-user/get-user.component';
-import {AddUserComponent} from './user-management/add-user/add-user.component';
-import {EditUserComponent} from './user-management/edit-user/edit-user.component';
+import {AddUserComponent} from './mainPage/user-management/add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -43,8 +42,6 @@ import {EditUserComponent} from './user-management/edit-user/edit-user.component
     GetBugsComponent,
     GetUserComponent,
     AddUserComponent,
-    EditUserComponent
-
   ],
   imports: [
     BrowserModule,

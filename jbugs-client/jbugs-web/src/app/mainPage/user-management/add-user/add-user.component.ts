@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {BackendError} from '../../mainPage/models/backendError';
+import {BackendError} from '../../models/backendError';
 import {AddUserValidators} from './add-user.validators';
-import {UserAdd} from '../models/userAdd';
-import {Token} from '../../mainPage/models/token';
-import {UserService} from '../../mainPage/service/user/user.service';
-import {RoleService} from '../../mainPage/service/role.service';
+import {Token} from '../../models/token';
+import {UserService} from '../../service/user/user.service';
+import {RoleService} from '../../service/role.service';
 import {Role} from '../models/role';
 
 
@@ -19,11 +18,10 @@ export class AddUserComponent implements OnInit {
 
   form: FormGroup;
   backendError: BackendError;
-  userAdd: UserAdd;
   token: Token;
 
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   mobileNumber: string;
   email: string;
   selectedRoles: Role[] = [];
@@ -33,8 +31,10 @@ export class AddUserComponent implements OnInit {
   constructor(private router: Router, private userService: UserService,
               private roleService: RoleService, private fb: FormBuilder) {
     this.form = fb.group({
-      firstname: [null, [Validators.required, AddUserValidators.validateName]],
-      lastname: [null, [Validators.required, AddUserValidators.validateName]],
+      firstname: [null, [Validators.required, AddUserValidators.validateName,
+        AddUserValidators.beginWithCapitalLetter]],
+      lastname: [null, [Validators.required, AddUserValidators.validateName,
+        AddUserValidators.beginWithCapitalLetter]],
       mobilenumber: [null, [Validators.required, AddUserValidators.validateNumber]],
       email: [null, [Validators.required, AddUserValidators.validateEmail,
         AddUserValidators.cannotContainSpace]],
@@ -61,26 +61,35 @@ export class AddUserComponent implements OnInit {
 
 
   addUser() {
-    this.firstname = this.form.get('firstname').value.toString();
-    this.lastname = this.form.get('lastname').value.toString();
+    this.firstName = this.form.get('firstname').value.toString();
+    this.lastName = this.form.get('lastname').value.toString();
     this.email = this.form.get('email').value.toString();
     this.mobileNumber = this.form.get('mobilenumber').value.toString();
 
     this.getSelectedRoles();
-    //console.log(this.selectedRoles);
 
-    let userToBeAdded: UserAdd = {
+    let userToBeAdded = {
       id: null,
       counter: null,
-      firstName: this.firstname,
-      lastName: this.lastname,
+      firstName: this.firstName,
+      lastName: this.lastName,
       email: this.email,
       mobileNumber: this.mobileNumber,
       password: null,
-      username: null,
       status: null
     };
-    this.userService.add(userToBeAdded, this.selectedRoles);
+
+    this.userService.add(userToBeAdded, this.selectedRoles).subscribe(
+      (data: {}) => {
+        // @ts-ignore
+        alert(data);
+      }, (error1: {}) => {
+        // @ts-ignore
+        this.backendError = error1.error;
+        console.log('Error', this.backendError);
+        alert(this.backendError.detailMessage);
+      }
+    );
   }
 
   getSelectedRoles() {
