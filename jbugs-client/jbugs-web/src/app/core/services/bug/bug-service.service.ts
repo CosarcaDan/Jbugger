@@ -16,14 +16,14 @@ export class BugServiceService {
     })
   };
 
-  public add(bug, attachment) {
+  public add(bug, attachment):Observable<Bug> {
     console.log(bug);
     let body = new HttpParams()
       .set('bug', JSON.stringify(bug))
       .set('attachment', JSON.stringify(attachment));
     console.log('body', body.get('bug'));
     console.log('body', body.get('attachment'));
-    return this.http.post(this.baseUrl + '/add', body).pipe(map(this.extractData));
+    return this.http.post<Bug>(this.baseUrl + '/add', body);
   }
 
   constructor(private http: HttpClient) {

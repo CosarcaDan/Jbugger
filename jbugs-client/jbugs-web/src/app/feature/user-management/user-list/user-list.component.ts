@@ -13,7 +13,7 @@ import {Role} from '../../../core/models/role';
 })
 export class UserListComponent implements OnInit {
   cols: any[];
-  users: User[];
+  users: Array<User>;
   selectedUser: User;
   newUser: boolean;
   displayDialog: boolean;
@@ -40,7 +40,7 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getBugs();
+    this.getUses();
     //this.getRoles();
 
     this.cols = [
@@ -53,8 +53,7 @@ export class UserListComponent implements OnInit {
     ];
   }
 
-  private getBugs() {
-    this.users = [];
+  public getUses() {
     this.userService.getUsers().subscribe((data: {}) => {
       console.log(data);
       // @ts-ignore
@@ -140,6 +139,7 @@ export class UserListComponent implements OnInit {
 
   edit() {
     this.getSelectedRoles();
+    console.log(this.selectedRoles)
     this.userService.edit(this.user, this.selectedRoles).subscribe(
       (data: {}) => {
         alert(data);
@@ -149,6 +149,7 @@ export class UserListComponent implements OnInit {
         alert('Edit User failed :' + error2.error.detailMessage);
       }))
     ;
+    //location.reload();
   }
 
   getRoles() {
@@ -176,6 +177,7 @@ export class UserListComponent implements OnInit {
 
   add() {
     const modalRef = this.modalService.open(AddUserComponent, {windowClass: 'add-popup'});
+    modalRef.result.then(()=>{this.getUses();});
   }
 
   onClicked(role, event) {

@@ -116,6 +116,7 @@ export class AddBugComponent implements OnInit {
       })
     );
     this.clearFile();
+    this.activeModal.close();
   }
 
   onFileChange(event) {

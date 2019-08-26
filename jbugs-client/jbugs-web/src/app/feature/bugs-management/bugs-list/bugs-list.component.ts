@@ -163,6 +163,7 @@ export class BugsListComponent implements OnInit {
 
   add() {
     const modalRef = this.modalService.open(AddBugComponent, {windowClass: 'add-pop'});
+    modalRef.result.then(()=>{this.search();});
   }
 
   export() {
