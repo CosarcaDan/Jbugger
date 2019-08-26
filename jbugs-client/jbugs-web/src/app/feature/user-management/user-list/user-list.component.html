@@ -46,7 +46,7 @@
       </div>
       <div class="ui-g-8">
         <input pInputText id="firstNameEdit" [(ngModel)]="user.firstName" required
-               pattern="^[A-ZÜÄÖÂÎĂȚȘ][a-zA-Zșțăîâäöüß]{1,30}[- ]?[a-zșțăîâäöüßA-ZÜÄÖÂÎĂȚȘ]{0,30}[a-zșțăîâäöüß]$"
+               pattern="^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$"
                #firstNameEdit="ngModel"/>
         <div class="alert alert-danger"
              *ngIf="firstNameEdit.touched && firstNameEdit.invalid">
@@ -66,7 +66,7 @@
       </div>
       <div class="ui-g-8">
         <input pInputText id="lastNameEdit" [(ngModel)]="user.lastName" required #lastNameEdit="ngModel"
-               pattern="^[A-ZÜÄÖÂÎĂȚȘ][a-zA-Zșțăîâäöüß]{1,30}[- ]?[a-zșțăîâäöüßA-ZÜÄÖÂÎĂȚȘ]{0,30}[a-zșțăîâäöüß]$"/>
+               pattern="^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$"/>
         <div class="alert alert-danger"
              *ngIf="lastNameEdit.touched && lastNameEdit.invalid">
           <div *ngIf="lastNameEdit.errors.required">
@@ -121,34 +121,26 @@
       </div>
     </div>
 
-    <div class="ui-g-12" *ngIf="lengthCurrentUsersRoles==0">
-      <label>This user has no roles</label>
-    </div>
-    <div class="ui-g-4" *ngIf="lengthCurrentUsersRoles>0">
-      <label *ngIf="lengthCurrentUsersRoles>0">Current roles</label>
-    </div>
-    <ol>
-      <ng-container id="currentRoles" *ngFor="let role of rolesOfCurrentUser">
-        <li>{{role.type}}</li>
-      </ng-container>
-    </ol>
 
     <div class="ui-g-12">
       <div class="ui-g-4">
         <label for="rolesEdit">Edit roles</label>
       </div>
     </div>
-    <ng-container *ngFor="let role of roles">
+    <table>
+    <tr *ngFor="let role of roles">
       <label>
         <input type="checkbox"
                name="roles"
                value="{{role.id}}"
                id="rolesEdit"
                (change)="onClicked(role, $event)"
+               [defaultChecked]="role.checked"
         />
         {{role.type}}<br>
       </label>
-    </ng-container>
+    </tr>
+    </table>
 
     <div class="ui-g-12">
       <div class="ui-g-4">

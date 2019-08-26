@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.restcontroller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import ro.msg.edu.jbugs.MyToken;
 import ro.msg.edu.jbugs.TokenManager;
 import ro.msg.edu.jbugs.dto.RoleDto;
@@ -20,6 +21,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -116,7 +118,7 @@ UserRESTController {
     @Path("/add")
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(@NotNull @FormParam("user") UserDto user, @NotNull @FormParam("roles") String roles) {
+    public Response add(@NotNull @FormDataParam("user") UserDto user, @NotNull @FormDataParam("roles") String roles) {
         Gson gson = new GsonBuilder().create();
         try {
             //adds the user
@@ -149,20 +151,11 @@ UserRESTController {
 
     @PUT
     @Path("{id}/edit")
-    public Response edit(@NotNull @FormParam("user") UserDto userDto, @NotNull @FormParam("roles") String roles) {
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response edit(@NotNull @FormDataParam("user") UserDto userDto, @NotNull @FormDataParam("roles") String roles) {
         Gson gson = new GsonBuilder().create();
         try {
-            //sterge vechile roluri
-            List<RoleDto> exRoles = userService.getAllRoles(userDto.getId());
-            exRoles.forEach(exRole -> userService.deleteRoleFromUser(userDto, exRole));
-
-            //adauga noile roluri
-            UserDto userUpdated = userService.updateUser(userDto);
-
-            RoleDto[] list = gson.fromJson(roles, RoleDto[].class);
-            Arrays.stream(list).forEach(role -> userService.addRoleToUser(userUpdated, role));
-
-
+            this.userService.updateWithRoles(userDto, Arrays.asList((gson.fromJson(roles, RoleDto[].class))));
             String response = gson.toJson("User was successfully edited!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {

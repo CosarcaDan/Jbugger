@@ -22,17 +22,19 @@ export class UserService {
   }
 
   public add(user, roles): Observable<any> {
-    let body = new HttpParams()
-      .set('user', JSON.stringify(user))
-      .set('roles', JSON.stringify(roles));
+    let body = new FormData();
+    body.append('user', JSON.stringify(user));
+    body.append('roles', JSON.stringify(roles));
     console.log('body', body.get('user'));
     return this.http.post(this.baseUrl + '/add', body).pipe(map(this.extractData));
   }
 
   public edit(user, roles) {
-    let body = new HttpParams()
-      .set('user', JSON.stringify(user))
-      .set('roles', JSON.stringify(roles));
+    console.log(user.mobileNumber)
+    let body = new FormData();
+    body.append('user', JSON.stringify(user));
+    body.append('roles', JSON.stringify(roles));
+    console.log(body.get('user'))
     return this.http.put(this.baseUrl + '/' + user.id + '/edit', body).pipe(map(this.extractData));
     //this.displayDialog = false;
     //this.search();
