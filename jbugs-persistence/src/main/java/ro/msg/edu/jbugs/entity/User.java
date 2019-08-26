@@ -213,4 +213,9 @@ public class User implements Serializable {
         role.addUserSimple(this);
         this.roles.add(role);
     }
+
+    public void deleteRole(Role role) {
+        role.deleteUserSimple(this);
+        this.roles.remove(role);
+    }
 }

@@ -7,5 +7,5 @@ export interface User {
   mobileNumber: string;
   password: string;
   username: string;
-  status: string;
+  status: boolean;
 }

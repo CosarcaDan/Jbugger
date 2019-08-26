@@ -153,10 +153,22 @@ public class UserRepo {
         return user.getAssignedBugs();
     }
 
+    public List<Role> getAllRoles(User user) {
+        return user.getRoles();
+    }
+
 
     public void addRoleToUser(User userinp, Role role) {
         User user = entityManager.find(User.class, userinp.getId());
         user.addRole(role);
+        entityManager.merge(role);
+        entityManager.flush();
+    }
+
+    public void deleteRoleFromUser(User userinp, Role role) {
+        User user = entityManager.find(User.class, userinp.getId());
+        user.deleteRole(role);
+        //???
         entityManager.merge(role);
         entityManager.flush();
     }

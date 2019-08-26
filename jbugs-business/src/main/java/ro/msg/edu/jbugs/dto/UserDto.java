@@ -25,6 +25,7 @@ public class UserDto implements Serializable {
     private Boolean status;
     private List<BugDto> createdBy;
     private List<BugDto> assignedTo;
+    private List<RoleDto> roles;
 
 
     public String getMobileNumber() {
@@ -71,6 +72,7 @@ public class UserDto implements Serializable {
         return assignedTo;
     }
 
+
     public void setAssignedTo(List<BugDto> assignedTo) {
         this.assignedTo = assignedTo;
     }
@@ -91,6 +93,23 @@ public class UserDto implements Serializable {
 
         this.createdBy = createdBy;
         this.assignedTo = assignTo;
+    }
+
+    public UserDto(Integer id, Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status, List<BugDto> createdBy, List<BugDto> assignTo, List<RoleDto> roles) {
+        this.id = id;
+        this.counter = counter;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.password = password;
+        this.username = username;
+        this.status = status;
+
+        this.createdBy = createdBy;
+        this.assignedTo = assignTo;
+
+        this.roles = roles;
     }
 
     public UserDto(UserLoginDto uld) {
@@ -148,6 +167,14 @@ public class UserDto implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<RoleDto> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleDto> roles) {
+        this.roles = roles;
     }
 
     @Override

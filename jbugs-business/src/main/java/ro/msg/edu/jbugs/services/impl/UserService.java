@@ -5,6 +5,7 @@ import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.RoleDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
+import ro.msg.edu.jbugs.dto.mappers.RoleDtoMapping;
 import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.Permission;
@@ -117,6 +118,17 @@ public class UserService {
             List<Bug> bugList = userRepo.findAllAssignedBugs(user);
             List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
             return bugDtoList;
+        } catch (EntityNotFoundException ex) {
+            throw new BusinessException("No User found with given Id", "msg - 006");
+        }
+    }
+
+    public List<RoleDto> getAllRoles(Integer id) throws BusinessException {
+        try {
+            User user = userRepo.findUser(id);
+            List<Role> roles = userRepo.getAllRoles(user);
+            List<RoleDto> bugsDto = roles.stream().map(RoleDtoMapping::roleToRoleDto).collect(Collectors.toList());
+            return bugsDto;
         } catch (EntityNotFoundException ex) {
             throw new BusinessException("No User found with given Id", "msg - 006");
         }
@@ -238,4 +250,35 @@ public class UserService {
         userRepo.addRoleToUser(UserDtoMapping.userDtoToUser(userDto), role);
     }
 
+    public void deleteRoleFromUser(UserDto userDto, RoleDto roleDto) {
+        Role role = roleRepo.findRole(roleDto.getId());
+        userRepo.deleteRoleFromUser(UserDtoMapping.userDtoToUser(userDto), role);
+    }
+
+    public boolean hasOnlyClosedBugs(UserDto userDto) throws BusinessException {
+        List<BugDto> bugs = getAllAssignedBugs(userDto.getId());
+        for (BugDto bug : bugs) {
+            if (!bug.getStatus().equals(3))
+                return false;
+        }
+        return true;
+    }
+
+    public UserDto updateWithRoles(UserDto userDto, List<RoleDto> roleDtos) throws BusinessException {
+        Validator.validateUser(userDto);
+        User newDataUser = UserDtoMapping.userDtoToUser(userDto);
+        newDataUser.setRoles(roleDtos.stream().map(roleDto ->
+        {
+            Role res = roleRepo.findRole(roleDto.getId());
+            res.addUserSimple(newDataUser);
+            return res;
+        }).collect(Collectors.toList()));
+        User res = null;
+        try {
+            res = userRepo.updateUser(newDataUser);
+            return UserDtoMapping.userToUserDtoIncomplet(res);
+        } catch (RepositoryException e) {
+            throw new BusinessException(e);
+        }
+    }
 }
