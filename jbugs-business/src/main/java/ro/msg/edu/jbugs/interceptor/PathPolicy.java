@@ -19,7 +19,7 @@ public class PathPolicy {
 
         List<String> permissions = new ArrayList<>();
         permissions.add("USER_MANAGEMENT");
-        pathPermissions.put("^users.*", new ArrayList<>(permissions));
+        pathPermissions.put("^users(?!/log).*", new ArrayList<>(permissions));
 
         permissions.clear();
         permissions.add("USER_MANAGEMENT");

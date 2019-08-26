@@ -18,7 +18,7 @@ export class AuthGuardService implements CanActivate {
     }
 
     // navigate to not found page
-    this.router.navigate(['/findByUsernameAndPassword']);
+    this.router.navigate(['/login']);
     return false;
   }
 

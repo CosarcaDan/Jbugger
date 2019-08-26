@@ -227,10 +227,11 @@ export class BugsListComponent implements OnInit {
   }
 
   clearFile() {
+    this.attachments=null;
     this.myAtt=null;
     this.uploadedFileName='';
     if(this.fileInput.nativeElement !=null )
-    this.fileInput.nativeElement.value = '';
+      this.fileInput.nativeElement.value = '';
   }
 
   onRowSelect(event) {
