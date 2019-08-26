@@ -40,7 +40,7 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getBugs();
+    this.getUses();
     //this.getRoles();
 
     this.cols = [
@@ -53,7 +53,7 @@ export class UserListComponent implements OnInit {
     ];
   }
 
-  private getBugs() {
+  private getUses() {
     this.users = [];
     this.userService.getUsers().subscribe((data: {}) => {
       console.log(data);
@@ -140,6 +140,7 @@ export class UserListComponent implements OnInit {
 
   edit() {
     this.getSelectedRoles();
+    console.log(this.selectedRoles)
     this.userService.edit(this.user, this.selectedRoles).subscribe(
       (data: {}) => {
         alert(data);
@@ -149,6 +150,7 @@ export class UserListComponent implements OnInit {
         alert('Edit User failed :' + error2.error.detailMessage);
       }))
     ;
+    //location.reload();
   }
 
   getRoles() {
