@@ -31,9 +31,10 @@ import {ToastModule} from 'primeng/toast';
 import {BugManagementModule} from './feature/bugs-management/bug-management.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AddUserComponent} from './feature/user-management/add-user/add-user.component';
-import {UserManagementModule} from './feature/user-management/user-management.module';
-import {AngularFontAwesomeModule} from 'angular-font-awesome';
-import {NgxFlagIconCssModule} from 'ngx-flag-icon-css';
+import {UserManagementModule} from "./feature/user-management/user-management.module";
+import {AngularFontAwesomeModule} from "angular-font-awesome";
+import {NgxFlagIconCssModule} from "ngx-flag-icon-css";
+import {NgbdWelcomeModalContent} from "./core/services/auth/auth.service";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {NgxFlagIconCssModule} from 'ngx-flag-icon-css';
     LoginComponent,
     DashboardComponent,
     BugsListComponent,
+    NgbdWelcomeModalContent
   ],
   imports: [
     BrowserModule,
@@ -78,9 +80,10 @@ import {NgxFlagIconCssModule} from 'ngx-flag-icon-css';
     multi: true,
   }],
   bootstrap: [AppComponent],
-  entryComponents: [
+  entryComponents:[
     AddBugComponent,
-    AddUserComponent
+    AddUserComponent,
+    NgbdWelcomeModalContent
   ]
 })
 export class AppModule {
