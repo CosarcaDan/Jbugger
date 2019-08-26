@@ -63,6 +63,7 @@ export class AuthService {
       sessionStorage.setItem('permissions',JSON.stringify(data.map(p=>p.type)));
       this.cachedPermissions=data.map(p=>p.type);
       this.requestSent=false;
+      console.log(data);
       return data.map(p=>p.type);
     });
   }
