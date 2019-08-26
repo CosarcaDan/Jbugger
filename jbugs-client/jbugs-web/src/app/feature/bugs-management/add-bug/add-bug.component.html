@@ -130,7 +130,7 @@
     </select>
   </div>
 
-  <label for="attachments">Attachments:</label>
+  <label for="attachments">Attachment:</label>
   <input type="file"
          id="attachments"
          (change)="onFileChange($event)"
@@ -142,6 +142,6 @@
   <button class="btn btn-primary"
           type="button"
           (click)="addBug()"
-          [disabled]="form.invalid">Add bug
+          [disabled]="form.invalid">Save
   </button>
 </form>

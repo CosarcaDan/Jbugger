@@ -124,8 +124,10 @@ public class BugRESTController {
 
     @PUT
     @Path("{id}/edit")
-    public Response editBug(BugDto bugDto) {
+    @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
+    public Response editBug(@NotNull @FormParam("bug") BugDto bugDto, @NotNull @FormParam("attachment") AttachmentDto attachment) {
         try {
+            attachmentService.addAttachment(attachment, bugDto);
             bugService.updateBug(bugDto);
             return Response.status(200).build();
         } catch (BusinessException e) {

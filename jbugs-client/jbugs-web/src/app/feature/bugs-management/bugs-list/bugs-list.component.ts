@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugServiceService} from '../../../core/services/bug/bug-service.service';
@@ -6,6 +6,9 @@ import {Bug} from '../../../core/models/bug';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddBugComponent} from '../add-bug/add-bug.component';
 import {AuthService} from '../../../core/services/auth/auth.service';
+import {Attachment} from "../../../core/models/attachment";
+import {FormGroup} from "@angular/forms";
+import {FileService} from "../../../core/services/file/file.service";
 
 @Component({
   selector: 'app-get-bugs',
@@ -36,6 +39,7 @@ export class BugsListComponent implements OnInit {
 
   newBug: boolean;
 
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
 
 
@@ -67,8 +71,11 @@ export class BugsListComponent implements OnInit {
     assigned: ''
   };
   selectedBug: Bug;
+  private uploadedFileName: string;
+  private myAtt;
+  attachments;
 
-  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService) {
+  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService) {
 
   }
 
@@ -188,7 +195,12 @@ export class BugsListComponent implements OnInit {
 
   save() {
     console.log('saved');
-    this.bugServices.saveEditBug(this.bug).subscribe(
+    let attachmentToBeAdded: Attachment = {
+      id: null,
+      attContent: this.uploadedFileName,
+    };
+    this.fileUpload();
+    this.bugServices.saveEditBug(this.bug,attachmentToBeAdded).subscribe(
       (data) => {
         alert('Edit Bugs Complete');
       },
@@ -202,7 +214,27 @@ export class BugsListComponent implements OnInit {
     this.search();
   }
 
+  private prepareSave(): FormData {
+    let input = new FormData();
+    input.append('file', this.myAtt[0]);
+    return input;
+  }
+
+  fileUpload() {
+    const formModel = this.prepareSave();
+    console.log(formModel.get('file'));
+    this.fileService.uploadFile(formModel).subscribe(this.clearFile);
+  }
+
+  clearFile() {
+    this.myAtt=null;
+    this.uploadedFileName='';
+    if(this.fileInput.nativeElement !=null )
+    this.fileInput.nativeElement.value = '';
+  }
+
   onRowSelect(event) {
+    this.clearFile();
     this.newBug = false;
     this.bug = this.cloneBug(event.data);
     this.displayDialog = true;
@@ -225,5 +257,13 @@ export class BugsListComponent implements OnInit {
       bug[props] = b[props];
     }
     return bug;
+  }
+
+  onFileChange(event) {
+    if (event.target.files.length > 0) {
+      let files = event.target.files;
+      this.uploadedFileName = files[0].name;
+      this.myAtt = files;
+    }
   }
 }

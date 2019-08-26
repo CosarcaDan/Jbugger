@@ -56,7 +56,7 @@ export class AddBugComponent implements OnInit {
       createdBy: [null, []],
       status: [null, []],
       assignedTo: [null, []],
-      attachments: ['', Validators.required],
+      attachments: [],
     });
   }
 
@@ -136,7 +136,7 @@ export class AddBugComponent implements OnInit {
   fileUpload() {
     const formModel = this.prepareSave();
     console.log(formModel.get('file'));
-    this.fileService.uploadFile(formModel);
+    this.fileService.uploadFile(formModel).subscribe(this.clearFile);
   }
 
   clearFile() {
