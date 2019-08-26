@@ -149,6 +149,7 @@ export class UserListComponent implements OnInit {
         alert('Edit User failed :' + error2.error.detailMessage);
       }))
     ;
+    location.reload();
   }
 
   getRoles() {
