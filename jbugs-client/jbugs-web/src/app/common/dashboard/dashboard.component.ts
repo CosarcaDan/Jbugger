@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem} from "primeng/api";
 import {Router, RouterModule} from "@angular/router";
 import {AuthService} from "../../core/services/auth/auth.service";
+import {delay} from "rxjs/operators";
 
 @Component({
   selector: 'app-dashboard',

@@ -34,6 +34,7 @@ import {AddUserComponent} from './feature/user-management/add-user/add-user.comp
 import {UserManagementModule} from "./feature/user-management/user-management.module";
 import {AngularFontAwesomeModule} from "angular-font-awesome";
 import {NgxFlagIconCssModule} from "ngx-flag-icon-css";
+import {NgbdWelcomeModalContent} from "./core/services/auth/auth.service";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {NgxFlagIconCssModule} from "ngx-flag-icon-css";
     LoginComponent,
     DashboardComponent,
     BugsListComponent,
+    NgbdWelcomeModalContent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +82,8 @@ import {NgxFlagIconCssModule} from "ngx-flag-icon-css";
   bootstrap: [AppComponent],
   entryComponents:[
     AddBugComponent,
-    AddUserComponent
+    AddUserComponent,
+    NgbdWelcomeModalContent
   ]
 })
 export class AppModule {
