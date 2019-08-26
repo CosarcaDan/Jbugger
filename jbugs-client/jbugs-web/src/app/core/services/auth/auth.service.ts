@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import {Component, Injectable, Input} from '@angular/core';
 import {UserLogin} from "../../models/userLogin";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {delay} from "q";
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router:Router) { }
+  constructor(private http: HttpClient, private router:Router, private modalService:NgbModal) { }
 
   private cachedPermissions:string[]=null;
   private lastPermissionUpdate=Date.now();
@@ -32,9 +34,14 @@ export class AuthService {
   }
 
   public login(user: UserLogin) {
-    this.http.post<any>('http://localhost:8080/jbugs/services/users/login', user).subscribe((data) => {
-      console.log('data',data);
+    this.http.post<any>('http://localhost:8080/jbugs/services/users/login', user).subscribe(async (data) => {
+      console.log('data', data);
       sessionStorage.setItem('token', data.value);
+
+      const modalRef = this.modalService.open(NgbdWelcomeModalContent)
+      this.getPermissions();
+      await delay(1000);
+      modalRef.close();
       this.router.navigate(['dashboard']);
     }, (error1) => {
       console.log('Error', error1);
@@ -160,4 +167,22 @@ export class AuthService {
   }
 
 
+}
+
+@Component({
+  selector: 'ngbd-modal-content',
+  template: `
+    <div class="modal-header">
+      <h4 class="modal-title">Hi there!</h4>
+        <span aria-hidden="true">&times;</span>
+    </div>
+    <div class="modal-body">
+      <p>Welcome to Jbugger!</p>
+    </div>
+  `
+})
+export class NgbdWelcomeModalContent {
+  @Input() name;
+
+  constructor(public activeModal: NgbActiveModal) {}
 }
