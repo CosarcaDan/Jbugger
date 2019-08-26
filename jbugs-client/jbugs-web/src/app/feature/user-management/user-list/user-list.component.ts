@@ -5,7 +5,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddUserComponent} from '../add-user/add-user.component';
 import {RoleService} from '../../../core/services/role/role.service';
 import {Role} from '../../../core/models/role';
-import {Checkedrole} from '../../../core/models/checkedrole';
 
 @Component({
   selector: 'app-get-user',
@@ -21,7 +20,7 @@ export class UserListComponent implements OnInit {
   displayAddDialog: boolean;
   selectedRoles: Role[] = [];
   role: Role;
-  roles: Array<Checkedrole>;
+  roles: Array<Role>;
   rolesOfCurrentUser: Array<Role>;
 
   user: User = {
@@ -42,7 +41,7 @@ export class UserListComponent implements OnInit {
 
   ngOnInit() {
     this.getBugs();
-    this.getRoles();
+    //this.getRoles();
 
     this.cols = [
       {field: 'firstName', header: 'First Name'},
@@ -68,15 +67,41 @@ export class UserListComponent implements OnInit {
     this.newUser = false;
     console.log(event.data);
     this.user = JSON.parse(JSON.stringify(event.data));
-    this.displayDialog = true;
     this.rolesOfCurrentUser = new Array<Role>();
     this.userService.getUserRoles(this.user.id).subscribe((data) => {
-      // @ts-ignore
       for (let dataKey of data) {
         this.rolesOfCurrentUser.push(dataKey);
       }
+      this.roles= new  Array<Role>();
+      this.roleService.getRoles().subscribe((data) => {
+        for (let dataKey of data) {
+          this.roles.push(dataKey);
+        }
+        this.roles.forEach(r => {
+          console.log(r.type);
+         this.rolesOfCurrentUser.forEach(rr => {
+            console.log(rr.type, r.type);
+            if (rr.type == r.type)
+              r.checked = true;
+            else
+              r.checked=false;
+          })
+        });
+        console.log(this.roles);
+      });
+
+      console.log(this.roles);
       this.lengthCurrentUsersRoles = this.rolesOfCurrentUser.length;
     });
+    this.displayDialog = true;
+    // if(this.roles === undefined)
+    // {
+    //   this.getRoles()
+    // }
+
+
+
+
     // console.log('All roles: ', this.roles);
     // console.log('User\'s roles: ', this.rolesOfCurrentUser);
     // for(let role of this.roles){
@@ -86,31 +111,6 @@ export class UserListComponent implements OnInit {
     //    this.role.checked = true;
     //  }
     // }
-  }
-
-  private cloneUser(u: User): User {
-    let user = {
-      id: 0,
-      counter: 0,
-      firstName: '',
-      lastName: '',
-      email: '',
-      mobileNumber: '',
-      password: '',
-      username: '',
-      status: null,
-      roleList: null,
-    };
-    for (let prop in u) {
-      user[prop] = u[prop];
-    }
-    return user;
-  }
-
-  showDialogToAdd() {
-    this.newUser = true;
-    //this.user = {};
-    this.displayAddDialog = true;
   }
 
   activateUser() {
@@ -154,7 +154,6 @@ export class UserListComponent implements OnInit {
   getRoles() {
     this.roles = new Array<Role>();
     this.roleService.getRoles().subscribe((data) => {
-      // @ts-ignore
       for (let dataKey of data) {
         this.roles.push(dataKey);
       }

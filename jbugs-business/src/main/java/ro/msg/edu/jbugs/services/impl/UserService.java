@@ -237,4 +237,17 @@ public class UserService {
         }
         return true;
     }
+
+    public UserDto updateWithRoles(UserDto userDto, List<RoleDto> roleDtos) throws BusinessException {
+        Validator.validateUser(userDto);
+        User newDataUser = UserDtoMapping.userDtoToUser(userDto);
+        newDataUser.setRoleList(roleDtos.stream().map(roleDto ->
+        {
+            Role res = roleRepo.findRole(roleDto.getId());
+            res.addUserSimple(newDataUser);
+            return res;
+        }).collect(Collectors.toList()));
+        User res = userRepo.updateUser(newDataUser);
+        return UserDtoMapping.userToUserDtoIncomplet(res);
+    }
 }

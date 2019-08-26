@@ -5,7 +5,7 @@ export class AddUserValidators {
   static validateName(control: AbstractControl): ValidationErrors | null {
     let value: string = control.value;
     let regexp =
-      new RegExp('[a-zA-Zșțăîâäöüß]{1,30}[- ]?[a-zșțăîâäöüßA-ZÜÄÖÂÎĂȚȘ]{0,30}[a-zșțăîâäöüß]$');
+      new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
     if (value && !regexp.test(value)) {
       return {validateName: true};
     }
