@@ -44,7 +44,7 @@ public class Validator {
     }
 
     static boolean validateName(String name){
-        return name.matches("^[A-ZÜÄÖÂÎĂȚȘ][a-zA-Zșțăîâäöüß]{1,30}[- ]?[a-zșțăîâäöüßA-ZÜÄÖÂÎĂȚȘ]{0,30}[a-zșțăîâäöüß]$");
+        return name.matches("^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$");
     }
 
     static boolean validateDescription(String description){

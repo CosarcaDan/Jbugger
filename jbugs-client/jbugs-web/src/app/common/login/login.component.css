@@ -1,0 +1,29 @@
+form{
+  padding: 20px;
+  width: 400px;
+
+  position: absolute;
+  right: 10%;
+  bottom: 12%;
+}
+
+label {
+  font-weight: bold;
+  text-align: left;
+  float: left;
+}
+
+button {
+  float: right;
+}
+
+.logo {
+  position: absolute;
+  right: 10%;
+  top: 10%;
+}
+
+
+
+
+

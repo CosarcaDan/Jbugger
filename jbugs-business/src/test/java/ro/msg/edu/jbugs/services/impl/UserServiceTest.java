@@ -259,7 +259,7 @@ public class UserServiceTest {
         tempUser.setStatus(true);
         tempUser.setAssignedTo(new ArrayList<>());
         when(userRepo.findeUserAfterUsername("username")).thenReturn(tempUser);
-        userService.deactivateUser("username");
+        userService.deactivateUser("username", null);
     }
 
     @Test
@@ -272,13 +272,13 @@ public class UserServiceTest {
         bug2.setStatus(Bug.Status.CLOSED);
         tempUser.setAssignedTo(Arrays.asList(bug1,bug2));
         when(userRepo.findeUserAfterUsername("username")).thenReturn(tempUser);
-        userService.deactivateUser("username");
+        userService.deactivateUser("username", null);
     }
 
     @Test(expected = BusinessException.class)
     public void deactivateUserTestFailedInvalidUsername() throws BusinessException{
         when(userRepo.findeUserAfterUsername("username")).thenThrow(BusinessException.class);
-        userService.deactivateUser("username");
+        userService.deactivateUser("username", null);
     }
 
     @Test(expected = BusinessException.class)
@@ -286,7 +286,7 @@ public class UserServiceTest {
         User tempUser = new User();
         tempUser.setStatus(false);
         when(userRepo.findeUserAfterUsername("username")).thenReturn(tempUser);
-        userService.deactivateUser("username");
+        userService.deactivateUser("username", null);
     }
 
     @Test(expected = BusinessException.class)
@@ -299,7 +299,7 @@ public class UserServiceTest {
         bug2.setStatus(Bug.Status.IN_PROGRESS);
         tempUser.setAssignedTo(Arrays.asList(bug1,bug2));
         when(userRepo.findeUserAfterUsername("username")).thenReturn(tempUser);
-        userService.deactivateUser("username");
+        userService.deactivateUser("username", null);
     }
 
     @Test

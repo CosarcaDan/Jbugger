@@ -16,6 +16,7 @@ import ro.msg.edu.jbugs.repo.RoleRepo;
 import ro.msg.edu.jbugs.repo.UserRepo;
 import ro.msg.edu.jbugs.validators.Validator;
 
+import javax.annotation.Nullable;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityNotFoundException;
@@ -166,7 +167,7 @@ public class UserService {
 
     public void passwordFailed(String username) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
-        if (user.getCounter() < 5) {
+        if (user.getCounter() < 5 && user.getStatus()) {
             user.setCounter(user.getCounter() + 1); //todo do in repo increse counter
             if (user.getCounter() == 5) {
                 user.setStatus(false);
@@ -188,12 +189,12 @@ public class UserService {
     }
 
 
-    public UserDto deactivateUser(String username) throws BusinessException {
+    public UserDto deactivateUser(String username, @Nullable Boolean login) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
         if (!user.getStatus()) {
             throw new BusinessException("User already deactivated", "msg - 008");
         }
-        if (user.getAssignedTo() != null && !user.getAssignedTo().isEmpty()) {
+        if (user.getAssignedTo() != null && !user.getAssignedTo().isEmpty() && (login != null && !login)) {
             for (Bug bug : user.getAssignedTo()) {
                 if (!bug.getStatus().equals(Bug.Status.CLOSED))
                     throw new BusinessException("User still has unclosed bugs", "msg - 009");

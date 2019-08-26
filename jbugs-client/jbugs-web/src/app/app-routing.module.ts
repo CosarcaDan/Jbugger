@@ -1,12 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from "./mainPage/login/login.component";
-import {DashboardComponent} from "./mainPage/dashboard/dashboard.component";
-import {AddBugComponent} from "./mainPage/bugs-management/add-bug/add-bug.component";
-import {GetBugsComponent} from "./mainPage/bugs-management/get-bugs/get-bugs.component";
-import {GetUserComponent} from "./mainPage/user-management/get-user/get-user.component";
-import {AddPermissionComponent} from "./mainPage/permission-management/add-permission/add-permission.component";
-import {RemovePermissionComponent} from "./mainPage/permission-management/remove-permission/remove-permission.component";
+import {LoginComponent} from './common/login/login.component';
+import {DashboardComponent} from './common/dashboard/dashboard.component';
+import {AddBugComponent} from './feature/bugs-management/add-bug/add-bug.component';
+import {BugsListComponent} from './feature/bugs-management/bugs-list/bugs-list.component';
+import {UserListComponent} from './feature/user-management/user-list/user-list.component';
+import {AddPermissionComponent} from './feature/permission-management/add-permission/add-permission.component';
+import {RemovePermissionComponent} from './feature/permission-management/remove-permission/remove-permission.component';
+import {AuthGuardService} from './core/services/guards/auth-guard.service';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   {
     path: "dashboard",
     component: DashboardComponent,
+    canActivate: [AuthGuardService],
     children: [
       {
         path: 'bugs/add',
@@ -29,7 +31,7 @@ const routes: Routes = [
       },
       {
         path: 'bugs',
-        component: GetBugsComponent
+        component: BugsListComponent
       },
       {
         path: 'bugsAdd',
@@ -37,7 +39,7 @@ const routes: Routes = [
       },
       {
         path: 'users',
-        component: GetUserComponent
+        component: UserListComponent
       },
       {
         path: 'permissions/add',

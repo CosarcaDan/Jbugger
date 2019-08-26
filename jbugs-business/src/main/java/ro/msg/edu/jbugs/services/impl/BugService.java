@@ -200,7 +200,7 @@ public class BugService {
         List<Paragraph> paragraphList = new ArrayList<>();
         newElement("Description", bug.getDescription()).forEach(p -> paragraphList.add(p));
         paragraphList.add(newShortElement("Version: ", bug.getVersion()));
-        paragraphList.add(newShortElement("Target date: ", bug.getTargetDate().toString()));
+        paragraphList.add(newShortElement("Target date: ", bug.getTargetDate().toString().split(" ")[0]));
         paragraphList.add(newShortElement("Status: ", bug.getStatus().name()));
         paragraphList.add(newShortElement("Fixed version: ", bug.getFixedVersion()));
         paragraphList.add(newShortElement("Severity: ", bug.getSeverity().name()));
