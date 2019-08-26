@@ -1,6 +1,6 @@
 <form [formGroup]="angForm" novalidate>
   <div class="form-group">
-    <label >Add Permissions to Role:</label>
+    <label>Add Permissions to Role:</label>
     <select class="form-control" formControlName="roles" [(ngModel)]="selectedRole" #role
             (change)="getNewPermissions(role.value)">
       <option *ngFor="let opt of roles" [value]="opt.id">{{opt.type}}</option>

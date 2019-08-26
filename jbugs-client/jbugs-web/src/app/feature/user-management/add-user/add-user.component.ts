@@ -7,8 +7,8 @@ import {Token} from '../../../core/models/token';
 import {UserService} from '../../../core/services/user/user.service';
 import {RoleService} from '../../../core/services/role/role.service';
 import {Checkedrole} from '../../../core/models/checkedrole';
-import {User} from "../../../core/models/user";
-import {Role} from "../../../core/models/role";
+import {User} from '../../../core/models/user';
+import {Role} from '../../../core/models/role';
 
 
 @Component({

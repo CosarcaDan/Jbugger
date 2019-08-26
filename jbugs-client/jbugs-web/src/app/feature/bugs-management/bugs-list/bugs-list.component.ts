@@ -3,9 +3,9 @@ import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugServiceService} from '../../../core/services/bug/bug-service.service';
 import {Bug} from '../../../core/models/bug';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {AddBugComponent} from "../add-bug/add-bug.component";
-import {AuthService} from "../../../core/services/auth/auth.service";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AddBugComponent} from '../add-bug/add-bug.component';
+import {AuthService} from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-get-bugs',
@@ -38,6 +38,7 @@ export class BugsListComponent implements OnInit {
 
 
 
+
   bugSearchCrit: Bug = {
     id: 0,
     title: '',
@@ -67,7 +68,7 @@ export class BugsListComponent implements OnInit {
   };
   selectedBug: Bug;
 
-  constructor(private router: Router, private bugServices: BugServiceService, public modalService:NgbModal, private authService:AuthService) {
+  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService) {
 
   }
 
@@ -136,6 +137,7 @@ export class BugsListComponent implements OnInit {
     this.bugs = [];
     this.bugServices.getBugs().subscribe((data) => {
       console.log(data);
+      // @ts-ignore
       this.bugs = data;
 
       for (var bug of this.bugs) {
@@ -148,7 +150,8 @@ export class BugsListComponent implements OnInit {
 
   public search() {
     console.log(this.bugSearchCrit);
-    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data) => {
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data: {}) => {
+      // @ts-ignore
       this.bugs = data;
 
       for (var bug of this.bugs) {
@@ -159,7 +162,7 @@ export class BugsListComponent implements OnInit {
   }
 
   add() {
-    const modalRef = this.modalService.open(AddBugComponent,{windowClass : "add-pop"});
+    const modalRef = this.modalService.open(AddBugComponent, {windowClass: 'add-pop'});
   }
 
   export() {

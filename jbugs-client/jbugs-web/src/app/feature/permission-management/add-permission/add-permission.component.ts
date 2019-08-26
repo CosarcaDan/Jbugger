@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RoleService} from '../../../core/services/role/role.service';
 import {Role} from '../../../core/models/role';
 import {Permission} from '../../../core/models/permission';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-permission',
@@ -19,7 +19,7 @@ export class AddPermissionComponent implements OnInit {
   selectedRole: number;
   selectedPermissions: number[];
 
-  constructor(private roleService: RoleService, private fb: FormBuilder, private router:Router) {
+  constructor(private roleService: RoleService, private fb: FormBuilder, private router: Router) {
   }
 
   ngOnInit() {

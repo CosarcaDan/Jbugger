@@ -40,7 +40,7 @@
                     (input)="dt.filter($event.target.value, col.field, 'equals')"></p-calendar>
 
         <p-multiSelect appendTo="body" *ngSwitchCase="'status'" [options]="status" [style]="{'width':'100%'}"
-                    (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                       (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
 
         <input *ngSwitchCase="'fixedVersion'" pInputText size="15" type="text"
                (input)="dt.filter($event.target.value, col.field, 'contains')">
@@ -69,6 +69,8 @@
   <ng-template pTemplate="summary" let-rowData>
     <div style="text-align:left">
       <button type="button" pButton (click)="add()" label="Add"></button>
+      <app-add-bug *ngIf="loadComponent">
+      </app-add-bug>
     </div>
   </ng-template>
 
@@ -154,9 +156,11 @@
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton (click)="delete(bug.id)" *ngIf="this.authService.hasPermission('BUG_CLOSE') && bug.status == 'FIXED' " label="Delete"></button>
+      <button type="button" pButton (click)="delete(bug.id)"
+              *ngIf="this.authService.hasPermission('BUG_CLOSE') && bug.status == 'FIXED' " label="Delete"></button>
       <button type="button" pButton (click)="save()" label="Save"></button>
-      <button type="button" pButton (click)="export()" *ngIf="this.authService.hasPermission('BUG_EXPORT_PDF')" label="Export in PDF"></button>
+      <button type="button" pButton (click)="export()" *ngIf="this.authService.hasPermission('BUG_EXPORT_PDF')"
+              label="Export in PDF"></button>
     </div>
   </p-footer>
 </p-dialog>

@@ -16,7 +16,8 @@ label {
 button {
   float: right;
 }
-.logo{
+
+.logo {
   position: absolute;
   right: 10%;
   top: 10%;

@@ -5,6 +5,7 @@ import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.RoleDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
+import ro.msg.edu.jbugs.dto.mappers.RoleDtoMapping;
 import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.Permission;
@@ -117,6 +118,17 @@ public class UserService {
         }
     }
 
+    public List<RoleDto> getAllRoles(Integer id) throws BusinessException {
+        try {
+            User user = userRepo.findUser(id);
+            List<Role> roles = userRepo.getAllRoles(user);
+            List<RoleDto> bugsDto = roles.stream().map(RoleDtoMapping::roleToRoleDto).collect(Collectors.toList());
+            return bugsDto;
+        } catch (EntityNotFoundException ex) {
+            throw new BusinessException("No User found with given Id", "msg - 006");
+        }
+    }
+
     public String generateUserName(String lastname, String firstname) {
         String firstPart;
         if (lastname.length() >= 5) {
@@ -169,7 +181,7 @@ public class UserService {
     public UserDto activateUser(String username) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
         if (user.getStatus()) {
-            throw new BusinessException("User already activ", "msg - 007");
+            throw new BusinessException("User already active", "msg - 007");
         } else {
             userRepo.activateUser(user);
             return UserDtoMapping.userToUserDtoIncomplet(user);
@@ -182,7 +194,7 @@ public class UserService {
         if (!user.getStatus()) {
             throw new BusinessException("User already deactivated", "msg - 008");
         }
-        if (user.getAssignedTo() != null && !user.getAssignedTo().isEmpty() && (login!=null && !login) ) {
+        if (user.getAssignedTo() != null && !user.getAssignedTo().isEmpty() && (login != null && !login)) {
             for (Bug bug : user.getAssignedTo()) {
                 if (!bug.getStatus().equals(Bug.Status.CLOSED))
                     throw new BusinessException("User still has unclosed bugs", "msg - 009");
@@ -212,4 +224,17 @@ public class UserService {
         userRepo.addRoleToUser(UserDtoMapping.userDtoToUser(userDto), role);
     }
 
+    public void deleteRoleFromUser(UserDto userDto, RoleDto roleDto) {
+        Role role = roleRepo.findRole(roleDto.getId());
+        userRepo.deleteRoleFromUser(UserDtoMapping.userDtoToUser(userDto), role);
+    }
+
+    public boolean hasOnlyClosedBugs(UserDto userDto) throws BusinessException {
+        List<BugDto> bugs = getAllAssignedBugs(userDto.getId());
+        for (BugDto bug : bugs) {
+            if (!bug.getStatus().equals(3))
+                return false;
+        }
+        return true;
+    }
 }

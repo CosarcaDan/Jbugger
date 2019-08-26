@@ -2,7 +2,6 @@ package ro.msg.edu.jbugs.restcontroller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.jsonwebtoken.Claims;
 import ro.msg.edu.jbugs.MyToken;
 import ro.msg.edu.jbugs.TokenManager;
 import ro.msg.edu.jbugs.dto.RoleDto;
@@ -49,7 +48,7 @@ UserRESTController {
             UserDto loged_in = userService.login(user);
             MyToken myToken = new MyToken(TokenManager.createJWT(loged_in.getId().toString(), "server", loged_in.getUsername(), 123456789));
             String response = gson.toJson(myToken);
-            userService.deactivateUser(loged_in.getUsername(),true);
+            userService.deactivateUser(loged_in.getUsername(), true);
             return Response.status(200).entity(response).build();
         } catch (BusinessException e) {
 
@@ -57,6 +56,7 @@ UserRESTController {
             return Response.status(500).entity(error).build();
         }
     }
+
     @POST
     @Path("/renew")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -82,11 +82,11 @@ UserRESTController {
         try {
             List<Permission> userPerm = userService.getUserPermissionsByUsername(user.getUsername());
             StringBuilder response = new StringBuilder("[");
-            userPerm.forEach(p->{
+            userPerm.forEach(p -> {
                 response.append(gson.toJson(PermissionDtoMapping.permissionToPermissionDto(p)));
                 response.append(",");
             });
-            response.deleteCharAt(response.length()-1);
+            response.deleteCharAt(response.length() - 1);
             response.append("]");
             return Response.status(200).entity(response.toString()).build();
         } catch (BusinessException e) {
@@ -99,7 +99,7 @@ UserRESTController {
     @Path("/logout")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response testToken(UserDto user){
+    public Response testToken(UserDto user) {
         Gson gson = new GsonBuilder().create();
         try {
             userService.activateUser(user.getUsername());
@@ -125,7 +125,97 @@ UserRESTController {
             //adds the roles of the user
             RoleDto[] list = gson.fromJson(roles, RoleDto[].class);
             Arrays.stream(list).forEach(role -> userService.addRoleToUser(userAddededDto, role));
-            String response = gson.toJson("All OK!");
+            String response = gson.toJson("User was successfully added!");
+            return Response.status(200).entity(response).build();
+        } catch (Exception e) {
+            String error = gson.toJson(e);
+            return Response.status(500).entity(error).build();
+        }
+    }
+
+    @GET
+    @Path("{id}")
+    public Response getUser(@PathParam("id") int id) {
+        Gson gson = new GsonBuilder().create();
+        try {
+            UserDto userDto = userService.findUser(id);
+            String response = gson.toJson(userDto);
+            return Response.status(200).entity(response).build();
+        } catch (BusinessException e) {
+            String responseError = gson.toJson(e);
+            return Response.status(500).entity(responseError).build();
+        }
+    }
+
+    @PUT
+    @Path("{id}/edit")
+    public Response edit(@NotNull @FormParam("user") UserDto userDto, @NotNull @FormParam("roles") String roles) {
+        Gson gson = new GsonBuilder().create();
+        try {
+            //sterge vechile roluri
+            List<RoleDto> exRoles = userService.getAllRoles(userDto.getId());
+            exRoles.forEach(exRole -> userService.deleteRoleFromUser(userDto, exRole));
+
+            //adauga noile roluri
+            UserDto userUpdated = userService.updateUser(userDto);
+
+            RoleDto[] list = gson.fromJson(roles, RoleDto[].class);
+            Arrays.stream(list).forEach(role -> userService.addRoleToUser(userUpdated, role));
+
+
+            String response = gson.toJson("User was successfully edited!");
+            return Response.status(200).entity(response).build();
+        } catch (Exception e) {
+            String error = gson.toJson(e);
+            return Response.status(500).entity(error).build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}/activate")
+    public Response activate(@NotNull @FormParam("user") UserDto userDto) {
+        Gson gson = new GsonBuilder().create();
+        try {
+            //userDto.setStatus(true);
+            userService.updateUser(userDto);
+            String response = gson.toJson("User was successfully activated!");
+            return Response.status(200).entity(response).build();
+        } catch (Exception e) {
+            String error = gson.toJson(e);
+            return Response.status(500).entity(error).build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}/deactivate")
+    public Response deactivate(@NotNull @FormParam("user") UserDto userDto) {
+        Gson gson = new GsonBuilder().create();
+        String response;
+        try {
+            //userDto.setStatus(false);
+            if (userService.hasOnlyClosedBugs(userDto)) {
+                userService.updateUser(userDto);
+                response = gson.toJson("User was successfully deactivated!");
+            } else {
+                response = gson.toJson("User has tasks assigned, that are not closed yet and" +
+                        " cannot be deleted!");
+            }
+            return Response.status(200).entity(response).build();
+        } catch (Exception e) {
+            String error = gson.toJson(e);
+            return Response.status(500).entity(error).build();
+        }
+    }
+
+    @POST
+    @Path("/roles")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserRoles(Integer id) {
+        Gson gson = new GsonBuilder().create();
+        try {
+            List<RoleDto> roles = userService.getAllRoles(id);
+            String response = gson.toJson(roles);
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
             String error = gson.toJson(e);
