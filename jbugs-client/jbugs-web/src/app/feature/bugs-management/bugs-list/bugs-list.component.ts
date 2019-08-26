@@ -6,6 +6,8 @@ import {Bug} from '../../../core/models/bug';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddBugComponent} from '../add-bug/add-bug.component';
 import {AuthService} from '../../../core/services/auth/auth.service';
+import {User} from "../../../core/models/user";
+import {UserService} from "../../../core/services/user/user.service";
 
 @Component({
   selector: 'app-get-bugs',
@@ -36,7 +38,7 @@ export class BugsListComponent implements OnInit {
 
   newBug: boolean;
 
-
+  allUsers: Array<User>;
 
 
   bugSearchCrit: Bug = {
@@ -68,11 +70,13 @@ export class BugsListComponent implements OnInit {
   };
   selectedBug: Bug;
 
-  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService) {
+  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService,
+              private userService: UserService) {
 
   }
 
   ngOnInit() {
+    this.getUsers();
     this.cols = [
       {field: 'title', header: 'Title'},
       {field: 'description', header: 'Description'},
@@ -133,6 +137,17 @@ export class BugsListComponent implements OnInit {
     ]
   }
 
+  getUsers() {
+    this.allUsers = new Array<User>();
+    this.userService.getUsers().subscribe((data) => {
+      console.log('data:', data);
+      // @ts-ignore
+      for (let dataKey of data) {
+        this.allUsers.push(dataKey);
+      }
+    });
+  }
+
   getBugs() {
     this.bugs = [];
     this.bugServices.getBugs().subscribe((data) => {
@@ -191,6 +206,7 @@ export class BugsListComponent implements OnInit {
     this.bugServices.saveEditBug(this.bug).subscribe(
       (data) => {
         alert('Edit Bugs Complete');
+        this.search();
       },
       (error2 => {
         console.log('Error', error2);
@@ -199,7 +215,7 @@ export class BugsListComponent implements OnInit {
     );
 
     this.displayDialog = false;
-    this.search();
+
   }
 
   onRowSelect(event) {
