@@ -155,7 +155,7 @@ public class UserService {
 
     public void passwordFailed(String username) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
-        if (user.getCounter() < 5) {
+        if (user.getCounter() < 5 && user.getStatus()) {
             user.setCounter(user.getCounter() + 1); //todo do in repo increse counter
             if (user.getCounter() == 5) {
                 user.setStatus(false);
