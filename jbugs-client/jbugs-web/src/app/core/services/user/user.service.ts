@@ -17,7 +17,7 @@ export class UserService {
   }
 
   public login(user: UserLogin): Observable<Token> {
-    return this.http.post<Token>(this.base_url + '/login', user);
+    return this.http.post<Token>(this.base_url + '/findByUsernameAndPassword', user);
   }
 
   public add(user, roles) {

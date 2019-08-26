@@ -22,7 +22,7 @@ public class UserDtoMapping {
         //todo poate gasit alternativa pentru mappind fara sa facem new User, alternativ trimis atribute la add si construim acolo Userul
         User user =  new User();
         user.setId(userDto.getId());
-        user.setCounter(userDto.getCounter());
+        user.setFailedLoginAttempt(userDto.getCounter());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
@@ -37,17 +37,17 @@ public class UserDtoMapping {
         List<BugDto> bugsCreatedDto = new ArrayList<>();
         List<BugDto> bugsAssignedDto = new ArrayList<>();
 
-        if (user.getCreatedBy() != null) {
-            bugsCreatedDto = user.getCreatedBy().stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
+        if (user.getCreatedBugs() != null) {
+            bugsCreatedDto = user.getCreatedBugs().stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
         }
-        if (user.getAssignedTo() != null) {
-            bugsAssignedDto = user.getAssignedTo().stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
+        if (user.getAssignedBugs() != null) {
+            bugsAssignedDto = user.getAssignedBugs().stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
         }
-        return new UserDto(user.getId(),user.getCounter(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getMobileNumber(),user.getPassword(),user.getUsername(),user.getStatus(),bugsCreatedDto,bugsAssignedDto);
+        return new UserDto(user.getId(),user.getFailedLoginAttempt(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getMobileNumber(),user.getPassword(),user.getUsername(),user.getStatus(),bugsCreatedDto,bugsAssignedDto);
     }
 
     public static UserDto userToUserDtoIncomplet(User user){
-        return new UserDto(user.getId(),user.getCounter(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getMobileNumber(),user.getPassword(),user.getUsername(),user.getStatus());
+        return new UserDto(user.getId(),user.getFailedLoginAttempt(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getMobileNumber(),user.getPassword(),user.getUsername(),user.getStatus());
 
     }
 
