@@ -36,7 +36,7 @@ public class Validator {
     }
 
     static boolean validateROPhoneNumber(String phonenumber){
-        return phonenumber.matches("^(004|\\+4)?07[0-9]{8}$");
+        return phonenumber.matches("^(\\+49)?1(5[12579]|6[023]|7[0-9])[0-9]{7}$");
     }
 
     static boolean validateDEPhoneNumber(String phonenumber){

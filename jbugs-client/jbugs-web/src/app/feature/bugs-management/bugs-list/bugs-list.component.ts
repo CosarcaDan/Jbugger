@@ -147,7 +147,6 @@ export class BugsListComponent implements OnInit {
     });
   }
 
-
   public search() {
     console.log(this.bugSearchCrit);
     this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data: {}) => {
@@ -155,7 +154,10 @@ export class BugsListComponent implements OnInit {
       this.bugs = data;
 
       for (var bug of this.bugs) {
+        console.log('My targetdate', bug.targetDate);
         var date = new Date(bug.targetDate);
+        console.log('My variable targetdate', date);
+
         bug.targetDate = date;
       }
     })
