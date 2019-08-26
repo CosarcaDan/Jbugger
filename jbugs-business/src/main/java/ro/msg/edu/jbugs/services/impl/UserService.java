@@ -15,10 +15,10 @@ import ro.msg.edu.jbugs.repo.RoleRepo;
 import ro.msg.edu.jbugs.repo.UserRepo;
 import ro.msg.edu.jbugs.validators.Validator;
 
+import javax.annotation.Nullable;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,10 +46,13 @@ public class UserService {
     private NotificationService notificationService;
 
     //ToDo validate Data
-    public User addUser(UserDto userDto) throws IOException, BusinessException {
+    public User addUser(UserDto userDto) throws BusinessException {
         Validator.validateUser(userDto);
-        userDto.setUsername(generateUserName(userDto.getFirstName(), userDto.getLastName()));
-        userDto.setPassword(Hashing.sha256().hashString(userDto.getPassword(), StandardCharsets.UTF_8).toString());
+        userDto.setUsername(generateUserName(userDto.getLastName(), userDto.getFirstName()));
+        String defaultPassword = "defaultPass";
+        userDto.setPassword(Hashing.sha256().hashString(defaultPassword, StandardCharsets.UTF_8).toString());
+        userDto.setCounter(0);
+        userDto.setStatus(true);
         User user = UserDtoMapping.userDtoToUser(userDto);
         User newUser = userRepo.addUser(user);
         //todo userDto without password
@@ -57,7 +60,6 @@ public class UserService {
         //todo notification type ENUM
         //NotificationDto notificationDto = new NotificationDto(0, new Date(), "Welcome new User", "WelcomeNewUser", "noUrl", newUserDto);
         //notificationService.addNotification(notificationDto);
-
         return newUser;
     }
 
@@ -153,21 +155,21 @@ public class UserService {
 
     public void passwordFailed(String username) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
-        if (user.getCounter() < 5) {
+        if (user.getCounter() < 5 && user.getStatus()) {
             user.setCounter(user.getCounter() + 1); //todo do in repo increse counter
             if (user.getCounter() == 5) {
                 user.setStatus(false);
                 throw new BusinessException("Password failed too may times, User deactivated", "msg - 003");
             }
         } else {
-            throw new BusinessException("User Inactiv", "msg - 005");
+            throw new BusinessException("User Inactive", "msg - 005");
         }
     }
 
     public UserDto activateUser(String username) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
         if (user.getStatus()) {
-            throw new BusinessException("User already activ", "msg - 007");
+            throw new BusinessException("User already active", "msg - 007");
         } else {
             userRepo.activateUser(user);
             return UserDtoMapping.userToUserDtoIncomplet(user);
@@ -175,12 +177,12 @@ public class UserService {
     }
 
 
-    public UserDto deactivateUser(String username) throws BusinessException {
+    public UserDto deactivateUser(String username, @Nullable Boolean login) throws BusinessException {
         User user = userRepo.findeUserAfterUsername(username);
         if (!user.getStatus()) {
             throw new BusinessException("User already deactivated", "msg - 008");
         }
-        if (user.getAssignedTo() != null && !user.getAssignedTo().isEmpty()) {
+        if (user.getAssignedTo() != null && !user.getAssignedTo().isEmpty() && (login != null && !login)) {
             for (Bug bug : user.getAssignedTo()) {
                 if (!bug.getStatus().equals(Bug.Status.CLOSED))
                     throw new BusinessException("User still has unclosed bugs", "msg - 009");

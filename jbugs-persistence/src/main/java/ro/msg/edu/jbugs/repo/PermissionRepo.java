@@ -26,14 +26,14 @@ public class PermissionRepo {
         return query.getResultList();
     }
 
-    public Permission addPermission(Permission permission){
+    public Permission addPermission(Permission permission) {
         entityManager.persist(permission);
         entityManager.flush();
         return permission;
     }
 
-    public Permission findPermission(Integer id){
-        return entityManager.find(Permission.class,id);
+    public Permission findPermission(Integer id) {
+        return entityManager.find(Permission.class, id);
     }
 
     public List<Permission> getPermissionsNotInRole(Role role) {

@@ -1,0 +1,17 @@
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FileService {
+  base_url: string = 'http://localhost:8080/jbugs/services/files';
+
+  constructor(private http: HttpClient) {
+  }
+
+  public uploadFile(file) {
+    this.http.post(this.base_url + '/upload', file);
+  }
+
+}

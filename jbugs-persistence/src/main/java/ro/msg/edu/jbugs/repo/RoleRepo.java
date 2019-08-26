@@ -20,14 +20,14 @@ public class RoleRepo {
     @PersistenceContext(unitName = "jbugs-persistence")
     EntityManager entityManager;
 
-    public Role addRole(Role role){
+    public Role addRole(Role role) {
         entityManager.persist(role);
         entityManager.flush();
         return role;
     }
 
-    public Role findRole(Integer id){
-        return entityManager.find(Role.class,id);
+    public Role findRole(Integer id) {
+        return entityManager.find(Role.class, id);
     }
 
 

@@ -44,9 +44,8 @@ public class BugService {
 
     public BugDto addBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
-        User creator = userRepo.findeUserAfterUsername(bugDto.getCreated());
-        User assigned = userRepo.findeUserAfterUsername(bugDto.getAssigned());
-        bugDto.setStatus("NEW");
+        User creator = userRepo.findUser(Integer.parseInt(bugDto.getCreated()));
+        User assigned = userRepo.findUser(Integer.parseInt(bugDto.getAssigned()));
         Bug bug = BugDtoMapping.bugDtoToBug(bugDto, creator, assigned);
         return BugDtoMapping.bugToBugDtoComplet(bugRepo.addBug(bug));
     }
@@ -201,7 +200,7 @@ public class BugService {
         List<Paragraph> paragraphList = new ArrayList<>();
         newElement("Description", bug.getDescription()).forEach(p -> paragraphList.add(p));
         paragraphList.add(newShortElement("Version: ", bug.getVersion()));
-        paragraphList.add(newShortElement("Target date: ", bug.getTargetDate().toString()));
+        paragraphList.add(newShortElement("Target date: ", bug.getTargetDate().toString().split(" ")[0]));
         paragraphList.add(newShortElement("Status: ", bug.getStatus().name()));
         paragraphList.add(newShortElement("Fixed version: ", bug.getFixedVersion()));
         paragraphList.add(newShortElement("Severity: ", bug.getSeverity().name()));

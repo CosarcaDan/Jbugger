@@ -91,14 +91,13 @@ public class UserRepo {
 
     //ToDo Posibil sa facem username in bd unique si sa nu mai folosim functia?
     public boolean isUsernameUnique(String username) {
-        Query query = entityManager.createNamedQuery(User.QUERY_COUNT_USER_NAME_UNIQUE);
-        query.setParameter("username", username);
         try {
-            query.getSingleResult();
-            return true;
+            Long numberOfOccurences = entityManager.createNamedQuery(User.QUERY_COUNT_USER_NAME_UNIQUE, Long.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+            return numberOfOccurences == 0;
         } catch (NoResultException | NonUniqueResultException ex) {
             return false;
-
         }
     }
 
@@ -118,7 +117,7 @@ public class UserRepo {
         user.setStatus(true);
     }
 
-    public void deactivateUser(User user){
+    public void deactivateUser(User user) {
         user.setStatus(false);
     }
 
@@ -127,8 +126,6 @@ public class UserRepo {
         user.setCounter(0);
         return user;
     }
-
-
 
 
     public User updateUser(User newDataUser) throws BusinessException {

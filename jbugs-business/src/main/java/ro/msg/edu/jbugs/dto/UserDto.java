@@ -2,7 +2,6 @@ package ro.msg.edu.jbugs.dto;
 
 import com.google.gson.Gson;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +12,7 @@ import java.util.Objects;
  * @author msg systems AG; User Name.
  * @since 19.1.2
  */
-@XmlRootElement
+//@XmlRootElement
 public class UserDto implements Serializable {
     private Integer id;
     private Integer counter;
@@ -26,7 +25,6 @@ public class UserDto implements Serializable {
     private Boolean status;
     private List<BugDto> createdBy;
     private List<BugDto> assignedTo;
-
 
 
     public String getMobileNumber() {
@@ -80,7 +78,7 @@ public class UserDto implements Serializable {
     public UserDto() {
     }
 
-    public UserDto(Integer id, Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status,List<BugDto> createdBy,List<BugDto> assignTo) {
+    public UserDto(Integer id, Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status, List<BugDto> createdBy, List<BugDto> assignTo) {
         this.id = id;
         this.counter = counter;
         this.firstName = firstName;
@@ -96,9 +94,10 @@ public class UserDto implements Serializable {
     }
 
     public UserDto(UserLoginDto uld) {
-        this.username=uld.getUsername();
-        this.password=uld.getPassword();
+        this.username = uld.getUsername();
+        this.password = uld.getPassword();
     }
+
     public UserDto(Integer id, Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
         this.id = id;
         this.counter = counter;
@@ -190,10 +189,10 @@ public class UserDto implements Serializable {
                 ", assignedTo=" + assignedTo +
                 '}';
     }
-    public static UserDto fromString(String JSON)
-    {
+
+    public static UserDto fromString(String JSON) {
         Gson g = new Gson();
-        UserDto result =g.fromJson(JSON,UserDto.class);
+        UserDto result = g.fromJson(JSON, UserDto.class);
         return result;
     }
 }

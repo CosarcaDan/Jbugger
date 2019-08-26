@@ -1,0 +1,18 @@
+<p-menubar [model]="items">
+  <div>
+    <p-selectButton [options]="languages" [(ngModel)]="selectedLanguage"></p-selectButton>
+    <button pButton (click)="logout()" label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>
+    <!--  npm install ngx-flag-icon-css flag-icon-css-->
+
+  </div>
+</p-menubar>
+
+<p-sidebar [(visible)]="display" position="right" styleClass="ui-sidebar-md">
+  Notifications
+</p-sidebar>
+
+
+<button id="notification" type="text" (click)="display = true" pButton class="ui-button-rounded ui-button-success"
+        label="Notifications"></button>
+
+<router-outlet></router-outlet>

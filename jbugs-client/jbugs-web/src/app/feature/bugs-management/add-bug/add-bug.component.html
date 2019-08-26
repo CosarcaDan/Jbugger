@@ -1,0 +1,147 @@
+<form [formGroup]="form">
+
+  <div class="form-group">
+    <label for="title">Title: </label>
+    <input type="text"
+           formControlName="title"
+           class="form-control"
+           required
+           id="title">
+    <div class="alert alert-danger"
+         *ngIf="form.get('title').touched && form.get('title').invalid">
+      <div *ngIf="form.get('title').errors.required">
+        Title is required!
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description: </label>
+    <textarea id="description"
+              name="description"
+              formControlName="description"
+              class="form-control"
+              required></textarea>
+
+    <div class="alert alert-danger"
+         *ngIf="form.get('description').touched && form.get('description').invalid">
+      <div *ngIf="form.get('description').errors.required">
+        Description is required!
+      </div>
+      <div *ngIf="form.get('description').errors.minlength">
+        Description must have at least 250 characters!
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="version">Version: </label>
+    <input type="text"
+           formControlName="version"
+           class="form-control"
+           required
+           id="version">
+    <div class="alert alert-danger"
+         *ngIf="form.get('version').touched && form.get('version').invalid">
+      <div *ngIf="form.get('version').errors.required">
+        Version is required!
+      </div>
+      <div *ngIf="form.get('version').errors.validateVersion">
+        Version is invalid! It must respect the format 89.89.89
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="fixedVersion">Fixed in version: </label>
+    <input type="text"
+           formControlName="fixedVersion"
+           class="form-control"
+           required
+           id="fixedVersion">
+    <div class="alert alert-danger"
+         *ngIf="form.get('fixedVersion').touched && form.get('fixedVersion').invalid">
+      <div *ngIf="form.get('fixedVersion').errors.required">
+        Fixed version is required!
+      </div>
+      <div *ngIf="form.get('fixedVersion').errors.validateVersion">
+        Fixed version is invalid! It must respect the format 89.89.89
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="targetDate">Target Date:</label>
+    <input type="date"
+           formControlName="targetDate"
+           class="form-control"
+           id="targetDate"
+           min="{{todayDate | date:'yyyy-MM-dd'}}"
+    >
+    <div class="alert alert-danger"
+         *ngIf="form.get('targetDate').touched && form.get('targetDate').invalid">
+      <div *ngIf="form.get('targetDate').errors.min">You cannot get in te past.</div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="severity">Severity</label>
+    <select class="form-control"
+            id="severity"
+            name="severity"
+            formControlName="severity"
+    >
+      <option *ngFor="let severity of severitys" [value]="severity.type">
+        {{severity.type}}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="createdBy">Created by: </label>
+    <input type="text"
+           formControlName="createdBy"
+           class="form-control"
+           disabled
+           [value]="currentLoggedUser.name"
+           id="createdBy">
+  </div>
+
+  <div class="form-group">
+    <label for="status">Status: </label>
+    <input type="text"
+           formControlName="status"
+           class="form-control"
+           disabled
+           [value]="currentStatus.name"
+           id="status">
+  </div>
+
+  <div class="form-group">
+    <label for="assignedTo">Assigned to: </label>
+    <select class="form-control"
+            id="assignedTo"
+            name="assignedTo"
+            formControlName="assignedTo"
+    >
+      <option *ngFor="let user of allUsers" [value]="user.username">
+        {{user.username}}
+      </option>
+    </select>
+  </div>
+
+  <label for="attachments">Attachments:</label>
+  <input type="file"
+         id="attachments"
+         (change)="onFileChange($event)"
+         #fileInput
+         formControlName="attachments"
+  >
+
+  <br>
+  <button class="btn btn-primary"
+          type="button"
+          (click)="addBug()"
+          [disabled]="form.invalid">Add bug
+  </button>
+</form>

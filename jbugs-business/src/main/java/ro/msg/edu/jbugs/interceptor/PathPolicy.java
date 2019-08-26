@@ -11,38 +11,40 @@ public class PathPolicy {
 
     public PathPolicy() {
         this.pathPermissions = new HashMap<>();
-        pathPermissions.put("^users/login$", new ArrayList<>());
-        pathPermissions.put("^bugs$", new ArrayList<>());
+        pathPermissions.put("^users/log.*", new ArrayList<>());
         pathPermissions.put("^files/upload$", new ArrayList<>());
         pathPermissions.put("^files/download.*", new ArrayList<>());
 
 
-        List<String> perissions = new ArrayList<>();
-        perissions.add("USER_MANAGEMENT");
-        pathPermissions.put("^users.*", new ArrayList<>(perissions));
+        List<String> permissions = new ArrayList<>();
+        permissions.add("USER_MANAGEMENT");
+        pathPermissions.put("^users.*", new ArrayList<>(permissions));
 
-        perissions.clear();
-        perissions.add("USER_MANAGEMENT");
-        perissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^roles$", new ArrayList<>(perissions));
+        permissions.clear();
+        permissions.add("USER_MANAGEMENT");
+        permissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^roles$", new ArrayList<>(permissions));
 
-        perissions.clear();
-        perissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^permissions.*", new ArrayList<>(perissions));
+        permissions.clear();
+        permissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^permissions.*", new ArrayList<>(permissions));
 
-        perissions.clear();
-        perissions.add("PERMISSION_MANAGEMENT"); //change CloseBug_MGMT
-        pathPermissions.put("^bugs/[1234567890]+$", new ArrayList<>(perissions));
+        permissions.clear();
+        permissions.add("BUG_MANAGEMENT");
+        pathPermissions.put("^bugs", new ArrayList<>());
 
-        pathPermissions.put("^bugs/[1234567890]+/edit", new ArrayList<>(perissions)); // tobe bugMgmt
+        permissions.clear();
+        permissions.add("BUG_MANAGEMENT");
+        pathPermissions.put("^bugs/[1234567890]+/.*", new ArrayList<>());
 
-        perissions.clear();
-        perissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^bugs/.*", new ArrayList<>(perissions));
+        permissions.clear();
+        permissions.add("BUG_CLOSE");
+        pathPermissions.put("^bugs/[1234567890]+", new ArrayList<>(permissions));
 
-        perissions.clear();
-        perissions.add("PERMISSION_MANAGEMENT");
-        pathPermissions.put("^roles.*", new ArrayList<>(perissions));
+
+        permissions.clear();
+        permissions.add("PERMISSION_MANAGEMENT");
+        pathPermissions.put("^roles.*", new ArrayList<>(permissions));
 
     }
 

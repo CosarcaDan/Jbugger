@@ -1,5 +1,7 @@
 package ro.msg.edu.jbugs.dto;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -133,5 +135,11 @@ public class BugDto implements Serializable {
                 ", created=" + created +
                 ", assigned=" + assigned +
                 '}';
+    }
+
+    public static BugDto fromString(String JSON) {
+        Gson g = new Gson();
+        BugDto result = g.fromJson(JSON, BugDto.class);
+        return result;
     }
 }
