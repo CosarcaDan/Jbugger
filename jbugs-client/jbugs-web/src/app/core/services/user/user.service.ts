@@ -17,8 +17,7 @@ export class UserService {
   }
 
   public login(user: UserLogin): Observable<Token> {
-    // @ts-ignore
-    return this.http.post<Token>(this.baseUrl + '/login', user).pipe(map(this.extractData));
+    return this.http.post<Token>(this.baseUrl + '/login', user);
   }
 
   public add(user, roles): Observable<any> {
@@ -26,7 +25,7 @@ export class UserService {
     body.append('user', JSON.stringify(user));
     body.append('roles', JSON.stringify(roles));
     console.log('body', body.get('user'));
-    return this.http.post(this.baseUrl + '/add', body).pipe(map(this.extractData));
+    return this.http.post(this.baseUrl + '/add', body);
   }
 
   public edit(user, roles) {
@@ -35,7 +34,7 @@ export class UserService {
     body.append('user', JSON.stringify(user));
     body.append('roles', JSON.stringify(roles));
     console.log(body.get('user'))
-    return this.http.put(this.baseUrl + '/' + user.id + '/edit', body).pipe(map(this.extractData));
+    return this.http.put(this.baseUrl + '/' + user.id + '/edit', body);
     //this.displayDialog = false;
     //this.search();
   }
@@ -43,13 +42,13 @@ export class UserService {
   public activate(user) {
     let body = new HttpParams()
       .set('user', JSON.stringify(user));
-    return this.http.put(this.baseUrl + '/' + user.id + '/activate', body).pipe(map(this.extractData));
+    return this.http.put(this.baseUrl + '/' + user.id + '/activate', body);
   }
 
   public deactivate(user) {
     let body = new HttpParams()
       .set('user', JSON.stringify(user));
-    return this.http.put(this.baseUrl + '/' + user.id + '/deactivate', body).pipe(map(this.extractData));
+    return this.http.put(this.baseUrl + '/' + user.id + '/deactivate', body);
   }
 
   public getUsers(): Observable<Array<User>> {
@@ -57,16 +56,12 @@ export class UserService {
   }
 
   public getUser(id: number): Observable<any> {
-    return this.http.get(this.baseUrl + '/' + id).pipe(map(this.extractData));
+    return this.http.get(this.baseUrl + '/' + id);
   }
 
   public getUserRoles(id: number): Observable<Role[]> {
     return this.http.post<Role[]>(this.baseUrl + '/roles', JSON.stringify(id));
   }
 
-  private extractData(res: Response) {
-    let body = res;
-    return body || {};
-  }
 
 }

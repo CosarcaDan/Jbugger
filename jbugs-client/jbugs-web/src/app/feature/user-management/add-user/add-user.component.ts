@@ -81,7 +81,7 @@ export class AddUserComponent implements OnInit {
       username: null,
       status: null
     };
-    this.userService.add(userToBeAdded, this.selectedRoles);
+    this.userService.add(userToBeAdded, this.selectedRoles).subscribe();
   }
 
   getSelectedRoles() {

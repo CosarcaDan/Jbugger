@@ -116,7 +116,7 @@ UserRESTController {
 
     @POST
     @Path("/add")
-    @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({MediaType.MULTIPART_FORM_DATA})
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(@NotNull @FormDataParam("user") UserDto user, @NotNull @FormDataParam("roles") String roles) {
         Gson gson = new GsonBuilder().create();
