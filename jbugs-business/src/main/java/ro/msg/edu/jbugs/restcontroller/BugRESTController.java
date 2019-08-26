@@ -112,6 +112,7 @@ public class BugRESTController {
             //adds the bug
             BugDto bugAdded = bugService.addBug(bug);
             attachmentService.addAttachment(attachment, bugAdded);
+            bugService.addAttachment(bugAdded, attachment);
 
             String response = gson.toJson("All OK!");
             return Response.status(200).entity(response).build();
@@ -127,7 +128,10 @@ public class BugRESTController {
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
     public Response editBug(@NotNull @FormParam("bug") BugDto bugDto, @NotNull @FormParam("attachment") AttachmentDto attachment) {
         try {
-            attachmentService.addAttachment(attachment, bugDto);
+            if(bugService.getAttachments(bugDto).stream().noneMatch(att -> att.getAttContent().equals(attachment.getAttContent()))) {
+                attachmentService.addAttachment(attachment, bugDto);
+                bugService.addAttachment(bugDto, attachment);
+            }
             bugService.updateBug(bugDto);
             return Response.status(200).build();
         } catch (BusinessException e) {

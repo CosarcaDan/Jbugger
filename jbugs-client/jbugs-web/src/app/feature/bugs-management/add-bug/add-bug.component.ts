@@ -56,7 +56,7 @@ export class AddBugComponent implements OnInit {
       createdBy: [null, []],
       status: [null, []],
       assignedTo: [null, []],
-      attachments: [],
+      attachments: ['',[Validators.required]],
     });
   }
 

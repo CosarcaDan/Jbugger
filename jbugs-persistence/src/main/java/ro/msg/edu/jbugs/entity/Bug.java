@@ -175,6 +175,10 @@ public class Bug implements Serializable {
         this.assigned = assigned;
     }
 
+    public void addAttachment(Attachment attachment) {
+        this.attachments.add(attachment);
+    }
+
     public enum Status{
         NEW, IN_PROGRESS, FIXED, CLOSED, REJECTED, INFONEEDED
     }

@@ -199,7 +199,8 @@ export class BugsListComponent implements OnInit {
       id: null,
       attContent: this.uploadedFileName,
     };
-    this.fileUpload();
+    if(this.attachments!=null)
+      this.fileUpload();
     this.bugServices.saveEditBug(this.bug,attachmentToBeAdded).subscribe(
       (data) => {
         alert('Edit Bugs Complete');
