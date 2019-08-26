@@ -9,14 +9,11 @@ import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
   providedIn: 'root'
 })
 export class AuthService {
-
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal) {
   }
-
   private cachedPermissions: string[] = null;
   private lastPermissionUpdate = Date.now();
   private requestSent: boolean = false;
-
   getToken() {
     let token = sessionStorage.getItem('token');
     if(!token)
@@ -28,16 +25,13 @@ export class AuthService {
     }
     return 'Bearer ' + token;
   }
-
   getUsername() {
     return this.decodeToken(sessionStorage.getItem('token')).sub;
   }
-
   public login(user: UserLogin) {
     this.http.post<any>('http://localhost:8080/jbugs/services/users/login', user).subscribe(async (data) => {
       console.log('data', data);
       sessionStorage.setItem('token', data.value);
-
       const modalRef = this.modalService.open(NgbdWelcomeModalContent)
       this.getPermissions();
       await delay(1000);
@@ -47,7 +41,6 @@ export class AuthService {
       console.log('Error', error1);
     });
   }
-
   public logout() {
     console.log('un: ', this.getUsername());
     this.http.post<any>('http://localhost:8080/jbugs/services/users/logout', {username: this.getUsername()}).subscribe((data) => {
@@ -57,7 +50,6 @@ export class AuthService {
       console.log('Error', error1.error);
     });
   }
-
   public renew(username: string) {
     this.http.post<any>('http://localhost:8080/jbugs/services/users/renew', {username: username}).subscribe((data) => {
       console.log(data);
@@ -66,7 +58,6 @@ export class AuthService {
       console.log('Error', error1.error);
     });
   }
-
   public getPermissions() {
     console.log('DING!')
     this.http.post<any>('http://localhost:8080/jbugs/services/users/permissions', {username: this.getUsername()}).subscribe((data) => {
@@ -76,7 +67,6 @@ export class AuthService {
       return data.map(p => p.type);
     });
   }
-
   public hasPermission(permission: string) {
     // console.log('isSet: ',this.cachedPermissions,'last:',this.lastPermissionUpdate,'now:',Date.now(),'reqSent:',this.requestSent);
     if ((this.cachedPermissions == null || this.lastPermissionUpdate + 60000 < Date.now()) && !this.requestSent) {
@@ -87,12 +77,9 @@ export class AuthService {
     return JSON.parse(sessionStorage.getItem('permissions')).filter(p => p == permission).length != 0;
   }
 
-
-
   private b64c:string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";   // base64 dictionary
   private b64u:string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";  // base64url dictionary
   private b64pad: string = '=';
-
   /* base64_charIndex
    * Internal helper to translate a base64 character to its integer index.
    */
@@ -101,7 +88,6 @@ export class AuthService {
     if (c == "/") return 63
     return this.b64u.indexOf(c)
   }
-
   /* base64_decode
    * Decode a base64 or base64url string to a JavaScript string.
    * Input is assumed to be a base64/base64url encoded UTF-8 string.
@@ -111,7 +97,6 @@ export class AuthService {
     let dst = "";
     let i = 0, a, b, c, d, z;
     let len = data.length;
-
     for (; i < len - 3; i += 4) {
       a = this.base64_charIndex(data.charAt(i + 0));
       b = this.base64_charIndex(data.charAt(i + 1));
@@ -127,7 +112,6 @@ export class AuthService {
     }
     return decodeURIComponent(dst);
   }
-
   // decode token
   private decodeToken(token: string) {
     let parts = token.split('.');
@@ -143,41 +127,33 @@ export class AuthService {
     }
     return JSON.parse(decoded);
   }
-
   private getTokenExpirationDate(token: string) {
     let decoded: any;
     decoded = this.decodeToken(token);
-
     if(typeof decoded.exp === "undefined") {
       return null;
     }
-
     let date = new Date(0); // The 0 here is the key, which sets the date to the epoch
     date.setUTCSeconds(decoded.exp);
-
     return date;
   }
-
   private isTokenExpired(token: string, offsetSeconds?: number) {
     let date = this.getTokenExpirationDate(token);
     offsetSeconds = offsetSeconds || 0;
     if (date === null) {
       return false;
     }
-
     // Token expired?
     return !(date.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)));
   }
 
-
 }
-
 @Component({
   selector: 'ngbd-modal-content',
   template: `
     <div class="modal-header">
       <h4 class="modal-title">Hi there!</h4>
-        <span aria-hidden="true">&times;</span>
+      <span aria-hidden="true">&times;</span>
     </div>
     <div class="modal-body">
       <p>Welcome to Jbugger!</p>
@@ -186,7 +162,6 @@ export class AuthService {
 })
 export class NgbdWelcomeModalContent {
   @Input() name;
-
   constructor(public activeModal: NgbActiveModal) {
   }
 }

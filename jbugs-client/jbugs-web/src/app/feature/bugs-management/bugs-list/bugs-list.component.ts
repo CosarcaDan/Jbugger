@@ -36,9 +36,6 @@ export class BugsListComponent implements OnInit {
 
   newBug: boolean;
 
-
-
-
   bugSearchCrit: Bug = {
     id: 0,
     title: '',
