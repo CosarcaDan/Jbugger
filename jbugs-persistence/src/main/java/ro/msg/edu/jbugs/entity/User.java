@@ -210,6 +210,9 @@ public class User implements Serializable {
     }
 
     public void addRole(Role role) {
+        if (this.roleList.stream().anyMatch(role1 -> role1.getType().equals(role.getType())))
+            return;
+
         role.addUserSimple(this);
         this.roleList.add(role);
     }

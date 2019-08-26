@@ -156,7 +156,8 @@
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" pButton (click)="delete(bug.id)"
-              *ngIf="this.authService.hasPermission('BUG_CLOSE') && bug.status == 'FIXED' " label="Delete"></button>
+              *ngIf="this.authService.hasPermission('BUG_CLOSE') && (bug.status == 'FIXED' || bug.status == 'REJECTED') "
+              label="Close Bug"></button>
       <button type="button" pButton (click)="save()" label="Save"></button>
       <button type="button" pButton (click)="export()" *ngIf="this.authService.hasPermission('BUG_EXPORT_PDF')"
               label="Export in PDF"></button>

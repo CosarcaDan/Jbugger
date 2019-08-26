@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -166,11 +165,11 @@ UserRESTController {
 
     @PUT
     @Path("/{id}/activate")
-    public Response activate(@NotNull @FormParam("user") UserDto userDto) {
+    public Response activate(@NotNull UserDto user) {
         Gson gson = new GsonBuilder().create();
         try {
-            //userDto.setStatus(true);
-            userService.updateUser(userDto);
+            //user.setStatus(true);
+            userService.updateUser(user);
             String response = gson.toJson("User was successfully activated!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
@@ -181,13 +180,13 @@ UserRESTController {
 
     @PUT
     @Path("/{id}/deactivate")
-    public Response deactivate(@NotNull @FormParam("user") UserDto userDto) {
+    public Response deactivate(@NotNull UserDto user) {
         Gson gson = new GsonBuilder().create();
         String response;
         try {
-            //userDto.setStatus(false);
-            if (userService.hasOnlyClosedBugs(userDto)) {
-                userService.updateUser(userDto);
+            //user.setStatus(false);
+            if (userService.hasOnlyClosedBugs(user)) {
+                userService.updateUser(user);
                 response = gson.toJson("User was successfully deactivated!");
             } else {
                 response = gson.toJson("User has tasks assigned, that are not closed yet and" +

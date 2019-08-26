@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {UserLogin} from '../../models/userLogin';
-import {map} from 'rxjs/operators';
 import {Token} from '../../models/token';
 import {User} from '../../models/user';
 import {Role} from '../../models/role';
@@ -24,31 +23,24 @@ export class UserService {
     let body = new FormData();
     body.append('user', JSON.stringify(user));
     body.append('roles', JSON.stringify(roles));
-    console.log('body', body.get('user'));
     return this.http.post(this.baseUrl + '/add', body);
   }
 
   public edit(user, roles) {
-    console.log(user.mobileNumber)
     let body = new FormData();
     body.append('user', JSON.stringify(user));
     body.append('roles', JSON.stringify(roles));
-    console.log(body.get('user'))
     return this.http.put(this.baseUrl + '/' + user.id + '/edit', body);
     //this.displayDialog = false;
     //this.search();
   }
 
   public activate(user) {
-    let body = new HttpParams()
-      .set('user', JSON.stringify(user));
-    return this.http.put(this.baseUrl + '/' + user.id + '/activate', body);
+    return this.http.put(this.baseUrl + '/' + user.id + '/activate', user);
   }
 
   public deactivate(user) {
-    let body = new HttpParams()
-      .set('user', JSON.stringify(user));
-    return this.http.put(this.baseUrl + '/' + user.id + '/deactivate', body);
+    return this.http.put(this.baseUrl + '/' + user.id + '/deactivate', user);
   }
 
   public getUsers(): Observable<Array<User>> {

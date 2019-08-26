@@ -240,7 +240,7 @@ public class UserService {
 
     public UserDto updateWithRoles(UserDto userDto, List<RoleDto> roleDtos) throws BusinessException {
         Validator.validateUser(userDto);
-        User newDataUser = UserDtoMapping.userDtoToUser(userDto);
+        User newDataUser = userRepo.updateUser(UserDtoMapping.userDtoToUser(userDto));
         newDataUser.setRoleList(roleDtos.stream().map(roleDto ->
         {
             Role res = roleRepo.findRole(roleDto.getId());
