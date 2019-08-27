@@ -26,8 +26,9 @@
     </div>
   </ng-template>
 </p-table>
+
 <p-dialog header="User Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
-          [style]="{width: '400px'}" >
+          [style]="{width: '400px'}" [contentStyle]="{'max-height':'60vh'}">
   <div class="ui-g ui-fluid" *ngIf="user">
     <div class="ui-g-12">
       <div class="ui-g-4">
