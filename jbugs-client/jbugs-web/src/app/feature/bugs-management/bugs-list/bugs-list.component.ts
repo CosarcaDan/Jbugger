@@ -251,11 +251,16 @@ export class BugsListComponent implements OnInit {
   }
 
   onRowSelect(event) {
-    this.getAttachments(event.data);
-    this.clearFile();
-    this.newBug = false;
-    this.bug = this.cloneBug(event.data);
-    this.displayDialog = true;
+    this.getAttachments(event.data).toPromise().then(
+      res=>{
+        this.currentAttachments=res;
+      this.clearFile();
+      this.newBug = false;
+      this.bug = this.cloneBug(event.data);
+      this.displayDialog = true;
+    }
+    )
+
   }
 
   private cloneBug(b: Bug): Bug {
@@ -286,8 +291,7 @@ export class BugsListComponent implements OnInit {
   }
 
   getAttachments(bug:Bug){
-    this.bugServices.getAttachments(bug).subscribe(res=>
-    this.currentAttachments=res);
+    return this.bugServices.getAttachments(bug);
   }
 
 }

@@ -195,7 +195,7 @@
 
     <!--  Attachments -->
 
-    <div class="ui-g-12">
+    <div class="ui-g-12" *ngIf="(currentAttachments!=null && currentAttachments.length!=0)">
       <table><tr><td><div class="ui-g-4">
         <label for="attachments">Attachments:</label>
       </div></td>
