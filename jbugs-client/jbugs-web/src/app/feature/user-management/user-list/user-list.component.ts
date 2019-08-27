@@ -121,13 +121,13 @@ export class UserListComponent implements OnInit {
       (data: {}) => {
         alert(data);
         this.getUsers();
-        this.getUsers();
       },
       (error2 => {
         console.log('Error', error2);
         alert('Edit User failed :' + error2.error.detailMessage);
       }))
     ;
+    this.displayDialog = false;
     //location.reload();
   }
 

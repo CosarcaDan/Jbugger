@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugService} from '../../../core/services/bug/bug.service';
@@ -80,6 +80,8 @@ export class BugsListComponent implements OnInit {
   attachments;
   private currentAttachments: Array<Attachment>;
 
+  private temporatStatus: string;
+
   @ViewChild('dt', undefined)
   dt: Table;
 
@@ -90,7 +92,7 @@ export class BugsListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUsers();
+//setInterval(getNotifications,1000);    this.getUsers();
     this.cols = [
       {field: 'title', header: 'Title'},
       {field: 'description', header: 'Description'},
@@ -141,7 +143,6 @@ export class BugsListComponent implements OnInit {
 
 
     this.severity = [
-      {label: 'All Severities', value: ''},
       {label: 'LOW', value: 'LOW'},
       {label: 'MEDIUM', value: 'MEDIUM'},
       {label: 'HIGH', value: 'HIGH'},
@@ -149,7 +150,7 @@ export class BugsListComponent implements OnInit {
     ];
 
     this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
-      if (filter === undefined || filter === null || (filter.length === 0 || filter === '') && value === null) {
+      if (filter === undefined || filter === null || (filter.length === 0 || filter === "") && value === null) {
         return true;
       }
       if (value === undefined || value === null || value.length === 0) {
@@ -159,9 +160,8 @@ export class BugsListComponent implements OnInit {
         return true;
       }
       return false;
-    };
+    }
   }
-
 
   getUsers() {
     this.allUsers = new Array<User>();
@@ -229,6 +229,7 @@ export class BugsListComponent implements OnInit {
   }
 
   save() {
+    this.bug.status = this.temporatStatus;
     console.log('saved');
     let attachmentToBeAdded: Attachment = {
       id: null,

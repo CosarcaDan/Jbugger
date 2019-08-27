@@ -1,5 +1,5 @@
 <p-table #dt [columns]="cols" [value]="bugs" selectionMode="single" [(selection)]="selectedBug" [scrollable]="true"
-         scrollHeight="523px"
+         scrollHeight="64vh"
          (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="25">
 
   <ng-template pTemplate="caption">
@@ -53,10 +53,7 @@
                        defaultLabel="All severities"
                        (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
 
-        <!--        <input *ngSwitchCase="'created'" pInputText size="15" type="text"-->
-        <!--               (input)="dt.filter($event.target.value, col.field, 'contains')">-->
-        <!--        <input *ngSwitchCase="'assigned'" pInputText size="15" type="text"-->
-        <!--               (input)="dt.filter($event.target.value, col.field, 'contains')">-->
+
 
         <p-autoComplete appendTo="body" *ngSwitchCase="'created'" [suggestions]="filteredBugs"
                         (completeMethod)="filterBugs($event)" [size]="30"
@@ -157,19 +154,19 @@
       <div class="ui-g-8" [ngSwitch]="bug.status">
         <p-dropdown id="statusEditNEW" appendTo="body" [options]="statusNew" [style]="{'width':'100%'}"
                     *ngSwitchCase="'NEW'"
-                    [(ngModel)]="bug.status"></p-dropdown>
+                    [(ngModel)]="temporatStatus"></p-dropdown>
         <p-dropdown id="statusEditINPROGRESS" appendTo="body" [options]="statusInProgress" [style]="{'width':'100%'}"
                     *ngSwitchCase="'IN_PROGRESS'"
-                    [(ngModel)]="bug.status"></p-dropdown>
+                    [(ngModel)]="temporatStatus"></p-dropdown>
         <p-dropdown id="statusEditINFONEEDED" appendTo="body" [options]="statusInfoNeeded" [style]="{'width':'100%'}"
                     *ngSwitchCase="'INFONEEDED'"
-                    [(ngModel)]="bug.status"></p-dropdown>
+                    [(ngModel)]="temporatStatus"></p-dropdown>
         <p-dropdown id="statusEditREJECTED" appendTo="body" [options]="statusRejected" [style]="{'width':'100%'}"
                     *ngSwitchCase="'REJECTED'"
-                    [(ngModel)]="bug.status"></p-dropdown>
+                    [(ngModel)]="temporatStatus"></p-dropdown>
         <p-dropdown id="statusEditFIXED" appendTo="body" [options]="statusFixed" [style]="{'width':'100%'}"
                     *ngSwitchCase="'FIXED'"
-                    [(ngModel)]="bug.status"></p-dropdown>
+                    [(ngModel)]="temporatStatus"></p-dropdown>
       </div>
     </div>
     <div class="ui-g-12">
