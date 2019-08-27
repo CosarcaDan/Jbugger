@@ -13,6 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (req.url == 'http://localhost:8080/jbugs/services/roles/add-permissions' ||
       req.url == 'http://localhost:8080/jbugs/services/roles/remove-permissions' ||
       req.url == 'http://localhost:8080/jbugs/services/bugs/add' ||
+      req.url.match('http://localhost:8080/jbugs/services/bugs/.*/edit')||
       req.url == 'http://localhost:8080/jbugs/services/user/roles'
       //req.url.match('http://localhost:8080/jbugs/services/users/[1234567890]+/edit') ||
       //req.url.match('http://localhost:8080/jbugs/services/users/[1234567890]+/activate') ||
@@ -27,7 +28,6 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       });
     } else {
-      console.log(req.url,req.url.match('http://localhost:8080/jbugs/services/users/.*/edit'))
       if (req.url == 'http://localhost:8080/jbugs/services/files/upload' ||
           req.url.match('http://localhost:8080/jbugs/services/users/.*/edit')||
           req.url == 'http://localhost:8080/jbugs/services/users/add'

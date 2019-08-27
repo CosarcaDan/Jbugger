@@ -12,7 +12,7 @@ import ro.msg.edu.jbugs.entity.Attachment;
  */
 public class AttachmentDtoMapping {
 
-    public static Attachment attachmentDtoToAttachment(AttachmentDto attachmentDto, BugDto bugDto) {
+    public static Attachment attachmentDtoToAttachmentWithBug(AttachmentDto attachmentDto, BugDto bugDto) {
         Attachment attachment = new Attachment();
         attachment.setId(attachmentDto.getId());
         attachment.setAttContent(attachmentDto.getAttContent());
@@ -20,10 +20,17 @@ public class AttachmentDtoMapping {
         return attachment;
     }
 
-//    public static AttachmentDto attachmentToAttachmentDto(Attachment attachment){
-//        AttachmentDto attachmentDto = new AttachmentDto();
-//        attachment.setId(attachmentDto.getId());
-//        attachment.setAttContent(attachmentDto.getAttContent());
-//        attachment.setBug(BugDtoMapping.bugDtoToBug(attachmentDto.getBug()));
-//    }
+    public static Attachment attachmentDtoToAttachment(AttachmentDto attachmentDto) {
+        Attachment attachment = new Attachment();
+        attachment.setId(attachmentDto.getId());
+        attachment.setAttContent(attachmentDto.getAttContent());
+        return attachment;
+    }
+
+    public static AttachmentDto attachmentToAttachmentDto(Attachment attachment){
+        AttachmentDto attachmentDto = new AttachmentDto();
+        attachmentDto.setId(attachment.getId());
+        attachmentDto.setAttContent(attachment.getAttContent());
+        return attachmentDto;
+    }
 }

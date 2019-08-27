@@ -5,8 +5,11 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfAnnotation;
 import com.itextpdf.text.pdf.PdfFileSpecification;
 import com.itextpdf.text.pdf.PdfWriter;
+import ro.msg.edu.jbugs.dto.AttachmentDto;
 import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.mappers.AttachmentDtoMapping;
 import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
+import ro.msg.edu.jbugs.entity.Attachment;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
@@ -316,6 +319,18 @@ public class BugService {
         });
 
         return result;
+    }
+
+    public List<AttachmentDto> getAttachments(BugDto bugDto){
+        List<Attachment> attachments = bugRepo.findBug(bugDto.getId()).getAttachments();
+        return attachments.stream().map(AttachmentDtoMapping::attachmentToAttachmentDto).collect(Collectors.toList());
+    }
+
+    public void addAttachment(BugDto bugDto, AttachmentDto attachmentDto)
+    {
+        Bug bug = bugRepo.findBug(bugDto.getId());
+        bug.addAttachment(AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto));
+        bugRepo.update(bug);
     }
 
 }

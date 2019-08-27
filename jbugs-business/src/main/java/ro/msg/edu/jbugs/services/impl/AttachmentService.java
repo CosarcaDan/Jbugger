@@ -21,8 +21,8 @@ public class AttachmentService {
     @EJB
     private AttachmentRepo attachmentRepo;
 
-    public void addAttachment(AttachmentDto attachmentDto, BugDto bugDto) {
-        Attachment attachment = AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto, bugDto);
+    public void addAttachment(AttachmentDto attachmentDto) {
+        Attachment attachment = AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto);
         attachmentRepo.addAttachment(attachment);
     }
 

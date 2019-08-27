@@ -19,7 +19,7 @@ public class PathPolicy {
 
         List<String> permissions = new ArrayList<>();
         permissions.add("USER_MANAGEMENT");
-        pathPermissions.put("^users.*", new ArrayList<>(permissions));
+        pathPermissions.put("^users(?!/log).*", new ArrayList<>(permissions));
 
         permissions.clear();
         permissions.add("USER_MANAGEMENT");
@@ -33,6 +33,14 @@ public class PathPolicy {
         permissions.clear();
         permissions.add("BUG_MANAGEMENT");
         pathPermissions.put("^bugs", new ArrayList<>());
+
+        permissions.clear();
+        permissions.add("BUG_EXPORT_PDF");
+        pathPermissions.put("^bugs/getPDF", new ArrayList<>());
+
+        permissions.clear();
+        permissions.add("BUG_MANAGEMENT");
+        pathPermissions.put("^bugs/attachments", new ArrayList<>());
 
         permissions.clear();
         permissions.add("BUG_MANAGEMENT");

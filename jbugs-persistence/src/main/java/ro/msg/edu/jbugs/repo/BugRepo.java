@@ -1,5 +1,6 @@
 package ro.msg.edu.jbugs.repo;
 
+import ro.msg.edu.jbugs.entity.Attachment;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
 
@@ -105,5 +106,9 @@ public class BugRepo {
 
     public User getAssigned(Bug bug){
         return bug.getAssigned();
+    }
+
+    public Bug update(Bug bug) {
+        return entityManager.merge(bug);
     }
 }
