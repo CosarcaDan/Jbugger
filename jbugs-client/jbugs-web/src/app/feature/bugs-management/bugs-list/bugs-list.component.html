@@ -109,7 +109,7 @@
 </p-table>
 
 <p-dialog header="Bug Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
-          [style]="{width: '500px'}" [positionTop]="20">
+          [style]="{width: '500px'}" [contentStyle]="{'max-height':'60vh'}">
   <div class="ui-g ui-fluid" *ngIf="bug">
     <div class="ui-g-12">
       <div class="ui-g-4">
