@@ -32,6 +32,7 @@ export class AuthService {
     this.http.post<any>('http://localhost:8080/jbugs/services/users/login', user).subscribe(async (data) => {
       console.log('data', data);
       sessionStorage.setItem('token', data.value);
+      sessionStorage.setItem('language','en');
       const modalRef = this.modalService.open(NgbdWelcomeModalContent)
       this.getPermissions();
       await delay(1000);

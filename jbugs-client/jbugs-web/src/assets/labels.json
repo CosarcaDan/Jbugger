@@ -1,0 +1,164 @@
+{
+  "labels": [
+    {
+      "label":"user-man",
+      "ro": "Administrarea utilizatorilor",
+      "en": "User management"
+    },
+    {
+      "label":"bug-man",
+      "ro": "Administrarea bugurilor",
+      "en": "Bug management"
+    },
+    {
+      "label":"perm-man",
+      "ro": "Administrarea permisiunilor",
+      "en": "Permission management"
+    },
+    {
+      "label":"firstName",
+      "ro": "Prenume",
+      "en": "First Name"
+    },
+    {
+      "label":"lastName",
+      "ro": "Nume",
+      "en": "Last Name"
+    },
+    {
+      "label":"firstname",
+      "ro": "Prenumele",
+      "en": "First name"
+    },
+    {
+      "label":"lastname",
+      "ro": "Numele",
+      "en": "Last name"
+    },
+    {
+      "label":"phoneNumber",
+      "ro": "Numărul de telefon",
+      "en": "Phone number"
+    },
+    {
+      "label":"username",
+      "ro": "Nume de utilizator",
+      "en": "Username"
+    },
+    {
+      "label":"choose-roles-newUser",
+      "ro": "Alege câteva roluri pentru utilizatorul nou",
+      "en": "Choose some roles for the new user"
+    },
+    {
+      "label":"edit-roles",
+      "ro": "Schimbă rolurile",
+      "en": "Edit roles"
+    },
+    {
+      "label":"something-required",
+      "ro": " este obligatoriu!",
+      "en": " is required!"
+    },
+    {
+      "label":"name-format",
+      "ro": " trebuie să înceapă cu literă mare și poate conține numai litere și separatori!",
+      "en": " must begin with capital letter and should contain only letters and separators!"
+    },
+    {
+      "label":"email-required",
+      "ro": "Emailul este obligatoriu!",
+      "en": "Email is required!"
+    },
+    {
+      "label":"email-space",
+      "ro": "Emailul nu poate conține spații!",
+      "en": "Email cannot contain any spaces!"
+    },
+    {
+      "label":"email-format",
+      "ro": "Emailul trebuie să fie de formatul [address]@msggroup.com!",
+      "en": "Email must be of format [address]@msggroup.com!"
+    },
+    {
+      "label":"phoneNumber-format",
+      "ro": " trebuie să fie din Germania sau România!",
+      "en": " must be from Germany or Romania!"
+    },
+    {
+      "label":"user-add-successful",
+      "ro": "Utilizator adăugat cu suces!!",
+      "en": "User added successfully!"
+    },
+    {
+      "label":"save",
+      "ro": "Salvează",
+      "en": "Save"
+    },
+    {
+      "label":"activate",
+      "ro": "Activează",
+      "en": "Save"
+    },
+    {
+      "label":"deactivate",
+      "ro": "Deazctivează",
+      "en": "Deactivate"
+    },
+    {
+      "label":"user-list",
+      "ro": "Lista utilizatorilor",
+      "en": "List of Users"
+    },
+    {
+      "label":"user-details",
+      "ro": "Detaliile Utilizatorului",
+      "en": "User Details"
+    },
+    {
+      "label":"user-activate-successful",
+      "ro": "Utilizator activat cu succes!",
+      "en": "User activated successfully!"
+    },
+    {
+      "label":"user-activate-failed",
+      "ro": "Utilizator neactivat: ",
+      "en": "User activation failed: "
+    },
+    {
+      "label":"user-deactivate-successful",
+      "ro": "Utilizator dezactivat cu succes!",
+      "en": "User deactivated successfully!"
+    },
+    {
+      "label":"user-deactivate-failed",
+      "ro": "Utilizator nu a fost activat: ",
+      "en": "User deactivation failed: "
+    },
+    {
+      "label":"user-edit-successful",
+      "ro": "Utilizator a fost modificat cu succes!",
+      "en": "User edited successfully!"
+    },
+    {
+      "label":"user-edit-failed",
+      "ro": "Utilizator needitat:",
+      "en": "User edit failed:"
+    },
+    {
+      "label":"add",
+      "ro": "Adăugare",
+      "en": "Add"
+    },
+    {
+      "label":"greet",
+      "ro": "Bună",
+      "en": "Hello"
+    },
+    {
+      "label":"logout",
+      "ro": "Delogare",
+      "en": "Logout"
+    }
+  ]
+}

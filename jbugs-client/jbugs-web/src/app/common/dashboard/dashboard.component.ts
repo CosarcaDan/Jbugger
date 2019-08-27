@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {AuthService} from '../../core/services/auth/auth.service';
+import {LanguageService} from "../../core/services/language/language.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -13,9 +14,9 @@ export class DashboardComponent implements OnInit {
   items: MenuItem[];
   display;
   languages: any[];
-  selectedLanguage: any;
+  selectedLanguage= sessionStorage.getItem('language')=='en'?'English':'Romanian' ;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router, private authService: AuthService, private labelService:LanguageService) {
   }
 
   ngOnInit() {
@@ -53,4 +54,17 @@ export class DashboardComponent implements OnInit {
   logout() {
     this.authService.logout();
   }
+
+  setLanguage(language){
+    console.log(language);
+    if(language == 'Romanian')
+      sessionStorage.setItem('language','ro');
+    if(language == 'English')
+      sessionStorage.setItem('language','en');
+
+    this.items[0].label=this.labelService.getText('user-man');
+    this.items[1].label=this.labelService.getText('bug-man');
+    this.items[2].label=this.labelService.getText('perm-man');
+  }
+
 }
