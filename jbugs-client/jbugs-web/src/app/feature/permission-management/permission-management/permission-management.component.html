@@ -1,0 +1,39 @@
+<form [formGroup]="angForm" novalidate>
+  <div class="form-group roles">
+    <label>Select Role:</label>
+    <select class="form-control" formControlName="roles" [(ngModel)]="selectedRole" #role
+            (change)="getNewPermissions(role.value)">
+      <option *ngFor="let opt of roles" [value]="opt.id">{{opt.type}}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <div class="example-container" >
+      <label>Permissions in Role</label>
+      <div
+        cdkDropList
+        #permissionsInRoleList="cdkDropList"
+        [cdkDropListData]="permissionsInRole"
+        [cdkDropListConnectedTo]="[permissionsNotInRoleList]"
+        class="example-list inPermissions"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of permissionsInRole" cdkDrag>{{item.type}}</div>
+      </div>
+    </div>
+    <div class="example-container">
+      <label>Permissions not in Role</label>
+      <div
+        cdkDropList
+        #permissionsNotInRoleList="cdkDropList"
+        [cdkDropListData]="permissionsNotInRole"
+        [cdkDropListConnectedTo]="[permissionsInRoleList]"
+        class="example-list not-inPermissions"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of permissionsNotInRole" cdkDrag>{{item.type}}</div>
+      </div>
+    </div>
+
+    </div>
+
+
+</form>

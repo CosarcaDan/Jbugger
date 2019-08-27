@@ -4,10 +4,12 @@ import {AddPermissionComponent} from './add-permission/add-permission.component'
 import {RemovePermissionComponent} from './remove-permission/remove-permission.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MultiSelectModule} from 'primeng/primeng';
+import { PermissionManagementComponent } from './permission-management/permission-management.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 
 @NgModule({
-  declarations: [AddPermissionComponent, RemovePermissionComponent],
+  declarations: [AddPermissionComponent, RemovePermissionComponent, PermissionManagementComponent],
   exports: [
     AddPermissionComponent,
     RemovePermissionComponent
@@ -15,7 +17,8 @@ import {MultiSelectModule} from 'primeng/primeng';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MultiSelectModule
+    MultiSelectModule,
+    DragDropModule
   ]
 })
 export class PermissionManagementModule {

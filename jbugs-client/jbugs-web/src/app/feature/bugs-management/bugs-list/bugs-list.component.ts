@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugService} from '../../../core/services/bug/bug.service';
@@ -13,6 +13,7 @@ import {UserService} from "../../../core/services/user/user.service";
 import {Table} from "primeng/table";
 import {DatePipe} from "@angular/common";
 
+
 @Component({
   selector: 'app-get-bugs',
   templateUrl: './bugs-list.component.html',
@@ -20,8 +21,7 @@ import {DatePipe} from "@angular/common";
   providers: [BugService],
 
 })
-export class BugsListComponent implements OnInit {
-
+export class BugsListComponent implements OnInit{
   cols: any[];
 
   status: SelectItem[];
@@ -80,90 +80,96 @@ export class BugsListComponent implements OnInit {
   attachments;
   private currentAttachments: Array<Attachment>;
 
-  private temporatStatus:string;
+  private temporatStatus: string;
 
   @ViewChild('dt', undefined)
   dt: Table;
 
   filteredBugs: any[];
 
-constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
+  constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
 
-    }
+  }
 
-    ngOnInit() {
-      this.getUsers();
-      this.cols = [
-        {field: 'title', header: 'Title'},
-        {field: 'description', header: 'Description'},
-        {field: 'version', header: 'Version'},
-        {field: 'targetDate', header: 'Target Date'},
-        {field: 'status', header: 'Status'},
-        {field: 'fixedVersion', header: 'Fixed Version'},
-        {field: 'severity', header: 'Severity'},
-        {field: 'created', header: 'Created by'},
-        {field: 'assigned', header: 'Assigned to'},
-        // {field: 'button', header: ''}
-      ];
+  ngOnInit() {
 
+    //setInterval(getNotifications,1000);
 
-
-      this.status = [
-        {label: 'NEW', value: 'NEW'},
-        {label: 'IN_PROGRESS', value: 'IN_PROGRESS'},
-        {label: 'FIXED', value: 'FIXED'},
-        {label: 'CLOSED', value: 'CLOSED'},
-        {label: 'REJECTED', value: 'REJECTED'},
-        {label: 'INFO_NEEDED', value: 'INFONEEDED'}
-      ];
-
-      this.statusNew = [
-        {label: 'New', value: 'NEW'},
-        {label: 'In progress', value: 'IN_PROGRESS'},
-        {label: 'Rejected', value: 'REJECTED'}
-      ];
-
-      this.statusInProgress = [
-        {label: 'In progress', value: 'IN_PROGRESS'},
-        {label: 'Fixed', value: 'FIXED'},
-        {label: 'Rejected', value: 'REJECTED'},
-        {label: 'Info Needed', value: 'INFONEEDED'}
-      ];
-
-      this.statusInfoNeeded = [
-        {label: 'In progress', value: 'IN_PROGRESS'},
-        {label: 'Info Needed', value: 'INFONEEDED'}
-      ];
-
-      this.statusRejected = [
-        {label: 'Rejected', value: 'REJECTED'},
-      ];
-
-      this.statusFixed = [
-        {label: 'Fixed', value: 'FIXED'},
-      ];
+    this.getUsers();
+    this.cols = [
+      {field: 'title', header: 'Title'},
+      {field: 'description', header: 'Description'},
+      {field: 'version', header: 'Version'},
+      {field: 'targetDate', header: 'Target Date'},
+      {field: 'status', header: 'Status'},
+      {field: 'fixedVersion', header: 'Fixed Version'},
+      {field: 'severity', header: 'Severity'},
+      {field: 'created', header: 'Created by'},
+      {field: 'assigned', header: 'Assigned to'},
+      // {field: 'button', header: ''}
+    ];
 
 
-      this.severity = [
-        {label: 'LOW', value: 'LOW'},
-        {label: 'MEDIUM', value: 'MEDIUM'},
-        {label: 'HIGH', value: 'HIGH'},
-        {label: 'CRITICAL', value: 'CRITICAL'},
-      ];
+    this.status = [
+      {label: 'NEW', value: 'NEW'},
+      {label: 'IN_PROGRESS', value: 'IN_PROGRESS'},
+      {label: 'FIXED', value: 'FIXED'},
+      {label: 'CLOSED', value: 'CLOSED'},
+      {label: 'REJECTED', value: 'REJECTED'},
+      {label: 'INFO_NEEDED', value: 'INFONEEDED'}
+    ];
 
-      this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
-        if (filter === undefined || filter === null || (filter.length === 0 || filter === "") && value === null) {
-          return true;
-        }
-        if (value === undefined || value === null || value.length === 0) {
-          return false;
-        }
-        if (new DatePipe('en').transform(value, 'dd.MM.yyyy') == new DatePipe('en').transform(filter, 'dd.MM.yyyy')) {
-          return true;
-        }
+    this.statusNew = [
+      {label: 'New', value: 'NEW'},
+      {label: 'In progress', value: 'IN_PROGRESS'},
+      {label: 'Rejected', value: 'REJECTED'}
+    ];
+
+    this.statusInProgress = [
+      {label: 'In progress', value: 'IN_PROGRESS'},
+      {label: 'Fixed', value: 'FIXED'},
+      {label: 'Rejected', value: 'REJECTED'},
+      {label: 'Info Needed', value: 'INFONEEDED'}
+    ];
+
+    this.statusInfoNeeded = [
+      {label: 'In progress', value: 'IN_PROGRESS'},
+      {label: 'Info Needed', value: 'INFONEEDED'}
+    ];
+
+    this.statusRejected = [
+      {label: 'Rejected', value: 'REJECTED'},
+    ];
+
+    this.statusFixed = [
+      {label: 'Fixed', value: 'FIXED'},
+    ];
+
+
+    this.severity = [
+      {label: 'LOW', value: 'LOW'},
+      {label: 'MEDIUM', value: 'MEDIUM'},
+      {label: 'HIGH', value: 'HIGH'},
+      {label: 'CRITICAL', value: 'CRITICAL'},
+    ];
+
+    this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
+      if (filter === undefined || filter === null || (filter.length === 0 || filter === "") && value === null) {
+        return true;
+      }
+      if (value === undefined || value === null || value.length === 0) {
         return false;
       }
+      if (new DatePipe('en').transform(value, 'dd.MM.yyyy') == new DatePipe('en').transform(filter, 'dd.MM.yyyy')) {
+        return true;
+      }
+      return false;
     }
+  }
+
+
+
+
 
   getUsers() {
     this.allUsers = new Array<User>();
@@ -175,7 +181,6 @@ constructor(private router: Router, private bugServices: BugService, public moda
       }
     });
   }
-
 
 
   getBugs() {
@@ -234,16 +239,16 @@ constructor(private router: Router, private bugServices: BugService, public moda
     this.search();
   }
 
-  save(){
-  this.bug.status = this.temporatStatus;
+  save() {
+    this.bug.status = this.temporatStatus;
     console.log('saved');
     let attachmentToBeAdded: Attachment = {
       id: null,
       attContent: this.uploadedFileName,
     };
-    if(this.attachments!=null)
+    if (this.attachments != null)
       this.fileUpload();
-    this.bugServices.saveEditBug(this.bug,attachmentToBeAdded).subscribe(
+    this.bugServices.saveEditBug(this.bug, attachmentToBeAdded).subscribe(
       (data) => {
         alert('Edit Bugs Complete');
         this.search();
@@ -271,22 +276,22 @@ constructor(private router: Router, private bugServices: BugService, public moda
   }
 
   clearFile() {
-    this.attachments=null;
-    this.myAtt=null;
-    this.uploadedFileName='';
-    if(this.fileInput.nativeElement !=null )
+    this.attachments = null;
+    this.myAtt = null;
+    this.uploadedFileName = '';
+    if (this.fileInput.nativeElement != null)
       this.fileInput.nativeElement.value = '';
   }
 
   onRowSelect(event) {
     this.getAttachments(event.data).toPromise().then(
-      res=>{
-        this.currentAttachments=res;
-      this.clearFile();
-      this.newBug = false;
-      this.bug = this.cloneBug(event.data);
-      this.displayDialog = true;
-    }
+      res => {
+        this.currentAttachments = res;
+        this.clearFile();
+        this.newBug = false;
+        this.bug = this.cloneBug(event.data);
+        this.displayDialog = true;
+      }
     )
 
   }
@@ -318,7 +323,7 @@ constructor(private router: Router, private bugServices: BugService, public moda
     }
   }
 
-  getAttachments(bug:Bug){
+  getAttachments(bug: Bug) {
     return this.bugServices.getAttachments(bug);
   }
 
@@ -330,4 +335,6 @@ constructor(private router: Router, private bugServices: BugService, public moda
       console.log(this.filteredBugs);
     });
   }
+
+
 }
