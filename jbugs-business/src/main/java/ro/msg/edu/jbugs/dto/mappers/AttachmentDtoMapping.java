@@ -12,11 +12,18 @@ import ro.msg.edu.jbugs.entity.Attachment;
  */
 public class AttachmentDtoMapping {
 
-    public static Attachment attachmentDtoToAttachment(AttachmentDto attachmentDto, BugDto bugDto) {
+    public static Attachment attachmentDtoToAttachmentWithBug(AttachmentDto attachmentDto, BugDto bugDto) {
         Attachment attachment = new Attachment();
         attachment.setId(attachmentDto.getId());
         attachment.setAttContent(attachmentDto.getAttContent());
         attachment.setBug(BugDtoMapping.bugDtoToBugIncomplet(bugDto));
+        return attachment;
+    }
+
+    public static Attachment attachmentDtoToAttachment(AttachmentDto attachmentDto) {
+        Attachment attachment = new Attachment();
+        attachment.setId(attachmentDto.getId());
+        attachment.setAttContent(attachmentDto.getAttContent());
         return attachment;
     }
 

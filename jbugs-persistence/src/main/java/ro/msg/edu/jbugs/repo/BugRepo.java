@@ -110,4 +110,8 @@ public class BugRepo {
     public User getAssigned(Bug bug){
         return bug.getAssigned();
     }
+
+    public Bug update(Bug bug) {
+        return entityManager.merge(bug);
+    }
 }

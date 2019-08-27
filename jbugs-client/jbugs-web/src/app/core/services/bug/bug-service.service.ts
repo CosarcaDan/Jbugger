@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {Bug} from '../../models/bug';
 
 @Injectable({
@@ -31,7 +30,7 @@ export class BugServiceService {
 
   public getBugs(): Observable<Bug> {
     // @ts-ignore
-    return this.http.get<Bug>(this.baseUrl, this.httpOptionsWithoutAuth).pipe(map(this.extractData));
+    return this.http.get<Bug>(this.baseUrl, this.httpOptionsWithoutAuth);
   }
 
   private extractData(res: Response) {
@@ -40,22 +39,23 @@ export class BugServiceService {
   }
 
   public getBugsAfterSearchCriteria(bugCriteria: Bug) {
-    return this.http.post<any>(this.baseUrl, bugCriteria).pipe(map(this.extractData));
+    return this.http.post<any>(this.baseUrl, bugCriteria);
   }
   public deleteBugAfterId(id: number) {
-    return this.http.delete<any>(this.baseUrl + '/' + id).pipe(map(this.extractData));
+    return this.http.delete<any>(this.baseUrl + '/' + id);
   }
 
   public exportInPdf(bug: Bug) {
-    return this.http.post<any>(this.baseUrl + '/getPDF', bug).pipe(map(this.extractData));
+    return this.http.post<any>(this.baseUrl + '/getPDF', bug);
   }
 
-  public saveEditBug(bug: Bug) {
-    console.log('BUG', bug);
-    return this.http.put(this.baseUrl + '/' + bug.id + '/' + 'edit', bug).pipe(map(this.extractData));
-  }
-
-  public getAttachments(bug: Bug) {
-    return this.http.post<Bug>(this.baseUrl + '/' + bug.id + '/edit' + '/attachments', bug);
+  public saveEditBug(bug: Bug, attachment) {
+    console.log(bug);
+    let body = new HttpParams()
+      .set('bug', JSON.stringify(bug))
+      .set('attachment', JSON.stringify(attachment));
+    console.log('body', body.get('bug'));
+    console.log('body', body.get('attachment'));
+    return this.http.put(this.baseUrl + '/' + bug.id + '/' + 'edit', body);
   }
 }

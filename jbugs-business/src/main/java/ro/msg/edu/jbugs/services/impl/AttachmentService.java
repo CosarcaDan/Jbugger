@@ -1,7 +1,6 @@
 package ro.msg.edu.jbugs.services.impl;
 
 import ro.msg.edu.jbugs.dto.AttachmentDto;
-import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.mappers.AttachmentDtoMapping;
 import ro.msg.edu.jbugs.entity.Attachment;
 import ro.msg.edu.jbugs.repo.AttachmentRepo;
@@ -21,8 +20,8 @@ public class AttachmentService {
     @EJB
     private AttachmentRepo attachmentRepo;
 
-    public void addAttachment(AttachmentDto attachmentDto, BugDto bugDto) {
-        Attachment attachment = AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto, bugDto);
+    public void addAttachment(AttachmentDto attachmentDto) {
+        Attachment attachment = AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto);
         attachmentRepo.addAttachment(attachment);
     }
 

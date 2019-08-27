@@ -322,9 +322,14 @@ public class BugService {
     }
 
     public List<AttachmentDto> getAttachments(BugDto bugDto) {
-        Bug bug = BugDtoMapping.bugDtoToBugIncomplet(bugDto);
-        List<Attachment> attachments = bugRepo.getBugAttachments(bug);
+        List<Attachment> attachments = bugRepo.findBug(bugDto.getId()).getAttachments();
         return attachments.stream().map(AttachmentDtoMapping::attachmentToAttachmentDto).collect(Collectors.toList());
+    }
+
+    public void addAttachment(BugDto bugDto, AttachmentDto attachmentDto) {
+        Bug bug = bugRepo.findBug(bugDto.getId());
+        bug.addAttachment(AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto));
+        bugRepo.update(bug);
     }
 
 }

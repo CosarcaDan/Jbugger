@@ -35,7 +35,7 @@ public class FileRESTController {
             e.printStackTrace();
         }
         String output = "File successfully uploaded!";
-        return Response.status(200).entity(output).build();
+        return Response.status(200).build();
     }
 
     @GET

@@ -69,7 +69,7 @@
 
   <ng-template pTemplate="summary" let-rowData>
     <div style="text-align:left">
-      <button type="button" pButton (click)="add()" label="Add"></button>
+      <button type="button" pButton icon="fa fa-plus" (click)="add()" label="Add"></button>
       <app-add-bug *ngIf="loadComponent">
       </app-add-bug>
     </div>
@@ -196,7 +196,21 @@
       </select>
     </div>
 
-    <!--  Attachment -->
+    <!--  Attachments -->
+
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="attachments">Upload Attachment:</label>
+      </div>
+      <div class="ui-g-8">
+        <input type="file"
+               id="attachments"
+               (change)="onFileChange($event)"
+               #fileInput="ngModel"
+               [(ngModel)]="attachments"
+        >
+      </div>
+    </div>
 
   </div>
   <p-footer>
