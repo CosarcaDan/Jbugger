@@ -130,15 +130,16 @@
     </select>
   </div>
 
-  <label for="attachments">Attachment:</label>
+  <div class="form-group">
+    <label for="attachments">Attachment:</label><br>
   <input type="file"
          id="attachments"
+         accept=".pdf,.doc, .odf, .xlsx, .xls,.docx,.png,.jpg;"
          (change)="onFileChange($event)"
          #fileInput
          formControlName="attachments"
   >
-
-  <br>
+  </div>
   <button class="btn btn-primary"
           type="button"
           (click)="addBug()"

@@ -40,7 +40,7 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUses();
+    this.getUsers();
     //this.getRoles();
 
     this.cols = [
@@ -53,7 +53,7 @@ export class UserListComponent implements OnInit {
     ];
   }
 
-  public getUses() {
+  public getUsers() {
     this.userService.getUsers().subscribe((data: {}) => {
       console.log(data);
       // @ts-ignore
@@ -117,7 +117,7 @@ export class UserListComponent implements OnInit {
     this.userService.activate(this.user).subscribe(
       (data: {}) => {
         alert(data);
-        this.getUses();
+        this.getUsers();
       },
       (error2 => {
         console.log('Error', error2);
@@ -131,7 +131,7 @@ export class UserListComponent implements OnInit {
     this.userService.deactivate(this.user).subscribe(
       (data: {}) => {
         alert(data);
-        this.getUses();
+        this.getUsers();
       },
       (error2 => {
         alert('User Deactivate failed :' + error2.error.detailMessage);
@@ -145,7 +145,7 @@ export class UserListComponent implements OnInit {
     this.userService.edit(this.user, this.selectedRoles).subscribe(
       (data: {}) => {
         alert(data);
-        this.getUses();
+        this.getUsers();
 
       },
       (error2 => {
@@ -153,7 +153,7 @@ export class UserListComponent implements OnInit {
         alert('Edit User failed :' + error2.error.detailMessage);
       }))
     ;
-    location.reload();
+    //location.reload();
   }
 
   getRoles() {
@@ -182,7 +182,7 @@ export class UserListComponent implements OnInit {
   add() {
     const modalRef = this.modalService.open(AddUserComponent, {windowClass: 'add-popup'});
     modalRef.result.then(() => {
-      this.getUses();
+      this.getUsers();
     });
   }
 

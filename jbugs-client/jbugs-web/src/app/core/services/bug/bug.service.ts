@@ -7,7 +7,7 @@ import {Attachment} from '../../models/attachment';
 @Injectable({
   providedIn: 'root'
 })
-export class BugServiceService {
+export class BugService {
   baseUrl: string = 'http://localhost:8080/jbugs/services/bugs';
 
   httpOptionsWithoutAuth = {

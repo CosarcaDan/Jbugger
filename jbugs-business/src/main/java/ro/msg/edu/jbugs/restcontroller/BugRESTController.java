@@ -117,7 +117,6 @@ public class BugRESTController {
 
             //adds the bug
             BugDto bugAdded = bugService.addBug(bug);
-            attachmentService.addAttachment(attachment);
             bugService.addAttachment(bugAdded, attachment);
 
             String response = gson.toJson("All OK!");
@@ -135,7 +134,6 @@ public class BugRESTController {
     public Response editBug(@NotNull @FormParam("bug") BugDto bugDto, @NotNull @FormParam("attachment") AttachmentDto attachment) {
         try {
             if (bugService.getAttachments(bugDto).stream().noneMatch(att -> att.getAttContent().equals(attachment.getAttContent()))) {
-                attachmentService.addAttachment(attachment);
                 bugService.addAttachment(bugDto, attachment);
             }
             bugService.updateBug(bugDto);

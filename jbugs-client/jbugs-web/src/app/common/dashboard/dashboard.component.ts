@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuItem} from "primeng/api";
-import {Router, RouterModule} from "@angular/router";
-import {AuthService} from "../../core/services/auth/auth.service";
-import {delay} from "rxjs/operators";
+import {MenuItem} from 'primeng/api';
+import {Router} from '@angular/router';
+import {AuthService} from '../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +15,7 @@ export class DashboardComponent implements OnInit {
   languages: any[];
   selectedLanguage: any;
 
-  constructor(private router:Router,private authService:AuthService) {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -25,18 +24,18 @@ export class DashboardComponent implements OnInit {
         label: 'User management',
         icon: 'pi pi-fw pi-users',
         command: () => this.goto('dashboard/users'),
-        visible:this.authService.hasPermission("USER_MANAGEMENT")
+        visible: this.authService.hasPermission('USER_MANAGEMENT')
       },
       {
         label: 'Bug management',
         icon: 'pi pi-fw pi pi-th-large',
         command: () => this.goto('dashboard/bugs'),
-        visible:this.authService.hasPermission("BUG_MANAGEMENT")
+        visible: this.authService.hasPermission('BUG_MANAGEMENT')
       },
       {
         label: 'Permission management',
         icon: 'pi pi-fw pi-key',
-        visible:this.authService.hasPermission("PERMISSION_MANAGEMENT"),
+        visible: this.authService.hasPermission('PERMISSION_MANAGEMENT'),
         items: [
           {
             label: 'Add permission',
@@ -57,8 +56,8 @@ export class DashboardComponent implements OnInit {
       {label: 'English', value: 'English', icon: 'flag-icon flag-icon-gb'},
     ];
   }
-  public goto(link)
-  {
+
+  public goto(link) {
     this.router.navigate([link]);
   }
 

@@ -18,11 +18,11 @@ export class AuthService {
     let token = sessionStorage.getItem('token');
     if(!token)
       return 'Bearer ';
-    if(this.isTokenExpired(token))
-    {
-      this.renew(this.decodeToken(token).subject);
-      token=sessionStorage.getItem('token');
-    }
+    // if(this.isTokenExpired(token))
+    // {
+    //   this.renew(this.decodeToken(token).subject);
+    //   token=sessionStorage.getItem('token');
+    // }
     return 'Bearer ' + token;
   }
   getUsername() {
