@@ -21,10 +21,9 @@ export class AuthService {
     let token = sessionStorage.getItem('token');
     if(!token)
       return 'Bearer ';
-    if(this.isTokenExpired(token))
-    {
+    if (this.isTokenExpired(token)) {
       this.renew(this.decodeToken(token).subject);
-      token=sessionStorage.getItem('token');
+      token = sessionStorage.getItem('token');
     }
     return 'Bearer ' + token;
   }
@@ -38,7 +37,7 @@ export class AuthService {
       console.log('data', data);
       sessionStorage.setItem('token', data.value);
 
-      const modalRef = this.modalService.open(NgbdWelcomeModalContent)
+      const modalRef = this.modalService.open(NgbdWelcomeModalContent);
       this.getPermissions();
       await delay(1000);
       modalRef.close();
@@ -51,7 +50,7 @@ export class AuthService {
   public logout() {
     console.log('un: ', this.getUsername());
     this.http.post<any>('http://localhost:8080/jbugs/services/users/logout', {username: this.getUsername()}).subscribe((data) => {
-      sessionStorage.clear()
+      sessionStorage.clear();
       this.router.navigate(['login']);
     }, (error1) => {
       console.log('Error', error1.error);
@@ -68,7 +67,7 @@ export class AuthService {
   }
 
   public getPermissions() {
-    console.log('DING!')
+    console.log('DING!');
     this.http.post<any>('http://localhost:8080/jbugs/services/users/permissions', {username: this.getUsername()}).subscribe((data) => {
       sessionStorage.setItem('permissions', JSON.stringify(data.map(p => p.type)));
       this.cachedPermissions = data.map(p => p.type);
@@ -97,8 +96,8 @@ export class AuthService {
    * Internal helper to translate a base64 character to its integer index.
    */
   private base64_charIndex(c) {
-    if (c == "+") return 62
-    if (c == "/") return 63
+    if (c == "+") return 62;
+    if (c == "/") return 63;
     return this.b64u.indexOf(c)
   }
 
@@ -148,7 +147,7 @@ export class AuthService {
     let decoded: any;
     decoded = this.decodeToken(token);
 
-    if(typeof decoded.exp === "undefined") {
+    if (typeof decoded.exp === "undefined") {
       return null;
     }
 
@@ -177,7 +176,7 @@ export class AuthService {
   template: `
     <div class="modal-header">
       <h4 class="modal-title">Hi there!</h4>
-        <span aria-hidden="true">&times;</span>
+      <span aria-hidden="true">&times;</span>
     </div>
     <div class="modal-body">
       <p>Welcome to Jbugger!</p>

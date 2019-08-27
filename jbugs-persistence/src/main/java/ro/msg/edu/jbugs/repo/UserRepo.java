@@ -96,9 +96,7 @@ public class UserRepo {
             Long numberOfOccurences = entityManager.createNamedQuery(User.QUERY_COUNT_USER_NAME_UNIQUE, Long.class)
                     .setParameter("username", username)
                     .getSingleResult();
-            if (numberOfOccurences == 0)
-                return true;
-            return false;
+            return numberOfOccurences == 0;
         } catch (NoResultException | NonUniqueResultException ex) {
             return false;
         }

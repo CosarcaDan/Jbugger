@@ -12,6 +12,7 @@ import {AuthInterceptor} from './core/interceptors/auth.interceptor';
 import {MenubarModule} from 'primeng/menubar';
 import {ChartModule} from 'primeng/chart';
 import {
+  AutoCompleteModule,
   ButtonModule,
   CalendarModule,
   DialogModule,
@@ -73,6 +74,7 @@ import {NgbdWelcomeModalContent} from './core/services/auth/auth.service';
     UserManagementModule,
     AngularFontAwesomeModule,
     NgxFlagIconCssModule,
+    AutoCompleteModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

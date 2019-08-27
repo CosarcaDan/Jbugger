@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {Bug} from '../../models/bug';
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +42,7 @@ export class BugServiceService {
   public getBugsAfterSearchCriteria(bugCriteria: Bug) {
     return this.http.post<any>(this.baseUrl, bugCriteria).pipe(map(this.extractData));
   }
+
   public deleteBugAfterId(id: number) {
     return this.http.delete<any>(this.baseUrl + '/' + id).pipe(map(this.extractData));
   }
@@ -54,4 +55,8 @@ export class BugServiceService {
     console.log('BUG',bug);
     return this.http.put(this.baseUrl + '/' + bug.id + '/' + 'edit', bug).pipe(map(this.extractData));
   }
+
+
+
+
 }

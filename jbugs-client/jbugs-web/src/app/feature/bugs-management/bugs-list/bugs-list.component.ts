@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugServiceService} from '../../../core/services/bug/bug-service.service';
@@ -8,6 +8,8 @@ import {AddBugComponent} from '../add-bug/add-bug.component';
 import {AuthService} from '../../../core/services/auth/auth.service';
 import {User} from "../../../core/models/user";
 import {UserService} from "../../../core/services/user/user.service";
+import {Table} from "primeng/table";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-get-bugs',
@@ -40,7 +42,6 @@ export class BugsListComponent implements OnInit {
 
   allUsers: Array<User>;
 
-
   bugSearchCrit: Bug = {
     id: 0,
     title: '',
@@ -70,8 +71,16 @@ export class BugsListComponent implements OnInit {
   };
   selectedBug: Bug;
 
+  @ViewChild('dt', undefined)
+  dt: Table;
+  filteredBugAssignedToSuggestion: any[];
+  filteredBugs: Bug[];
+
+
   constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService,
               private userService: UserService) {
+
+
 
   }
 
@@ -127,14 +136,26 @@ export class BugsListComponent implements OnInit {
     ];
 
 
-
     this.severity = [
       {label: 'All Severities', value: ''},
       {label: 'LOW', value: 'LOW'},
       {label: 'MEDIUM', value: 'MEDIUM'},
       {label: 'HIGH', value: 'HIGH'},
       {label: 'CRITICAL', value: 'CRITICAL'},
-    ]
+    ];
+
+    this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
+      if (filter === undefined || filter === null || (filter.length === 0 || filter === "") && value === null) {
+        return true;
+      }
+      if (value === undefined || value === null || value.length === 0) {
+        return false;
+      }
+      if (new DatePipe('en').transform(value, 'dd.MM.yyyy') == new DatePipe('en').transform(filter, 'dd.MM.yyyy')) {
+        return true;
+      }
+      return false;
+    }
   }
 
   getUsers() {
@@ -148,7 +169,20 @@ export class BugsListComponent implements OnInit {
     });
   }
 
-  getBugs() {
+  filterBugsAssignedTo(event) {
+    this.filteredBugs = [];
+    let bugs = this.getBugs();
+    for (let i = 0; i < bugs.length; i++) {
+      let bug = this.bugs[i];
+      if (bug.assigned === event.query.toString()) {
+        this.filteredBugs.push(bug);
+      }
+    }
+  }
+
+
+
+  getBugs(): Bug[] {
     this.bugs = [];
     this.bugServices.getBugs().subscribe((data) => {
       console.log(data);
@@ -160,6 +194,7 @@ export class BugsListComponent implements OnInit {
         bug.targetDate = date;
       }
     });
+    return this.bugs;
   }
 
 
