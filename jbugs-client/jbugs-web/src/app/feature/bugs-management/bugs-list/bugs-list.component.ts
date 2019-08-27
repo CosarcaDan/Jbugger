@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
-import {BugServiceService} from '../../../core/services/bug/bug-service.service';
+import {BugService} from '../../../core/services/bug/bug.service';
 import {Bug} from '../../../core/models/bug';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddBugComponent} from '../add-bug/add-bug.component';
@@ -15,7 +15,7 @@ import {UserService} from "../../../core/services/user/user.service";
   selector: 'app-get-bugs',
   templateUrl: './bugs-list.component.html',
   styleUrls: ['./bugs-list.component.css'],
-  providers: [BugServiceService],
+  providers: [BugService],
 
 })
 export class BugsListComponent implements OnInit {
@@ -78,7 +78,7 @@ export class BugsListComponent implements OnInit {
   attachments;
   private currentAttachments: Array<Attachment>;
 
-  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService,private userService: UserService) {
+  constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
 
   }
 

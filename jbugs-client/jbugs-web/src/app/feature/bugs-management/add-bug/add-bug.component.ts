@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BugValidators} from '../bug.validator';
 import {UserService} from '../../../core/services/user/user.service';
-import {BugServiceService} from '../../../core/services/bug/bug-service.service';
+import {BugService} from '../../../core/services/bug/bug.service';
 import {Bug} from '../../../core/models/bug';
 import {FileService} from '../../../core/services/file/file.service';
 import {Attachment} from '../../../core/models/attachment';
@@ -44,7 +44,7 @@ export class AddBugComponent implements OnInit {
     {type: 'CRITICAL'},
   ];
 
-  constructor(private fb: FormBuilder, private userService: UserService, private bugService: BugServiceService,
+  constructor(private fb: FormBuilder, private userService: UserService, private bugService: BugService,
               private fileService: FileService, public activeModal: NgbActiveModal, private authService: AuthService) {
     this.form = fb.group({
       title: [null, [Validators.required,]],
