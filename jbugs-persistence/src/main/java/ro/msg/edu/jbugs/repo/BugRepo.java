@@ -1,5 +1,6 @@
 package ro.msg.edu.jbugs.repo;
 
+import ro.msg.edu.jbugs.entity.Attachment;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
 
@@ -98,6 +99,9 @@ public class BugRepo {
         return query.getResultList();
     }
 
+    public List<Attachment> getBugAttachments(Bug bug) {
+        return bug.getAttachments();
+    }
 
     public User getCreator(Bug bug){
         return bug.getCreated();

@@ -53,4 +53,8 @@ export class BugServiceService {
   public saveEditBug(bug: Bug) {
     return this.http.put(this.baseUrl + '/' + bug.id + '/' + 'edit', bug).pipe(map(this.extractData));
   }
+
+  public getAttachments(bug: Bug) {
+    return this.http.post<Bug>(this.baseUrl + '/' + bug.id + '/edit' + '/attachments', bug);
+  }
 }

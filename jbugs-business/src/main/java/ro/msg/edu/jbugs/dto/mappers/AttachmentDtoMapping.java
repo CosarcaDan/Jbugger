@@ -20,10 +20,10 @@ public class AttachmentDtoMapping {
         return attachment;
     }
 
-//    public static AttachmentDto attachmentToAttachmentDto(Attachment attachment){
-//        AttachmentDto attachmentDto = new AttachmentDto();
-//        attachment.setId(attachmentDto.getId());
-//        attachment.setAttContent(attachmentDto.getAttContent());
-//        attachment.setBug(BugDtoMapping.bugDtoToBug(attachmentDto.getBug()));
-//    }
+    public static AttachmentDto attachmentToAttachmentDto(Attachment attachment) {
+        AttachmentDto attachmentDto = new AttachmentDto();
+        attachmentDto.setId(attachment.getId());
+        attachmentDto.setAttContent(attachment.getAttContent());
+        return attachmentDto;
+    }
 }
