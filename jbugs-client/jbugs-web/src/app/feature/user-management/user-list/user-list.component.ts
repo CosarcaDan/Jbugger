@@ -58,12 +58,14 @@ export class UserListComponent implements OnInit {
       console.log(data);
       // @ts-ignore
       this.users = data;
+
     });
   }
 
   lengthCurrentUsersRoles;
   onRowSelect(event) {
     this.newUser = false;
+    this.selectedRoles=[];
     console.log(event.data);
     this.user = JSON.parse(JSON.stringify(event.data));
     this.rolesOfCurrentUser = new Array<Role>();
@@ -71,19 +73,19 @@ export class UserListComponent implements OnInit {
       for (let dataKey of data) {
         this.rolesOfCurrentUser.push(dataKey);
       }
-      this.roles = new Array<Role>();
+      this.roles= new  Array<Role>();
       this.roleService.getRoles().subscribe((data) => {
         for (let dataKey of data) {
           this.roles.push(dataKey);
         }
         this.roles.forEach(r => {
           console.log(r.type);
-          this.rolesOfCurrentUser.forEach(rr => {
+         this.rolesOfCurrentUser.forEach(rr => {
             console.log(rr.type, r.type);
             if (rr.type == r.type)
               r.checked = true;
             else
-              r.checked = false;
+              r.checked=false;
           })
         });
         console.log(this.roles);
@@ -97,6 +99,8 @@ export class UserListComponent implements OnInit {
     // {
     //   this.getRoles()
     // }
+
+
 
 
     // console.log('All roles: ', this.roles);
@@ -139,13 +143,11 @@ export class UserListComponent implements OnInit {
 
   edit() {
     this.getSelectedRoles();
-    console.log(this.selectedRoles);
+    console.log(this.selectedRoles)
     this.userService.edit(this.user, this.selectedRoles).subscribe(
       (data: {}) => {
         alert(data);
         this.getUsers();
-
-
       },
       (error2 => {
         console.log('Error', error2);

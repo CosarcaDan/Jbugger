@@ -17,7 +17,7 @@ export class BugService {
     })
   };
 
-  public add(bug, attachment): Observable<Bug> {
+  public add(bug, attachment):Observable<Bug> {
     console.log(bug);
     let body = new HttpParams()
       .set('bug', JSON.stringify(bug))
