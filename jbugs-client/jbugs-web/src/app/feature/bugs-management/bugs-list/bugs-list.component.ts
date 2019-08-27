@@ -7,7 +7,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddBugComponent} from '../add-bug/add-bug.component';
 import {AuthService} from '../../../core/services/auth/auth.service';
 import {Attachment} from "../../../core/models/attachment";
-import {FormGroup} from "@angular/forms";
 import {FileService} from "../../../core/services/file/file.service";
 
 @Component({
@@ -43,7 +42,7 @@ export class BugsListComponent implements OnInit {
 
 
 
-  bugSearchCrit: Bug = {
+  bugSearchCriteria: Bug = {
     id: 0,
     title: '',
     description: '',
@@ -156,8 +155,8 @@ export class BugsListComponent implements OnInit {
 
 
   public search() {
-    console.log(this.bugSearchCrit);
-    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data: {}) => {
+    console.log(this.bugSearchCriteria);
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data: {}) => {
       // @ts-ignore
       this.bugs = data;
 

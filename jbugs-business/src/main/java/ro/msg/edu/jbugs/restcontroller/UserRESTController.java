@@ -62,7 +62,7 @@ UserRESTController {
     @Path("/renew")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response renewtoken(UserDto user) {
+    public Response renewToken(UserDto user) {
         Gson gson = new GsonBuilder().create();
         try {
             user = userService.findUser(user.getUsername());

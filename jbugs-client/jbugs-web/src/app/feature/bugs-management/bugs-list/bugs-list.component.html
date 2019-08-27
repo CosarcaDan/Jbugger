@@ -7,14 +7,14 @@
       <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
 
       <input type="text" pInputText size="20" placeholder="Created by"
-             [(ngModel)]="bugSearchCrit.created">
+             [(ngModel)]="bugSearchCriteria.created">
       <input type="text" pInputText size="20" placeholder="Assigned to"
-             [(ngModel)]="bugSearchCrit.assigned">
+             [(ngModel)]="bugSearchCriteria.assigned">
       <p-dropdown [options]="status" size="20" placeholder="Status" id="status"
-                  [(ngModel)]="bugSearchCrit.status"></p-dropdown>
+                  [(ngModel)]="bugSearchCriteria.status"></p-dropdown>
 
       <p-dropdown [options]="severity" size="20" placeholder="Severity" id="severity"
-                  [(ngModel)]="bugSearchCrit.severity"></p-dropdown>
+                  [(ngModel)]="bugSearchCriteria.severity"></p-dropdown>
 
       <p-button icon="pi pi-search" label="search" (click)="search()"></p-button>
 
