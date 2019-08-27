@@ -9,7 +9,7 @@ export class SummaryPipe implements PipeTransform{
       return null;
     }
     if(value.length > 15) {
-      return value.substr(0, 15) + " .... ";
+      return value.substr(0, 14) + " .... ";
     }else{
       return value;
     }
