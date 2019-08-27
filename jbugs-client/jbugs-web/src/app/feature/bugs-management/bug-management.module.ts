@@ -5,7 +5,6 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {SummaryPipe} from "./SummaryPipe";
 
-
 @NgModule({
   declarations: [
     AddBugComponent,

@@ -10,6 +10,8 @@ import {Attachment} from "../../../core/models/attachment";
 import {FileService} from "../../../core/services/file/file.service";
 import {User} from "../../../core/models/user";
 import {UserService} from "../../../core/services/user/user.service";
+import {Table} from "primeng/table";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-get-bugs',
@@ -78,73 +80,92 @@ export class BugsListComponent implements OnInit {
   attachments;
   private currentAttachments: Array<Attachment>;
 
-  constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
+  @ViewChild('dt', undefined)
+    dt: Table;
+    filteredBugAssignedToSuggestion: any[];
+    filteredBugs: Bug[];
 
-  }
+    constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
 
-  ngOnInit() {
-    this.getUsers();
-    this.cols = [
-      {field: 'title', header: 'Title'},
-      {field: 'description', header: 'Description'},
-      {field: 'version', header: 'Version'},
-      {field: 'targetDate', header: 'Target Date'},
-      {field: 'status', header: 'Status'},
-      {field: 'fixedVersion', header: 'Fixed Version'},
-      {field: 'severity', header: 'Severity'},
-      {field: 'created', header: 'Created by'},
-      {field: 'assigned', header: 'Assigned to'},
-      // {field: 'button', header: ''}
-    ];
+    }
 
-    this.status = [
-      {label: 'All Statuses', value: ''},
-      {label: 'New', value: 'NEW'},
-      {label: 'In progress', value: 'IN_PROGRESS'},
-      {label: 'Fixed', value: 'FIXED'},
-      {label: 'Closed', value: 'CLOSED'},
-      {label: 'Rejected', value: 'REJECTED'},
-      {label: 'Info Needed', value: 'INFONEEDED'}
-    ];
+    ngOnInit() {
+      this.getUsers();
+      this.cols = [
+        {field: 'title', header: 'Title'},
+        {field: 'description', header: 'Description'},
+        {field: 'version', header: 'Version'},
+        {field: 'targetDate', header: 'Target Date'},
+        {field: 'status', header: 'Status'},
+        {field: 'fixedVersion', header: 'Fixed Version'},
+        {field: 'severity', header: 'Severity'},
+        {field: 'created', header: 'Created by'},
+        {field: 'assigned', header: 'Assigned to'},
+        // {field: 'button', header: ''}
+      ];
 
-    this.statusNew = [
-      {label: 'New', value: 'NEW'},
-      {label: 'In progress', value: 'IN_PROGRESS'},
-      {label: 'Rejected', value: 'REJECTED'}
-    ];
+      this.status = [
+        {label: 'All Statuses', value: ''},
+        {label: 'New', value: 'NEW'},
+        {label: 'In progress', value: 'IN_PROGRESS'},
+        {label: 'Fixed', value: 'FIXED'},
+        {label: 'Closed', value: 'CLOSED'},
+        {label: 'Rejected', value: 'REJECTED'},
+        {label: 'Info Needed', value: 'INFONEEDED'}
+      ];
 
-    this.statusInProgress = [
-      {label: 'In progress', value: 'IN_PROGRESS'},
-      {label: 'Fixed', value: 'FIXED'},
-      {label: 'Rejected', value: 'REJECTED'},
-      {label: 'Info Needed', value: 'INFONEEDED'}
-    ];
+      this.statusNew = [
+        {label: 'New', value: 'NEW'},
+        {label: 'In progress', value: 'IN_PROGRESS'},
+        {label: 'Rejected', value: 'REJECTED'}
+      ];
 
-    this.statusInfoNeeded = [
-      {label: 'In progress', value: 'IN_PROGRESS'},
-      {label: 'Info Needed', value: 'INFONEEDED'}
-    ];
+      this.statusInProgress = [
+        {label: 'In progress', value: 'IN_PROGRESS'},
+        {label: 'Fixed', value: 'FIXED'},
+        {label: 'Rejected', value: 'REJECTED'},
+        {label: 'Info Needed', value: 'INFONEEDED'}
+      ];
 
-    this.statusRejected = [
-      {label: 'Rejected', value: 'REJECTED'},
-    ];
+      this.statusInfoNeeded = [
+        {label: 'In progress', value: 'IN_PROGRESS'},
+        {label: 'Info Needed', value: 'INFONEEDED'}
+      ];
 
-    this.statusFixed = [
-      {label: 'Fixed', value: 'FIXED'},
-    ];
+      this.statusRejected = [
+        {label: 'Rejected', value: 'REJECTED'},
+      ];
+
+      this.statusFixed = [
+        {label: 'Fixed', value: 'FIXED'},
+      ];
+
+
+      this.severity = [
+        {label: 'All Severities', value: ''},
+        {label: 'LOW', value: 'LOW'},
+        {label: 'MEDIUM', value: 'MEDIUM'},
+        {label: 'HIGH', value: 'HIGH'},
+        {label: 'CRITICAL', value: 'CRITICAL'},
+      ];
+
+      this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
+        if (filter === undefined || filter === null || (filter.length === 0 || filter === "") && value === null) {
+          return true;
+        }
+        if (value === undefined || value === null || value.length === 0) {
+          return false;
+        }
+        if (new DatePipe('en').transform(value, 'dd.MM.yyyy') == new DatePipe('en').transform(filter, 'dd.MM.yyyy')) {
+          return true;
+        }
+        return false;
+      }
+    }
 
 
 
-    this.severity = [
-      {label: 'All Severities', value: ''},
-      {label: 'LOW', value: 'LOW'},
-      {label: 'MEDIUM', value: 'MEDIUM'},
-      {label: 'HIGH', value: 'HIGH'},
-      {label: 'CRITICAL', value: 'CRITICAL'},
-    ]
-  }
-
-  getUsers() {
+  getUsers(){
     this.allUsers = new Array<User>();
     this.userService.getUsers().subscribe((data) => {
       console.log('data:', data);
@@ -155,25 +176,37 @@ export class BugsListComponent implements OnInit {
     });
   }
 
-  getBugs() {
-    this.bugs = [];
-    this.bugServices.getBugs().subscribe((data) => {
-      console.log(data);
-      // @ts-ignore
-      this.bugs = data;
-
-      for (var bug of this.bugs) {
-        var date = new Date(bug.targetDate);
-        bug.targetDate = date;
+  filterBugsAssignedTo(event) {
+      this.filteredBugs = [];
+      let bugs = this.getBugs();
+      for (let i = 0; i < bugs.length; i++) {
+        let bug = this.bugs[i];
+        if (bug.assigned === event.query.toString()) {
+          this.filteredBugs.push(bug);
+        }
       }
-    });
-  }
+    }
+
+    getBugs(): Bug[] {
+      this.bugs = [];
+      this.bugServices.getBugs().subscribe((data) => {
+        console.log(data);
+      // @ts-ignore
+        this.bugs = data;
+
+        for (var bug of this.bugs) {
+          var date = new Date(bug.targetDate);
+          bug.targetDate = date;
+        }
+      });
+      return this.bugs;
+    }
 
 
   public search() {
     console.log(this.bugSearchCriteria);
-    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data: {}) => {
-      // @ts-ignore
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data) => {
+
       this.bugs = data;
 
       for (var bug of this.bugs) {
@@ -208,7 +241,7 @@ export class BugsListComponent implements OnInit {
     this.search();
   }
 
-  save() {
+  save(){
     console.log('saved');
     let attachmentToBeAdded: Attachment = {
       id: null,
