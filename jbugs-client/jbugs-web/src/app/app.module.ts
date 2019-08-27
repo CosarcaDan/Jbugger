@@ -42,7 +42,7 @@ import {NgbdWelcomeModalContent} from './core/services/auth/auth.service';
     LoginComponent,
     DashboardComponent,
     BugsListComponent,
-    NgbdWelcomeModalContent
+    NgbdWelcomeModalContent,
   ],
   imports: [
     BrowserModule,

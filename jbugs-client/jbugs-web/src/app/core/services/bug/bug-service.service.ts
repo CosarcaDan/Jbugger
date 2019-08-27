@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {Bug} from '../../models/bug';
 import {Attachment} from "../../models/attachment";
 
@@ -64,5 +63,4 @@ export class BugServiceService {
   public getAttachments(bug: Bug){
     return this.http.post<Array<Attachment>>(this.baseUrl + '/attachments', bug);
   }
-
 }

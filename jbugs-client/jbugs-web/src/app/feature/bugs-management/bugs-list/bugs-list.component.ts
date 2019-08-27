@@ -8,6 +8,8 @@ import {AddBugComponent} from '../add-bug/add-bug.component';
 import {AuthService} from '../../../core/services/auth/auth.service';
 import {Attachment} from "../../../core/models/attachment";
 import {FileService} from "../../../core/services/file/file.service";
+import {User} from "../../../core/models/user";
+import {UserService} from "../../../core/services/user/user.service";
 
 @Component({
   selector: 'app-get-bugs',
@@ -40,6 +42,7 @@ export class BugsListComponent implements OnInit {
 
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
+  allUsers: Array<User>;
 
 
   bugSearchCriteria: Bug = {
@@ -75,11 +78,12 @@ export class BugsListComponent implements OnInit {
   attachments;
   private currentAttachments: Array<Attachment>;
 
-  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService) {
+  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService,private userService: UserService) {
 
   }
 
   ngOnInit() {
+    this.getUsers();
     this.cols = [
       {field: 'title', header: 'Title'},
       {field: 'description', header: 'Description'},
@@ -138,6 +142,17 @@ export class BugsListComponent implements OnInit {
       {label: 'HIGH', value: 'HIGH'},
       {label: 'CRITICAL', value: 'CRITICAL'},
     ]
+  }
+
+  getUsers() {
+    this.allUsers = new Array<User>();
+    this.userService.getUsers().subscribe((data) => {
+      console.log('data:', data);
+      // @ts-ignore
+      for (let dataKey of data) {
+        this.allUsers.push(dataKey);
+      }
+    });
   }
 
   getBugs() {
@@ -204,6 +219,7 @@ export class BugsListComponent implements OnInit {
     this.bugServices.saveEditBug(this.bug,attachmentToBeAdded).subscribe(
       (data) => {
         alert('Edit Bugs Complete');
+        this.search();
       },
       (error2 => {
         console.log('Error', error2);
@@ -212,7 +228,6 @@ export class BugsListComponent implements OnInit {
     );
 
     this.displayDialog = false;
-    this.search();
   }
 
   private prepareSave(): FormData {
