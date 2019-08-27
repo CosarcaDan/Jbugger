@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Permission} from '../../models/permission';
 
 @Injectable({
@@ -26,20 +26,16 @@ export class RoleService {
   }
 
   public addPermissionToRole(role, permissions) {
-    console.log(role, permissions);
-    let body = new HttpParams()
-      .set('role', JSON.stringify(role))
-      .set('permissions', JSON.stringify(permissions));
-    console.log('body', body.get('role'));
+    let body = new FormData();
+    body.append('role', JSON.stringify(role));
+    body.append('permission', JSON.stringify(permissions));
     this.http.post(this.baseUrl + '/add-permissions', body).subscribe();
   }
 
   removePermissionToRole(role, permissions) {
-    console.log(role, permissions);
-    let body = new HttpParams()
-      .set('role', JSON.stringify(role))
-      .set('permissions', JSON.stringify(permissions));
-    console.log('body', body.get('role'));
+    let body = new FormData();
+    body.append('role', JSON.stringify(role));
+    body.append('permission', JSON.stringify(permissions));
     this.http.post(this.baseUrl + '/remove-permissions', body).subscribe();
   }
 }

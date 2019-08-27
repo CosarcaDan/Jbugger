@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.restcontroller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import ro.msg.edu.jbugs.dto.PermissionDto;
 import ro.msg.edu.jbugs.dto.RoleDto;
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
@@ -13,7 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Arrays;
 import java.util.List;
 
 @Path("/roles")
@@ -23,14 +23,6 @@ import java.util.List;
 public class RoleRESTController {
     @EJB
     private RoleService roleService;
-
-//    @OPTIONS
-//    public Response getOptions() {
-//        return Response.ok()
-//                .header("Access-Control-Allow-Origin", "*")
-//                .header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
-//                .header("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization").build();
-//    }
 
     @GET
     public List<RoleDto> getAll() {
@@ -56,13 +48,12 @@ public class RoleRESTController {
 
     @POST
     @Path("/add-permissions")
-    @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({MediaType.MULTIPART_FORM_DATA})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addPermissionsToRole(@NotNull @FormParam("role") RoleDto role, @NotNull @FormParam("permissions") String permissions) {
+    public Response addPermissionsToRole(@NotNull @FormDataParam("role") RoleDto role, @NotNull @FormDataParam("permission") PermissionDto permission) {
         Gson gson = new GsonBuilder().create();
         try {
-            PermissionDto[] list = gson.fromJson(permissions, PermissionDto[].class);
-            Arrays.stream(list).forEach(permission -> roleService.addPermissionToRole(role, permission));
+            roleService.addPermissionToRole(role, permission);
             String response = gson.toJson("All OK!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
@@ -73,13 +64,12 @@ public class RoleRESTController {
 
     @POST
     @Path("/remove-permissions")
-    @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({MediaType.MULTIPART_FORM_DATA})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response removePermissionsToRole(@NotNull @FormParam("role") RoleDto role, @NotNull @FormParam("permissions") String permissions) {
+    public Response removePermissionsToRole(@NotNull @FormDataParam("role") RoleDto role, @NotNull @FormDataParam("permission") PermissionDto permission) {
         Gson gson = new GsonBuilder().create();
         try {
-            PermissionDto[] list = gson.fromJson(permissions, PermissionDto[].class);
-            Arrays.stream(list).forEach(permission -> roleService.removePermissionToRole(role, permission));
+            roleService.removePermissionToRole(role, permission);
             String response = gson.toJson("All OK!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {

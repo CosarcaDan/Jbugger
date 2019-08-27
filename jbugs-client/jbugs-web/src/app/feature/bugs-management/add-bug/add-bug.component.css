@@ -1,4 +1,7 @@
 form {
   border: 10px solid white;
+  padding: 6px;
   border-radius: 0.8rem;
+  max-height: 90vh;
+  overflow: auto;
 }
