@@ -51,12 +51,12 @@ export class AddBugComponent implements OnInit {
       description: [null, [Validators.required, Validators.minLength(250)]],
       version: [null, [BugValidators.validateVersion]],
       fixedVersion: [null, [BugValidators.validateVersion]],
-      targetDate: [null, []],
+      targetDate: [null, [Validators.required]],
       severity: [null, []],
       createdBy: [null, []],
       status: [null, []],
       assignedTo: [null, []],
-      attachments: ['',[Validators.required]],
+      attachments: ['', []],
     });
   }
 
@@ -105,7 +105,9 @@ export class AddBugComponent implements OnInit {
       id: null,
       attContent: this.uploadedFileName,
     };
-    this.fileUpload();
+    if (this.myAtt != null) {
+      this.fileUpload(); //uploading a file is not mandatory
+    }
     this.bugService.add(bugToBeAdded, attachmentToBeAdded).subscribe(
       (data: {}) => {
         alert(data);
@@ -120,9 +122,14 @@ export class AddBugComponent implements OnInit {
   }
 
   onFileChange(event) {
+    let fileSize = event.target.files[0].size / 1024 / 1024; // in MB
+    if (fileSize > 25) {
+      alert('File size exceeds 25 MB');
+    }
     if (event.target.files.length > 0) {
       let files = event.target.files;
       this.uploadedFileName = files[0].name;
+      console.log('Length of file: ', files[0].size);
       this.myAtt = files;
     }
   }
@@ -135,7 +142,7 @@ export class AddBugComponent implements OnInit {
 
   fileUpload() {
     const formModel = this.prepareSave();
-    console.log(formModel.get('file'));
+    console.log('File details ', formModel.get('file'));
     this.fileService.uploadFile(formModel).subscribe(this.clearFile);
   }
 
@@ -143,5 +150,4 @@ export class AddBugComponent implements OnInit {
     this.form.get('attachments').setValue(null);
     this.fileInput.nativeElement.value = '';
   }
-
 }

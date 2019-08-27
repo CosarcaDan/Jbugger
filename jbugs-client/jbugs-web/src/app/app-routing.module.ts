@@ -8,7 +8,7 @@ import {UserListComponent} from './feature/user-management/user-list/user-list.c
 import {AddPermissionComponent} from './feature/permission-management/add-permission/add-permission.component';
 import {RemovePermissionComponent} from './feature/permission-management/remove-permission/remove-permission.component';
 import {AuthGuardService} from './core/services/guards/auth-guard.service';
-import {PermissionManagementComponent} from "./feature/permission-management/permission-management/permission-management.component";
+import {PermissionManagementComponent} from './feature/permission-management/permission-management/permission-management.component';
 
 
 const routes: Routes = [

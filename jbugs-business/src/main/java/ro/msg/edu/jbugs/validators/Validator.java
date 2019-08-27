@@ -28,9 +28,6 @@ public class Validator {
         if(!validateVersion(bug.getVersion())){
             // throw new BusinessException("Version Format Invalid", "msg - 018");
         }
-        if(!validateVersion(bug.getFixedVersion())){
-            // throw new BusinessException("Version Format Invalid", "msg - 018");
-        }
     }
 
 

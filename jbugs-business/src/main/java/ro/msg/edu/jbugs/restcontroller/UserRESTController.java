@@ -26,7 +26,7 @@ import java.util.List;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_FORM_URLENCODED})
+@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
 @Interceptors(LoggingInterceptor.class)
 public class
 UserRESTController {
@@ -213,7 +213,4 @@ UserRESTController {
             return Response.status(500).entity(error).build();
         }
     }
-
-
-
 }

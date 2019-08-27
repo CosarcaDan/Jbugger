@@ -221,7 +221,7 @@ public class UserServiceTest {
             UserDto userDto = new UserDto(0, 0, "null", "null", "null", "null", "password2", "username2", true);
             UserDto userDtoReturned = userService.login(userDto);
             assertEquals(userDto.getUsername(),userDtoReturned.getUsername());
-        } catch (RepositoryException  | BusinessException e) {
+        } catch (RepositoryException | BusinessException e) {
             fail();
         }
     }
@@ -260,7 +260,7 @@ public class UserServiceTest {
         tempUser.setStatus(true);
         tempUser.setAssignedBugs(new ArrayList<>());
         when(userRepo.findUserByUsername("username")).thenReturn(tempUser);
-        userService.deactivateUser("username",null);
+        userService.deactivateUser("username", null);
     }
 
     @Test
@@ -271,15 +271,15 @@ public class UserServiceTest {
         bug1.setStatus(Bug.Status.CLOSED);
         Bug bug2 = new Bug();
         bug2.setStatus(Bug.Status.CLOSED);
-        tempUser.setAssignedBugs(Arrays.asList(bug1,bug2));
+        tempUser.setAssignedBugs(Arrays.asList(bug1, bug2));
         when(userRepo.findUserByUsername("username")).thenReturn(tempUser);
-        userService.deactivateUser("username",null);
+        userService.deactivateUser("username", null);
     }
 
     @Test(expected = BusinessException.class)
     public void deactivateUserTestFailedInvalidUsername() throws RepositoryException, BusinessException {
         when(userRepo.findUserByUsername("username")).thenThrow(BusinessException.class);
-        userService.deactivateUser("username",null);
+        userService.deactivateUser("username", null);
     }
 
     @Test(expected = BusinessException.class)
@@ -287,7 +287,7 @@ public class UserServiceTest {
         User tempUser = new User();
         tempUser.setStatus(false);
         when(userRepo.findUserByUsername("username")).thenReturn(tempUser);
-        userService.deactivateUser("username",null);
+        userService.deactivateUser("username", null);
     }
 
     @Test(expected = BusinessException.class)
@@ -298,9 +298,9 @@ public class UserServiceTest {
         bug1.setStatus(Bug.Status.CLOSED);
         Bug bug2 = new Bug();
         bug2.setStatus(Bug.Status.IN_PROGRESS);
-        tempUser.setAssignedBugs(Arrays.asList(bug1,bug2));
+        tempUser.setAssignedBugs(Arrays.asList(bug1, bug2));
         when(userRepo.findUserByUsername("username")).thenReturn(tempUser);
-        userService.deactivateUser("username",null);
+        userService.deactivateUser("username", null);
     }
 
     @Test

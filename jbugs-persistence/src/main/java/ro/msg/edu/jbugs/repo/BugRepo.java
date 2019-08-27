@@ -99,6 +99,9 @@ public class BugRepo {
         return query.getResultList();
     }
 
+    public List<Attachment> getBugAttachments(Bug bug) {
+        return bug.getAttachments();
+    }
 
     public User getCreator(Bug bug){
         return bug.getCreated();

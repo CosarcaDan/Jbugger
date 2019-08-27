@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugService} from '../../../core/services/bug/bug.service';
@@ -6,12 +6,12 @@ import {Bug} from '../../../core/models/bug';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddBugComponent} from '../add-bug/add-bug.component';
 import {AuthService} from '../../../core/services/auth/auth.service';
-import {Attachment} from "../../../core/models/attachment";
-import {FileService} from "../../../core/services/file/file.service";
-import {User} from "../../../core/models/user";
-import {UserService} from "../../../core/services/user/user.service";
-import {Table} from "primeng/table";
-import {DatePipe} from "@angular/common";
+import {Attachment} from '../../../core/models/attachment';
+import {FileService} from '../../../core/services/file/file.service';
+import {User} from '../../../core/models/user';
+import {UserService} from '../../../core/services/user/user.service';
+import {Table} from 'primeng/table';
+import {DatePipe} from '@angular/common';
 
 
 @Component({
@@ -41,6 +41,7 @@ export class BugsListComponent implements OnInit{
   bugs: Array<Bug>;
 
   newBug: boolean;
+
 
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
@@ -316,6 +317,10 @@ export class BugsListComponent implements OnInit{
   }
 
   onFileChange(event) {
+    let fileSize = event.target.files[0].size / 1024 / 1024; // in MB
+    if (fileSize > 25) {
+      alert('File size exceeds 25 MB');
+    }
     if (event.target.files.length > 0) {
       let files = event.target.files;
       this.uploadedFileName = files[0].name;
