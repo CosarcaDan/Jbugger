@@ -7,11 +7,21 @@
   </div>
 </p-menubar>
 
+<p-dialog header="Notification" [(visible)]="displayNotification"
+          [style]="{width: '350px', minWidth: '200px'}">
+  <p>Uite-maaa</p>
+</p-dialog>
+
 <p-sidebar [(visible)]="display" position="right" styleClass="ui-sidebar-md">
-  Notifications
+  <h1>Notifications</h1>
 
-  <!--  <p-listbox [options]="notifications" [(ngModel)]="selectedNotification" optionLabel="name"></p-listbox>-->
+  <div *ngFor="let not of notification">
 
+    <div id="logo">
+      <h1 (click)="displayNotification = true">{{not}}</h1>
+    </div>
+
+  </div>
 </p-sidebar>
 
 <button id="notification" type="text" (click)="display = true" pButton class="ui-button-rounded ui-button-success"

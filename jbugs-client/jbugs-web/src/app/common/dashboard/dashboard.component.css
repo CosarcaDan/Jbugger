@@ -4,3 +4,28 @@
   right: 13px;
   z-index: 5;
 }
+
+#logo {
+  background-color: lightgrey;
+  padding: 10px;
+  position: relative;
+}
+
+
+#logo a span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+#logo:hover {
+  background-color: grey;
+}
+
+#logo:active {
+  background-color: #A9A;
+  top: +2px;
+}

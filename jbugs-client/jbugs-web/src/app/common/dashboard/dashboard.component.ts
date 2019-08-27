@@ -15,11 +15,15 @@ export class DashboardComponent implements OnInit {
   display;
   languages: any[];
   selectedLanguage: any;
+  notification: string[];
+  displayNotification: boolean;
 
   constructor(private router: Router, private authService: AuthService) {
   }
 
   ngOnInit() {
+    this.notification = ['Not1', 'Not2', 'Not3', 'Not4'];
+
     this.items = [
       {
         label: 'User management',
@@ -55,4 +59,11 @@ export class DashboardComponent implements OnInit {
     this.authService.logout();
   }
 
+  consoleLog(not: string) {
+    console.log(not);
+  }
+
+  showDialog(event) {
+    this.displayNotification = true;
+  }
 }
