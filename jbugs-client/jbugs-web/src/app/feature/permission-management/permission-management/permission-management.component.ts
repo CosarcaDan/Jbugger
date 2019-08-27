@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {Role} from "../../../core/models/role";
-import {Permission} from "../../../core/models/permission";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {RoleService} from "../../../core/services/role/role.service";
-import {Router} from "@angular/router";
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+import {Component, OnInit} from '@angular/core';
+import {Role} from '../../../core/models/role';
+import {Permission} from '../../../core/models/permission';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {RoleService} from '../../../core/services/role/role.service';
+import {Router} from '@angular/router';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-permission-management',
@@ -72,12 +72,13 @@ export class PermissionManagementComponent implements OnInit {
   removePermission(permission) {
     let role = this.roles.find(r => r.id == this.selectedRole);
     //let permissions = this.selectedPermissions.map(p => this.permissionsInRole.find((pp) => pp.id == p));
-    console.log('remove',role, permission);
+    console.log('remove', role, permission);
     this.roleService.removePermissionToRole(role, permission);
   }
+
   addPermission(permission) {
     let role = this.roles.find(r => r.id == this.selectedRole);
-    console.log('add',role, permission);
+    console.log('add', role, permission);
     this.roleService.addPermissionToRole(role, permission);
   }
 
@@ -85,11 +86,12 @@ export class PermissionManagementComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      console.log(event.previousContainer.element.nativeElement.className.match(' inPermissions')!=null,event.previousContainer.data[event.previousIndex])
-      if(event.previousContainer.element.nativeElement.className.match(' inPermissions')==null)
+      console.log(event.previousContainer.element.nativeElement.className.match(' inPermissions') != null, event.previousContainer.data[event.previousIndex]);
+      if (event.previousContainer.element.nativeElement.className.match(' inPermissions') == null) {
         this.addPermission(event.previousContainer.data[event.previousIndex]);
-      else
+      } else {
         this.removePermission(event.previousContainer.data[event.previousIndex]);
+      }
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,

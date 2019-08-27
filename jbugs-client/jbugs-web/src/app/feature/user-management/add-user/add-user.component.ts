@@ -83,7 +83,7 @@ export class AddUserComponent implements OnInit {
       status: null
     };
     this.userService.add(userToBeAdded, this.selectedRoles).subscribe(() => {
-      alert("User added successfully! ")
+      alert('User added successfully! ');
     });
     this.activeModal.close();
 

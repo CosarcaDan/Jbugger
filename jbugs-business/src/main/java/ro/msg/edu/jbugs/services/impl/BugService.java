@@ -173,7 +173,7 @@ public class BugService {
                 updateStatusBug(bugDto);
             return BugDtoMapping.bugToBugDtoComplet(bug); //todo see if status has been schanged
         } catch (RepositoryException e) {
-           throw new BusinessException(e);
+            throw new BusinessException(e);
         }
     }
 
@@ -321,13 +321,12 @@ public class BugService {
         return result;
     }
 
-    public List<AttachmentDto> getAttachments(BugDto bugDto){
+    public List<AttachmentDto> getAttachments(BugDto bugDto) {
         List<Attachment> attachments = bugRepo.findBug(bugDto.getId()).getAttachments();
         return attachments.stream().map(AttachmentDtoMapping::attachmentToAttachmentDto).collect(Collectors.toList());
     }
 
-    public void addAttachment(BugDto bugDto, AttachmentDto attachmentDto)
-    {
+    public void addAttachment(BugDto bugDto, AttachmentDto attachmentDto) {
         Bug bug = bugRepo.findBug(bugDto.getId());
         bug.addAttachment(AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto));
         bugRepo.update(bug);

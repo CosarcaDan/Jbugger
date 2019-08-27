@@ -65,7 +65,7 @@ export class UserListComponent implements OnInit {
   lengthCurrentUsersRoles;
   onRowSelect(event) {
     this.newUser = false;
-    this.selectedRoles=[];
+    this.selectedRoles = [];
     console.log(event.data);
     this.user = JSON.parse(JSON.stringify(event.data));
     this.rolesOfCurrentUser = new Array<Role>();
@@ -116,7 +116,7 @@ export class UserListComponent implements OnInit {
 
   edit() {
     this.getSelectedRoles();
-    console.log(this.selectedRoles)
+    console.log(this.selectedRoles);
     this.userService.edit(this.user, this.selectedRoles).subscribe(
       (data: {}) => {
         alert(data);
@@ -156,7 +156,9 @@ export class UserListComponent implements OnInit {
 
   add() {
     const modalRef = this.modalService.open(AddUserComponent, {windowClass: 'add-popup'});
-    modalRef.result.then(()=>{this.getUsers();});
+    modalRef.result.then(() => {
+      this.getUsers();
+    });
   }
 
   onClicked(role, event) {
