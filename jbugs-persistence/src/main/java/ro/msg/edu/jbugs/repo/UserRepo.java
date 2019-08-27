@@ -4,7 +4,7 @@ import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.Permission;
 import ro.msg.edu.jbugs.entity.Role;
 import ro.msg.edu.jbugs.entity.User;
-import ro.msg.edu.jbugs.exceptions.BusinessException;
+import ro.msg.edu.jbugs.exceptions.RepositoryException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -50,18 +50,18 @@ public class UserRepo {
         return entityManager.getReference(User.class, id);
     }
 
-    public User findeUserAfterUsername(String username) throws BusinessException {
+    public User findUserByUsername(String username) throws RepositoryException {
         Query query = entityManager.createNamedQuery(User.QUERY_SELECT_AFTER_USERNAME);
         query.setParameter("username", username);
         try {
             User user = (User) query.getSingleResult();
             return user;
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new BusinessException("Invalid Username", "msg-003");
+            throw new RepositoryException("Invalid Username", "msg-003");
         }
     }
 
-    public List<User> getAllUser() {
+    public List<User> findAllUser() {
         Query query = entityManager.createNamedQuery(User.QUERY_SELECT_ALL_USER, User.class);
         List<User> userList = query.getResultList();
         return userList;
@@ -69,11 +69,11 @@ public class UserRepo {
 
 
     //This function delete a User and all related activities(Notification, Bugs, Comments) and should
-    // not be used in the context of the specification instead user the deactivateUser function.
+    // not be used in the context of the specification instead user the setStatusFalse function.
     //ToDo refactor functia de stergere
-    public Integer deleteUserAfterUserNamePermanently(String username) throws BusinessException {
+    public Integer deleteUserByUserNamePermanently(String username) throws RepositoryException {
         Integer result = -1;
-        User user = findeUserAfterUsername(username);
+        User user = findUserByUsername(username);
         if (user != null) {
             List<Bug> bugList = bugRepo.findBugAfterUserId(user);
             for (Bug bug : bugList) {
@@ -103,7 +103,7 @@ public class UserRepo {
         }
     }
 
-    public User login(String username, String password) throws BusinessException {
+    public User findByUsernameAndPassword(String username, String password) throws RepositoryException {
         Query query = entityManager.createNamedQuery(User.QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD);
         query.setParameter("username", username);
         query.setParameter("password", password);
@@ -111,28 +111,28 @@ public class UserRepo {
             User user = (User) query.getSingleResult();
             return user;
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new BusinessException("login Failed", "msg-001");
+            throw new RepositoryException("findByUsernameAndPassword Failed", "msg-001");
         }
     }
 
-    public void activateUser(User user) {
+    public void setStatusTrue(User user) {
         user.setStatus(true);
     }
 
-    public void deactivateUser(User user) {
+    public void setStatusFalse(User user) {
         user.setStatus(false);
     }
 
 
-    public User resetLoginFailCounter(User user) throws BusinessException {
-        user.setCounter(0);
+    public User setFailedLoginAttemptToZero(User user) {
+        user.setFailedLoginAttempt(0);
         return user;
     }
 
 
-    public User updateUser(User newDataUser) throws BusinessException {
-        User user = findeUserAfterUsername(newDataUser.getUsername());
-        user.setCounter(newDataUser.getCounter());
+    public User updateUser(User newDataUser) throws RepositoryException {
+        User user = findUserByUsername(newDataUser.getUsername());
+        user.setFailedLoginAttempt(newDataUser.getFailedLoginAttempt());
         user.setFirstName(newDataUser.getFirstName());
         user.setLastName(newDataUser.getLastName());
         user.setEmail(newDataUser.getEmail());
@@ -144,16 +144,16 @@ public class UserRepo {
     }
 
 
-    public List<Bug> getAllCreatedBugs(User user) {
-        return user.getCreatedBy();
+    public List<Bug> findAllCreatedBugs(User user) {
+        return user.getCreatedBugs();
     }
 
-    public List<Bug> getAllAssignedBugs(User user) {
-        return user.getAssignedTo();
+    public List<Bug> findAllAssignedBugs(User user) {
+        return user.getAssignedBugs();
     }
 
     public List<Role> getAllRoles(User user) {
-        return user.getRoleList();
+        return user.getRoles();
     }
 
 
@@ -172,9 +172,9 @@ public class UserRepo {
         entityManager.flush();
     }
 
-    public List<Permission> findUserPermissions(String username) throws BusinessException {
-        User user = findeUserAfterUsername(username);
-        List<Role> roleList = user.getRoleList();
+    public List<Permission> findUserPermissions(String username) throws RepositoryException {
+        User user = findUserByUsername(username);
+        List<Role> roleList = user.getRoles();
         List<Permission> resultList = new ArrayList<>();
         roleList.forEach(r -> {
             r.getPermissionList().forEach(permission -> resultList.add(permission));

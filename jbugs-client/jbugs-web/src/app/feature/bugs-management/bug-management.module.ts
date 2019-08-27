@@ -3,11 +3,13 @@ import {CommonModule} from '@angular/common';
 import {AddBugComponent} from './add-bug/add-bug.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
+import {SummaryPipe} from './SummaryPipe';
 
 
 @NgModule({
   declarations: [
-    AddBugComponent
+    AddBugComponent,
+    SummaryPipe,
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,9 @@ import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
   ],
   providers: [],
   exports: [
-    AddBugComponent
+    AddBugComponent,
+    SummaryPipe,
+
   ]
 })
 export class BugManagementModule {

@@ -33,7 +33,7 @@ import java.util.Objects;
 
 })
 public class User implements Serializable {
-    public static final String QUERY_SELECT_ALL_USER = "getAllUser";
+    public static final String QUERY_SELECT_ALL_USER = "findAllUser";
     public static final String QUERY_SELECT_AFTER_USERNAME = "findAfterUsername";
     public static final String QUERY_REMOVE_AFTER_USERNAME = "removeAfterUsername";
     public static final String QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD = "userLogin";
@@ -46,7 +46,7 @@ public class User implements Serializable {
     private Integer id;
 
     @Column(name = "counter")
-    private Integer counter;
+    private Integer failedLoginAttempt;
 
     @Column(name = "first_name")
     private String firstName;
@@ -70,17 +70,17 @@ public class User implements Serializable {
     private Boolean status;
 
     @OneToMany(mappedBy = "created", cascade = CascadeType.MERGE)
-    private List<Bug> createdBy;
+    private List<Bug> createdBugs;
 
     @OneToMany(mappedBy = "assigned", cascade = CascadeType.MERGE)
-    private List<Bug> assignedTo;
+    private List<Bug> assignedBugs;
 
     @ManyToMany(targetEntity = Role.class, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = {@JoinColumn(name= "role_id")})
-    private List<Role> roleList;
+    private List<Role> roles;
 
-    public User(Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
-        this.counter = counter;
+    public User(Integer failedLoginAttempt, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
+        this.failedLoginAttempt = failedLoginAttempt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -93,28 +93,28 @@ public class User implements Serializable {
     public User() {
     }
 
-    public List<Role> getRoleList() {
-        return roleList;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
+    public void setRoles(List<Role> roleList) {
+        this.roles = roleList;
     }
 
-    public List<Bug> getCreatedBy() {
-        return createdBy;
+    public List<Bug> getCreatedBugs() {
+        return createdBugs;
     }
 
-    public void setCreatedBy(List<Bug> createdBy) {
-        this.createdBy = createdBy;
+    public void setCreatedBugs(List<Bug> createdBy) {
+        this.createdBugs = createdBy;
     }
 
-    public List<Bug> getAssignedTo() {
-        return assignedTo;
+    public List<Bug> getAssignedBugs() {
+        return assignedBugs;
     }
 
-    public void setAssignedTo(List<Bug> assignedTo) {
-        this.assignedTo = assignedTo;
+    public void setAssignedBugs(List<Bug> assignedTo) {
+        this.assignedBugs = assignedTo;
     }
 
     public String getMobileNumber() {
@@ -157,12 +157,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public Integer getCounter() {
-        return counter;
+    public Integer getFailedLoginAttempt() {
+        return failedLoginAttempt;
     }
 
-    public void setCounter(Integer counter) {
-        this.counter = counter;
+    public void setFailedLoginAttempt(Integer counter) {
+        this.failedLoginAttempt = counter;
     }
 
     public String getFirstName() {
@@ -194,7 +194,7 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(counter, user.counter) &&
+        return Objects.equals(failedLoginAttempt, user.failedLoginAttempt) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
@@ -206,19 +206,19 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(counter, firstName, lastName, email, mobileNumber, password, username, status);
+        return Objects.hash(failedLoginAttempt, firstName, lastName, email, mobileNumber, password, username, status);
     }
 
     public void addRole(Role role) {
-        if (this.roleList.stream().anyMatch(role1 -> role1.getType().equals(role.getType())))
+        if (this.roles.stream().anyMatch(role1 -> role1.getType().equals(role.getType())))
             return;
 
         role.addUserSimple(this);
-        this.roleList.add(role);
+        this.roles.add(role);
     }
 
     public void deleteRole(Role role) {
         role.deleteUserSimple(this);
-        this.roleList.remove(role);
+        this.roles.remove(role);
     }
 }

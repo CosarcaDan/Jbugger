@@ -13,6 +13,7 @@ import ro.msg.edu.jbugs.entity.Attachment;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
+import ro.msg.edu.jbugs.exceptions.RepositoryException;
 import ro.msg.edu.jbugs.repo.BugRepo;
 import ro.msg.edu.jbugs.repo.UserRepo;
 import ro.msg.edu.jbugs.validators.Validator;
@@ -77,13 +78,13 @@ public class BugService {
         Bug.Status status;
         Bug.Severity severity;
         try {
-            creator = userRepo.findeUserAfterUsername(bugSearchCriteria.getCreated()).getUsername();
-        } catch (BusinessException e) {
+            creator = userRepo.findUserByUsername(bugSearchCriteria.getCreated()).getUsername();
+        } catch (RepositoryException e) {
             creator = "%";
         }
         try {
-            assigned = userRepo.findeUserAfterUsername(bugSearchCriteria.getAssigned()).getUsername();
-        } catch (BusinessException e) {
+            assigned = userRepo.findUserByUsername(bugSearchCriteria.getAssigned()).getUsername();
+        } catch (RepositoryException e) {
             assigned = "%";
         }
         if (bugSearchCriteria.getSeverity().equals("") || bugSearchCriteria.getStatus().equals("")) {
@@ -165,9 +166,15 @@ public class BugService {
         bug.setTargetDate(bugDto.getTargetDate());
         bug.setFixedVersion(bugDto.getFixedVersion());
         bug.setSeverity(Bug.Severity.valueOf(bugDto.getSeverity()));
-        if (!bug.getStatus().equals(Bug.Status.valueOf(bugDto.getStatus())))
-            updateStatusBug(bugDto);
-        return BugDtoMapping.bugToBugDtoComplet(bug); //todo see if status has been schanged
+        try {
+            User assigned = userRepo.findUserByUsername(bugDto.getAssigned());
+            bug.setAssigned(assigned);
+            if (!bug.getStatus().equals(Bug.Status.valueOf(bugDto.getStatus())))
+                updateStatusBug(bugDto);
+            return BugDtoMapping.bugToBugDtoComplet(bug); //todo see if status has been schanged
+        } catch (RepositoryException e) {
+            throw new BusinessException(e);
+        }
     }
 
     //ToDo export bug excel

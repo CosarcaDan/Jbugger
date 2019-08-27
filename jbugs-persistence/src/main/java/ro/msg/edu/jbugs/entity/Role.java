@@ -27,7 +27,7 @@ public class Role implements Serializable {
     @ManyToMany(targetEntity = Permission.class, mappedBy = "roleList",cascade = CascadeType.MERGE)
     private List<Permission> permissionList;
 
-    @ManyToMany(targetEntity = User.class, mappedBy = "roleList", cascade = CascadeType.MERGE)
+    @ManyToMany(targetEntity = User.class, mappedBy = "roles", cascade = CascadeType.MERGE)
     private List<User> userList;
     public Role() {
     }

@@ -52,7 +52,6 @@ UserRESTController {
             userService.deactivateUser(loged_in.getUsername(), true);
             return Response.status(200).entity(response).build();
         } catch (BusinessException e) {
-
             String error = gson.toJson(e);
             return Response.status(500).entity(error).build();
         }
@@ -209,7 +208,7 @@ UserRESTController {
             List<RoleDto> roles = userService.getAllRoles(id);
             String response = gson.toJson(roles);
             return Response.status(200).entity(response).build();
-        } catch (Exception e) {
+        } catch (BusinessException e) {
             String error = gson.toJson(e);
             return Response.status(500).entity(error).build();
         }

@@ -8,6 +8,7 @@ import {UserService} from '../../../core/services/user/user.service';
 import {RoleService} from '../../../core/services/role/role.service';
 import {User} from '../../../core/models/user';
 import {Role} from '../../../core/models/role';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class AddUserComponent implements OnInit {
   roles: Array<Role>;
 
   constructor(private router: Router, private userService: UserService,
-              private roleService: RoleService, private fb: FormBuilder) {
+              private roleService: RoleService, private fb: FormBuilder, public activeModal: NgbActiveModal) {
     this.form = fb.group({
       firstname: [null, [Validators.required, AddUserValidators.validateName]],
       lastname: [null, [Validators.required, AddUserValidators.validateName]],
@@ -81,7 +82,11 @@ export class AddUserComponent implements OnInit {
       username: null,
       status: null
     };
-    this.userService.add(userToBeAdded, this.selectedRoles).subscribe();
+    this.userService.add(userToBeAdded, this.selectedRoles).subscribe(() => {
+      alert('User added successfully! ');
+    });
+    this.activeModal.close();
+
   }
 
   getSelectedRoles() {

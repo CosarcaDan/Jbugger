@@ -13,7 +13,7 @@ import {Role} from '../../../core/models/role';
 })
 export class UserListComponent implements OnInit {
   cols: any[];
-  users: User[];
+  users: Array<User>;
   selectedUser: User;
   newUser: boolean;
   displayDialog: boolean;
@@ -53,8 +53,7 @@ export class UserListComponent implements OnInit {
     ];
   }
 
-  private getUses() {
-    this.users = [];
+  public getUses() {
     this.userService.getUsers().subscribe((data: {}) => {
       console.log(data);
       // @ts-ignore
@@ -178,6 +177,9 @@ export class UserListComponent implements OnInit {
 
   add() {
     const modalRef = this.modalService.open(AddUserComponent, {windowClass: 'add-popup'});
+    modalRef.result.then(() => {
+      this.getUses();
+    });
   }
 
   onClicked(role, event) {
