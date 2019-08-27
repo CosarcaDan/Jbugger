@@ -196,7 +196,7 @@ public class UserService {
                 userRepo.setStatusTrue(user);
                 return UserDtoMapping.userToUserDtoIncomplet(user);
             }
-        }catch (RepositoryException e) {
+        } catch (RepositoryException e) {
             throw new BusinessException(e);
         }
     }
@@ -228,7 +228,7 @@ public class UserService {
     public Integer deleteUser(UserDto userDto) throws BusinessException {
         try {
             return userRepo.deleteUserByUserNamePermanently(userDto.getUsername());
-        }catch (RepositoryException ex){
+        } catch (RepositoryException ex) {
             throw new BusinessException(ex);
         }
     }

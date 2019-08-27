@@ -81,11 +81,11 @@ export class BugsListComponent implements OnInit {
   private currentAttachments: Array<Attachment>;
 
   @ViewChild('dt', undefined)
-    dt: Table;
-    filteredBugAssignedToSuggestion: any[];
-    filteredBugs: Bug[];
+  dt: Table;
 
-    constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
+  filteredBugs: any[];
+
+constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
 
     }
 
@@ -105,13 +105,12 @@ export class BugsListComponent implements OnInit {
       ];
 
       this.status = [
-        {label: 'All Statuses', value: ''},
-        {label: 'New', value: 'NEW'},
-        {label: 'In progress', value: 'IN_PROGRESS'},
-        {label: 'Fixed', value: 'FIXED'},
-        {label: 'Closed', value: 'CLOSED'},
-        {label: 'Rejected', value: 'REJECTED'},
-        {label: 'Info Needed', value: 'INFONEEDED'}
+        {label: 'NEW', value: 'NEW'},
+        {label: 'IN_PROGRESS', value: 'IN_PROGRESS'},
+        {label: 'FIXED', value: 'FIXED'},
+        {label: 'CLOSED', value: 'CLOSED'},
+        {label: 'REJECTED', value: 'REJECTED'},
+        {label: 'INFO_NEEDED', value: 'INFONEEDED'}
       ];
 
       this.statusNew = [
@@ -176,37 +175,27 @@ export class BugsListComponent implements OnInit {
     });
   }
 
-  filterBugsAssignedTo(event) {
-      this.filteredBugs = [];
-      let bugs = this.getBugs();
-      for (let i = 0; i < bugs.length; i++) {
-        let bug = this.bugs[i];
-        if (bug.assigned === event.query.toString()) {
-          this.filteredBugs.push(bug);
-        }
-      }
-    }
 
-    getBugs(): Bug[] {
-      this.bugs = [];
-      this.bugServices.getBugs().subscribe((data) => {
-        console.log(data);
+  getBugs() {
+    this.bugs = [];
+    this.bugServices.getBugs().subscribe((data) => {
+      console.log(data);
       // @ts-ignore
-        this.bugs = data;
+      this.bugs = data;
+      console.log(this.bugs);
 
-        for (var bug of this.bugs) {
-          var date = new Date(bug.targetDate);
-          bug.targetDate = date;
-        }
-      });
-      return this.bugs;
-    }
 
+      for (var bug of this.bugs) {
+        var date = new Date(bug.targetDate);
+        bug.targetDate = date;
+      }
+    });
+  }
 
   public search() {
     console.log(this.bugSearchCriteria);
-    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data) => {
-
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data: {}) => {
+      // @ts-ignore
       this.bugs = data;
 
       for (var bug of this.bugs) {
@@ -218,7 +207,9 @@ export class BugsListComponent implements OnInit {
 
   add() {
     const modalRef = this.modalService.open(AddBugComponent, {windowClass: 'add-pop'});
-    modalRef.result.then(()=>{this.search();});
+    modalRef.result.then(() => {
+      this.search();
+    });
   }
 
   export() {
@@ -261,6 +252,7 @@ export class BugsListComponent implements OnInit {
     );
 
     this.displayDialog = false;
+    this.search();
   }
 
   private prepareSave(): FormData {
@@ -327,4 +319,12 @@ export class BugsListComponent implements OnInit {
     return this.bugServices.getAttachments(bug);
   }
 
+
+  filterBugs(event) {
+    this.userService.getUsers().subscribe((users) => {
+      console.log(users);
+      this.filteredBugs = users.map((u) => u.username).filter((u) => u.toLowerCase().indexOf(event.query.toLowerCase()) == 0);
+      console.log(this.filteredBugs);
+    });
+  }
 }

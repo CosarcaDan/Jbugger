@@ -6,10 +6,23 @@
     <div style="text-align: right">
       <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
 
-      <input type="text" pInputText size="20" placeholder="Created by"
-             [(ngModel)]="bugSearchCriteria.created">
-      <input type="text" pInputText size="20" placeholder="Assigned to"
-             [(ngModel)]="bugSearchCriteria.assigned">
+      <!--      <input type="text" pInputText size="20" placeholder="Created by"-->
+      <!--             [(ngModel)]="bugSearchCriteria.created">-->
+      <!--      <input type="text" pInputText size="20" placeholder="Assigned to"-->
+      <!--             [(ngModel)]="bugSearchCriteria.assigned">-->
+
+      <p-autoComplete appendTo="body" [suggestions]="filteredBugs"
+                      (completeMethod)="filterBugs($event)" [size]="30"
+                      placeholder="Created by" [minLength]="1" forceSelection="true"
+                      [(ngModel)]="bugSearchCriteria.created"
+      ></p-autoComplete>
+
+      <p-autoComplete appendTo="body" [suggestions]="filteredBugs"
+                      (completeMethod)="filterBugs($event)" [size]="30"
+                      placeholder="Assigned to" [minLength]="1" forceSelection="true"
+                      [(ngModel)]="bugSearchCriteria.assigned"
+      ></p-autoComplete>
+
       <p-dropdown [options]="status" size="20" placeholder="Status" id="status"
                   [(ngModel)]="bugSearchCriteria.status"></p-dropdown>
 
@@ -25,6 +38,9 @@
     <tr>
       <th *ngFor="let col of columns" [pSortableColumn]="col.field">
         {{col.header}}
+        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                    ariaLabelDesc="Activate to sort in descending order"
+                    ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
       </th>
     </tr>
     <tr>
@@ -41,17 +57,31 @@
                     (onSelect)="dt.filter($event, col.field, 'dateFilter')"></p-calendar>
 
         <p-multiSelect appendTo="body" *ngSwitchCase="'status'" [options]="status" [style]="{'width':'100%'}"
-                       (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                       (onChange)="dt.filter($event.value, col.field, 'in')"
+                       defaultLabel="All statuses"></p-multiSelect>
 
         <input *ngSwitchCase="'fixedVersion'" pInputText size="15" type="text"
                (input)="dt.filter($event.target.value, col.field, 'contains')">
         <p-multiSelect appendTo="body" *ngSwitchCase="'severity'" size="15" [options]="severity"
                        defaultLabel="All severities"
                        (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
-        <input *ngSwitchCase="'created'" pInputText size="15" type="text"
-               (input)="dt.filter($event.target.value, col.field, 'contains')">
-        <input *ngSwitchCase="'assigned'" pInputText size="15" type="text"
-               (input)="dt.filter($event.target.value, col.field, 'contains')">
+
+        <!--        <input *ngSwitchCase="'created'" pInputText size="15" type="text"-->
+        <!--               (input)="dt.filter($event.target.value, col.field, 'contains')">-->
+        <!--        <input *ngSwitchCase="'assigned'" pInputText size="15" type="text"-->
+        <!--               (input)="dt.filter($event.target.value, col.field, 'contains')">-->
+
+        <p-autoComplete appendTo="body" *ngSwitchCase="'created'" [suggestions]="filteredBugs"
+                        (completeMethod)="filterBugs($event)" [size]="30"
+                        placeholder="Created by" [minLength]="1" forceSelection="true"
+                        (onSelect)="dt.filter($event, col.field, 'contains')"
+        ></p-autoComplete>
+
+        <p-autoComplete appendTo="body" *ngSwitchCase="'assigned'" [suggestions]="filteredBugs"
+                        (completeMethod)="filterBugs($event)" [size]="30"
+                        placeholder="Assigned to" [minLength]="1" forceSelection="true"
+                        (onSelect)="dt.filter($event, col.field, 'contains')"
+        ></p-autoComplete>
 
       </th>
     </tr>
@@ -63,7 +93,6 @@
 <!--        <div *ngSwitchCase="'targetDate'"> {{rowData[col.field] | date:'dd/MM/yyyy'}} </div>-->
         <div *ngSwitchCase="'description'"> {{rowData[col.field] | summary}} </div>
         <span *ngSwitchCase="'targetDate'"> {{rowData[col.field] | date:'dd.MM.yyyy'}} </span>
-
         <span *ngSwitchDefault> {{rowData[col.field] }}</span>
       </td>
     </tr>
