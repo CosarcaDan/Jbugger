@@ -12,7 +12,8 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
   declarations: [AddPermissionComponent, RemovePermissionComponent, PermissionManagementComponent],
   exports: [
     AddPermissionComponent,
-    RemovePermissionComponent
+    RemovePermissionComponent,
+    PermissionManagementComponent
   ],
   imports: [
     CommonModule,

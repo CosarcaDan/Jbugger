@@ -168,7 +168,6 @@ constructor(private router: Router, private bugServices: BugService, public moda
     this.allUsers = new Array<User>();
     this.userService.getUsers().subscribe((data) => {
       console.log('data:', data);
-      // @ts-ignore
       for (let dataKey of data) {
         this.allUsers.push(dataKey);
       }
@@ -180,7 +179,6 @@ constructor(private router: Router, private bugServices: BugService, public moda
     this.bugs = [];
     this.bugServices.getBugs().subscribe((data) => {
       console.log(data);
-      // @ts-ignore
       this.bugs = data;
       console.log(this.bugs);
 
@@ -194,8 +192,7 @@ constructor(private router: Router, private bugServices: BugService, public moda
 
   public search() {
     console.log(this.bugSearchCriteria);
-    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data: {}) => {
-      // @ts-ignore
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data) => {
       this.bugs = data;
 
       for (var bug of this.bugs) {

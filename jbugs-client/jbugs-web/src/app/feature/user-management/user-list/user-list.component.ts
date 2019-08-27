@@ -78,40 +78,13 @@ export class UserListComponent implements OnInit {
         for (let dataKey of data) {
           this.roles.push(dataKey);
         }
-        this.roles.forEach(r => {
-          console.log(r.type);
-         this.rolesOfCurrentUser.forEach(rr => {
-            console.log(rr.type, r.type);
-            if (rr.type == r.type)
-              r.checked = true;
-            else
-              r.checked=false;
-          })
-        });
-        console.log(this.roles);
+        this.roles.forEach(r =>r.checked=this.rolesOfCurrentUser.find(rr=> rr.type==r.type)!=null)
       });
 
       console.log(this.roles);
       this.lengthCurrentUsersRoles = this.rolesOfCurrentUser.length;
     });
     this.displayDialog = true;
-    // if(this.roles === undefined)
-    // {
-    //   this.getRoles()
-    // }
-
-
-
-
-    // console.log('All roles: ', this.roles);
-    // console.log('User\'s roles: ', this.rolesOfCurrentUser);
-    // for(let role of this.roles){
-    //   console.log('Role', role);
-    //   console.log(this.rolesOfCurrentUser.length);
-    //  if(this.rolesOfCurrentUser.includes(role)){
-    //    this.role.checked = true;
-    //  }
-    // }
   }
 
   activateUser() {
