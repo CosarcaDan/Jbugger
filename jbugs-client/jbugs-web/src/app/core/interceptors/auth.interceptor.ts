@@ -8,7 +8,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService) {
   }
-  
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (
       req.url == 'http://localhost:8080/jbugs/services/bugs/add' ||

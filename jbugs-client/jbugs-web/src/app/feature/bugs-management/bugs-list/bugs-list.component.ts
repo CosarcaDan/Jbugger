@@ -21,7 +21,6 @@ import {DatePipe} from '@angular/common';
 
 })
 export class BugsListComponent implements OnInit {
-
   cols: any[];
 
   status: SelectItem[];
@@ -79,6 +78,8 @@ export class BugsListComponent implements OnInit {
   private myAtt;
   attachments;
   private currentAttachments: Array<Attachment>;
+
+  private temporatStatus: string;
 
   @ViewChild('dt', undefined)
   dt: Table;
@@ -141,7 +142,6 @@ export class BugsListComponent implements OnInit {
 
 
     this.severity = [
-      {label: 'All Severities', value: ''},
       {label: 'LOW', value: 'LOW'},
       {label: 'MEDIUM', value: 'MEDIUM'},
       {label: 'HIGH', value: 'HIGH'},
@@ -159,7 +159,7 @@ export class BugsListComponent implements OnInit {
         return true;
       }
       return false;
-    };
+    }
   }
 
 
