@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule} from "@angular/forms";
-import {NgbModalModule} from "@ng-bootstrap/ng-bootstrap";
-import {AddUserComponent} from "./add-user/add-user.component";
-import {UserListComponent} from "./user-list/user-list.component";
-import {TableModule} from "primeng/table";
-import {DialogModule} from "primeng/dialog";
-import {ButtonModule, InputTextModule} from "primeng/primeng";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
+import {AddUserComponent} from './add-user/add-user.component';
+import {UserListComponent} from './user-list/user-list.component';
+import {TableModule} from 'primeng/table';
+import {DialogModule} from 'primeng/dialog';
+import {ButtonModule, InputTextModule} from 'primeng/primeng';
 
 
 @NgModule({
@@ -21,7 +21,8 @@ import {ButtonModule, InputTextModule} from "primeng/primeng";
     TableModule,
     DialogModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    FormsModule
   ],
   entryComponents: [
     AddUserComponent,

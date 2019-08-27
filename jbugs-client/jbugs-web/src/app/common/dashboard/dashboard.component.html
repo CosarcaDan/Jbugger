@@ -6,13 +6,10 @@
 
   </div>
 </p-menubar>
-
 <p-sidebar [(visible)]="display" position="right" styleClass="ui-sidebar-md">
   Notifications
 </p-sidebar>
 
-
 <button id="notification" type="text" (click)="display = true" pButton class="ui-button-rounded ui-button-success"
         label="Notifications"></button>
-
 <router-outlet></router-outlet>

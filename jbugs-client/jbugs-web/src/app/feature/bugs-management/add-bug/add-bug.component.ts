@@ -6,9 +6,9 @@ import {BugServiceService} from '../../../core/services/bug/bug-service.service'
 import {Bug} from '../../../core/models/bug';
 import {FileService} from '../../../core/services/file/file.service';
 import {Attachment} from '../../../core/models/attachment';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {AuthService} from "../../../core/services/auth/auth.service";
-import {User} from "../../../core/models/user";
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {AuthService} from '../../../core/services/auth/auth.service';
+import {User} from '../../../core/models/user';
 
 @Component({
   selector: 'app-add-bug',
@@ -106,8 +106,17 @@ export class AddBugComponent implements OnInit {
       attContent: this.uploadedFileName,
     };
     this.fileUpload();
-    this.bugService.add(bugToBeAdded, attachmentToBeAdded);
+    this.bugService.add(bugToBeAdded, attachmentToBeAdded).subscribe(
+      (data: {}) => {
+        alert(data);
+      },
+      (error2 => {
+        console.log('Error', error2);
+        alert('Bug Add failed :' + error2.error.detailMessage);
+      })
+    );
     this.clearFile();
+    this.activeModal.close();
   }
 
   onFileChange(event) {

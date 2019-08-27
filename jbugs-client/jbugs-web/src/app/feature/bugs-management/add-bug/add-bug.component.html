@@ -125,7 +125,7 @@
             formControlName="assignedTo"
     >
       <option *ngFor="let user of allUsers" [value]="user.username">
-        {{user.username}}
+        {{user.firstName}} {{user.lastName}} ({{user.username}})
       </option>
     </select>
   </div>

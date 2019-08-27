@@ -6,9 +6,9 @@ import {AddUserValidators} from './add-user.validators';
 import {Token} from '../../../core/models/token';
 import {UserService} from '../../../core/services/user/user.service';
 import {RoleService} from '../../../core/services/role/role.service';
-import {Checkedrole} from '../../../core/models/checkedrole';
-import {User} from "../../../core/models/user";
-import {Role} from "../../../core/models/role";
+import {User} from '../../../core/models/user';
+import {Role} from '../../../core/models/role';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -33,7 +33,7 @@ export class AddUserComponent implements OnInit {
   roles: Array<Role>;
 
   constructor(private router: Router, private userService: UserService,
-              private roleService: RoleService, private fb: FormBuilder) {
+              private roleService: RoleService, private fb: FormBuilder, public activeModal: NgbActiveModal) {
     this.form = fb.group({
       firstname: [null, [Validators.required, AddUserValidators.validateName]],
       lastname: [null, [Validators.required, AddUserValidators.validateName]],
@@ -82,13 +82,17 @@ export class AddUserComponent implements OnInit {
       username: null,
       status: null
     };
-    this.userService.add(userToBeAdded, this.selectedRoles);
+    this.userService.add(userToBeAdded, this.selectedRoles).subscribe(() => {
+      alert("User added successfully! ")
+    });
+    this.activeModal.close();
+
   }
 
   getSelectedRoles() {
     for (let i = 0; i < this.roles.length; i++) {
       if (this.roles[i].checked == true) {
-        let role = {} as Checkedrole;
+        let role = {} as Role;
         role.id = this.roles[i].id;
         role.type = this.roles[i].type;
         this.selectedRoles.push(role);

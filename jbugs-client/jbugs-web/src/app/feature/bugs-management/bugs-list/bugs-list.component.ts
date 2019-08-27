@@ -8,6 +8,7 @@ import {AddBugComponent} from "../add-bug/add-bug.component";
 import {AuthService} from "../../../core/services/auth/auth.service";
 import {Table} from "primeng/table";
 import {DatePipe} from "@angular/common";
+import {UserService} from "../../../core/services/user/user.service";
 
 @Component({
   selector: 'app-get-bugs',
@@ -16,6 +17,7 @@ import {DatePipe} from "@angular/common";
   providers: [BugServiceService],
 
 })
+
 export class BugsListComponent implements OnInit {
 
   cols: any[];
@@ -39,7 +41,7 @@ export class BugsListComponent implements OnInit {
   newBug: boolean;
 
 
-  bugSearchCrit: Bug = {
+  bugSearchCriteria: Bug = {
     id: 0,
     title: '',
     description: '',
@@ -71,10 +73,11 @@ export class BugsListComponent implements OnInit {
 
   @ViewChild('dt', undefined)
   dt: Table;
-  filteredBugAssignedToSuggestion: any[];
-  filteredBugs: Bug[];
 
-  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService) {
+  filteredBugs: any[];
+
+  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal,
+              private authService: AuthService, private  userService: UserService) {
 
   }
 
@@ -89,17 +92,15 @@ export class BugsListComponent implements OnInit {
       {field: 'severity', header: 'Severity'},
       {field: 'created', header: 'Created by'},
       {field: 'assigned', header: 'Assigned to'},
-      // {field: 'button', header: ''}
     ];
 
     this.status = [
-      {label: 'All Statuses', value: ''},
-      {label: 'New', value: 'NEW'},
-      {label: 'In progress', value: 'IN_PROGRESS'},
-      {label: 'Fixed', value: 'FIXED'},
-      {label: 'Closed', value: 'CLOSED'},
-      {label: 'Rejected', value: 'REJECTED'},
-      {label: 'Info Needed', value: 'INFONEEDED'}
+      {label: 'NEW', value: 'NEW'},
+      {label: 'IN_PROGRESS', value: 'IN_PROGRESS'},
+      {label: 'FIXED', value: 'FIXED'},
+      {label: 'CLOSED', value: 'CLOSED'},
+      {label: 'REJECTED', value: 'REJECTED'},
+      {label: 'INFO_NEEDED', value: 'INFONEEDED'}
     ];
 
     this.statusNew = [
@@ -130,7 +131,6 @@ export class BugsListComponent implements OnInit {
 
 
     this.severity = [
-      {label: 'All Severities', value: ''},
       {label: 'LOW', value: 'LOW'},
       {label: 'MEDIUM', value: 'MEDIUM'},
       {label: 'HIGH', value: 'HIGH'},
@@ -151,35 +151,26 @@ export class BugsListComponent implements OnInit {
     }
   }
 
-  filterBugsAssignedTo(event) {
-    this.filteredBugs = [];
-    let bugs = this.getBugs();
-    for (let i = 0; i < bugs.length; i++) {
-      let bug = this.bugs[i];
-      if (bug.assigned === event.query.toString()) {
-        this.filteredBugs.push(bug);
-      }
-    }
-  }
-
-  getBugs(): Bug[] {
+  getBugs() {
     this.bugs = [];
     this.bugServices.getBugs().subscribe((data) => {
       console.log(data);
+      // @ts-ignore
       this.bugs = data;
+      console.log(this.bugs);
+
 
       for (var bug of this.bugs) {
         var date = new Date(bug.targetDate);
         bug.targetDate = date;
       }
     });
-    return this.bugs;
   }
 
-
   public search() {
-    console.log(this.bugSearchCrit);
-    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data) => {
+    console.log(this.bugSearchCriteria);
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data: {}) => {
+      // @ts-ignore
       this.bugs = data;
 
       for (var bug of this.bugs) {
@@ -190,7 +181,10 @@ export class BugsListComponent implements OnInit {
   }
 
   add() {
-    const modalRef = this.modalService.open(AddBugComponent, {windowClass: "add-pop"});
+    const modalRef = this.modalService.open(AddBugComponent, {windowClass: 'add-pop'});
+    modalRef.result.then(() => {
+      this.search();
+    });
   }
 
   export() {
@@ -252,5 +246,13 @@ export class BugsListComponent implements OnInit {
       bug[props] = b[props];
     }
     return bug;
+  }
+
+  filterBugs(event) {
+    this.userService.getUsers().subscribe((users) => {
+      console.log(users);
+      this.filteredBugs = users.map((u) => u.username).filter((u) => u.toLowerCase().indexOf(event.query.toLowerCase()) == 0);
+      console.log(this.filteredBugs);
+    });
   }
 }

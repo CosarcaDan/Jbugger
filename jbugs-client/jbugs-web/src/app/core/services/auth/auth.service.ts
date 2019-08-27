@@ -1,9 +1,9 @@
 import {Component, Injectable, Input} from '@angular/core';
-import {UserLogin} from "../../models/userLogin";
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {delay} from "q";
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {UserLogin} from '../../models/userLogin';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {delay} from 'q';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +46,7 @@ export class AuthService {
       console.log('Error', error1);
     });
   }
+
   public logout() {
     console.log('un: ', this.getUsername());
     this.http.post<any>('http://localhost:8080/jbugs/services/users/logout', {username: this.getUsername()}).subscribe((data) => {
@@ -55,6 +56,7 @@ export class AuthService {
       console.log('Error', error1.error);
     });
   }
+
   public renew(username: string) {
     this.http.post<any>('http://localhost:8080/jbugs/services/users/renew', {username: username}).subscribe((data) => {
       console.log(data);
@@ -131,8 +133,9 @@ export class AuthService {
       throw new Error('JWT must have 3 parts');
     }
     let decoded = this.base64Decode(parts[1]);
-    if (decoded[decoded.length - 1] != '}')
+    if (decoded[decoded.length - 1] != '}') {
       decoded += '}';
+    }
     if (!decoded) {
       throw new Error('Cannot decode the token');
     }

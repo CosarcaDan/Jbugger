@@ -27,7 +27,7 @@ public class Role implements Serializable {
     @ManyToMany(targetEntity = Permission.class, mappedBy = "roleList",cascade = CascadeType.MERGE)
     private List<Permission> permissionList;
 
-    @ManyToMany(targetEntity = User.class, mappedBy = "roleList", cascade = CascadeType.MERGE)
+    @ManyToMany(targetEntity = User.class, mappedBy = "roles", cascade = CascadeType.MERGE)
     private List<User> userList;
     public Role() {
     }
@@ -66,6 +66,10 @@ public class Role implements Serializable {
     }
     public void addUserSimple(User user) {
         this.userList.add(user);
+    }
+
+    public void deleteUserSimple(User user) {
+        this.userList.remove(user);
     }
 
     public void removePermission(Permission permission) {
