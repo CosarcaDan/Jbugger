@@ -21,7 +21,7 @@ public class RepositoryException extends Exception {
 
     private String errorCode;
 
-    public RepositoryException(String s,String errorCode) {
+    public RepositoryException(String s, String errorCode) {
         super(s);
         this.errorCode = errorCode;
     }

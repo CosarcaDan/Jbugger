@@ -128,18 +128,18 @@
       </div>
     </div>
     <table>
-    <tr *ngFor="let role of roles">
-      <label>
-        <input type="checkbox"
-               name="roles"
-               value="{{role.id}}"
-               id="rolesEdit"
-               (change)="onClicked(role, $event)"
-               [defaultChecked]="role.checked"
-        />
-        {{role.type}}<br>
-      </label>
-    </tr>
+      <tr *ngFor="let role of roles">
+        <label>
+          <input type="checkbox"
+                 name="roles"
+                 value="{{role.id}}"
+                 id="rolesEdit"
+                 (change)="onClicked(role, $event)"
+                 [defaultChecked]="role.checked"
+          />
+          {{role.type}}<br>
+        </label>
+      </tr>
     </table>
 
     <div class="ui-g-12">

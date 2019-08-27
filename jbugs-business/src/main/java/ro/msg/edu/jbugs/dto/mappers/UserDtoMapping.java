@@ -43,11 +43,11 @@ public class UserDtoMapping {
         if (user.getAssignedBugs() != null) {
             bugsAssignedDto = user.getAssignedBugs().stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
         }
-        return new UserDto(user.getId(),user.getFailedLoginAttempt(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getMobileNumber(),user.getPassword(),user.getUsername(),user.getStatus(),bugsCreatedDto,bugsAssignedDto);
+        return new UserDto(user.getId(), user.getFailedLoginAttempt(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getMobileNumber(), user.getPassword(), user.getUsername(), user.getStatus(), bugsCreatedDto, bugsAssignedDto);
     }
 
     public static UserDto userToUserDtoIncomplet(User user){
-        return new UserDto(user.getId(),user.getFailedLoginAttempt(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getMobileNumber(),user.getPassword(),user.getUsername(),user.getStatus());
+        return new UserDto(user.getId(), user.getFailedLoginAttempt(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getMobileNumber(), user.getPassword(), user.getUsername(), user.getStatus());
 
     }
 

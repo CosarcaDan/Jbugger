@@ -3,15 +3,15 @@ import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugService} from '../../../core/services/bug/bug.service';
 import {Bug} from '../../../core/models/bug';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AddBugComponent} from '../add-bug/add-bug.component';
-import {AuthService} from '../../../core/services/auth/auth.service';
 import {Attachment} from "../../../core/models/attachment";
 import {FileService} from "../../../core/services/file/file.service";
 import {User} from "../../../core/models/user";
 import {UserService} from "../../../core/services/user/user.service";
 import {Table} from "primeng/table";
 import {DatePipe} from "@angular/common";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {AddBugComponent} from "../add-bug/add-bug.component";
+import {AuthService} from "../../../core/services/auth/auth.service";
 
 @Component({
   selector: 'app-get-bugs',
@@ -20,6 +20,7 @@ import {DatePipe} from "@angular/common";
   providers: [BugService],
 
 })
+
 export class BugsListComponent implements OnInit {
 
   cols: any[];
@@ -141,13 +142,13 @@ export class BugsListComponent implements OnInit {
       ];
 
 
-      this.severity = [
-        {label: 'All Severities', value: ''},
-        {label: 'LOW', value: 'LOW'},
-        {label: 'MEDIUM', value: 'MEDIUM'},
-        {label: 'HIGH', value: 'HIGH'},
-        {label: 'CRITICAL', value: 'CRITICAL'},
-      ];
+
+    this.severity = [
+      {label: 'LOW', value: 'LOW'},
+      {label: 'MEDIUM', value: 'MEDIUM'},
+      {label: 'HIGH', value: 'HIGH'},
+      {label: 'CRITICAL', value: 'CRITICAL'},
+    ];
 
       this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
         if (filter === undefined || filter === null || (filter.length === 0 || filter === "") && value === null) {
@@ -204,7 +205,7 @@ export class BugsListComponent implements OnInit {
   public search() {
     console.log(this.bugSearchCriteria);
     this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data) => {
-
+      // @ts-ignore
       this.bugs = data;
 
       for (var bug of this.bugs) {
@@ -216,7 +217,9 @@ export class BugsListComponent implements OnInit {
 
   add() {
     const modalRef = this.modalService.open(AddBugComponent, {windowClass: 'add-pop'});
-    modalRef.result.then(()=>{this.search();});
+    modalRef.result.then(() => {
+      this.search();
+    });
   }
 
   export() {

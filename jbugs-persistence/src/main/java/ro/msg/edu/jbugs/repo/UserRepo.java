@@ -4,7 +4,6 @@ import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.Permission;
 import ro.msg.edu.jbugs.entity.Role;
 import ro.msg.edu.jbugs.entity.User;
-import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.exceptions.RepositoryException;
 
 import javax.ejb.EJB;

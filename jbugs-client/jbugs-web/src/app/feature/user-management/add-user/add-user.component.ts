@@ -33,7 +33,7 @@ export class AddUserComponent implements OnInit {
   roles: Array<Role>;
 
   constructor(private router: Router, private userService: UserService,
-              private roleService: RoleService, private fb: FormBuilder,public activeModal: NgbActiveModal) {
+              private roleService: RoleService, private fb: FormBuilder, public activeModal: NgbActiveModal) {
     this.form = fb.group({
       firstname: [null, [Validators.required, AddUserValidators.validateName]],
       lastname: [null, [Validators.required, AddUserValidators.validateName]],
@@ -82,7 +82,9 @@ export class AddUserComponent implements OnInit {
       username: null,
       status: null
     };
-    this.userService.add(userToBeAdded, this.selectedRoles).subscribe(() =>{alert("User added successfully! ")} );
+    this.userService.add(userToBeAdded, this.selectedRoles).subscribe(() => {
+      alert("User added successfully! ")
+    });
     this.activeModal.close();
 
   }
