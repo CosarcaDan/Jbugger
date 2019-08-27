@@ -80,6 +80,8 @@ export class BugsListComponent implements OnInit {
   attachments;
   private currentAttachments: Array<Attachment>;
 
+  private temporatStatus:string;
+
   @ViewChild('dt', undefined)
   dt: Table;
 
@@ -103,6 +105,8 @@ constructor(private router: Router, private bugServices: BugService, public moda
         {field: 'assigned', header: 'Assigned to'},
         // {field: 'button', header: ''}
       ];
+
+
 
       this.status = [
         {label: 'NEW', value: 'NEW'},
@@ -141,7 +145,6 @@ constructor(private router: Router, private bugServices: BugService, public moda
 
 
       this.severity = [
-        {label: 'All Severities', value: ''},
         {label: 'LOW', value: 'LOW'},
         {label: 'MEDIUM', value: 'MEDIUM'},
         {label: 'HIGH', value: 'HIGH'},
@@ -232,6 +235,7 @@ constructor(private router: Router, private bugServices: BugService, public moda
   }
 
   save(){
+  this.bug.status = this.temporatStatus;
     console.log('saved');
     let attachmentToBeAdded: Attachment = {
       id: null,

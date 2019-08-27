@@ -1,5 +1,5 @@
 <p-table [columns]="cols" [value]="users" selectionMode="single" [(selection)]="selectedUser"
-         (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+         (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10" [scrollable]="true" >
 
   <ng-template pTemplate="caption">
     List of Users
@@ -27,7 +27,7 @@
   </ng-template>
 </p-table>
 <p-dialog header="User Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
-          [style]="{width: '400px'}">
+          [style]="{width: '400px'}" >
   <div class="ui-g ui-fluid" *ngIf="user">
     <div class="ui-g-12">
       <div class="ui-g-4">
