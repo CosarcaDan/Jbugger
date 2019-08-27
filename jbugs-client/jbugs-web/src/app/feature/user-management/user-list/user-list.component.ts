@@ -58,12 +58,14 @@ export class UserListComponent implements OnInit {
       console.log(data);
       // @ts-ignore
       this.users = data;
+
     });
   }
 
   lengthCurrentUsersRoles;
   onRowSelect(event) {
     this.newUser = false;
+    this.selectedRoles=[];
     console.log(event.data);
     this.user = JSON.parse(JSON.stringify(event.data));
     this.rolesOfCurrentUser = new Array<Role>();
@@ -146,7 +148,7 @@ export class UserListComponent implements OnInit {
       (data: {}) => {
         alert(data);
         this.getUsers();
-
+        this.getUsers();
       },
       (error2 => {
         console.log('Error', error2);

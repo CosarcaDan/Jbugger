@@ -130,14 +130,8 @@ public class UserRepo {
 
 
     public User updateUser(User newDataUser) throws RepositoryException {
-        User user = findUserByUsername(newDataUser.getUsername());
-        user.setFailedLoginAttempt(newDataUser.getFailedLoginAttempt());
-        user.setFirstName(newDataUser.getFirstName());
-        user.setLastName(newDataUser.getLastName());
-        user.setEmail(newDataUser.getEmail());
-        user.setMobileNumber(newDataUser.getMobileNumber());
-        user.setPassword(newDataUser.getPassword());
-        user.setStatus(newDataUser.getStatus());
+        User user = entityManager.merge(newDataUser);
+        entityManager.flush();
         return user;
 
     }
