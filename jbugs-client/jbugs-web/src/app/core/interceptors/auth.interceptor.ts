@@ -10,8 +10,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
   
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.url == 'http://localhost:8080/jbugs/services/roles/add-permissions' ||
-      req.url == 'http://localhost:8080/jbugs/services/roles/remove-permissions' ||
+    if (
       req.url == 'http://localhost:8080/jbugs/services/bugs/add' ||
       req.url.match('http://localhost:8080/jbugs/services/bugs/.*/edit')||
       req.url == 'http://localhost:8080/jbugs/services/user/roles'
@@ -28,7 +27,9 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       });
     } else {
-      if (req.url == 'http://localhost:8080/jbugs/services/files/upload' ||
+      if (req.url == 'http://localhost:8080/jbugs/services/roles/add-permissions' ||
+        req.url == 'http://localhost:8080/jbugs/services/roles/remove-permissions' ||
+        req.url == 'http://localhost:8080/jbugs/services/files/upload' ||
           req.url.match('http://localhost:8080/jbugs/services/users/.*/edit')||
           req.url == 'http://localhost:8080/jbugs/services/users/add'
       ) {
