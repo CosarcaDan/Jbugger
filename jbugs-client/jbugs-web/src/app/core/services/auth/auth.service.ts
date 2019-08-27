@@ -70,7 +70,7 @@ export class AuthService {
   public getPermissions() {
     console.log('DING!')
     this.http.post<any>('http://localhost:8080/jbugs/services/users/permissions', {username: this.getUsername()}).subscribe((data) => {
-      sessionStorage.setItem('permissions', JSON.stringify(data.map(p => p.type)));
+      sessionStorage.setItem('permissionsNotInRole', JSON.stringify(data.map(p => p.type)));
       this.cachedPermissions = data.map(p => p.type);
       this.requestSent = false;
       return data.map(p => p.type);
@@ -84,7 +84,7 @@ export class AuthService {
       this.getPermissions();
       this.lastPermissionUpdate = Date.now();
     }
-    return JSON.parse(sessionStorage.getItem('permissions')).filter(p => p == permission).length != 0;
+    return JSON.parse(sessionStorage.getItem('permissionsNotInRole')).filter(p => p == permission).length != 0;
   }
 
 

@@ -19,7 +19,7 @@
             #permission>
       <option *ngFor="let opt of permissions" [value]="opt.id">{{opt.type}}</option>
     </select>
-    <!--        <p-multiSelect [options]="permissions" formControlName="permission" [(ngModel)]="selectedPermissions" optionLabel="type"></p-multiSelect>-->
+    <!--        <p-multiSelect [options]="permissionsNotInRole" formControlName="permission" [(ngModel)]="selectedPermissions" optionLabel="type"></p-multiSelect>-->
   </div>
 
   <!--      strong accept, accept, weak accept, borderline paper, weak reject, reject and strong reject-->

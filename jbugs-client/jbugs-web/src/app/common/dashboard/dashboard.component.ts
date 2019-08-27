@@ -36,18 +36,7 @@ export class DashboardComponent implements OnInit {
         label: 'Permission management',
         icon: 'pi pi-fw pi-key',
         visible: this.authService.hasPermission("PERMISSION_MANAGEMENT"),
-        items: [
-          {
-            label: 'Add permission',
-            icon: 'pi pi-fw pi-plus',
-            command: () => this.goto('dashboard/permissions/add')
-          },
-          {
-            label: 'Delete permission',
-            icon: 'pi pi-fw pi-minus',
-            command: () => this.goto('dashboard/permissions/remove')
-          }
-        ]
+        command: () => this.goto('dashboard/permissions')
       }
     ];
 
