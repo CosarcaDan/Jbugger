@@ -10,6 +10,7 @@ import {AuthService} from "../../core/services/auth/auth.service";
 })
 export class DashboardComponent implements OnInit {
 
+
   items: MenuItem[];
   display;
   languages: any[];
@@ -64,4 +65,5 @@ export class DashboardComponent implements OnInit {
   logout() {
     this.authService.logout();
   }
+
 }

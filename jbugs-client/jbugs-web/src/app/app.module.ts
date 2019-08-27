@@ -18,6 +18,7 @@ import {
   DialogModule,
   FileUploadModule,
   InputTextModule,
+  ListboxModule,
   MultiSelectModule,
   PaginatorModule,
   SelectButtonModule,
@@ -75,6 +76,7 @@ import {NgbdWelcomeModalContent} from './core/services/auth/auth.service';
     AngularFontAwesomeModule,
     NgxFlagIconCssModule,
     AutoCompleteModule,
+    ListboxModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
