@@ -8,8 +8,8 @@ import {AddBugComponent} from '../add-bug/add-bug.component';
 import {AuthService} from '../../../core/services/auth/auth.service';
 import {Attachment} from '../../../core/models/attachment';
 import {FileService} from '../../../core/services/file/file.service';
-import {UserService} from '../../../core/services/user/user.service';
 import {User} from '../../../core/models/user';
+import {UserService} from '../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-get-bugs',
@@ -44,7 +44,8 @@ export class BugsListComponent implements OnInit {
 
   allUsers: Array<User>;
 
-  bugSearchCrit: Bug = {
+
+  bugSearchCriteria: Bug = {
     id: 0,
     title: '',
     description: '',
@@ -75,9 +76,9 @@ export class BugsListComponent implements OnInit {
   private uploadedFileName: string;
   private myAtt;
   attachments;
+  private currentAttachments: Array<Attachment>;
 
-  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService,
-              private userService: UserService) {
+  constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
 
   }
 
@@ -170,8 +171,8 @@ export class BugsListComponent implements OnInit {
 
 
   public search() {
-    console.log(this.bugSearchCrit);
-    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCrit).subscribe((data: {}) => {
+    console.log(this.bugSearchCriteria);
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data: {}) => {
       // @ts-ignore
       this.bugs = data;
 
@@ -215,12 +216,12 @@ export class BugsListComponent implements OnInit {
       id: null,
       attContent: this.uploadedFileName,
     };
-    if (this.attachments != null) {
+    if (this.attachments != null)
       this.fileUpload();
-    }
     this.bugServices.saveEditBug(this.bug, attachmentToBeAdded).subscribe(
       (data) => {
         alert('Edit Bugs Complete');
+        this.search();
       },
       (error2 => {
         console.log('Error', error2);
@@ -229,7 +230,6 @@ export class BugsListComponent implements OnInit {
     );
 
     this.displayDialog = false;
-    this.search();
   }
 
   private prepareSave(): FormData {
@@ -248,16 +248,21 @@ export class BugsListComponent implements OnInit {
     this.attachments = null;
     this.myAtt = null;
     this.uploadedFileName = '';
-    if (this.fileInput.nativeElement != null) {
+    if (this.fileInput.nativeElement != null)
       this.fileInput.nativeElement.value = '';
-    }
   }
 
   onRowSelect(event) {
-    this.clearFile();
-    this.newBug = false;
-    this.bug = this.cloneBug(event.data);
-    this.displayDialog = true;
+    this.getAttachments(event.data).toPromise().then(
+      res => {
+        this.currentAttachments = res;
+        this.clearFile();
+        this.newBug = false;
+        this.bug = this.cloneBug(event.data);
+        this.displayDialog = true;
+      }
+    );
+
   }
 
   private cloneBug(b: Bug): Bug {
@@ -286,4 +291,9 @@ export class BugsListComponent implements OnInit {
       this.myAtt = files;
     }
   }
+
+  getAttachments(bug: Bug) {
+    return this.bugServices.getAttachments(bug);
+  }
+
 }

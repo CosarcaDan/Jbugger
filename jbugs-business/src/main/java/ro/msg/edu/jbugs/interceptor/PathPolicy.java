@@ -35,8 +35,12 @@ public class PathPolicy {
         pathPermissions.put("^bugs", new ArrayList<>());
 
         permissions.clear();
-        permissions.add("BUG_MANAGEMENT");
+        permissions.add("BUG_EXPORT_PDF");
         pathPermissions.put("^bugs/getPDF", new ArrayList<>());
+
+        permissions.clear();
+        permissions.add("BUG_MANAGEMENT");
+        pathPermissions.put("^bugs/attachments", new ArrayList<>());
 
         permissions.clear();
         permissions.add("BUG_MANAGEMENT");

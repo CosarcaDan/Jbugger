@@ -117,6 +117,7 @@ export class UserListComponent implements OnInit {
     this.userService.activate(this.user).subscribe(
       (data: {}) => {
         alert(data);
+        this.getUses();
       },
       (error2 => {
         console.log('Error', error2);
@@ -130,6 +131,7 @@ export class UserListComponent implements OnInit {
     this.userService.deactivate(this.user).subscribe(
       (data: {}) => {
         alert(data);
+        this.getUses();
       },
       (error2 => {
         alert('User Deactivate failed :' + error2.error.detailMessage);
@@ -143,6 +145,8 @@ export class UserListComponent implements OnInit {
     this.userService.edit(this.user, this.selectedRoles).subscribe(
       (data: {}) => {
         alert(data);
+        this.getUses();
+
       },
       (error2 => {
         console.log('Error', error2);

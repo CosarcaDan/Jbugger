@@ -144,10 +144,13 @@
 
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="statusEdit">Status</label>
+        <label>Status</label>
       </div>
-      <div class="ui-g-8">
-        <input pInputText id="statusEdit" [(ngModel)]="user.status" disabled/>
+      <div class="ui-g-8" *ngIf="user.status">
+        <input pInputText id="statusEditActive" value="active" disabled/>
+      </div>
+      <div class="ui-g-8" *ngIf="!user.status">
+        <input pInputText id="statusEditInactive" value="inactive" disabled/>
       </div>
     </div>
   </div>
