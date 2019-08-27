@@ -88,6 +88,12 @@ public class BugRESTController {
         }
     }
 
+    @POST
+    @Path("attachments")
+    public Response getBugAttachments(BugDto bugDto){
+        return Response.status(200).entity(bugService.getAttachments(bugDto)).build();
+    }
+
 
     @POST
     @Path("/add")

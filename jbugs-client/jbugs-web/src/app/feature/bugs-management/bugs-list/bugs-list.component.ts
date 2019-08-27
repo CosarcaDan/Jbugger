@@ -73,6 +73,7 @@ export class BugsListComponent implements OnInit {
   private uploadedFileName: string;
   private myAtt;
   attachments;
+  private currentAttachments: Array<Attachment>;
 
   constructor(private router: Router, private bugServices: BugServiceService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService) {
 
@@ -235,6 +236,7 @@ export class BugsListComponent implements OnInit {
   }
 
   onRowSelect(event) {
+    this.getAttachments(event.data);
     this.clearFile();
     this.newBug = false;
     this.bug = this.cloneBug(event.data);
@@ -267,4 +269,10 @@ export class BugsListComponent implements OnInit {
       this.myAtt = files;
     }
   }
+
+  getAttachments(bug:Bug){
+    this.bugServices.getAttachments(bug).subscribe(res=>
+    this.currentAttachments=res);
+  }
+
 }
