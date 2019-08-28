@@ -29,9 +29,8 @@ export class BugService {
   constructor(private http: HttpClient) {
   }
 
-  public getBugs(): Observable<Bug> {
-    // @ts-ignore
-    return this.http.get<Bug>(this.baseUrl, this.httpOptionsWithoutAuth);
+  public getBugs(): Observable<Array<Bug>> {
+    return this.http.get<Array<Bug>>(this.baseUrl, this.httpOptionsWithoutAuth);
   }
 
   private extractData(res: Response) {
@@ -39,8 +38,8 @@ export class BugService {
     return body || {};
   }
 
-  public getBugsAfterSearchCriteria(bugCriteria: Bug) {
-    return this.http.post<any>(this.baseUrl, bugCriteria);
+  public getBugsAfterSearchCriteria(bugCriteria: Bug): Observable<Array<Bug>> {
+    return this.http.post<Array<Bug>>(this.baseUrl, bugCriteria);
   }
   public deleteBugAfterId(id: number) {
     return this.http.delete<any>(this.baseUrl + '/' + id);

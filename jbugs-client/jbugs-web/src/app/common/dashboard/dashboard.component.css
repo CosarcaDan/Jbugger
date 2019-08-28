@@ -4,3 +4,8 @@
   right: 13px;
   z-index: 5;
 }
+
+label {
+  font-weight: bold;
+  text-align: left;
+}

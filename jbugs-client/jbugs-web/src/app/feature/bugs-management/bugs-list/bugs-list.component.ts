@@ -13,6 +13,7 @@ import {UserService} from '../../../core/services/user/user.service';
 import {Table} from 'primeng/table';
 import {DatePipe} from '@angular/common';
 
+
 @Component({
   selector: 'app-get-bugs',
   templateUrl: './bugs-list.component.html',
@@ -21,6 +22,7 @@ import {DatePipe} from '@angular/common';
 
 })
 export class BugsListComponent implements OnInit {
+
   cols: any[];
 
   status: SelectItem[];
@@ -91,7 +93,7 @@ export class BugsListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUsers();
+//setInterval(getNotifications,1000);    this.getUsers();
     this.cols = [
       {field: 'title', header: 'Title'},
       {field: 'description', header: 'Description'},
@@ -162,12 +164,10 @@ export class BugsListComponent implements OnInit {
     }
   }
 
-
   getUsers() {
     this.allUsers = new Array<User>();
     this.userService.getUsers().subscribe((data) => {
       console.log('data:', data);
-      // @ts-ignore
       for (let dataKey of data) {
         this.allUsers.push(dataKey);
       }
@@ -179,7 +179,6 @@ export class BugsListComponent implements OnInit {
     this.bugs = [];
     this.bugServices.getBugs().subscribe((data) => {
       console.log(data);
-      // @ts-ignore
       this.bugs = data;
       console.log(this.bugs);
 
@@ -193,8 +192,7 @@ export class BugsListComponent implements OnInit {
 
   public search() {
     console.log(this.bugSearchCriteria);
-    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data: {}) => {
-      // @ts-ignore
+    this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data) => {
       this.bugs = data;
 
       for (var bug of this.bugs) {
@@ -232,6 +230,7 @@ export class BugsListComponent implements OnInit {
   }
 
   save() {
+    this.bug.status = this.temporatStatus;
     console.log('saved');
     let attachmentToBeAdded: Attachment = {
       id: null,

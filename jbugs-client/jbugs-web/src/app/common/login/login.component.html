@@ -39,14 +39,18 @@
       </div>
     </div>
 
+    <!--    Capcha-->
+    <div class="form-group"
+         style="transform:scale(1.19);-webkit-transform:scale(1.19);transform-origin:0 0;-webkit-transform-origin:0 0;">
+      <re-captcha (resolved)="resolvedCaptcha($event)" siteKey="6LckK7UUAAAAABbnbGDbu21E3QN_DycuIX2ZcnpF"></re-captcha>
+    </div>
+
     <button class="btn btn-outline-light "
             type="button"
             (click)="login()"
-
             [disabled]="form.invalid">Login
     </button>
   </form>
 </div>
 
 
-<!--<button class="btn btn-primary" type="button" (click)="getUseres()">Greet</button>-->

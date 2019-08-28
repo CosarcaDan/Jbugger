@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   backendError: BackendError;
   username: string;
   password: string;
+  recaptcha;
 
 
   login() {
@@ -33,7 +34,8 @@ export class LoginComponent implements OnInit {
   }
 
 
-  constructor(private router: Router, private userService: UserService, private fb: FormBuilder, private authService: AuthService) {
+  constructor(private router: Router, private userService: UserService, private fb: FormBuilder,
+              private authService: AuthService) {
     this.form = fb.group({
       username: [null, [Validators.required, LoginValidators.cannotContainSpace,
         LoginValidators.cannotContainUpperCaseLetter]],
@@ -41,7 +43,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
-
+  resolvedCaptcha(captchaResponse) {
+    console.log('Captcha resolved with response ', captchaResponse);
+  }
+  
   ngOnInit() {
   }
 
