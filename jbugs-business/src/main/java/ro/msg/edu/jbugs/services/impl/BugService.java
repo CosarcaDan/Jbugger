@@ -114,6 +114,7 @@ public class BugService {
     }
 
     public BugDto updateStatusBug(BugDto bugDto) throws BusinessException {
+        //todo notification BUG_STATUS_UPDATED: creator assigned
         Bug bug = bugRepo.findBug(bugDto.getId());
         Bug.Status newStatus = Bug.Status.valueOf(bugDto.getStatus());
         if (bug.getStatus().equals(Bug.Status.NEW)) {
@@ -153,6 +154,7 @@ public class BugService {
         if (!bug.getStatus().equals(Bug.Status.FIXED) && !(bug.getStatus().equals(Bug.Status.REJECTED)))
             throw new BusinessException("Bug has to to FIXED or REJECTED in order to be CLOSED", "msg - 011");
         bug.setStatus(Bug.Status.CLOSED);
+        //toDo notification BUG_CLOSED r:creator assigned
         return BugDtoMapping.bugToBugDtoComplet(bug);
     }
 
@@ -171,6 +173,8 @@ public class BugService {
             bug.setAssigned(assigned);
             if (!bug.getStatus().equals(Bug.Status.valueOf(bugDto.getStatus())))
                 updateStatusBug(bugDto);
+
+            //todo notification BUG_UPDATED r: bugCreator, AssignedTo
             return BugDtoMapping.bugToBugDtoComplet(bug); //todo see if status has been schanged
         } catch (RepositoryException e) {
             throw new BusinessException(e);

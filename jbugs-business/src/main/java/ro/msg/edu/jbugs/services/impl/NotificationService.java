@@ -1,5 +1,8 @@
 package ro.msg.edu.jbugs.services.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import ro.msg.edu.jbugs.entity.User;
 import ro.msg.edu.jbugs.repo.NotificationRepo;
 import ro.msg.edu.jbugs.dto.NotificationDto;
 import ro.msg.edu.jbugs.dto.mappers.NotificationDtoMapping;
@@ -13,6 +16,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Document me.
@@ -26,11 +32,15 @@ public class NotificationService {
 
     @EJB
     private NotificationRepo notificationRepo;
+    private Gson gson;
 
-    public void addNotification(NotificationDto notificationDto) throws IOException {
-        Notification notification = NotificationDtoMapping.notificationDtoTonotification(notificationDto);
+    public void addNotificationNewUser(User receiver) {
+        gson = new GsonBuilder().create();
+        //todo exclude password
+        String welcomeMessage = gson.toJson(receiver);
+        NotificationDto notificationDto = new NotificationDto(0,new Timestamp(System.currentTimeMillis()),welcomeMessage,"WELCOME_NEW_USER","",false,receiver.getUsername());
+        Notification notification = NotificationDtoMapping.notificationDtoTonotification(notificationDto, receiver);
         notificationRepo.addNotification(notification);
-        sendNotification("hello new User: " + notification.getUser().getUsername());
 
     }
 
@@ -40,26 +50,10 @@ public class NotificationService {
         return notificationDto;
     }
 
-    //todo what?
-    private void sendNotification(String text) throws IOException {
-        //maby try with resource? or finally
-        try {
-            Context ic = new InitialContext();
-            ConnectionFactory cf = (ConnectionFactory) ic.lookup("java:comp/DefaultJMSConnectionFactory");
-            Queue queue = (Queue) ic.lookup("tutorialQueue");
-
-            Connection connection = cf.createConnection();
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            MessageProducer publisher = session.createProducer(queue);
-            connection.start();
-
-            TextMessage message = session.createTextMessage(text);
-            publisher.send(message);
-
-        } catch (NamingException | JMSException e) {
-            System.out.println("Error while trying to send <" + text + "> message: " + e.getMessage());
-        }
-
-        System.out.println("Message sent: " + text);
+    public List <NotificationDto> findAllNotificationsByUsername(String username){
+        List <Notification> notifications = notificationRepo.findAllNotificationsByUsername(username);
+        return notifications.stream().map(NotificationDtoMapping::notificationTonotificationDto).collect(Collectors.toList());
     }
+
+
 }

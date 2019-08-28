@@ -25,7 +25,7 @@ export class AuthService {
     // }
     return 'Bearer ' + token;
   }
-  getUsername() {
+  public getUsername() {
     return this.decodeToken(sessionStorage.getItem('token')).sub;
   }
   public login(user: UserLogin) {

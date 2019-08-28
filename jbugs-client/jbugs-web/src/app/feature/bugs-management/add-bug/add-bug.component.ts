@@ -70,7 +70,6 @@ export class AddBugComponent implements OnInit {
     this.allUsers = new Array<User>();
     this.userService.getUsers().subscribe((data) => {
       console.log('data:', data);
-      // @ts-ignore
       for (let dataKey of data) {
         this.allUsers.push(dataKey);
       }

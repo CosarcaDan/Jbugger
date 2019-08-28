@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.services.impl;
 
 import com.google.common.hash.Hashing;
 import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.NotificationDto;
 import ro.msg.edu.jbugs.dto.RoleDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
@@ -57,11 +58,7 @@ public class UserService {
         userDto.setStatus(true);
         User user = UserDtoMapping.userDtoToUser(userDto);
         User newUser = userRepo.addUser(user);
-        //todo userDto without password
-        //UserDto newUserDto = UserDtoMapping.userToUserDtoIncomplet(newUser);
-        //todo notification type ENUM
-        //NotificationDto notificationDto = new NotificationDto(0, new Date(), "Welcome new User", "WelcomeNewUser", "noUrl", newUserDto);
-        //notificationService.addNotification(notificationDto);
+        notificationService.addNotificationNewUser(user);
         return newUser;
     }
 
@@ -215,6 +212,7 @@ public class UserService {
                 }
             }
             userRepo.setStatusFalse(user);
+            //todo notification USER_DELETED r:UserManager
             return UserDtoMapping.userToUserDtoIncomplet(user);
         } catch (RepositoryException e) {
             throw new BusinessException(e);
@@ -239,6 +237,7 @@ public class UserService {
             Validator.validateUser(userDto);
             User newDataUser = UserDtoMapping.userDtoToUser(userDto);
             User response = userRepo.updateUser(newDataUser);
+            //todo notification user_update r:updated user and the initiator
             return UserDtoMapping.userToUserDtoIncomplet(response);
         } catch (RepositoryException e) {
             throw new BusinessException(e);
@@ -280,5 +279,9 @@ public class UserService {
         } catch (RepositoryException e) {
             throw new BusinessException(e);
         }
+    }
+
+    public List<NotificationDto> findAllNotificationByUsername(String username){
+        return notificationService.findAllNotificationsByUsername(username);
     }
 }

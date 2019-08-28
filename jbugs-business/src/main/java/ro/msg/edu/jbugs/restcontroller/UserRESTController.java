@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import ro.msg.edu.jbugs.MyToken;
 import ro.msg.edu.jbugs.TokenManager;
+import ro.msg.edu.jbugs.dto.NotificationDto;
 import ro.msg.edu.jbugs.dto.RoleDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.PermissionDtoMapping;
@@ -213,4 +214,22 @@ UserRESTController {
             return Response.status(500).entity(error).build();
         }
     }
+
+    @POST
+    @Path("/notifications")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findAllNotificationByUsername(UserDto userDto) {
+        Gson gson = new GsonBuilder().create();
+        try {
+            List<NotificationDto> notificationDtos = userService.findAllNotificationByUsername(userDto.getUsername());
+            String response = gson.toJson(notificationDtos);
+            return Response.status(200).entity(response).build();
+        } catch (Exception e) {
+            String error = gson.toJson(e);
+            return Response.status(500).entity(error).build();
+        }
+    }
+
+
 }

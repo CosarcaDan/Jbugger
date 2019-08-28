@@ -12,21 +12,19 @@ import ro.msg.edu.jbugs.entity.User;
  * @since 19.1.2
  */
 public class NotificationDtoMapping {
-    public static Notification notificationDtoTonotification(NotificationDto notificationDto) {
+    public static Notification notificationDtoTonotification(NotificationDto notificationDto, User receiver) {
         Notification notification = new Notification();
         notification.setId(notificationDto.getId());
         notification.setDate(notificationDto.getDate());
         notification.setMessage(notificationDto.getMessage());
         notification.setType(Notification.NotificationType.valueOf(notificationDto.getType()));
         notification.setUrl(notificationDto.getUrl());
-        User user = UserDtoMapping.userDtoToUser(notificationDto.getUserDto());
-        notification.setUser(user);
+        notification.setUser(receiver);
         return notification;
     }
 
     public static NotificationDto notificationTonotificationDto(Notification notification) {
-        UserDto userDto = UserDtoMapping.userToUserDtoIncomplet(notification.getUser());
-        NotificationDto notificationDto = new NotificationDto(notification.getId(),notification.getDate(),notification.getMessage(),notification.getType().toString(),notification.getUrl(),userDto);
+        NotificationDto notificationDto = new NotificationDto(notification.getId(),notification.getDate(),notification.getMessage(),notification.getType().toString(),notification.getUrl(),notification.isSeen(),notification.getUser().getUsername());
         return notificationDto;
     }
 }

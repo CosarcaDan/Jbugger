@@ -1,15 +1,13 @@
 package ro.msg.edu.jbugs.dto;
 
-import ro.msg.edu.jbugs.dto.UserDto;
+import java.lang.String;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Document me.
  *
- * @author msg systems AG; UserDto Name.
+ * @author msg systems AG; String Name.
  * @since 19.1.2
  */
 public class NotificationDto {
@@ -18,16 +16,20 @@ public class NotificationDto {
     private String message;
     private String type;
     private String url;
-    private UserDto userDto;
+    private boolean isSeen;
+    private String receiver;
 
-    public NotificationDto(Integer id, Timestamp date, String message, String type, String url, UserDto userDto) {
+
+    public NotificationDto(Integer id, Timestamp date, String message, String type, String url, boolean isSeen, String receiver) {
         this.id = id;
         this.date = date;
         this.message = message;
         this.type = type;
         this.url = url;
-        this.userDto = userDto;
+        this.isSeen = isSeen;
+        this.receiver = receiver;
     }
+
 
     public Integer getId() {
         return id;
@@ -69,11 +71,19 @@ public class NotificationDto {
         this.url = url;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
+    public boolean isSeen() {
+        return isSeen;
     }
 
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
+    public void setSeen(boolean seen) {
+        isSeen = seen;
+    }
+
+    public String getUsername() {
+        return receiver;
+    }
+
+    public void setUsername(String receiver) {
+        this.receiver = receiver;
     }
 }

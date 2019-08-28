@@ -13,11 +13,14 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "notifications")
-@NamedQueries(
-        @NamedQuery(name = Notification.DELETE_NOTIFICATION_AFTER_USER_ID, query = "delete from Notification n where n.user = :user ")
+@NamedQueries({
+        @NamedQuery(name = Notification.DELETE_NOTIFICATION_AFTER_USER_ID, query = "delete from Notification n where n.user = :user "),
+        @NamedQuery(name = Notification.FIND_ALL_NOTIFICATION_FOR_AN_USER_BY_USERNAME, query = "Select n from Notification n where n.user.username = :username")
+}
 )
 public class Notification implements Serializable {
     public static final String DELETE_NOTIFICATION_AFTER_USER_ID = "deleteNotificationAfterUserId";
+    public static final String FIND_ALL_NOTIFICATION_FOR_AN_USER_BY_USERNAME = "findAllNotificationForAnUserByUsername";
 
     //Todo query for all notificatoins belonging to a user after username
 
@@ -39,9 +42,21 @@ public class Notification implements Serializable {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "is_seen")
+    private boolean isSeen;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Notification(Timestamp date, String message, NotificationType type, String url, boolean isSeen, User user) {
+        this.date = date;
+        this.message = message;
+        this.type = type;
+        this.url = url;
+        this.isSeen = isSeen;
+        this.user = user;
+    }
 
     public Notification() {
     }
@@ -100,6 +115,14 @@ public class Notification implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isSeen() {
+        return isSeen;
+    }
+
+    public void setSeen(boolean seen) {
+        isSeen = seen;
     }
 
     public enum NotificationType{
