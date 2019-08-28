@@ -73,6 +73,18 @@
       "value": "User added successfully!"
     },
     {
+      "label":"user-add-failed",
+      "value": "User adding failed: "
+    },
+    {
+      "label":"bug-add-successful",
+      "value": "Bug added successfully!"
+    },
+    {
+      "label":"bug-add-failed",
+      "value": "Bug adding failed: "
+    },
+    {
       "label":"save",
       "value": "Save"
     },
@@ -243,7 +255,36 @@
     {
       "label":"notifications",
       "value": "Notifications"
-    },{
+    },
+    {
+      "label":"new-password",
+      "value": "New Password"
+    },
+    {
+      "label":"re-password",
+      "value": "Reenter new Password"
+    },
+    {
+      "label":"password-not-equal",
+      "value": "The two passwords don't match, please retry!"
+    },
+    {
+      "label":"password-successful",
+      "value": "Password changed successfully!"
+    },
+    {
+      "label":"password-edit-failed",
+      "value": "Password changing failed: "
+    },
+    {
+      "label":"pers-data-edit-successful",
+      "value": "Personal data edited successfully!"
+    },
+    {
+      "label":"pers-data-edit-failed",
+      "value": "Personal data edit failed:"
+    },
+    {
       "label":"add",
       "value": "Add"
     },

@@ -13,6 +13,7 @@ import {UserService} from '../../../core/services/user/user.service';
 import {Table} from 'primeng/table';
 import {DatePipe} from '@angular/common';
 import {LanguageService} from "../../../core/services/language/language.service";
+import {MessageComponent} from "../../../core/message/message.component";
 
 
 @Component({
@@ -232,11 +233,13 @@ export class BugsListComponent implements OnInit {
     console.log('deleted' + id);
     this.bugServices.deleteBugAfterId(id).subscribe(
       (data) => {
-        alert(this.languageService.getText('bug-close-failed'));
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('bug-close-failed');
       },
       (error1 => {
         console.log('Error', error1);
-        alert(this.languageService.getText('bug-close-failed') + error1.error.detailMessage);
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('bug-close-failed') + error1.error.detailMessage;
       }));
     this.displayDialog = false;
     this.search();
@@ -254,12 +257,14 @@ export class BugsListComponent implements OnInit {
     console.log('BUG TO BE SAVED', this.bug)
     this.bugServices.saveEditBug(this.bug, attachmentToBeAdded).subscribe(
       (data) => {
-        alert(this.languageService.getText('bug-edit-successful'));
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('bug-edit-successful');
         this.search();
       },
       (error2 => {
         console.log('Error', error2);
-        alert(this.languageService.getText('bug-edit-failed') + error2.error.detailMessage);
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('bug-edit-failed') + error2.error.detailMessage;
       })
     );
 
@@ -324,7 +329,8 @@ export class BugsListComponent implements OnInit {
   onFileChange(event) {
     let fileSize = event.target.files[0].size / 1024 / 1024; // in MB
     if (fileSize > 25) {
-      alert(this.languageService.getText('file-size'));
+      const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('file-size');
     }
     if (event.target.files.length > 0) {
       let files = event.target.files;

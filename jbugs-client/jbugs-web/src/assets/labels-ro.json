@@ -70,7 +70,19 @@
     },
     {
       "label":"user-add-successful",
-      "value": "Utilizator adăugat cu suces!!"
+      "value": "Utilizator adăugat cu suces!"
+    },
+    {
+      "label":"user-add-failed",
+      "value": "Adăugarea de utilizator a eșuat: "
+    },
+    {
+      "label":"bug-add-successful",
+      "value": "Bug adăugat cu succes!"
+    },
+    {
+      "label":"bug-add-failed",
+      "value": "Adăugarea de bug a eșuat: "
     },
     {
       "label":"save",
@@ -114,7 +126,7 @@
     },
     {
       "label":"user-edit-failed",
-      "value": "Utilizator needitat:"
+      "value": "Editarea de utilizator a eșuat:"
     },
     {
       "label":"role-select",
@@ -243,7 +255,36 @@
     {
       "label":"notifications",
       "value": "Notificări"
-    },{
+    },
+    {
+      "label":"new-password",
+      "value": "Parolă nouă"
+    },
+    {
+      "label":"re-password",
+      "value": "Reintroduce parola nouă"
+    },
+    {
+      "label":"password-not-equal",
+      "value": "Parolele nu sunt la fel, înceracă din nou!"
+    },
+    {
+      "label":"password-successful",
+      "value": "Parolă schimbată cu succes!"
+    },
+    {
+      "label":"password-edit-failed",
+      "value": "Nu sa schimbat parola: "
+    },
+    {
+      "label":"pers-data-edit-successful",
+      "value": "Datele personale au fost modificate cu succes!"
+    },
+    {
+      "label":"pers-data-edit-failed",
+      "value": "Datele personale nu au fost modificate:"
+    },
+    {
       "label":"add",
       "value": "Adăugare"
     },

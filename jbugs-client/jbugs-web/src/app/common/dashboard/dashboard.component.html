@@ -1,6 +1,6 @@
 <p-menubar [model]="items">
   <div>
-    <label>{{languageService.getText('greet')}}, {{authService.getUsername()}}!&#10240;&#10240;</label>
+    <label>{{languageService.getText('greet')}}, </label><a [routerLink]="['profile']">{{authService.getUsername()}}</a><label>!&#10240;&#10240;</label>
     <p-selectButton [options]="languages" [(ngModel)]="selectedLanguage" (click)="setLanguage(selectedLanguage)"></p-selectButton>
     <button pButton (click)="logout()" label="{{languageService.getText('logout')}}" icon="fa fa-sign-out" style="margin-left:.25em"></button>
     <!--  npm install ngx-flag-icon-css flag-icon-css-->
