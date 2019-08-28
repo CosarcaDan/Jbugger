@@ -47,6 +47,8 @@ export class BugsListComponent implements OnInit {
 
   allUsers: Array<User>;
 
+  mappedUsers: SelectItem[];
+
 
   bugSearchCriteria: Bug = {
     id: 0,
@@ -179,6 +181,8 @@ export class BugsListComponent implements OnInit {
       for (let dataKey of data) {
         this.allUsers.push(dataKey);
       }
+      this.mappedUsers= this.allUsers.map(user=>{ return {label: user.firstName+' '+user.lastName+' ('+user.username+')' , value: user.username}}
+      )
     });
   }
 
@@ -238,14 +242,15 @@ export class BugsListComponent implements OnInit {
   }
 
   save() {
+    console.log(this.temporatStatus)
     this.bug.status = this.temporatStatus;
-    console.log('saved');
     let attachmentToBeAdded: Attachment = {
       id: null,
       attContent: this.uploadedFileName,
     };
     if (this.attachments != null)
       this.fileUpload();
+    console.log('BUG TO BE SAVED', this.bug)
     this.bugServices.saveEditBug(this.bug, attachmentToBeAdded).subscribe(
       (data) => {
         alert(this.languageService.getText('bug-edit-successful'));
@@ -289,6 +294,7 @@ export class BugsListComponent implements OnInit {
         this.clearFile();
         this.newBug = false;
         this.bug = this.cloneBug(event.data);
+        this.temporatStatus = this.bug.status;
         this.displayDialog = true;
       }
     )

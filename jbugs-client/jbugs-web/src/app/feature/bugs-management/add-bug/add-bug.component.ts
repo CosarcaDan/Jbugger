@@ -26,8 +26,6 @@ export class AddBugComponent implements OnInit {
   uploadedFileName: string;
   myAtt;
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
-
-  //bug attributes
   title: string;
   description: string;
   version: string;
@@ -38,7 +36,7 @@ export class AddBugComponent implements OnInit {
   created: string;
   assigned: string;
 
-  severitys = [
+  severities = [
     {type: 'LOW'},
     {type: 'MEDIUM'},
     {type: 'HIGH'},

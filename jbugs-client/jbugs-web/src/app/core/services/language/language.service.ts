@@ -6,33 +6,35 @@ import {HttpClient} from "@angular/common/http";
 })
 export class LanguageService implements OnInit{
 
-  private labels: {label,ro,en}[];
+  private labels: {label,value}[];
+  private languageLoaded:string=null;
 
   constructor(private http: HttpClient) {
     this.ngOnInit();
   }
 
   ngOnInit(): void {
-      this.http.get('./assets/labels.json').subscribe(
-        (res:{labels:{label,ro,en}[]})=> {
-          console.log('res',res)
-          this.labels=res.labels
+      this.http.get('./assets/labels-'+sessionStorage.getItem('language')+'.json').subscribe(
+        (res:{labels:{label,value}[]})=> {
+          console.log('res',res);
+          this.labels=res.labels;
+          this.languageLoaded=sessionStorage.getItem('language')
         }
       )
   }
 
   getText(label:string){
-    let language = sessionStorage.getItem('language');
-    // console.log(this.labels);
-    let reslabel = this.labels.find(l=>l.label==label);
-    if(language=='en') {
-      console.log('label: ', reslabel.en);
-      return reslabel.en;
-    }
-    if(language == 'ro') {
-      console.log('label: ', reslabel.ro);
-      return reslabel.ro;
-    }
+    if(this.languageLoaded==null || this.languageLoaded != sessionStorage.getItem('language'))
+      this.ngOnInit();
+    return this.labels.find(l=>l.label==label).value;
+    // if(language=='en') {
+    //   console.log('label: ', reslabel.en);
+    //   return reslabel.en;
+    // }
+    // if(language == 'ro') {
+    //   console.log('label: ', reslabel.ro);
+    //   return reslabel.ro;
+    // }
   }
 
 }
