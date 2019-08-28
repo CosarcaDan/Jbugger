@@ -120,9 +120,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     private boolean checkAccess(String token, List<String> permissions) throws BusinessException {
         String username = TokenManager.decodeJWT(token).getSubject();
         List<Permission> userPermissions = userService.getUserPermissionsByUsername(username);
-        return permissions.stream().anyMatch(s -> {
-            return userPermissions.stream().anyMatch(ss -> ss.getType().equals(s));
-        });
+        return permissions.stream().anyMatch(s -> userPermissions.stream().anyMatch(ss -> ss.getType().equals(s)));
 
     }
 }
