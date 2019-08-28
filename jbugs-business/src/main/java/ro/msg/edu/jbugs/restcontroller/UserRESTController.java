@@ -1,5 +1,6 @@
 package ro.msg.edu.jbugs.restcontroller;
 
+import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -21,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -147,6 +149,20 @@ UserRESTController {
         }
     }
 
+    @GET
+    @Path("{username}/get")
+    public Response getUserByUsername(@PathParam("username") String username) {
+        Gson gson = new GsonBuilder().create();
+        try {
+            UserDto userDto = userService.findUser(username);
+            String response = gson.toJson(userDto);
+            return Response.status(200).entity(response).build();
+        } catch (BusinessException e) {
+            String responseError = gson.toJson(e);
+            return Response.status(500).entity(responseError).build();
+        }
+    }
+
     @PUT
     @Path("{id}/edit")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -170,6 +186,28 @@ UserRESTController {
             //user.setStatus(true);
             userService.updateUser(user);
             String response = gson.toJson("User was successfully activated!");
+            return Response.status(200).entity(response).build();
+        } catch (Exception e) {
+            String error = gson.toJson(e);
+            return Response.status(500).entity(error).build();
+        }
+    }
+
+    @PUT
+    @Path("/changePassword")
+    public Response changePassword(@NotNull UserDto user) {
+        Gson gson = new GsonBuilder().create();
+        try {
+            UserDto userToSetPassword = userService.findUser(user.getUsername());
+            userToSetPassword.setFirstName(user.getFirstName());
+            userToSetPassword.setLastName(user.getLastName());
+            userToSetPassword.setMobileNumber(user.getMobileNumber());
+            userToSetPassword.setEmail(user.getEmail());
+            if (!userToSetPassword.equals(user.getPassword())) {
+                userToSetPassword.setPassword(Hashing.sha256().hashString(user.getPassword(), StandardCharsets.UTF_8).toString());
+            }
+            userService.updateUser(userToSetPassword);
+            String response = gson.toJson("Successfully edited!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
             String error = gson.toJson(e);
