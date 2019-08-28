@@ -89,7 +89,6 @@ export class PasswordManagementComponent implements OnInit {
           alert('Editing data failed :' + error2.error.detailMessage);
         })
       );
-      // console.log('Pass: ', this.loggedUser.password);
     }
   }
 

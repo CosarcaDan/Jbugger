@@ -57,13 +57,9 @@
     <input type="text"
            formControlName="fixedVersion"
            class="form-control"
-           required
            id="fixedVersion">
     <div class="alert alert-danger"
          *ngIf="form.get('fixedVersion').touched && form.get('fixedVersion').invalid">
-      <div *ngIf="form.get('fixedVersion').errors.required">
-        Fixed version is required!
-      </div>
       <div *ngIf="form.get('fixedVersion').errors.validateVersion">
         Fixed version is invalid! It must respect the format 89.89.89
       </div>
