@@ -9,6 +9,7 @@ import {Attachment} from '../../../core/models/attachment';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '../../../core/services/auth/auth.service';
 import {User} from '../../../core/models/user';
+import {LanguageService} from "../../../core/services/language/language.service";
 
 @Component({
   selector: 'app-add-bug',
@@ -45,7 +46,8 @@ export class AddBugComponent implements OnInit {
   ];
 
   constructor(private fb: FormBuilder, private userService: UserService, private bugService: BugService,
-              private fileService: FileService, public activeModal: NgbActiveModal, private authService: AuthService) {
+              private fileService: FileService, public activeModal: NgbActiveModal, private authService: AuthService,
+              private languageService:LanguageService) {
     this.form = fb.group({
       title: [null, [Validators.required,]],
       description: [null, [Validators.required, Validators.minLength(250)]],

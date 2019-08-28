@@ -16,25 +16,25 @@ export class DashboardComponent implements OnInit {
   languages: any[];
   selectedLanguage= sessionStorage.getItem('language')=='en'?'English':'Romanian' ;
 
-  constructor(private router: Router, private authService: AuthService, private labelService:LanguageService) {
+  constructor(private router: Router, private authService: AuthService, private languageService:LanguageService) {
   }
 
   ngOnInit() {
     this.items = [
       {
-        label: 'User management',
+        label: this.selectedLanguage=='English'?'User management':'Administrarea utilizatorilor',
         icon: 'pi pi-fw pi-users',
         command: () => this.goto('dashboard/users'),
         visible: this.authService.hasPermission('USER_MANAGEMENT')
       },
       {
-        label: 'Bug management',
+        label: this.selectedLanguage=='English'?'Bug management':'Administrarea bugurilor',
         icon: 'pi pi-fw pi pi-th-large',
         command: () => this.goto('dashboard/bugs'),
         visible: this.authService.hasPermission('BUG_MANAGEMENT')
       },
       {
-        label: 'Permission management',
+        label: this.selectedLanguage=='English'?'Permission management':'Administrarea permisiunilor  ',
         icon: 'pi pi-fw pi-key',
         visible: this.authService.hasPermission('PERMISSION_MANAGEMENT'),
         command: () => this.goto('dashboard/permissions')
@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
     ];
 
     this.languages = [
-      {label: 'Romanian', value: 'Romanian', icon: 'flag-icon flag-icon-ro'},
+      {label: 'Română', value: 'Romanian', icon: 'flag-icon flag-icon-ro'},
       {label: 'English', value: 'English', icon: 'flag-icon flag-icon-gb'},
     ];
   }
@@ -62,9 +62,11 @@ export class DashboardComponent implements OnInit {
     if(language == 'English')
       sessionStorage.setItem('language','en');
 
-    this.items[0].label=this.labelService.getText('user-man');
-    this.items[1].label=this.labelService.getText('bug-man');
-    this.items[2].label=this.labelService.getText('perm-man');
+    this.items[0].label=this.languageService.getText('user-man');
+    this.items[1].label=this.languageService.getText('bug-man');
+    this.items[2].label=this.languageService.getText('perm-man');
+
+    location.reload();
   }
 
 }
