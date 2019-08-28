@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugService} from '../../../core/services/bug/bug.service';
@@ -12,6 +12,7 @@ import {User} from "../../../core/models/user";
 import {UserService} from "../../../core/services/user/user.service";
 import {Table} from "primeng/table";
 import {DatePipe} from "@angular/common";
+import {ExcelService} from "../../../core/services/excel/excel.service";
 
 
 @Component({
@@ -21,7 +22,7 @@ import {DatePipe} from "@angular/common";
   providers: [BugService],
 
 })
-export class BugsListComponent implements OnInit{
+export class BugsListComponent implements OnInit {
   cols: any[];
 
   status: SelectItem[];
@@ -87,8 +88,9 @@ export class BugsListComponent implements OnInit{
 
   filteredBugs: any[];
 
-  constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
-
+  constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal,
+              private authService: AuthService, private fileService: FileService, private userService: UserService,
+              private excelService: ExcelService) {
   }
 
   ngOnInit() {
@@ -106,7 +108,6 @@ export class BugsListComponent implements OnInit{
       {field: 'severity', header: 'Severity'},
       {field: 'created', header: 'Created by'},
       {field: 'assigned', header: 'Assigned to'},
-      // {field: 'button', header: ''}
     ];
 
 
@@ -166,10 +167,6 @@ export class BugsListComponent implements OnInit{
       return false;
     }
   }
-
-
-
-
 
   getUsers() {
     this.allUsers = new Array<User>();
@@ -337,4 +334,11 @@ export class BugsListComponent implements OnInit{
   }
 
 
+  exportAsXLSX() {
+    if (this.dt.hasFilter()) {
+      this.excelService.exportAsExcelFile(this.dt.filteredValue, 'bugs');
+    } else {
+      this.excelService.exportAsExcelFile(this.dt.value, 'bugs');
+    }
+  }
 }

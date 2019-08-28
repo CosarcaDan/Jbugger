@@ -4,6 +4,7 @@ import {AddBugComponent} from './add-bug/add-bug.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {SummaryPipe} from "./SummaryPipe";
+import {ExcelService} from "../../core/services/excel/excel.service";
 
 @NgModule({
   declarations: [
@@ -13,12 +14,12 @@ import {SummaryPipe} from "./SummaryPipe";
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    NgbModalModule
+    NgbModalModule,
   ],
   entryComponents: [
     AddBugComponent,
   ],
-  providers: [],
+  providers: [ExcelService],
   exports: [
     AddBugComponent,
     SummaryPipe,

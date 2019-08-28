@@ -4,6 +4,10 @@
 
   <ng-template pTemplate="caption">
     <div style="text-align: right">
+
+      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Export Excel"
+              (click)="exportAsXLSX()" style="float:left"></button>
+
       <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
 
       <p-autoComplete appendTo="body" [suggestions]="filteredBugs"
@@ -60,8 +64,6 @@
         <p-multiSelect appendTo="body" *ngSwitchCase="'severity'" size="15" [options]="severity"
                        defaultLabel="All severities"
                        (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
-
-
 
         <p-autoComplete appendTo="body" *ngSwitchCase="'created'" [suggestions]="filteredBugs"
                         (completeMethod)="filterBugs($event)" [size]="30"
@@ -122,7 +124,8 @@
         <label for="descriptionEdit">Description</label>
       </div>
       <div class="ui-g-8">
-        <textarea cols="38" rows="5" id="descriptionEdit" [(ngModel)]="bug.description" pattern=".{250,}" required #descriptionEdit='ngModel'>
+        <textarea cols="38" rows="5" id="descriptionEdit" [(ngModel)]="bug.description" pattern=".{250,}" required
+                  #descriptionEdit='ngModel'>
         </textarea>
         <div class="alert alert-danger"
              *ngIf="descriptionEdit.touched && descriptionEdit.invalid">
@@ -140,7 +143,8 @@
         <label for="versionEdit">Version</label>
       </div>
       <div class="ui-g-8">
-        <input pInputText id="versionEdit" [(ngModel)]="bug.version" pattern="^(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)$" required #versionEdit='ngModel'/>
+        <input pInputText id="versionEdit" [(ngModel)]="bug.version"
+               pattern="^(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)$" required #versionEdit='ngModel'/>
         <div class="alert alert-danger"
              *ngIf="versionEdit.touched && versionEdit.invalid">
           <div *ngIf="versionEdit.errors.required">
@@ -179,7 +183,8 @@
         <label for="fixedVersionEdit">Fixed Version</label>
       </div>
       <div class="ui-g-8">
-        <input pInputText id="fixedVersionEdit" [(ngModel)]="bug.fixedVersion" pattern="^(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)$" required #fixedVersionEdit='ngModel'/>
+        <input pInputText id="fixedVersionEdit" [(ngModel)]="bug.fixedVersion"
+               pattern="^(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)$" required #fixedVersionEdit='ngModel'/>
         <div class="alert alert-danger"
              *ngIf="fixedVersionEdit.touched && fixedVersionEdit.invalid">
           <div *ngIf="fixedVersionEdit.errors.required">
@@ -205,9 +210,9 @@
         <label for="assignedEdit">Assigned to</label>
       </div>
       <select
-              id="assignedEdit"
-              name="assignedEdit"
-              [(ngModel)]="bug.assigned"
+        id="assignedEdit"
+        name="assignedEdit"
+        [(ngModel)]="bug.assigned"
       >
         <option *ngFor="let user of allUsers" [value]="user.username">
           {{user.firstName}} {{user.lastName}} ({{user.username}})
@@ -218,14 +223,20 @@
     <!--  Attachments -->
 
     <div class="ui-g-12" *ngIf="(currentAttachments!=null && currentAttachments.length!=0)">
-      <table><tr><td><div class="ui-g-4">
-        <label for="attachments">Attachments:</label>
-      </div></td>
-      <td>
-    <div class="ui-g-8" *ngFor="let att of currentAttachments">
-      <a href="http://localhost:8080/jbugs/services/files/download/{{att.attContent}}">{{att.attContent}}</a>
-    </div>
-      </td></tr></table>
+      <table>
+        <tr>
+          <td>
+            <div class="ui-g-4">
+              <label for="attachments">Attachments:</label>
+            </div>
+          </td>
+          <td>
+            <div class="ui-g-8" *ngFor="let att of currentAttachments">
+              <a href="http://localhost:8080/jbugs/services/files/download/{{att.attContent}}">{{att.attContent}}</a>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="ui-g-12">
@@ -248,7 +259,8 @@
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" pButton (click)="delete(bug.id)"
-              *ngIf="this.authService.hasPermission('BUG_CLOSE') && (bug.status == 'FIXED' || bug.status == 'REJECTED') " label="Close Bug"></button>
+              *ngIf="this.authService.hasPermission('BUG_CLOSE') && (bug.status == 'FIXED' || bug.status == 'REJECTED') "
+              label="Close Bug"></button>
       <button type="button" pButton (click)="save()" label="Save"></button>
       <button type="button" pButton (click)="export()" *ngIf="this.authService.hasPermission('BUG_EXPORT_PDF')"
               label="Export in PDF"></button>

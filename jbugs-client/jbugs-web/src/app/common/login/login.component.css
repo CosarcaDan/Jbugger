@@ -21,6 +21,9 @@ button {
   position: absolute;
   right: 10%;
   top: 10%;
+  background: transparent;
+  height: 400px;
+  width: auto;
 }
 
 
