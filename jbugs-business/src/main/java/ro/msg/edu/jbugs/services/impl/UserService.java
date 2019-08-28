@@ -180,7 +180,7 @@ public class UserService {
                     throw new BusinessException("Password failed too may times, User deactivated", "msg - 003");
                 }
             } else {
-                throw new BusinessException("User Inactiv", "msg - 005");
+                throw new BusinessException("User Inactive", "msg - 005");
             }
         } catch (RepositoryException e) {
             throw new BusinessException(e);
@@ -191,7 +191,7 @@ public class UserService {
         try {
             User user = userRepo.findUserByUsername(username);
             if (user.getStatus()) {
-                throw new BusinessException("User already activ", "msg - 007");
+                throw new BusinessException("User already active", "msg - 007");
             } else {
                 userRepo.setStatusTrue(user);
                 return UserDtoMapping.userToUserDtoIncomplet(user);
@@ -237,7 +237,15 @@ public class UserService {
     public UserDto updateUser(UserDto userDto) throws BusinessException {
         try {
             Validator.validateUser(userDto);
+            //userDto.setPassword(Hashing.sha256().hashString(userDto.getPassword(), StandardCharsets.UTF_8).toString());
+            List<RoleDto> roleDtos = getAllRoles(userDto.getId());
             User newDataUser = UserDtoMapping.userDtoToUser(userDto);
+            newDataUser.setRoles(roleDtos.stream().map(roleDto ->
+            {
+                Role res = roleRepo.findRole(roleDto.getId());
+                res.addUserSimple(newDataUser);
+                return res;
+            }).collect(Collectors.toList()));
             User response = userRepo.updateUser(newDataUser);
             return UserDtoMapping.userToUserDtoIncomplet(response);
         } catch (RepositoryException e) {

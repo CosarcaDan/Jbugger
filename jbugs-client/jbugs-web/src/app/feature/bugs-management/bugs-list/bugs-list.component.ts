@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {BugService} from '../../../core/services/bug/bug.service';
@@ -13,6 +13,7 @@ import {UserService} from '../../../core/services/user/user.service';
 import {Table} from 'primeng/table';
 import {DatePipe} from '@angular/common';
 import {LanguageService} from "../../../core/services/language/language.service";
+
 
 @Component({
   selector: 'app-get-bugs',
@@ -161,7 +162,7 @@ export class BugsListComponent implements OnInit {
     ];
 
     this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
-      if (filter === undefined || filter === null || (filter.length === 0 || filter === "") && value === null) {
+      if (filter === undefined || filter === null || (filter.length === 0 || filter === '') && value === null) {
         return true;
       }
       if (value === undefined || value === null || value.length === 0) {

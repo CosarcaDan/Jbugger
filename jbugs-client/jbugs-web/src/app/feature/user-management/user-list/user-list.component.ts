@@ -83,7 +83,7 @@ export class UserListComponent implements OnInit {
         for (let dataKey of data) {
           this.roles.push(dataKey);
         }
-        this.roles.forEach(r =>r.checked=this.rolesOfCurrentUser.find(rr=> rr.type==r.type)!=null)
+        this.roles.forEach(r => r.checked = this.rolesOfCurrentUser.find(rr => rr.type == r.type) != null);
       });
 
       console.log(this.roles);

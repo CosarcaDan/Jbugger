@@ -36,6 +36,8 @@ import {UserManagementModule} from './feature/user-management/user-management.mo
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {NgxFlagIconCssModule} from 'ngx-flag-icon-css';
 import {NgbdWelcomeModalContent} from './core/services/auth/auth.service';
+import {RecaptchaModule} from 'ng-recaptcha';
+import {PasswordManagementComponent} from './feature/password-management/password-management.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import {NgbdWelcomeModalContent} from './core/services/auth/auth.service';
     DashboardComponent,
     BugsListComponent,
     NgbdWelcomeModalContent,
+    PasswordManagementComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +78,7 @@ import {NgbdWelcomeModalContent} from './core/services/auth/auth.service';
     AngularFontAwesomeModule,
     NgxFlagIconCssModule,
     AutoCompleteModule,
+    RecaptchaModule.forRoot()
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

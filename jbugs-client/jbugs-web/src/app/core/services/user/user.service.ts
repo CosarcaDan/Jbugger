@@ -51,8 +51,16 @@ export class UserService {
     return this.http.get(this.baseUrl + '/' + id);
   }
 
+  public getUserByUsername(username: string): Observable<User> {
+    return this.http.get<User>(this.baseUrl + '/' + username + '/get');
+  }
+
   public getUserRoles(id: number): Observable<Role[]> {
     return this.http.post<Role[]>(this.baseUrl + '/roles', JSON.stringify(id));
+  }
+
+  public changePassword(user): Observable<User> {
+    return this.http.put<User>(this.baseUrl + '/changePassword', user);
   }
 
 
