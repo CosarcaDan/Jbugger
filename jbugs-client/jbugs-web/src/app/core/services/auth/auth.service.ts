@@ -15,24 +15,24 @@ export class AuthService {
   private lastPermissionUpdate = Date.now();
   private requestSent: boolean = false;
   getToken() {
-    let token = sessionStorage.getItem('token');
+    let token = localStorage.getItem('token');
     if(!token)
       return 'Bearer ';
     // if(this.isTokenExpired(token))
     // {
     //   this.renew(this.decodeToken(token).subject);
-    //   token=sessionStorage.getItem('token');
+    //   token=localStorage.getItem('token');
     // }
     return 'Bearer ' + token;
   }
   getUsername() {
-    return this.decodeToken(sessionStorage.getItem('token')).sub;
+    return this.decodeToken(localStorage.getItem('token')).sub;
   }
   public login(user: UserLogin) {
     this.http.post<any>('http://localhost:8080/jbugs/services/users/login', user).subscribe(async (data) => {
       console.log('data', data);
-      sessionStorage.setItem('token', data.value);
-      sessionStorage.setItem('language','en');
+      localStorage.setItem('token', data.value);
+      localStorage.setItem('language','en');
       const modalRef = this.modalService.open(NgbdWelcomeModalContent)
       this.getPermissions();
       await delay(1000);
@@ -45,7 +45,7 @@ export class AuthService {
   public logout() {
     console.log('un: ', this.getUsername());
     this.http.post<any>('http://localhost:8080/jbugs/services/users/logout', {username: this.getUsername()}).subscribe((data) => {
-      sessionStorage.clear()
+      localStorage.clear()
       this.router.navigate(['login']);
     }, (error1) => {
       console.log('Error', error1.error);
@@ -54,7 +54,7 @@ export class AuthService {
   public renew(username: string) {
     this.http.post<any>('http://localhost:8080/jbugs/services/users/renew', {username: username}).subscribe((data) => {
       console.log(data);
-      sessionStorage.setItem('token', data.value);
+      localStorage.setItem('token', data.value);
     }, (error1) => {
       console.log('Error', error1.error);
     });
@@ -62,7 +62,7 @@ export class AuthService {
   public getPermissions() {
     console.log('DING!')
     this.http.post<any>('http://localhost:8080/jbugs/services/users/permissions', {username: this.getUsername()}).subscribe((data) => {
-      sessionStorage.setItem('permissionsNotInRole', JSON.stringify(data.map(p => p.type)));
+      localStorage.setItem('permissionsNotInRole', JSON.stringify(data.map(p => p.type)));
       this.cachedPermissions = data.map(p => p.type);
       this.requestSent = false;
       return data.map(p => p.type);
@@ -75,7 +75,7 @@ export class AuthService {
       this.getPermissions();
       this.lastPermissionUpdate = Date.now();
     }
-    return JSON.parse(sessionStorage.getItem('permissionsNotInRole')).filter(p => p == permission).length != 0;
+    return JSON.parse(localStorage.getItem('permissionsNotInRole')).filter(p => p == permission).length != 0;
   }
 
   private b64c:string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";   // base64 dictionary

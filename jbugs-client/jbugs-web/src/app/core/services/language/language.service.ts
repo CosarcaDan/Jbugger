@@ -14,17 +14,17 @@ export class LanguageService implements OnInit{
   }
 
   ngOnInit(): void {
-      this.http.get('./assets/labels-'+sessionStorage.getItem('language')+'.json').subscribe(
+      this.http.get('./assets/labels-'+localStorage.getItem('language')+'.json').subscribe(
         (res:{labels:{label,value}[]})=> {
           console.log('res',res);
           this.labels=res.labels;
-          this.languageLoaded=sessionStorage.getItem('language')
+          this.languageLoaded=localStorage.getItem('language')
         }
       )
   }
 
   getText(label:string){
-    if(this.languageLoaded==null || this.languageLoaded != sessionStorage.getItem('language'))
+    if(this.languageLoaded==null || this.languageLoaded != localStorage.getItem('language'))
       this.ngOnInit();
     return this.labels.find(l=>l.label==label).value;
     // if(language=='en') {

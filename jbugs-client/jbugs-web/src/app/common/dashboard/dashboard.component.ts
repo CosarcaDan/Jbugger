@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   items: MenuItem[];
   display;
   languages: any[];
-  selectedLanguage= sessionStorage.getItem('language')=='en'?'English':'Romanian' ;
+  selectedLanguage= localStorage.getItem('language')=='en'?'English':'Romanian' ;
 
   constructor(private router: Router, private authService: AuthService, private languageService:LanguageService) {
   }
@@ -58,9 +58,9 @@ export class DashboardComponent implements OnInit {
   setLanguage(language){
     console.log(language);
     if(language == 'Romanian')
-      sessionStorage.setItem('language','ro');
+      localStorage.setItem('language','ro');
     if(language == 'English')
-      sessionStorage.setItem('language','en');
+      localStorage.setItem('language','en');
 
     this.items[0].label=this.languageService.getText('user-man');
     this.items[1].label=this.languageService.getText('bug-man');
