@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RoleService} from '../../../core/services/role/role.service';
 import {Router} from '@angular/router';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {LanguageService} from "../../../core/services/language/language.service";
 
 @Component({
   selector: 'app-permission-management',
@@ -20,7 +21,7 @@ export class PermissionManagementComponent implements OnInit {
   selectedRole: number;
   private permissionsInRole: Array<Permission>;
 
-  constructor(private roleService: RoleService, private fb: FormBuilder, private router: Router) {
+  constructor(private roleService: RoleService, private fb: FormBuilder, private router: Router, private languageService:LanguageService) {
   }
 
   ngOnInit() {

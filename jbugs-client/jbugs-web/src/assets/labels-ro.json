@@ -1,0 +1,304 @@
+{
+  "labels": [
+    {
+      "label":"user-man",
+      "value": "Administrarea utilizatorilor"
+    },
+    {
+      "label":"bug-man",
+      "value": "Administrarea bugurilor"
+    },
+    {
+      "label":"perm-man",
+      "value": "Administrarea permisiunilor"
+    },
+    {
+      "label":"firstName",
+      "value": "Prenume"
+    },
+    {
+      "label":"lastName",
+      "value": "Nume"
+    },
+    {
+      "label":"firstname",
+      "value": "Prenumele"
+    },
+    {
+      "label":"lastname",
+      "value": "Numele"
+    },
+    {
+      "label":"phoneNumber",
+      "value": "Numărul de telefon"
+    },
+    {
+      "label":"username",
+      "value": "Nume de utilizator"
+    },
+    {
+      "label":"choose-roles-newUser",
+      "value": "Alege câteva roluri pentru utilizatorul nou"
+    },
+    {
+      "label":"edit-roles",
+      "value": "Schimbă rolurile"
+    },
+    {
+      "label":"something-required",
+      "value": " este obligatoriu!"
+    },
+    {
+      "label":"name-format",
+      "value": " trebuie să înceapă cu literă mare și poate conține numai litere și separatori!"
+    },
+    {
+      "label":"email-required",
+      "value": "Emailul este obligatoriu!"
+    },
+    {
+      "label":"email-space",
+      "value": "Emailul nu poate conține spații!"
+    },
+    {
+      "label":"email-format",
+      "value": "Emailul trebuie să fie de formatul [address]@msggroup.com!"
+    },
+    {
+      "label":"phoneNumber-format",
+      "value": " trebuie să fie din Germania sau România!"
+    },
+    {
+      "label":"user-add-successful",
+      "value": "Utilizator adăugat cu suces!"
+    },
+    {
+      "label":"user-add-failed",
+      "value": "Adăugarea de utilizator a eșuat: "
+    },
+    {
+      "label":"bug-add-successful",
+      "value": "Bug adăugat cu succes!"
+    },
+    {
+      "label":"bug-add-failed",
+      "value": "Adăugarea de bug a eșuat: "
+    },
+    {
+      "label":"save",
+      "value": "Salvează"
+    },
+    {
+      "label":"activate",
+      "value": "Activează"
+    },
+    {
+      "label":"deactivate",
+      "value": "Deazctivează"
+    },
+    {
+      "label":"user-list",
+      "value": "Lista utilizatorilor"
+    },
+    {
+      "label":"user-details",
+      "value": "Detaliile Utilizatorului"
+    },
+    {
+      "label":"user-activate-successful",
+      "value": "Utilizator activat cu succes!"
+    },
+    {
+      "label":"user-activate-failed",
+      "value": "Utilizator neactivat: "
+    },
+    {
+      "label":"user-deactivate-successful",
+      "value": "Utilizator dezactivat cu succes!"
+    },
+    {
+      "label":"user-deactivate-failed",
+      "value": "Utilizator nu a fost activat: "
+    },
+    {
+      "label":"user-edit-successful",
+      "value": "Utilizatorul a fost modificat cu succes!"
+    },
+    {
+      "label":"user-edit-failed",
+      "value": "Editarea de utilizator a eșuat:"
+    },
+    {
+      "label":"role-select",
+      "value": "Alege un Rol"
+    },
+    {
+      "label":"perm-inRole",
+      "value": "Permisiuni atribuite Rolului"
+    },
+    {
+      "label":"perm-notInRole",
+      "value": "Permisiuni neatribuite Rolului"
+    },
+    {
+      "label":"createdBy",
+      "value": "Creat de"
+    },
+    {
+      "label":"assignedTo",
+      "value": "Atribut la"
+    },
+    {
+      "label":"severity",
+      "value": "Severitate"
+    },
+    {
+      "label":"title",
+      "value": "Titlu"
+    },
+    {
+      "label":"title-required",
+      "value": "Titlul este obligatoriu!"
+    },
+    {
+      "label":"description",
+      "value": "Descriere"
+    },
+    {
+      "label":"description-required",
+      "value": "Descrierea este obligatorie!"
+    },
+    {
+      "label":"description-length",
+      "value": "Descrierea trebuie să fie cel puțin 250 de caractere!"
+    },
+    {
+      "label":"version",
+      "value": "Versiune"
+    },
+    {
+      "label":"version-required",
+      "value": "Versiunea este obligatorie!"
+    },
+    {
+      "label":"version-format",
+      "value": "Versiunea trebuie să fie de formatul x.x.x!"
+    },
+    {
+      "label":"fixedVersion",
+      "value": "Versiunea în care a fost resolvată"
+    },
+    {
+      "label":"fixedVersion-required",
+      "value": "Versiunea în care a fost resolvată este obligatorie!"
+    },
+    {
+      "label":"fixedVersion-format",
+      "value": "Versiunea în care a fost resolvată trebuie să fie de formatul x.x.x!"
+    },
+    {
+      "label":"attachment",
+      "value": "Atașament"
+    },
+    {
+      "label":"attachments",
+      "value": "Atașamente"
+    },
+    {
+      "label":"upload-attachment",
+      "value": "Adăugare Atașament"
+    },
+    {
+      "label":"close-bug",
+      "value": "Închide Bug"
+    },
+    {
+      "label":"export-bug",
+      "value": "Exportare în PDF"
+    },
+    {
+      "label":"targetDate",
+      "value": "Data planificată"
+    },
+    {
+      "label": "past-error",
+      "value": "Nu poți selecta o dată din trecut!"
+    },
+    {
+      "label":"all-statuses",
+      "value": "Toate"
+    },
+    {
+      "label":"all-severities",
+      "value": "Toate"
+    },
+    {
+      "label":"bug-close-successful",
+      "value": "Bug închis cu succes!"
+    },
+    {
+      "label":"bug-close-failed",
+      "value": "Bug neînchis: "
+    },
+    {
+      "label":"bug-edit-successful",
+      "value": "Bugul a fost modificat cu succes!"
+    },
+    {
+      "label":"bug-edit-failed",
+      "value": "Bug needitat:"
+    },
+    {
+      "label":"file-size",
+      "value": "Mărimea fișierului depășește 25 MB!"
+    },
+    {
+      "label":"notifications",
+      "value": "Notificări"
+    },
+    {
+      "label":"new-password",
+      "value": "Parolă nouă"
+    },
+    {
+      "label":"re-password",
+      "value": "Reintroduce parola nouă"
+    },
+    {
+      "label":"password-not-equal",
+      "value": "Parolele nu sunt la fel, înceracă din nou!"
+    },
+    {
+      "label":"password-successful",
+      "value": "Parolă schimbată cu succes!"
+    },
+    {
+      "label":"password-edit-failed",
+      "value": "Nu sa schimbat parola: "
+    },
+    {
+      "label":"pers-data-edit-successful",
+      "value": "Datele personale au fost modificate cu succes!"
+    },
+    {
+      "label":"pers-data-edit-failed",
+      "value": "Datele personale nu au fost modificate:"
+    },
+    {
+      "label":"add",
+      "value": "Adăugare"
+    },
+    {
+      "label":"search",
+      "value": "Căutare"
+    },
+    {
+      "label":"greet",
+      "value": "Bună"
+    },
+    {
+      "label":"logout",
+      "value": "Delogare"
+    }
+  ]
+}

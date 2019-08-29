@@ -1,7 +1,7 @@
 <form [formGroup]="form">
 
   <div class="form-group">
-    <label for="title">Title: </label>
+    <label for="title">{{languageService.getText('title')}}: </label>
     <input type="text"
            formControlName="title"
            class="form-control"
@@ -10,13 +10,13 @@
     <div class="alert alert-danger"
          *ngIf="form.get('title').touched && form.get('title').invalid">
       <div *ngIf="form.get('title').errors.required">
-        Title is required!
+        {{languageService.getText('title-required')}}
       </div>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="description">Description: </label>
+    <label for="description">{{languageService.getText('description')}}: </label>
     <textarea id="description"
               name="description"
               formControlName="description"
@@ -26,16 +26,16 @@
     <div class="alert alert-danger"
          *ngIf="form.get('description').touched && form.get('description').invalid">
       <div *ngIf="form.get('description').errors.required">
-        Description is required!
+        {{languageService.getText('description-required')}}
       </div>
       <div *ngIf="form.get('description').errors.minlength">
-        Description must have at least 250 characters!
+        {{languageService.getText('description-length')}}
       </div>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="version">Version: </label>
+    <label for="version">{{languageService.getText('version')}}: </label>
     <input type="text"
            formControlName="version"
            class="form-control"
@@ -44,16 +44,16 @@
     <div class="alert alert-danger"
          *ngIf="form.get('version').touched && form.get('version').invalid">
       <div *ngIf="form.get('version').errors.required">
-        Version is required!
+        {{languageService.getText('version-required')}}
       </div>
       <div *ngIf="form.get('version').errors.validateVersion">
-        Version is invalid! It must respect the format 89.89.89
+        {{languageService.getText('version-format')}}
       </div>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="fixedVersion">Fixed in version: </label>
+    <label for="fixedVersion">{{languageService.getText('fixedVersion')}}: </label>
     <input type="text"
            formControlName="fixedVersion"
            class="form-control"
@@ -62,16 +62,16 @@
     <div class="alert alert-danger"
          *ngIf="form.get('fixedVersion').touched && form.get('fixedVersion').invalid">
       <div *ngIf="form.get('fixedVersion').errors.required">
-        Fixed version is required!
+        {{languageService.getText('fixedVersion-required')}}
       </div>
       <div *ngIf="form.get('fixedVersion').errors.validateVersion">
-        Fixed version is invalid! It must respect the format 89.89.89
+        {{languageService.getText('fixedVersion-format')}}
       </div>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="targetDate">Target Date:</label>
+    <label for="targetDate">{{languageService.getText('targetDate')}}: </label>
     <input type="date"
            formControlName="targetDate"
            class="form-control"
@@ -80,31 +80,31 @@
     >
     <div class="alert alert-danger"
          *ngIf="form.get('targetDate').touched && form.get('targetDate').invalid">
-      <div *ngIf="form.get('targetDate').errors.min">You cannot get in te past.</div>
+      <div *ngIf="form.get('targetDate').errors.min">{{languageService.getText('past-error')}}</div>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="severity">Severity</label>
+    <label for="severity">{{languageService.getText('severity')}}: </label>
     <select class="form-control"
             id="severity"
             name="severity"
             formControlName="severity"
     >
-      <option *ngFor="let severity of severitys" [value]="severity.type">
+      <option *ngFor="let severity of severities" [value]="severity.type">
         {{severity.type}}
       </option>
     </select>
   </div>
 
   <div class="form-group">
-    <label for="createdBugsId">Created by: </label>
+    <label for="createdBy">{{languageService.getText('createdBy')}}: </label>
     <input type="text"
-           formControlName="createdBugsId"
+           formControlName="createdBy"
            class="form-control"
            disabled
            [value]="currentLoggedUser.name"
-           id="createdBugsId">
+           id="createdBy">
   </div>
 
   <div class="form-group">
@@ -118,11 +118,11 @@
   </div>
 
   <div class="form-group">
-    <label for="assignedBugsId">Assigned to: </label>
+    <label for="assignedTo">{{languageService.getText('assignedTo')}}: </label>
     <select class="form-control"
-            id="assignedBugsId"
-            name="assignedBugsId"
-            formControlName="assignedBugsId"
+            id="assignedTo"
+            name="assignedTo"
+            formControlName="assignedTo"
     >
       <option *ngFor="let user of allUsers" [value]="user.username">
         {{user.firstName}} {{user.lastName}} ({{user.username}})
@@ -131,7 +131,7 @@
   </div>
 
   <div class="form-group">
-    <label for="attachments">Attachment:</label><br>
+    <label for="attachments">{{languageService.getText('attachment')}}:</label><br>
   <input type="file"
          id="attachments"
          accept=".pdf,.doc, .odf, .xlsx, .xls,.docx,.png,.jpg;"
@@ -143,6 +143,6 @@
   <button class="btn btn-primary"
           type="button"
           (click)="addBug()"
-          [disabled]="form.invalid">Save
+          [disabled]="form.invalid">{{languageService.getText('save')}}
   </button>
 </form>

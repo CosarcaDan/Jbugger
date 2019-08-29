@@ -1,0 +1,304 @@
+{
+  "labels": [
+    {
+      "label":"user-man",
+      "value": "User management"
+    },
+    {
+      "label":"bug-man",
+      "value": "Bug management"
+    },
+    {
+      "label":"perm-man",
+      "value": "Permission management"
+    },
+    {
+      "label":"firstName",
+      "value": "First Name"
+    },
+    {
+      "label":"lastName",
+      "value": "Last Name"
+    },
+    {
+      "label":"firstname",
+      "value": "First name"
+    },
+    {
+      "label":"lastname",
+      "value": "Last name"
+    },
+    {
+      "label":"phoneNumber",
+      "value": "Phone number"
+    },
+    {
+      "label":"username",
+      "value": "Username"
+    },
+    {
+      "label":"choose-roles-newUser",
+      "value": "Choose some roles for the new user"
+    },
+    {
+      "label":"edit-roles",
+      "value": "Edit roles"
+    },
+    {
+      "label":"something-required",
+      "value": " is required!"
+    },
+    {
+      "label":"name-format",
+      "value": " must begin with capital letter and should contain only letters and separators!"
+    },
+    {
+      "label":"email-required",
+      "value": "Email is required!"
+    },
+    {
+      "label":"email-space",
+      "value": "Email cannot contain any spaces!"
+    },
+    {
+      "label":"email-format",
+      "value": "Email must be of format [address]@msggroup.com!"
+    },
+    {
+      "label":"phoneNumber-format",
+      "value": " must be from Germany or Romania!"
+    },
+    {
+      "label":"user-add-successful",
+      "value": "User added successfully!"
+    },
+    {
+      "label":"user-add-failed",
+      "value": "User adding failed: "
+    },
+    {
+      "label":"bug-add-successful",
+      "value": "Bug added successfully!"
+    },
+    {
+      "label":"bug-add-failed",
+      "value": "Bug adding failed: "
+    },
+    {
+      "label":"save",
+      "value": "Save"
+    },
+    {
+      "label":"activate",
+      "value": "Save"
+    },
+    {
+      "label":"deactivate",
+      "value": "Deactivate"
+    },
+    {
+      "label":"user-list",
+      "value": "List of Users"
+    },
+    {
+      "label":"user-details",
+      "value": "User Details"
+    },
+    {
+      "label":"user-activate-successful",
+      "value": "User activated successfully!"
+    },
+    {
+      "label":"user-activate-failed",
+      "value": "User activation failed: "
+    },
+    {
+      "label":"user-deactivate-successful",
+      "value": "User deactivated successfully!"
+    },
+    {
+      "label":"user-deactivate-failed",
+      "value": "User deactivation failed: "
+    },
+    {
+      "label":"user-edit-successful",
+      "value": "User edited successfully!"
+    },
+    {
+      "label":"user-edit-failed",
+      "value": "User edit failed:"
+    },
+    {
+      "label":"role-select",
+      "value": "Select Role"
+    },
+    {
+      "label":"perm-inRole",
+      "value": "Permissions in Role"
+    },
+    {
+      "label":"perm-notInRole",
+      "value": "Permissions not in Role"
+    },
+    {
+      "label":"createdBy",
+      "value": "Created by"
+    },
+    {
+      "label":"assignedTo",
+      "value": "Assigned to"
+    },
+    {
+      "label":"severity",
+      "value": "Severity"
+    },
+    {
+      "label":"title",
+      "value": "Title"
+    },
+    {
+      "label":"title-required",
+      "value": "Titel is required!"
+    },
+    {
+      "label":"description",
+      "value": "Descritption"
+    },
+    {
+      "label":"description-required",
+      "value": "Description is required!"
+    },
+    {
+      "label":"description-length",
+      "value": "Description must be at least 250 characters long!"
+    },
+    {
+      "label":"version",
+      "value": "Version"
+    },
+    {
+      "label":"version-required",
+      "value": "Version is required!"
+    },
+    {
+      "label":"version-format",
+      "value": "Version has to be of format x.x.x!"
+    },
+    {
+      "label":"fixedVersion",
+      "value": "Fixed in Version"
+    },
+    {
+      "label":"fixedVersion-required",
+      "value": "Fixed in  Version is required!"
+    },
+    {
+      "label":"fixedVersion-format",
+      "value": "Fixed in Version has to be of format x.x.x!"
+    },
+    {
+      "label":"attachment",
+      "value": "Attachment"
+    },
+    {
+      "label":"attachments",
+      "value": "Attachments"
+    },
+    {
+      "label":"upload-attachment",
+      "value": "Upload Attachment"
+    },
+    {
+      "label":"close-bug",
+      "value": "Close BUg"
+    },
+    {
+      "label":"export-bug",
+      "value": "Export to PDF"
+    },
+    {
+      "label":"targetDate",
+      "value": "Target Date"
+    },
+    {
+      "label": "past-error",
+      "value": "You can not select a date in the past!"
+    },
+    {
+      "label":"all-statuses",
+      "value": "All statuses"
+    },
+    {
+      "label":"all-severities",
+      "value": "All severities"
+    },
+    {
+      "label":"bug-close-successful",
+      "value": "Bug closed successfully!"
+    },
+    {
+      "label":"bug-close-failed",
+      "value": "Bug wasn't colsed: "
+    },
+    {
+      "label":"bug-edit-successful",
+      "value": "Bug edited successfully!"
+    },
+    {
+      "label":"bug-edit-failed",
+      "value": "Bug edit failed:"
+    },
+    {
+      "label":"file-size",
+      "value": "File size exceeds 25 MB!"
+    },
+    {
+      "label":"notifications",
+      "value": "Notifications"
+    },
+    {
+      "label":"new-password",
+      "value": "New Password"
+    },
+    {
+      "label":"re-password",
+      "value": "Reenter new Password"
+    },
+    {
+      "label":"password-not-equal",
+      "value": "The two passwords don't match, please retry!"
+    },
+    {
+      "label":"password-successful",
+      "value": "Password changed successfully!"
+    },
+    {
+      "label":"password-edit-failed",
+      "value": "Password changing failed: "
+    },
+    {
+      "label":"pers-data-edit-successful",
+      "value": "Personal data edited successfully!"
+    },
+    {
+      "label":"pers-data-edit-failed",
+      "value": "Personal data edit failed:"
+    },
+    {
+      "label":"add",
+      "value": "Add"
+    },
+    {
+      "label":"search",
+      "value": "Search"
+    },
+    {
+      "label":"greet",
+      "value": "Hello"
+    },
+    {
+      "label":"logout",
+      "value": "Logout"
+    }
+  ]
+}

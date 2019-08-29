@@ -4,7 +4,6 @@ import {Router} from '@angular/router';
 import {UserService} from '../../core/services/user/user.service';
 import {UserLogin} from '../../core/models/userLogin';
 import {Token} from '../../core/models/token';
-import {BackendError} from '../../core/models/backendError';
 import {LoginValidators} from './login.validators';
 import {AuthService} from '../../core/services/auth/auth.service';
 
@@ -17,9 +16,8 @@ import {AuthService} from '../../core/services/auth/auth.service';
 export class LoginComponent implements OnInit {
 
   form: FormGroup;
-  userlogin: UserLogin;
+  userLogin: UserLogin;
   token: Token;
-  backendError: BackendError;
   username: string;
   password: string;
 
@@ -27,13 +25,14 @@ export class LoginComponent implements OnInit {
   login() {
     this.username = this.form.get('username').value.toString();
     this.password = this.form.get('password').value.toString();
-    this.userlogin = {username: this.username, password: this.password};
-    console.log(this.userlogin);
-    this.authService.login(this.userlogin);
+    this.userLogin = {username: this.username, password: this.password};
+    console.log(this.userLogin);
+    this.authService.login(this.userLogin);
   }
 
 
-  constructor(private router: Router, private userService: UserService, private fb: FormBuilder, private authService: AuthService) {
+  constructor(private router: Router, private userService: UserService, private fb: FormBuilder,
+              private authService: AuthService) {
     this.form = fb.group({
       username: [null, [Validators.required, LoginValidators.cannotContainSpace,
         LoginValidators.cannotContainUpperCaseLetter]],
@@ -41,11 +40,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
-
-  ngOnInit() {
+  resolvedCaptcha(captchaResponse) {
+    console.log('Captcha resolved with response ', captchaResponse);
   }
 
-
+  ngOnInit() {
+    if(localStorage.getItem('token'))
+      this.router.navigate(['dashboard']);
+  }
 }
-
-

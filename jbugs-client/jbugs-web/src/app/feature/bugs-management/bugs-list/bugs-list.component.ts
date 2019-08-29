@@ -12,6 +12,9 @@ import {User} from '../../../core/models/user';
 import {UserService} from '../../../core/services/user/user.service';
 import {Table} from 'primeng/table';
 import {DatePipe} from '@angular/common';
+import {LanguageService} from "../../../core/services/language/language.service";
+import {MessageComponent} from "../../../core/message/message.component";
+
 
 @Component({
   selector: 'app-get-bugs',
@@ -42,10 +45,11 @@ export class BugsListComponent implements OnInit {
 
   newBug: boolean;
 
-
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
   allUsers: Array<User>;
+
+  mappedUsers: SelectItem[];
 
 
   bugSearchCriteria: Bug = {
@@ -88,21 +92,30 @@ export class BugsListComponent implements OnInit {
 
   filteredBugs: any[];
 
-  constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal, private authService: AuthService, private fileService: FileService, private userService: UserService) {
+  constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal,
+              private authService: AuthService, private fileService: FileService,
+              private userService: UserService, private languageService:LanguageService) {
 
   }
 
   ngOnInit() {
+//setInterval(getNotifications,1000);    this.getUsers();
+    this.languageService.getText('save');
+    this.languageService.getText('save');
+    this.languageService.getText('save');
+    this.languageService.getText('save');
+
+
     this.cols = [
-      {field: 'title', header: 'Title'},
-      {field: 'description', header: 'Description'},
-      {field: 'version', header: 'Version'},
-      {field: 'targetDate', header: 'Target Date'},
+      {field: 'title', header: this.languageService.getText('title')},
+      {field: 'description', header: this.languageService.getText('description')},
+      {field: 'version', header: this.languageService.getText('version')},
+      {field: 'targetDate', header: this.languageService.getText('targetDate')},
       {field: 'status', header: 'Status'},
-      {field: 'fixedVersion', header: 'Fixed Version'},
-      {field: 'severity', header: 'Severity'},
-      {field: 'created', header: 'Created by'},
-      {field: 'assigned', header: 'Assigned to'},
+      {field: 'fixedVersion', header: this.languageService.getText('fixedVersion')},
+      {field: 'severity', header: this.languageService.getText('severity')},
+      {field: 'created', header: this.languageService.getText('createdBy')},
+      {field: 'assigned', header: this.languageService.getText('assignedTo')},
       // {field: 'button', header: ''}
     ];
 
@@ -150,7 +163,7 @@ export class BugsListComponent implements OnInit {
     ];
 
     this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
-      if (filter === undefined || filter === null || (filter.length === 0 || filter === "") && value === null) {
+      if (filter === undefined || filter === null || (filter.length === 0 || filter === '') && value === null) {
         return true;
       }
       if (value === undefined || value === null || value.length === 0) {
@@ -170,6 +183,8 @@ export class BugsListComponent implements OnInit {
       for (let dataKey of data) {
         this.allUsers.push(dataKey);
       }
+      this.mappedUsers= this.allUsers.map(user=>{ return {label: user.firstName+' '+user.lastName+' ('+user.username+')' , value: user.username}}
+      )
     });
   }
 
@@ -218,33 +233,38 @@ export class BugsListComponent implements OnInit {
     console.log('deleted' + id);
     this.bugServices.deleteBugAfterId(id).subscribe(
       (data) => {
-        alert('Bug closed Complete');
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('bug-close-failed');
       },
       (error1 => {
         console.log('Error', error1);
-        alert('update failed :' + error1.error.detailMessage);
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('bug-close-failed') + error1.error.detailMessage;
       }));
     this.displayDialog = false;
     this.search();
   }
 
   save() {
+    console.log(this.temporatStatus)
     this.bug.status = this.temporatStatus;
-    console.log('saved');
     let attachmentToBeAdded: Attachment = {
       id: null,
       attContent: this.uploadedFileName,
     };
     if (this.attachments != null)
       this.fileUpload();
+    console.log('BUG TO BE SAVED', this.bug)
     this.bugServices.saveEditBug(this.bug, attachmentToBeAdded).subscribe(
       (data) => {
-        alert('Edit Bugs Complete');
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('bug-edit-successful');
         this.search();
       },
       (error2 => {
         console.log('Error', error2);
-        alert('update failed :' + error2.error.detailMessage);
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('bug-edit-failed') + error2.error.detailMessage;
       })
     );
 
@@ -273,12 +293,14 @@ export class BugsListComponent implements OnInit {
   }
 
   onRowSelect(event) {
+    this.getUsers();
     this.getAttachments(event.data).toPromise().then(
       res => {
         this.currentAttachments = res;
         this.clearFile();
         this.newBug = false;
         this.bug = this.cloneBug(event.data);
+        this.temporatStatus = this.bug.status;
         this.displayDialog = true;
       }
     )
@@ -307,7 +329,8 @@ export class BugsListComponent implements OnInit {
   onFileChange(event) {
     let fileSize = event.target.files[0].size / 1024 / 1024; // in MB
     if (fileSize > 25) {
-      alert('File size exceeds 25 MB');
+      const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message=this.languageService.getText('file-size');
     }
     if (event.target.files.length > 0) {
       let files = event.target.files;

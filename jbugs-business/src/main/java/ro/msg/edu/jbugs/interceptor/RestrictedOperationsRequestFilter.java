@@ -1,5 +1,9 @@
 package ro.msg.edu.jbugs.interceptor;
 
+import com.google.common.base.Charsets;
+import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.message.internal.ReaderWriter;
+import org.glassfish.jersey.server.ContainerException;
 import ro.msg.edu.jbugs.TokenManager;
 import ro.msg.edu.jbugs.entity.Permission;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
@@ -10,6 +14,10 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +51,28 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                     .build());
             return;
         }
+
+        if(thePath.get(0).equals("^users/.*/get")|| thePath.get(0).equals("^users/changePassword"))
+        {
+            String json=null;
+            try {
+                 json = IOUtils.toString(ctx.getEntityStream(), Charsets.UTF_8);
+                InputStream in = IOUtils.toInputStream(json);
+                ctx.setEntityStream(in);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if ((thePath.get(0).equals("^users/changePassword") && json!=null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())) ||
+                    (thePath.get(0).equals("^users/.*/get") && json!=null && ctx.getUriInfo().getPath().split("/")[1].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject()))
+            )
+                    return;
+                else
+                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                            .entity("Permissions missing")
+                            .build());
+        }
+
         List<String> permissionsRequired = permissions.get(thePath.get(0));
 
         if (permissionsRequired.size() != 0) {
@@ -90,9 +120,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
     private boolean checkAccess(String token, List<String> permissions) throws BusinessException {
         String username = TokenManager.decodeJWT(token).getSubject();
         List<Permission> userPermissions = userService.getUserPermissionsByUsername(username);
-        return permissions.stream().anyMatch(s -> {
-            return userPermissions.stream().anyMatch(ss -> ss.getType().equals(s));
-        });
+        return permissions.stream().anyMatch(s -> userPermissions.stream().anyMatch(ss -> ss.getType().equals(s)));
 
     }
 }
