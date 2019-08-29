@@ -323,6 +323,10 @@
     {
       "label": "logout",
       "value": "Logout"
+    },
+    {
+      "label": "user_deleted",
+      "value": "A user was deactivated: "
     }
   ]
 }
