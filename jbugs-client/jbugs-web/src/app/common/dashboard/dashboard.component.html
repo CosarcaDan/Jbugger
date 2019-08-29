@@ -20,7 +20,7 @@
       <h1 (click)="showNot(not)">{{not.type}}</h1>
     </div>
 
-    <p-dialog id="notificationDialog" header="Notification" [(visible)]="not.show"
+    <p-dialog id="notificationDialog" header="{{languageService.getText('notification')}}" [(visible)]="not.show"
               (onShow)="notificationDialogClearIntervalWhenVisible()"
               (onHide)="notificationDialogStartIntervalWhenVisible();hide()"
               [style]="{width: '350px', minWidth: '200px'}" appendTo="body" [positionLeft]="0" >

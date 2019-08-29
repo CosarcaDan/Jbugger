@@ -102,7 +102,7 @@ export class UserListComponent implements OnInit {
 
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-activate-successful');
-        this.getUsers();
+        modalRef.result.then(this.getUsers);
       },
       (error2 => {
         console.log('Error', error2);
@@ -119,7 +119,7 @@ export class UserListComponent implements OnInit {
       () => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-deactivate-successful');
-        this.getUsers();
+        modalRef.result.then(this.getUsers);
       },
       (error2 => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
@@ -136,7 +136,7 @@ export class UserListComponent implements OnInit {
       (data: {}) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-edit-successful');
-        this.getUsers();
+        modalRef.result.then(this.getUsers);
       },
       (error2 => {
         console.log('Error', error2);

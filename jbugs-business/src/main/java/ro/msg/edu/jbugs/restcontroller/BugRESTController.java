@@ -6,6 +6,7 @@ import com.itextpdf.text.DocumentException;
 import ro.msg.edu.jbugs.dto.AttachmentDto;
 import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.UserDto;
+import ro.msg.edu.jbugs.entity.Attachment;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
 import ro.msg.edu.jbugs.services.impl.AttachmentService;
@@ -175,5 +176,12 @@ public class BugRESTController {
         }
     }
 
+    @DELETE
+    @Path("/delete-attachment/{id}")
+    public Response deleteAttachment(@PathParam("id") int id)
+    {
+        attachmentService.deleteAttachment(id);
+        return Response.status(200).build();
+    }
 
 }

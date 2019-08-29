@@ -122,7 +122,7 @@
     },
     {
       "label": "user-deactivate-failed",
-      "value": "Utilizator nu a fost activat: "
+      "value": "Utilizatorul nu a fost deactivat: "
     },
     {
       "label": "user-edit-successful",
@@ -263,6 +263,10 @@
     {
       "label": "notifications",
       "value": "Notificări"
+    },
+    {
+      "label": "notification",
+      "value": "Notificare"
     },
     {
       "label": "new-password",

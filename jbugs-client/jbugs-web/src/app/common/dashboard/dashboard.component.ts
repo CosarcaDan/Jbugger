@@ -20,8 +20,6 @@ export class DashboardComponent implements OnInit {
   selectedLanguage = localStorage.getItem('language') == 'en' ? 'English' : 'Romanian';
 
   user = this.authService.getUsername();
-  displayNotification: boolean;
-
   interval;
 
   notifications: Notification[];
@@ -108,12 +106,8 @@ export class DashboardComponent implements OnInit {
   }
 
   showNot(notification:Notification){
-    console.log('showw:',notification.type)
     this.notifications.forEach(not=>{
-      if(not.id == notification.id)
-        not.show=true;
-      else
-        not.show=false;
+      not.show = not.id == notification.id;
     })
   }
   hide(){
@@ -127,33 +121,31 @@ export class DashboardComponent implements OnInit {
     if(notification.type == "WELCOME_NEW_USER")
     {
       let user: User = JSON.parse(notification.message);
-      let res:string ='<div>'+this.languageService.getText('welcome')+' '+user.firstName+' '+user.lastName+'! '+
-        this.languageService.getText('edit-pers-data')+`<a href="dashboard/profile" ">`+this.languageService.getText('here')+`</a>`+
-        this.languageService.getText('edit-pers-data-2')+
-        '</div><div>'+
-        this.languageService.getText('firstName')+': '+user.firstName+'</div><div>'+
-        this.languageService.getText('lastName')+': '+user.lastName+'</div><div>'+
-        'Email: '+user.email+'</div><div>'+
-        this.languageService.getText('phoneNumber')+': '+user.mobileNumber+'</div><div>'+
-        this.languageService.getText('username')+': '+user.username+'</div><div>'+
-        'Status: '+( localStorage.getItem('language')=='en'?user.status? 'active':'inactive':user.status? 'activ':'inactiv')+'</div>';
-      return res;
-    }
-    if (notification.type == 'USER_DELETED' || notification.type == 'USER_DEACTIVATED') {
-      let user: User = JSON.parse(notification.message);
-      let res: string = '<div>' + this.languageService.getText('user_deleted') +
+      return '<div>' + this.languageService.getText('welcome') + ' ' + user.firstName + ' ' + user.lastName + '! ' +
+        this.languageService.getText('edit-pers-data') + `<a href="dashboard/profile" ">` + this.languageService.getText('here') + `</a>` +
+        this.languageService.getText('edit-pers-data-2') +
         '</div><div>' +
         this.languageService.getText('firstName') + ': ' + user.firstName + '</div><div>' +
         this.languageService.getText('lastName') + ': ' + user.lastName + '</div><div>' +
         'Email: ' + user.email + '</div><div>' +
         this.languageService.getText('phoneNumber') + ': ' + user.mobileNumber + '</div><div>' +
         this.languageService.getText('username') + ': ' + user.username + '</div><div>' +
-        'Status: ' + (localStorage.getItem('language')=='en'?user.status? 'active':'inactive':user.status? 'activ':'inactiv') + '</div>';
-      return res;
+        'Status: ' + (localStorage.getItem('language') == 'en' ? user.status ? 'active' : 'inactive' : user.status ? 'activ' : 'inactiv') + '</div>';
+    }
+    if (notification.type == 'USER_DELETED' || notification.type == 'USER_DEACTIVATED') {
+      let user: User = JSON.parse(notification.message);
+      return '<div>' + this.languageService.getText('user_deleted') +
+        '</div><div>' +
+        this.languageService.getText('firstName') + ': ' + user.firstName + '</div><div>' +
+        this.languageService.getText('lastName') + ': ' + user.lastName + '</div><div>' +
+        'Email: ' + user.email + '</div><div>' +
+        this.languageService.getText('phoneNumber') + ': ' + user.mobileNumber + '</div><div>' +
+        this.languageService.getText('username') + ': ' + user.username + '</div><div>' +
+        'Status: ' + (localStorage.getItem('language') == 'en' ? user.status ? 'active' : 'inactive' : user.status ? 'activ' : 'inactiv') + '</div>';
     }
     if (notification.type == 'USER_UPDATED') {
       let user: User[] = JSON.parse(notification.message);
-      let res: string = '<div>' + this.languageService.getText('user_updated') + '<p><br></p></div>' +
+      return '<div>' + this.languageService.getText('user_updated') + '<p><br></p></div>' +
         '<div>' + this.languageService.getText('user_updated_new') + '</div><div>' +
         this.languageService.getText('firstName') + ': ' + user[0].firstName + '</div><div>' +
         this.languageService.getText('lastName') + ': ' + user[0].lastName + '</div><div>' +
@@ -169,7 +161,6 @@ export class DashboardComponent implements OnInit {
         this.languageService.getText('phoneNumber') + ': ' + user[1].mobileNumber + '</div><div>' +
         this.languageService.getText('username') + ': ' + user[1].username + '</div><div>' +
         'Status: ' + (user[0].status ? 'active' : 'inactive') + '<br></div>';
-      return res;
     }
   }
 }

@@ -24,6 +24,9 @@ public class AttachmentService {
         Attachment attachment = AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto);
         attachmentRepo.addAttachment(attachment);
     }
+    public void deleteAttachment(Integer id) {
+        attachmentRepo.deleteAttachment(id);
+    }
 
 //    public AttachmentDto findAttachment(Integer id){
 //        Attachment attachment = attachmentRepo.findAttachment(id);
