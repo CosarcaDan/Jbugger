@@ -12,6 +12,7 @@ import ro.msg.edu.jbugs.services.impl.AttachmentService;
 import ro.msg.edu.jbugs.services.impl.BugService;
 import ro.msg.edu.jbugs.services.impl.UserService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
 import javax.validation.constraints.NotNull;

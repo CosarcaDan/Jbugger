@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
     ];
 
 
-    this.interval = setInterval(this.getMyNotification.bind(this),5000);
+    this.interval = setInterval(this.getMyNotification.bind(this),10000);
 
   }
 

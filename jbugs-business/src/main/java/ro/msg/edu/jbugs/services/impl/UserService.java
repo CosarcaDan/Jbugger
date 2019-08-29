@@ -20,6 +20,7 @@ import ro.msg.edu.jbugs.validators.Validator;
 
 import javax.annotation.Nullable;
 import javax.ejb.EJB;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.persistence.EntityNotFoundException;
 import java.nio.charset.StandardCharsets;
@@ -35,9 +36,10 @@ import java.util.stream.Collectors;
 @Stateless
 public class UserService {
 
-    //Todo ? sa schimbam tot inputul si outputul in UserDto sau permitem si primitive ?
-    //ToDo create notification for specified methods
+
     //ToDo validate pentru id
+
+    private String usernameLogedIn;
 
     @EJB
     private UserRepo userRepo;
@@ -54,18 +56,19 @@ public class UserService {
         userDto.setUsername(generateUserName(userDto.getLastName(), userDto.getFirstName()));
         String defaultPassword = "defaultPass";
         userDto.setPassword(Hashing.sha256().hashString(defaultPassword, StandardCharsets.UTF_8).toString());
-        userDto.setCounter(0);
+        userDto.setFailedLoginAttempt(0);
         userDto.setStatus(true);
         User user = UserDtoMapping.userDtoToUser(userDto);
         User newUser = userRepo.addUser(user);
-        notificationService.addNotificationNewUser(user);
+        UserDto newUserDto = UserDtoMapping.userToUserDtoWithoutBugId(newUser);
+        notificationService.createNotificationNewUser(newUserDto);
         return newUser;
     }
 
     public UserDto findUser(Integer id) throws BusinessException {
         try {
             User user = userRepo.findUser(id);
-            UserDto userDto = UserDtoMapping.userToUserDtoComplet(user);
+            UserDto userDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
             return userDto;
         } catch (EntityNotFoundException ex) {
             throw new BusinessException("No User found with given Id", "msg - 006");
@@ -75,7 +78,7 @@ public class UserService {
     public UserDto findUser(String username) throws BusinessException {
         try {
             User user = userRepo.findUserByUsername(username);
-            UserDto userDto = UserDtoMapping.userToUserDtoComplet(user);
+            UserDto userDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
             return userDto;
         } catch (EntityNotFoundException | RepositoryException ex) {
             throw new BusinessException("No User found with given Id", "msg - 006");
@@ -92,7 +95,7 @@ public class UserService {
 
     public List<UserDto> getAllUser() {
         List<User> userList = userRepo.findAllUser();
-        List<UserDto> userDtoList = userList.stream().map(UserDtoMapping::userToUserDtoIncomplet).collect(Collectors.toList());
+        List<UserDto> userDtoList = userList.stream().map(UserDtoMapping::userToUserDtoWithoutBugId).collect(Collectors.toList());
         return userDtoList;
     }
 
@@ -160,11 +163,13 @@ public class UserService {
         try {
             user = userRepo.findByUsernameAndPassword(userDto.getUsername(), encriptedPassword);
             userRepo.setFailedLoginAttemptToZero(user);
+            this.usernameLogedIn = user.getUsername();
         } catch (RepositoryException ex) {
             passwordFailed(userDto.getUsername());
             throw new BusinessException(ex);
         }
-        return UserDtoMapping.userToUserDtoIncomplet(user);
+        UserDto logedInUserDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
+        return logedInUserDto;
     }
 
     public void passwordFailed(String username) throws BusinessException {
@@ -191,7 +196,7 @@ public class UserService {
                 throw new BusinessException("User already activ", "msg - 007");
             } else {
                 userRepo.setStatusTrue(user);
-                return UserDtoMapping.userToUserDtoIncomplet(user);
+                return UserDtoMapping.userToUserDtoWithoutBugId(user);
             }
         } catch (RepositoryException e) {
             throw new BusinessException(e);
@@ -212,8 +217,15 @@ public class UserService {
                 }
             }
             userRepo.setStatusFalse(user);
+            UserDto deactivatedUserDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
+            if (roleRepo.findAdminRole() != null && !roleRepo.findAdminRole().getUserList().isEmpty()){
+                List<User> admins = roleRepo.findAdminRole().getUserList();
+                List<UserDto> adminsDto = admins.stream().map(UserDtoMapping::userToUserDtoWithoutBugId).collect(Collectors.toList());
+                notificationService.createNotificationDeactivateUserForAdmin(adminsDto, deactivatedUserDto);
+            }
+            notificationService.createNotificationDeactivateUserForUserManagement();
             //todo notification USER_DELETED r:UserManager
-            return UserDtoMapping.userToUserDtoIncomplet(user);
+            return deactivatedUserDto;
         } catch (RepositoryException e) {
             throw new BusinessException(e);
         }
@@ -238,7 +250,7 @@ public class UserService {
             User newDataUser = UserDtoMapping.userDtoToUser(userDto);
             User response = userRepo.updateUser(newDataUser);
             //todo notification user_update r:updated user and the initiator
-            return UserDtoMapping.userToUserDtoIncomplet(response);
+            return UserDtoMapping.userToUserDtoWithoutBugId(response);
         } catch (RepositoryException e) {
             throw new BusinessException(e);
         }
@@ -274,8 +286,13 @@ public class UserService {
         }).collect(Collectors.toList()));
         User res = null;
         try {
+            UserDto initiator = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(usernameLogedIn));
+            UserDto userToBeUpdated = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(userDto.getUsername()));
+            UserDto oldUserData = new UserDto(0,userToBeUpdated.getFailedLoginAttempt(),userToBeUpdated.getFirstName(),userToBeUpdated.getLastName(),userToBeUpdated.getEmail(),userToBeUpdated.getMobileNumber(),userToBeUpdated.getPassword(),userToBeUpdated.getUsername(),userToBeUpdated.getStatus());
             res = userRepo.updateUser(newDataUser);
-            return UserDtoMapping.userToUserDtoIncomplet(res);
+            UserDto modifiedUserDt = UserDtoMapping.userToUserDtoWithoutBugId(res);
+            notificationService.createNotificationUpdateUser(initiator,modifiedUserDt,oldUserData);
+            return modifiedUserDt;
         } catch (RepositoryException e) {
             throw new BusinessException(e);
         }

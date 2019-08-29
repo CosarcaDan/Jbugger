@@ -98,13 +98,13 @@
   </div>
 
   <div class="form-group">
-    <label for="createdBy">Created by: </label>
+    <label for="createdBugsId">Created by: </label>
     <input type="text"
-           formControlName="createdBy"
+           formControlName="createdBugsId"
            class="form-control"
            disabled
            [value]="currentLoggedUser.name"
-           id="createdBy">
+           id="createdBugsId">
   </div>
 
   <div class="form-group">
@@ -118,11 +118,11 @@
   </div>
 
   <div class="form-group">
-    <label for="assignedTo">Assigned to: </label>
+    <label for="assignedBugsId">Assigned to: </label>
     <select class="form-control"
-            id="assignedTo"
-            name="assignedTo"
-            formControlName="assignedTo"
+            id="assignedBugsId"
+            name="assignedBugsId"
+            formControlName="assignedBugsId"
     >
       <option *ngFor="let user of allUsers" [value]="user.username">
         {{user.firstName}} {{user.lastName}} ({{user.username}})

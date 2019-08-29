@@ -25,7 +25,7 @@ export class UserListComponent implements OnInit {
 
   user: User = {
     id: 0,
-    counter: 0,
+    failedLoginAttempt: 0,
     firstName: '',
     lastName: '',
     email: '',

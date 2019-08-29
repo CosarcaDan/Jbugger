@@ -104,7 +104,7 @@ public class UserServiceTest {
     public void findUserTest() throws BusinessException {
         when(userRepo.findUser(123)).thenReturn(new User(1,"fnt","lnt","et","mnt","pt","unt",true));
         UserDto userDto = userService.findUser(123);
-        assertEquals((Integer)1,userDto.getCounter());
+        assertEquals((Integer)1,userDto.getFailedLoginAttempt());
         assertEquals("fnt",userDto.getFirstName());
         assertEquals("lnt",userDto.getLastName());
         assertEquals("et",userDto.getEmail());

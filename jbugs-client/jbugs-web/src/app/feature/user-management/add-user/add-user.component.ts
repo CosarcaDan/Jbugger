@@ -73,7 +73,7 @@ export class AddUserComponent implements OnInit {
 
     let userToBeAdded: User = {
       id: null,
-      counter: null,
+      failedLoginAttempt: null,
       firstName: this.firstname,
       lastName: this.lastname,
       email: this.email,

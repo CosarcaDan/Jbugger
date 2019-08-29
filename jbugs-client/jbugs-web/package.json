@@ -27,6 +27,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
     "ng-country-flags": "^1.0.7",
+    "ng-recaptcha": "^5.0.0",
     "ngx-flag-icon-css": "^1.0.1",
     "popper.js": "^1.14.7",
     "primeicons": "^2.0.0",

@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.dto.mappers;
 
 import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.UserDto;
+import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class UserDtoMapping {
         //todo poate gasit alternativa pentru mappind fara sa facem new User, alternativ trimis atribute la add si construim acolo Userul
         User user =  new User();
         user.setId(userDto.getId());
-        user.setFailedLoginAttempt(userDto.getCounter());
+        user.setFailedLoginAttempt(userDto.getFailedLoginAttempt());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
@@ -33,20 +34,21 @@ public class UserDtoMapping {
         return user;
     }
 
-    public static UserDto userToUserDtoComplet(User user){
-        List<BugDto> bugsCreatedDto = new ArrayList<>();
-        List<BugDto> bugsAssignedDto = new ArrayList<>();
+    //Not in use
+    public static UserDto userToUserDtoWithBugsId(User user){
+        List<Integer> bugsCreatedDto = new ArrayList<>();
+        List<Integer> bugsAssignedDto = new ArrayList<>();
 
         if (user.getCreatedBugs() != null) {
-            bugsCreatedDto = user.getCreatedBugs().stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
+            bugsCreatedDto = user.getCreatedBugs().stream().map(Bug::getId).collect(Collectors.toList());
         }
         if (user.getAssignedBugs() != null) {
-            bugsAssignedDto = user.getAssignedBugs().stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
+            bugsAssignedDto = user.getAssignedBugs().stream().map(Bug::getId).collect(Collectors.toList());
         }
         return new UserDto(user.getId(), user.getFailedLoginAttempt(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getMobileNumber(), user.getPassword(), user.getUsername(), user.getStatus(), bugsCreatedDto, bugsAssignedDto);
     }
 
-    public static UserDto userToUserDtoIncomplet(User user){
+    public static UserDto userToUserDtoWithoutBugId(User user){
         return new UserDto(user.getId(), user.getFailedLoginAttempt(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getMobileNumber(), user.getPassword(), user.getUsername(), user.getStatus());
 
     }

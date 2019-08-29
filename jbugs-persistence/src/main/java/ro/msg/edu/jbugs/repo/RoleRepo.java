@@ -37,7 +37,6 @@ public class RoleRepo {
         entityManager.merge(role);
         entityManager.flush();
         return role;
-
     }
 
     public List<Role> getAllRoles() {
@@ -61,5 +60,14 @@ public class RoleRepo {
         entityManager.merge(role);
         entityManager.flush();
         return role;
+    }
+
+    public Role findAdminRole(){
+        for(Role role:getAllRoles()){
+            if(role.getType().equals("Administrator")){
+                return role;
+            }
+        }
+        return null;
     }
 }
