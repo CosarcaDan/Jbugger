@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.services.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.NotificationDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.NotificationDtoMapping;
@@ -58,7 +59,6 @@ public class NotificationService {
             Notification notificationForAdmin = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForAdmin, UserDtoMapping.userDtoToUser(admin));
             notificationRepo.addNotification(notificationForAdmin);
         }
-
     }
 
     //USER_DELETED notification
@@ -75,6 +75,50 @@ public class NotificationService {
         }
     }
 
+    public void createNotificationCloseBug(UserDto bugCreator, UserDto bugAssignee, BugDto closedBugDto){
+        Gson gson = new GsonBuilder().create();
+        String closeBugMessage = gson.toJson(closedBugDto);
+        String url = "http://localhost:4200/dashboard/bugs/" + closedBugDto.getId(); //todo see if null
+        NotificationDto notificationDtoForBugCreator = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), closeBugMessage, "BUG_CLOSED", url, false, bugCreator.getUsername());
+        Notification notificationForBugCreator = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForBugCreator, UserDtoMapping.userDtoToUser(bugCreator));
+        notificationRepo.addNotification(notificationForBugCreator);
+        if(!bugCreator.getUsername().equals(bugAssignee.getUsername())) {
+            NotificationDto notificationDtoForBugAssignee = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), closeBugMessage, "BUG_CLOSED", url, false, bugAssignee.getUsername());
+            Notification notificationForBugAssignee = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForBugAssignee, UserDtoMapping.userDtoToUser(bugAssignee));
+            notificationRepo.addNotification(notificationForBugAssignee);
+        }
+    }
+
+    public void createNotificationBugEditOnlyStatus(BugDto oldBugDto,BugDto newBugDataDto ,UserDto creatorDto, UserDto assignedDto) {
+        Gson gson = new GsonBuilder().create();
+        List<BugDto> bugDtos = Arrays.asList(oldBugDto,newBugDataDto);
+        String updateMessage = gson.toJson(bugDtos);
+        String url = "http://localhost:4200/dashboard/bugs/" + oldBugDto.getId();
+        NotificationDto notificationDtoForBugCreator = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), updateMessage, "BUG_STATUS_UPDATED", url, false, creatorDto.getUsername());
+        Notification notificationForBugCreator = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForBugCreator, UserDtoMapping.userDtoToUser(creatorDto));
+        notificationRepo.addNotification(notificationForBugCreator);
+        if(!creatorDto.getUsername().equals(assignedDto.getUsername())) {
+            NotificationDto notificationDtoForBugAssignee = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), updateMessage, "BUG_STATUS_UPDATED", url, false, assignedDto.getUsername());
+            Notification notificationForBugAssignee = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForBugAssignee, UserDtoMapping.userDtoToUser(assignedDto));
+            notificationRepo.addNotification(notificationForBugAssignee);
+        }
+    }
+
+    public void createNotificationBugEdit(BugDto oldBugDto, BugDto updatedBug, UserDto creatorDto, UserDto assignedDto) {
+        Gson gson = new GsonBuilder().create();
+        List<BugDto> bugDtos = Arrays.asList(oldBugDto,updatedBug);
+        String updateMessage = gson.toJson(bugDtos);
+        String url = "http://localhost:4200/dashboard/bugs/" + oldBugDto.getId();
+        NotificationDto notificationDtoForBugCreator = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), updateMessage, "BUG_UPDATED", url, false, creatorDto.getUsername());
+        Notification notificationForBugCreator = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForBugCreator, UserDtoMapping.userDtoToUser(creatorDto));
+        notificationRepo.addNotification(notificationForBugCreator);
+        if(!creatorDto.getUsername().equals(assignedDto.getUsername())) {
+            NotificationDto notificationDtoForBugAssignee = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), updateMessage, "BUG_UPDATED", url, false, assignedDto.getUsername());
+            Notification notificationForBugAssignee = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForBugAssignee, UserDtoMapping.userDtoToUser(assignedDto));
+            notificationRepo.addNotification(notificationForBugAssignee);
+        }
+    }
+
     public NotificationDto findNotification(Integer id) {
         Notification notification = notificationRepo.findNotification(id);
         NotificationDto notificationDto = NotificationDtoMapping.notificationTonotificationDto(notification);
@@ -85,6 +129,4 @@ public class NotificationService {
         List<Notification> notifications = notificationRepo.findAllNotificationsByUsername(username);
         return notifications.stream().map(NotificationDtoMapping::notificationTonotificationDto).collect(Collectors.toList());
     }
-
-
 }
