@@ -127,7 +127,7 @@ public class UserRESTController {
             //adds the roles of the user
             RoleDto[] list = gson.fromJson(roles, RoleDto[].class);
             Arrays.stream(list).forEach(role -> userService.addRoleToUser(userAddededDto, role));
-            EmailService.sendMail("Ob.P3ter@gmail.com,sonyaparau@yahoo.com,cosarcadan@gmail.com,daiarus@yahoo.com","Welcome to Jbugger","Welcome to Jbugger!\nYour username is:"+userAdded.getUsername()+"\nYour password is: defaultPass\nPlease change it on your first login.");
+            EmailService.sendMail("Ob.P3ter@gmail.com,sonyaparau@yahoo.com,cosarcadan@gmail.com,daiarus@yahoo.com", "Welcome to Jbugger", "Welcome to Jbugger!\nYour username is:" + userAdded.getUsername() + "\nYour password is: defaultPass\nPlease change it on your first login.");
             String response = gson.toJson("User was successfully added!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Table(name = "attachments")
 @NamedQueries({
         @NamedQuery(name = Attachment.DELETE_ATTACHMENTS_AFTER_BUG_ID, query = "delete from Attachment a where a.bug = :bug "),
-        @NamedQuery(name= Attachment.DELETE_ATTACHMENT_AFTER_ID, query ="delete from Attachment  a where a.id=:id")
+        @NamedQuery(name = Attachment.DELETE_ATTACHMENT_AFTER_ID, query = "delete from Attachment  a where a.id=:id")
 })
 public class Attachment implements Serializable {
     public static final String DELETE_ATTACHMENTS_AFTER_BUG_ID = "deleteAttachmentsAfterBugId";

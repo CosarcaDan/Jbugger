@@ -1,20 +1,17 @@
 package ro.msg.edu.jbugs.services.impl;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+
 public class EmailService {
-    public static void sendMail(String toMail,String subject,String message) {
+    public static void sendMail(String toMail, String subject, String message) {
         //Setting up configurations for the email connection to the Google SMTP server using TLS
-        String username="jbugger.msg@obpeter.com";
-        String password="myPass123!@#";
+        String username = "jbugger.msg@obpeter.com";
+        String password = "myPass123!@#";
         Properties props = new Properties();
         props.put("mail.smtp.host", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -24,7 +21,7 @@ public class EmailService {
         //Establishing a session with required user details
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username,password);
+                return new PasswordAuthentication(username, password);
             }
         });
         try {

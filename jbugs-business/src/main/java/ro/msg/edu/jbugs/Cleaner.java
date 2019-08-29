@@ -1,7 +1,6 @@
 package ro.msg.edu.jbugs;
 
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
-import ro.msg.edu.jbugs.repo.BugRepo;
 import ro.msg.edu.jbugs.repo.CommentRepo;
 
 import javax.ejb.EJB;

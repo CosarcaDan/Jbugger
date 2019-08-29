@@ -48,7 +48,7 @@ export class UserListComponent implements OnInit {
     this.languageService.getText('save');
     this.languageService.getText('save');
     this.getUsers();
-    this.language=localStorage.getItem('language');
+    this.language = localStorage.getItem('language');
     //this.getRoles();
 
     this.cols = [

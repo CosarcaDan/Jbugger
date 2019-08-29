@@ -15,7 +15,7 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr [pSelectableRow]="rowData">
       <td *ngFor="let col of columns">
-        {{col.field == 'status' ? (language=='en'?(rowData[col.field] ? 'active' : 'inactive'):(rowData[col.field] ? 'activ' : 'inactiv')) : rowData[col.field]}}
+        {{col.field == 'status' ? (language == 'en' ? (rowData[col.field] ? 'active' : 'inactive') : (rowData[col.field] ? 'activ' : 'inactiv')) : rowData[col.field]}}
       </td>
     </tr>
   </ng-template>

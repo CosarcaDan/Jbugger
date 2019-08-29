@@ -189,7 +189,7 @@ export class BugsListComponent implements OnInit {
         this.allUsers.push(dataKey);
       }
       this.mappedUsers = this.allUsers.map(user => {
-          return {label: user.firstName + ' ' + user.lastName + ' (' + user.username + ')', value: user.username};
+        return {label: user.firstName + ' ' + user.lastName + ' (' + user.username + ')', value: user.username};
         }
       );
     });

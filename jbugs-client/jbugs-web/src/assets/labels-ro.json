@@ -329,6 +329,38 @@
       "value": "Delogare"
     },
     {
+      "label": "closedBug",
+      "value": "Bug-ul a fost inchis cu succes"
+    },
+    {
+      "label": "bug-details",
+      "value": "Detalii despre Bug"
+    },
+    {
+      "label": "bugUpdated",
+      "value": "Bug-ul a fost editat cu succes"
+    },
+    {
+      "label": "oldBugData",
+      "value": "Valorile Bug-ului inainte de editare"
+    },
+    {
+      "label": "newBugData",
+      "value": "Valorile Bug-ului dupa de editare"
+    },
+    {
+      "label": "oldBugStatus",
+      "value": "Statusul Bug-ului inainte de editare"
+    },
+    {
+      "label": "newBugStatus",
+      "value": "Statusul Bug-ului dupa de editare"
+    },
+    {
+      "label": "bugStatusUpdate",
+      "value": "Statusul Bug-ul a fost editat cu succes"
+    },
+    {
       "label": "user_deleted",
       "value": "Un utilizator a fost dezactivat: "
     },

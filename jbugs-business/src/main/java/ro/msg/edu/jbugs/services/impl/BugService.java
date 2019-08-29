@@ -161,9 +161,9 @@ public class BugService {
         bug.setStatus(Bug.Status.CLOSED);
         try {
             BugDto closedBugDto = BugDtoMapping.bugToBugDtoComplet(bug);
-            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId( userRepo.findUserByUsername(closedBugDto.getCreated()));
+            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getCreated()));
             UserDto assignedDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getAssigned()));
-            notificationService.createNotificationCloseBug(creatorDto,assignedDto,closedBugDto);
+            notificationService.createNotificationCloseBug(creatorDto, assignedDto, closedBugDto);
             //toDo notification BUG_CLOSED r:creator assigned
             return closedBugDto;
         } catch (RepositoryException e) {
@@ -171,23 +171,21 @@ public class BugService {
         }
     }
 
-    private boolean isOnlyStatusChanged(BugDto bugdto, Bug bug){
-        if(!bugdto.getTitle().equals(bug.getTitle()))
+    private boolean isOnlyStatusChanged(BugDto bugdto, Bug bug) {
+        if (!bugdto.getTitle().equals(bug.getTitle()))
             return false;
-        if(!bugdto.getVersion().equals(bug.getVersion()))
+        if (!bugdto.getVersion().equals(bug.getVersion()))
             return false;
-        if(!bugdto.getFixedVersion().equals(bug.getFixedVersion()))
+        if (!bugdto.getFixedVersion().equals(bug.getFixedVersion()))
             return false;
-        if(!bugdto.getDescription().equals(bug.getDescription()))
+        if (!bugdto.getDescription().equals(bug.getDescription()))
             return false;
-        if(!bugdto.getSeverity().equals(bug.getSeverity().toString()))
+        if (!bugdto.getSeverity().equals(bug.getSeverity().toString()))
             return false;
-        if(!bugdto.getTargetDate().equals(bug.getTargetDate()))
+        if (!bugdto.getTargetDate().equals(bug.getTargetDate()))
             return false;
-        if(!bugdto.getAssigned().equals(bug.getAssigned().getUsername()))
-            return false;
+        return bugdto.getAssigned().equals(bug.getAssigned().getUsername());
         //todo changed attachemnt
-        return true;
     }
 
     //Todo Validations
@@ -195,7 +193,7 @@ public class BugService {
         Validator.validateBug(bugDto);
         Bug bug = bugRepo.findBug(bugDto.getId());
         BugDto oldBugDto = BugDtoMapping.bugToBugDtoComplet(bug);
-        boolean onlyStatusChanged = isOnlyStatusChanged(bugDto,bug);
+        boolean onlyStatusChanged = isOnlyStatusChanged(bugDto, bug);
         bug.setTitle(bugDto.getTitle());
         bug.setDescription(bugDto.getDescription());
         bug.setVersion(bugDto.getVersion());
@@ -204,17 +202,17 @@ public class BugService {
         bug.setSeverity(Bug.Severity.valueOf(bugDto.getSeverity()));
         try {
             User assigned = userRepo.findUserByUsername(bugDto.getAssigned());
-            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId( userRepo.findUserByUsername(bugDto.getCreated()));
+            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(bugDto.getCreated()));
             UserDto assignedDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(bugDto.getAssigned()));
             bug.setAssigned(assigned);
             if (!bug.getStatus().equals(Bug.Status.valueOf(bugDto.getStatus())))
                 updateStatusBug(bugDto);
             //todo notification BUG_UPDATED r: bugCreator, AssignedTo
             BugDto updatedBug = BugDtoMapping.bugToBugDtoComplet(bug);
-            if(onlyStatusChanged){
-                notificationService.createNotificationBugEditOnlyStatus(oldBugDto,updatedBug,creatorDto,assignedDto);
-            }else{
-                notificationService.createNotificationBugEdit(oldBugDto,updatedBug,creatorDto,assignedDto);
+            if (onlyStatusChanged) {
+                notificationService.createNotificationBugEditOnlyStatus(oldBugDto, updatedBug, creatorDto, assignedDto);
+            } else {
+                notificationService.createNotificationBugEdit(oldBugDto, updatedBug, creatorDto, assignedDto);
             }
             return updatedBug; //todo see if status has been schanged
         } catch (RepositoryException e) {

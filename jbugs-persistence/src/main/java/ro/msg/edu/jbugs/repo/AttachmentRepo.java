@@ -40,7 +40,7 @@ public class AttachmentRepo {
 
     public void deleteAttachment(Integer id) {
         Query query = entityManager.createNamedQuery(Attachment.DELETE_ATTACHMENT_AFTER_ID);
-        query.setParameter("id",id);
+        query.setParameter("id", id);
         query.executeUpdate();
     }
 }
