@@ -5,14 +5,14 @@
   z-index: 5;
 }
 
-#logo {
+#notificationDiv {
   background-color: lightgrey;
   padding: 10px;
   position: relative;
 }
 
 
-#logo a span {
+#notificationDiv a span {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -21,13 +21,17 @@
   z-index: 1;
 }
 
-#logo:hover {
+#notificationDiv:hover {
   background-color: grey;
 }
 
-#logo:active {
-  background-color: #A9A;
+#notificationDiv:active {
+  background-color: dimgrey;
   top: +2px;
+}
+
+#notificationDiv::after {
+  background-color: red;
 }
 
 label {
@@ -38,4 +42,12 @@ label {
 a {
   font-weight: bold;
   text-align: left;
+}
+
+#notificationDialog {
+  z-index: 1;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  right: 50vh;
 }

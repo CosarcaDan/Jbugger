@@ -9,7 +9,7 @@ import {AddPermissionComponent} from './feature/permission-management/add-permis
 import {RemovePermissionComponent} from './feature/permission-management/remove-permission/remove-permission.component';
 import {AuthGuardService} from './core/services/guards/auth-guard.service';
 import {PermissionManagementComponent} from './feature/permission-management/permission-management/permission-management.component';
-import {ProfileComponent} from "./feature/profile/profile.component";
+import {ProfileComponent} from './feature/profile/profile.component';
 
 
 const routes: Routes = [

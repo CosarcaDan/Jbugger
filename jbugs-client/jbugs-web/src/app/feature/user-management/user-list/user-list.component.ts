@@ -5,8 +5,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddUserComponent} from '../add-user/add-user.component';
 import {RoleService} from '../../../core/services/role/role.service';
 import {Role} from '../../../core/models/role';
-import {LanguageService} from "../../../core/services/language/language.service";
-import {MessageComponent} from "../../../core/message/message.component";
+import {LanguageService} from '../../../core/services/language/language.service';
+import {MessageComponent} from '../../../core/message/message.component';
 
 @Component({
   selector: 'app-get-user',

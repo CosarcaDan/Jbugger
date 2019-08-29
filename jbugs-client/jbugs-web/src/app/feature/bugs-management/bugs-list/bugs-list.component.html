@@ -5,7 +5,7 @@
   <ng-template pTemplate="caption">
     <div style="text-align: right">
 
-      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Export Excel"
+      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{languageService.getText('export-into-excel')}}"
               (click)="exportAsXLSX()" style="float:left"></button>
 
       <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -156,7 +156,8 @@
       </div>
       <div class="ui-g-8">
         <input pInputText id="versionEdit" [(ngModel)]="bug.version"
-               pattern="^(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)$" required #versionEdit='ngModel'/>
+               pattern="^^(0|[1-9a-zA-Z][0-9a-zA-z]?)\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)$"
+               required #versionEdit='ngModel'/>
         <div class="alert alert-danger"
              *ngIf="versionEdit.touched && versionEdit.invalid">
           <div *ngIf="versionEdit.errors.required">
@@ -196,12 +197,10 @@
       </div>
       <div class="ui-g-8">
         <input pInputText id="fixedVersionEdit" [(ngModel)]="bug.fixedVersion"
-               pattern="^(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)$" required #fixedVersionEdit='ngModel'/>
+               pattern="^(0|[1-9a-zA-Z][0-9a-zA-z]?)\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)$"
+               #fixedVersionEdit='ngModel'/>
         <div class="alert alert-danger"
              *ngIf="fixedVersionEdit.touched && fixedVersionEdit.invalid">
-          <div *ngIf="fixedVersionEdit.errors.required">
-            {{languageService.getText('fixedVersion-required')}}
-          </div>
           <div *ngIf="fixedVersionEdit.errors.pattern">
             {{languageService.getText('fixedVersion-format')}}
           </div>
@@ -268,7 +267,7 @@
               label="{{languageService.getText('close-bug')}}"></button>
       <button type="button" pButton (click)="save()" label="{{languageService.getText('save')}}"></button>
       <button type="button" pButton (click)="export()" *ngIf="this.authService.hasPermission('BUG_EXPORT_PDF')"
-              label="{{languageService.getText('export-bug')}}"></button>
+              label="{{languageService.getText('export-into-pdf')}}"></button>
     </div>
   </p-footer>
 </p-dialog>

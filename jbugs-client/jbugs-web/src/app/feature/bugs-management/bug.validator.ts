@@ -11,7 +11,7 @@ export class BugValidators {
   static validateVersion(control: AbstractControl): ValidationErrors | null {
     let value: string = control.value;
     let regexpVersion =
-      new RegExp('^(0|[1-9][0-9]?)\\.(0|[1-9][0-9]?)\\.(0|[1-9][0-9]?)$');
+      new RegExp('^(0|[1-9a-zA-Z][0-9a-zA-z]?)\\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)\\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)$');
     if (value && (!regexpVersion.test(value))) {
       return {validateVersion: true};
     }

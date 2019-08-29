@@ -17,6 +17,10 @@
       "value": "First Name"
     },
     {
+      "label": "counter",
+      "value": "Failed login attempts"
+    },
+    {
       "label": "lastName",
       "value": "Last Name"
     },
@@ -158,11 +162,11 @@
     },
     {
       "label": "title-required",
-      "value": "Titel is required!"
+      "value": "Title is required!"
     },
     {
       "label": "description",
-      "value": "Descritption"
+      "value": "Description"
     },
     {
       "label": "description-required",
@@ -210,11 +214,15 @@
     },
     {
       "label": "close-bug",
-      "value": "Close BUg"
+      "value": "Close Bug"
     },
     {
-      "label": "export-bug",
-      "value": "Export to PDF"
+      "label": "export-into-pdf",
+      "value": "Export into PDF"
+    },
+    {
+      "label": "export-into-excel",
+      "value": "Export into Excel"
     },
     {
       "label": "targetDate",
@@ -238,7 +246,7 @@
     },
     {
       "label": "bug-close-failed",
-      "value": "Bug wasn't colsed: "
+      "value": "Bug wasn't closed: "
     },
     {
       "label": "bug-edit-successful",
@@ -287,6 +295,22 @@
     {
       "label": "add",
       "value": "Add"
+    },
+    {
+      "label": "edit-pers-data",
+      "value": "You can edit your personal data "
+    },
+    {
+      "label": "edit-pers-data-2",
+      "value": " or by clicking on your username in the top right! Have a great day!"
+    },
+    {
+      "label": "here",
+      "value": "here"
+    },
+    {
+      "label": "welcome",
+      "value": "Welcome"
     },
     {
       "label": "search",

@@ -222,7 +222,18 @@ public class UserService {
                 List<UserDto> adminsDto = admins.stream().map(UserDtoMapping::userToUserDtoWithoutBugId).collect(Collectors.toList());
                 notificationService.createNotificationDeactivateUserForAdmin(adminsDto, deactivatedUserDto);
             }
-            notificationService.createNotificationDeactivateUserForUserManagement();
+
+            notificationService.createNotificationDeactivateUserForUserManagement(
+                    userRepo.findAllUser().stream().filter(user1 ->
+                    {
+                        try {
+                            return userRepo.findUserPermissions(user1.getUsername()).stream().anyMatch(permission -> permission.getType().equals("USER_MANAGEMENT"));
+                        } catch (RepositoryException e) {
+                            e.printStackTrace();
+                            return false;
+                        }
+                    }).map(UserDtoMapping::userToUserDtoWithoutBugId).collect(Collectors.toList())
+                    , deactivatedUserDto);
             //todo notification USER_DELETED r:UserManager
             return deactivatedUserDto;
         } catch (RepositoryException e) {

@@ -10,21 +10,24 @@
   </div>
 </p-menubar>
 
-<p-dialog header="Notification" [(visible)]="displayNotification"
-          [style]="{width: '350px', minWidth: '200px'}">
-  <p>Uite-maaa</p>
-</p-dialog>
 
 <p-sidebar [(visible)]="display" position="right" styleClass="ui-sidebar-md">
   <h1>{{languageService.getText('notifications')}}</h1>
 
-  <div *ngFor="let not of notification">
+  <div *ngFor="let not of notifications">
 
-    <div id="logo">
-      <h1 (click)="displayNotification = true">{{not}}</h1>
+    <div id="notificationDiv">
+      <h1 (click)="displayNotification = true">{{not.type}}</h1>
     </div>
 
+    <p-dialog id="notificationDialog" header="Notification" [(visible)]="displayNotification"
+              (onShow)="notificationDialogClearIntervalWhenVisible()"
+              (onHide)="notificationDialogStartIntervalWhenVisible()"
+              [style]="{width: '350px', minWidth: '200px'}" appendTo="body" [positionLeft]="0" >
+      <div [innerHTML]="notificationFormatter(not)"></div>
+    </p-dialog>
   </div>
+
 </p-sidebar>
 
 <button id="notification" type="text" (click)="display = true" pButton class="ui-button-rounded ui-button-success"
