@@ -7,6 +7,8 @@ import {LanguageService} from "../../core/services/language/language.service";
 import {Notification} from "../../core/models/notification";
 import {not} from "rxjs/internal-compatibility";
 import {User} from "../../core/models/user";
+import {Bug} from "../../core/models/bug";
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-dashboard',
@@ -124,10 +126,25 @@ export class DashboardComponent implements OnInit {
         this.languageService.getText('phoneNumber')+': '+user.mobileNumber+'</div><div>'+
         this.languageService.getText('username')+': '+user.username+'</div><div>'+
         'Status: '+( user.status? 'active':'inactive')+'</div>'
-      console.log(res);
-
       return res;
+    }
 
+
+    if(notification.type == "BUG_CLOSED")
+    {
+      let bug: Bug = JSON.parse(notification.message)
+      let res:string ='<div>'+this.languageService.getText('closedBug')+'</div><div>'+
+        this.languageService.getText('bug-details') + ': <div></div>'+
+        this.languageService.getText('title') + ' : '+bug.title+'</div><div>'+
+        this.languageService.getText('description') +' : '+bug.description.substr(0,20)+' ...</div><div>'+
+        this.languageService.getText('version') +' : '+bug.version+'</div><div>'+
+        this.languageService.getText('fixedVersion') +' : '+bug.fixedVersion+'</div><div>'+
+        this.languageService.getText('severity') +' : '+bug.severity+'</div><div>'+
+        'Status: ' +' : '+bug.status+'</div><div>'+
+        this.languageService.getText('targetDate') +' : '+ formatDate(bug.targetDate,'dd.MM.yyyy','en')+'</div><div>'+
+        this.languageService.getText('createdBy') +' : '+bug.created+'</div><div>'+
+        this.languageService.getText('assignedTo') +' : '+bug.assigned+'</div><div>'+'</div>';
+      return res;
     }
   }
 }

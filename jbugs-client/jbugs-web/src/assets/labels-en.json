@@ -323,6 +323,15 @@
     {
       "label": "logout",
       "value": "Logout"
+    },
+    {
+      "label": "closedBug",
+      "value": "Bug closed successfully"
+    },
+    {
+      "label": "bug-details",
+      "value": "Bug Details"
     }
+
   ]
 }

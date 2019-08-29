@@ -323,6 +323,15 @@
     {
       "label": "logout",
       "value": "Delogare"
+    },
+    {
+      "label": "closedBug",
+      "value": "Bug-ul a fost inchis cu succes"
+    },
+    {
+      "label": "bug-details",
+      "value": "Detalii despre Bug:"
     }
+
   ]
 }
