@@ -158,11 +158,11 @@
     },
     {
       "label": "title-required",
-      "value": "Titel is required!"
+      "value": "Title is required!"
     },
     {
       "label": "description",
-      "value": "Descritption"
+      "value": "Description"
     },
     {
       "label": "description-required",
@@ -210,7 +210,7 @@
     },
     {
       "label": "close-bug",
-      "value": "Close BUg"
+      "value": "Close Bug"
     },
     {
       "label": "export-bug",
@@ -238,7 +238,7 @@
     },
     {
       "label": "bug-close-failed",
-      "value": "Bug wasn't colsed: "
+      "value": "Bug wasn't closed: "
     },
     {
       "label": "bug-edit-successful",

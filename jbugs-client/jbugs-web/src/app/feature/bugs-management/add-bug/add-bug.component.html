@@ -77,10 +77,10 @@
            id="targetDate"
            min="{{todayDate | date:'yyyy-MM-dd'}}"
     >
-    <div class="alert alert-danger"
-         *ngIf="form.get('targetDate').touched && form.get('targetDate').invalid">
-      <div *ngIf="form.get('targetDate').errors.min">{{languageService.getText('past-error')}}</div>
-    </div>
+    <!--    <div class="alert alert-danger"-->
+    <!--         *ngIf="form.get('targetDate').touched && form.get('targetDate').invalid">-->
+    <!--      <div *ngIf="form.get('targetDate').errors.min">{{languageService.getText('past-error')}}</div>-->
+    <!--    </div>-->
   </div>
 
   <div class="form-group">

@@ -52,6 +52,6 @@ public class Validator {
     }
 
     static boolean validateVersion(String version){
-        return version.matches("^(0|[1-9][0-9]?)\\.(0|[1-9][0-9]?)\\.(0|[1-9][0-9]?)$");
+        return version.matches("^(0|[1-9a-zA-Z][0-9a-zA-z]?)\\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)\\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)$");
     }
 }
