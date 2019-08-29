@@ -24,7 +24,6 @@ public class BugDto implements Serializable {
     private String severity;
     private String created;
     private String assigned;
-    private transient String url;
 
     public BugDto(Integer id, String title, String description, String version, Timestamp targetDate, String status, String fixedVersion, String severity, String created, String assigned) {
         this.id = id;

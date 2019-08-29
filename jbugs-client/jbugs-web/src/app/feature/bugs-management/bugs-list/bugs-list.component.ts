@@ -242,7 +242,7 @@ export class BugsListComponent implements OnInit {
     this.bugServices.deleteBugAfterId(id).subscribe(
       (data) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('bug-close-failed');
+        modalRef.componentInstance.message = this.languageService.getText('bug-close-successful');
       },
       (error1 => {
         console.log('Error', error1);
