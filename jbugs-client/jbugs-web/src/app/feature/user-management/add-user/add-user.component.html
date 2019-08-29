@@ -1,6 +1,6 @@
 <form [formGroup]="form">
   <div class="form-group">
-    <label for="firstname">First name: </label>
+    <label for="firstname">{{languageService.getText('firstName')}} : </label>
     <input type="text"
            formControlName="firstname"
            class="form-control"
@@ -9,17 +9,16 @@
     <div class="alert alert-danger"
          *ngIf="form.get('firstname').touched && form.get('firstname').invalid">
       <div *ngIf="form.get('firstname').errors.required">
-        First name is required!
+        {{languageService.getText('firstname') + languageService.getText('something-required')}}
       </div>
       <div *ngIf="form.get('firstname').errors.validateName">
-        First name must begin with capital letter and should contain only letters
-        and separators!
+        {{languageService.getText('firstname') + languageService.getText('name-format')}}
       </div>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="lastname">Last name: </label>
+    <label for="lastname">{{languageService.getText('lastName')}}: </label>
     <input type="text"
            formControlName="lastname"
            class="form-control"
@@ -28,17 +27,16 @@
     <div class="alert alert-danger"
          *ngIf="form.get('lastname').touched && form.get('lastname').invalid">
       <div *ngIf="form.get('lastname').errors.required">
-        Last name is required!
+        {{languageService.getText('lastname') + languageService.getText('something-required')}}
       </div>
       <div *ngIf="form.get('lastname').errors.validateName">
-        Last name must begin with capital letter and should contain only letters
-        and separators!
+        {{languageService.getText('lastname') + languageService.getText('name-format')}}
       </div>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="mobilenumber">Mobile number: </label>
+    <label for="mobilenumber">{{languageService.getText('phoneNumber')}}: </label>
     <input type="text"
            formControlName="mobilenumber"
            class="form-control"
@@ -47,14 +45,12 @@
     <div class="alert alert-danger"
          *ngIf="form.get('mobilenumber').touched && form.get('mobilenumber').invalid">
       <div *ngIf="form.get('mobilenumber').errors.required">
-        Mobile number is required!
+        {{languageService.getText('phoneNumber') + languageService.getText('something-required')}}
       </div>
       <div *ngIf="form.get('mobilenumber').errors.validateNumber">
-        Mobile number must be from Germany or Romania!
+        {{languageService.getText('phoneNumber') + languageService.getText('phoneNumber-format')}}
       </div>
-      <!--<div *ngIf="form.get('mobilenumber').errors.validateNumber">
-        Mobile number is too long.
-      </div>-->
+
     </div>
   </div>
 
@@ -68,19 +64,19 @@
     <div class="alert alert-danger"
          *ngIf="form.get('email').touched && form.get('email').invalid">
       <div *ngIf="form.get('email').errors.required">
-        Email is required!
+        {{languageService.getText('email-required')}}
       </div>
       <div *ngIf="form.get('email').errors.cannotContainSpace">
-        Email cannot contain any space!
+        {{languageService.getText('email-space')}}
       </div>
       <div *ngIf="form.get('email').errors.validateEmail">
-        Email must be of format [address]@msggroup.com!
+        {{languageService.getText('email-format')}}
       </div>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="roles">Choose some roles for the new user: </label>
+    <label for="roles">{{languageService.getText('choose-roles-newUser')}}: </label>
     <div *ngFor="let role of roles">
       <label>
         <input type="checkbox"
@@ -99,6 +95,6 @@
   <button class="btn btn-primary"
           type="button"
           (click)="addUser()"
-          [disabled]="form.invalid">Save
+          [disabled]="form.invalid">{{languageService.getText('save')}}
   </button>
 </form>

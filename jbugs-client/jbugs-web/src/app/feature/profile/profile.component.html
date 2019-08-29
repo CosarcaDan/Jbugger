@@ -1,0 +1,119 @@
+<div>
+  <form [formGroup]="form" (keyup.enter)="changePassword()">
+
+    <div class="form-group">
+      <label for="firstName">{{languageService.getText('firstName')}}: </label>
+      <input type="text"
+             formControlName="firstName"
+             class="form-control"
+             required
+             [(ngModel)]="loggedUser.firstName"
+             id="firstName">
+      <div class="alert alert-danger"
+           *ngIf="form.get('firstName').touched && form.get('firstName').invalid">
+        <div *ngIf="form.get('firstName').errors.required">
+          {{languageService.getText('firstName') + languageService.getText('something-required')}}
+        </div>
+        <div *ngIf="form.get('firstName').errors.validateName">
+          {{languageService.getText('firstName') + languageService.getText('name-format')}}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">{{languageService.getText('lastName')}}: </label>
+      <input type="text"
+             formControlName="lastName"
+             [(ngModel)]="loggedUser.lastName"
+             class="form-control"
+             required
+             id="lastName">
+      <div class="alert alert-danger"
+           *ngIf="form.get('lastName').touched && form.get('lastName').invalid">
+        <div *ngIf="form.get('lastName').errors.required">
+          {{languageService.getText('lastName') + languageService.getText('something-required')}}
+        </div>
+        <div *ngIf="form.get('lastName').errors.validateName">
+          {{languageService.getText('lastName') + languageService.getText('name-format')}}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="mobileNumber">{{languageService.getText('phoneNumber')}}: </label>
+      <input type="text"
+             formControlName="mobileNumber"
+             [(ngModel)]="loggedUser.mobileNumber"
+             class="form-control"
+             required
+             minlength="10"
+             maxlength="13"
+             id="mobileNumber">
+      <div class="alert alert-danger"
+           *ngIf="form.get('mobileNumber').touched && form.get('mobileNumber').invalid">
+        <div *ngIf="form.get('mobileNumber').errors.required">
+          {{languageService.getText('phoneNumber') + languageService.getText('something-required')}}
+        </div>
+        <div *ngIf="form.get('mobileNumber').errors.validateNumber">
+          {{languageService.getText('phoneNumber') + languageService.getText('phoneNumber-format')}}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email: </label>
+      <input type="text"
+             formControlName="email"
+             class="form-control"
+             [(ngModel)]="loggedUser.email"
+             required
+             id="email">
+      <div class="alert alert-danger"
+           *ngIf="form.get('email').touched && form.get('email').invalid">
+        <div *ngIf="form.get('email').errors.required">
+          {{languageService.getText('email-required')}}
+        </div>
+        <div *ngIf="form.get('email').errors.cannotContainSpace">
+          {{languageService.getText('email-space')}}
+        </div>
+        <div *ngIf="form.get('email').errors.validateEmail">
+          {{languageService.getText('email-format')}}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="newPassword">{{languageService.getText('new-password')}}: </label>
+      <input type="password"
+             formControlName="newPassword"
+             class="form-control"
+             id="newPassword">
+      <!--      <div class="alert alert-danger"-->
+      <!--           *ngIf="form.get('newPassword').touched && form.get('newPassword').invalid">-->
+      <!--        <div *ngIf="form.get('newPassword').errors.required">-->
+      <!--          Password is required!-->
+      <!--        </div>-->
+      <!--      </div>-->
+    </div>
+
+    <div class="form-group">
+      <label for="testPassword">{{languageService.getText('re-password')}}: </label>
+      <input type="password"
+             formControlName="testPassword"
+             class="form-control"
+             id="testPassword">
+      <!--      <div class="alert alert-danger"-->
+      <!--           *ngIf="form.get('testPassword').touched && form.get('testPassword').invalid">-->
+      <!--        <div *ngIf="form.get('testPassword').errors.required">-->
+      <!--          Reentering new password is required!-->
+      <!--        </div>-->
+      <!--      </div>-->
+    </div>
+
+    <button class="btn btn-primary"
+            type="button"
+            (click)="changePassword()"
+            [disabled]="form.invalid">{{languageService.getText('save')}}
+    </button>
+  </form>
+</div>

@@ -6,6 +6,7 @@ import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {SummaryPipe} from "./SummaryPipe";
 import {ExcelService} from "../../core/services/excel/excel.service";
 
+
 @NgModule({
   declarations: [
     AddBugComponent,

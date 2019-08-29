@@ -12,23 +12,22 @@
 
       <p-autoComplete appendTo="body" [suggestions]="filteredBugs"
                       (completeMethod)="filterBugs($event)" [size]="30"
-                      placeholder="Created by" [minLength]="1" forceSelection="true"
+                      placeholder="{{languageService.getText('createdBy')}}" [minLength]="1" forceSelection="true"
                       [(ngModel)]="bugSearchCriteria.created"
       ></p-autoComplete>
 
       <p-autoComplete appendTo="body" [suggestions]="filteredBugs"
                       (completeMethod)="filterBugs($event)" [size]="30"
-                      placeholder="Assigned to" [minLength]="1" forceSelection="true"
+                      placeholder="{{languageService.getText('assignedTo')}}" [minLength]="1" forceSelection="true"
                       [(ngModel)]="bugSearchCriteria.assigned"
       ></p-autoComplete>
 
       <p-dropdown [options]="status" size="20" placeholder="Status" id="status"
                   [(ngModel)]="bugSearchCriteria.status"></p-dropdown>
 
-      <p-dropdown [options]="severity" size="20" placeholder="Severity" id="severity"
+      <p-dropdown [options]="severity" size="20" placeholder="{{languageService.getText('severity')}}" id="severity"
                   [(ngModel)]="bugSearchCriteria.severity"></p-dropdown>
-
-      <p-button icon="pi pi-search" label="search" (click)="search()"></p-button>
+      <p-button icon="pi pi-search" label="{{languageService.getText('search')}}" (click)="search()"></p-button>
 
     </div>
   </ng-template>
@@ -44,38 +43,51 @@
     </tr>
     <tr>
       <th *ngFor="let col of columns" [ngSwitch]="col.field">
-        <input *ngSwitchCase="'title'" pInputText size="15" type="text"
+        <input *ngSwitchCase="'title'" pInputText size="20" type="text"
+               placeholder="{{languageService.getText('title')}}"
                (input)="dt.filter($event.target.value, col.field, 'contains')">
-        <input *ngSwitchCase="'description'" pInputText size="15" type="text"
+        <input *ngSwitchCase="'description'" pInputText size="20" type="text"
+               placeholder="{{languageService.getText('description')}}"
                (input)="dt.filter($event.target.value, col.field, 'contains')">
-        <input *ngSwitchCase="'version'" pInputText size="15" type="text"
+        <input *ngSwitchCase="'version'" pInputText size="20" type="text"
+               placeholder="{{languageService.getText('version')}}"
                (input)="dt.filter($event.target.value, col.field, 'contains')">
 
         <p-calendar appendTo="body" *ngSwitchCase="'targetDate'" [style]="{'width':'200%'}"
                     dateFormat="dd.mm.yy"
+                    placeholder="{{languageService.getText('targetDate')}}"
                     (onSelect)="dt.filter($event, col.field, 'dateFilter')"></p-calendar>
 
-        <p-multiSelect appendTo="body" *ngSwitchCase="'status'" [options]="status" [style]="{'width':'100%'}"
+        <p-multiSelect appendTo="body" *ngSwitchCase="'status'" [options]="status"
+                       [style]="{'width':'100%'}"
+                       [maxSelectedLabels]="2"
                        (onChange)="dt.filter($event.value, col.field, 'in')"
-                       defaultLabel="All statuses"></p-multiSelect>
+                       defaultLabel="{{languageService.getText('all-statuses')}}"></p-multiSelect>
 
-        <input *ngSwitchCase="'fixedVersion'" pInputText size="15" type="text"
+        <input *ngSwitchCase="'fixedVersion'" pInputText size="20" type="text"
+               placeholder="{{languageService.getText('version')}}"
                (input)="dt.filter($event.target.value, col.field, 'contains')">
-        <p-multiSelect appendTo="body" *ngSwitchCase="'severity'" size="15" [options]="severity"
-                       defaultLabel="All severities"
+        <p-multiSelect appendTo="body" *ngSwitchCase="'severity'" size="20" [options]="severity"
+                       [style]="{'width':'100%'}"
+                       [maxSelectedLabels]="2"
+                       defaultLabel="{{languageService.getText('all-severities')}}"
                        (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
 
+
         <p-autoComplete appendTo="body" *ngSwitchCase="'created'" [suggestions]="filteredBugs"
-                        (completeMethod)="filterBugs($event)" [size]="30"
-                        placeholder="Created by" [minLength]="1" forceSelection="true"
+                        (completeMethod)="filterBugs($event)" [size]="20"
+                        placeholder="{{this.languageService.getText('createdBy')}}" [minLength]="1"
+                        forceSelection="true"
                         (onSelect)="dt.filter($event, col.field, 'contains')"
         ></p-autoComplete>
 
         <p-autoComplete appendTo="body" *ngSwitchCase="'assigned'" [suggestions]="filteredBugs"
-                        (completeMethod)="filterBugs($event)" [size]="30"
-                        placeholder="Assigned to" [minLength]="1" forceSelection="true"
+                        (completeMethod)="filterBugs($event)" [size]="20"
+                        placeholder="{{this.languageService.getText('assignedTo')}}" [minLength]="1"
+                        forceSelection="true"
                         (onSelect)="dt.filter($event, col.field, 'contains')"
         ></p-autoComplete>
+
       </th>
     </tr>
   </ng-template>
@@ -92,11 +104,13 @@
 
   <ng-template pTemplate="summary" let-rowData>
     <div style="text-align:left">
-      <button type="button" pButton icon="fa fa-plus" (click)="add()" label="Add"></button>
+      <button type="button" pButton icon="fa fa-plus" (click)="add()"
+              label="{{languageService.getText('add')}}"></button>
       <app-add-bug *ngIf="loadComponent">
       </app-add-bug>
     </div>
   </ng-template>
+
 </p-table>
 
 <p-dialog header="Bug Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
@@ -104,14 +118,14 @@
   <div class="ui-g ui-fluid" *ngIf="bug">
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="titleEdit">Title</label>
+        <label for="titleEdit">{{languageService.getText('title')}}: </label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="titleEdit" [(ngModel)]="bug.title" required #titleEdit='ngModel'/>
         <div class="alert alert-danger"
              *ngIf="titleEdit.touched && titleEdit.invalid">
           <div *ngIf="titleEdit.errors.required">
-            Titel is required!
+            {{languageService.getText('title-required')}}
           </div>
 
         </div>
@@ -119,26 +133,26 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="descriptionEdit">Description</label>
+        <label for="descriptionEdit">{{languageService.getText('description')}}: </label>
       </div>
       <div class="ui-g-8">
-        <textarea cols="38" rows="5" id="descriptionEdit" [(ngModel)]="bug.description" pattern=".{250,}" required
+        <textarea cols="37" rows="5" id="descriptionEdit" [(ngModel)]="bug.description" pattern=".{250,}" required
                   #descriptionEdit='ngModel'>
         </textarea>
         <div class="alert alert-danger"
              *ngIf="descriptionEdit.touched && descriptionEdit.invalid">
           <div *ngIf="descriptionEdit.errors.required">
-            Description is required
+            {{languageService.getText('description-required')}}
           </div>
           <div *ngIf="descriptionEdit.errors.pattern">
-            Description has to be at least 250 characters long!
+            {{languageService.getText('description-length')}}
           </div>
         </div>
       </div>
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="versionEdit">Version</label>
+        <label for="versionEdit">{{languageService.getText('version')}}: </label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="versionEdit" [(ngModel)]="bug.version"
@@ -146,10 +160,10 @@
         <div class="alert alert-danger"
              *ngIf="versionEdit.touched && versionEdit.invalid">
           <div *ngIf="versionEdit.errors.required">
-            Version is required!
+            {{languageService.getText('version-required')}}
           </div>
           <div *ngIf="versionEdit.errors.pattern">
-            Version has to hold format x.x.x
+            {{languageService.getText('version-format')}}
           </div>
         </div>
       </div>
@@ -178,7 +192,7 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="fixedVersionEdit">Fixed Version</label>
+        <label for="fixedVersionEdit">{{languageService.getText('fixedVersion')}}: </label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="fixedVersionEdit" [(ngModel)]="bug.fixedVersion"
@@ -186,17 +200,17 @@
         <div class="alert alert-danger"
              *ngIf="fixedVersionEdit.touched && fixedVersionEdit.invalid">
           <div *ngIf="fixedVersionEdit.errors.required">
-            Fixed Version is required!
+            {{languageService.getText('fixedVersion-required')}}
           </div>
           <div *ngIf="fixedVersionEdit.errors.pattern">
-            Fix version has to respect format x.x.x
+            {{languageService.getText('fixedVersion-format')}}
           </div>
         </div>
       </div>
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="severityEdit">Severity</label>
+        <label for="severityEdit">{{languageService.getText('severity')}}: </label>
       </div>
       <div class="ui-g-8">
         <p-dropdown id="severityEdit" appendTo="body" [options]="severity" [style]="{'width':'100%'}"
@@ -205,27 +219,21 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="assignedEdit">Assigned to</label>
+        <label for="assignedEdit">{{languageService.getText('assignedTo')}}: </label>
       </div>
-      <select
-        id="assignedEdit"
-        name="assignedEdit"
-        [(ngModel)]="bug.assigned"
-      >
-        <option *ngFor="let user of allUsers" [value]="user.username">
-          {{user.firstName}} {{user.lastName}} ({{user.username}})
-        </option>
-      </select>
+      <div class="ui-g-8">
+        <p-dropdown id="assignedEdit" appendTo="body" [options]="mappedUsers" [style]="{'width':'100%'}"
+                    [(ngModel)]="bug.assigned"></p-dropdown>
+      </div>
     </div>
 
-    <!--  Attachments -->
 
     <div class="ui-g-12" *ngIf="(currentAttachments!=null && currentAttachments.length!=0)">
       <table>
         <tr>
           <td>
             <div class="ui-g-4">
-              <label for="attachments">Attachments:</label>
+              <label for="attachments">{{languageService.getText('attachments')}}: </label>
             </div>
           </td>
           <td>
@@ -239,10 +247,11 @@
 
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="attachments">Upload Attachment:</label>
+        <label for="attachments">{{languageService.getText('upload-attachment')}}:</label>
       </div>
       <div class="ui-g-8">
         <input type="file"
+               accept=".pdf,.doc, .odf, .xlsx, .xls,.docx,.png,.jpg;"
                id="attachments"
                (change)="onFileChange($event)"
                #fileInput="ngModel"
@@ -256,10 +265,10 @@
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" pButton (click)="delete(bug.id)"
               *ngIf="this.authService.hasPermission('BUG_CLOSE') && (bug.status == 'FIXED' || bug.status == 'REJECTED') "
-              label="Close Bug"></button>
-      <button type="button" pButton (click)="save()" label="Save"></button>
+              label="{{languageService.getText('close-bug')}}"></button>
+      <button type="button" pButton (click)="save()" label="{{languageService.getText('save')}}"></button>
       <button type="button" pButton (click)="export()" *ngIf="this.authService.hasPermission('BUG_EXPORT_PDF')"
-              label="Export in PDF"></button>
+              label="{{languageService.getText('export-bug')}}"></button>
     </div>
   </p-footer>
 </p-dialog>

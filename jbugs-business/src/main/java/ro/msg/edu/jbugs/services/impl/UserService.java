@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs.services.impl;
 
 import com.google.common.hash.Hashing;
 import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.NotificationDto;
 import ro.msg.edu.jbugs.dto.RoleDto;
 import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
@@ -34,9 +35,10 @@ import java.util.stream.Collectors;
 @Stateless
 public class UserService {
 
-    //Todo ? sa schimbam tot inputul si outputul in UserDto sau permitem si primitive ?
-    //ToDo create notification for specified methods
+
     //ToDo validate pentru id
+
+    private String usernameLogedIn;
 
     @EJB
     private UserRepo userRepo;
@@ -53,22 +55,19 @@ public class UserService {
         userDto.setUsername(generateUserName(userDto.getLastName(), userDto.getFirstName()));
         String defaultPassword = "defaultPass";
         userDto.setPassword(Hashing.sha256().hashString(defaultPassword, StandardCharsets.UTF_8).toString());
-        userDto.setCounter(0);
+        userDto.setFailedLoginAttempt(0);
         userDto.setStatus(true);
         User user = UserDtoMapping.userDtoToUser(userDto);
         User newUser = userRepo.addUser(user);
-        //todo userDto without password
-        //UserDto newUserDto = UserDtoMapping.userToUserDtoIncomplet(newUser);
-        //todo notification type ENUM
-        //NotificationDto notificationDto = new NotificationDto(0, new Date(), "Welcome new User", "WelcomeNewUser", "noUrl", newUserDto);
-        //notificationService.addNotification(notificationDto);
+        UserDto newUserDto = UserDtoMapping.userToUserDtoWithoutBugId(newUser);
+        notificationService.createNotificationNewUser(newUserDto);
         return newUser;
     }
 
     public UserDto findUser(Integer id) throws BusinessException {
         try {
             User user = userRepo.findUser(id);
-            UserDto userDto = UserDtoMapping.userToUserDtoComplet(user);
+            UserDto userDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
             return userDto;
         } catch (EntityNotFoundException ex) {
             throw new BusinessException("No User found with given Id", "msg - 006");
@@ -78,7 +77,7 @@ public class UserService {
     public UserDto findUser(String username) throws BusinessException {
         try {
             User user = userRepo.findUserByUsername(username);
-            UserDto userDto = UserDtoMapping.userToUserDtoComplet(user);
+            UserDto userDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
             return userDto;
         } catch (EntityNotFoundException | RepositoryException ex) {
             throw new BusinessException("No User found with given Id", "msg - 006");
@@ -95,7 +94,7 @@ public class UserService {
 
     public List<UserDto> getAllUser() {
         List<User> userList = userRepo.findAllUser();
-        List<UserDto> userDtoList = userList.stream().map(UserDtoMapping::userToUserDtoIncomplet).collect(Collectors.toList());
+        List<UserDto> userDtoList = userList.stream().map(UserDtoMapping::userToUserDtoWithoutBugId).collect(Collectors.toList());
         return userDtoList;
     }
 
@@ -163,11 +162,13 @@ public class UserService {
         try {
             user = userRepo.findByUsernameAndPassword(userDto.getUsername(), encriptedPassword);
             userRepo.setFailedLoginAttemptToZero(user);
+            this.usernameLogedIn = user.getUsername();
         } catch (RepositoryException ex) {
             passwordFailed(userDto.getUsername());
             throw new BusinessException(ex);
         }
-        return UserDtoMapping.userToUserDtoIncomplet(user);
+        UserDto logedInUserDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
+        return logedInUserDto;
     }
 
     public void passwordFailed(String username) throws BusinessException {
@@ -180,7 +181,7 @@ public class UserService {
                     throw new BusinessException("Password failed too may times, User deactivated", "msg - 003");
                 }
             } else {
-                throw new BusinessException("User Inactiv", "msg - 005");
+                throw new BusinessException("User Inactive", "msg - 005");
             }
         } catch (RepositoryException e) {
             throw new BusinessException(e);
@@ -191,10 +192,10 @@ public class UserService {
         try {
             User user = userRepo.findUserByUsername(username);
             if (user.getStatus()) {
-                throw new BusinessException("User already activ", "msg - 007");
+                throw new BusinessException("User already active", "msg - 007");
             } else {
                 userRepo.setStatusTrue(user);
-                return UserDtoMapping.userToUserDtoIncomplet(user);
+                return UserDtoMapping.userToUserDtoWithoutBugId(user);
             }
         } catch (RepositoryException e) {
             throw new BusinessException(e);
@@ -215,7 +216,15 @@ public class UserService {
                 }
             }
             userRepo.setStatusFalse(user);
-            return UserDtoMapping.userToUserDtoIncomplet(user);
+            UserDto deactivatedUserDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
+            if (roleRepo.findAdminRole() != null && !roleRepo.findAdminRole().getUserList().isEmpty()) {
+                List<User> admins = roleRepo.findAdminRole().getUserList();
+                List<UserDto> adminsDto = admins.stream().map(UserDtoMapping::userToUserDtoWithoutBugId).collect(Collectors.toList());
+                notificationService.createNotificationDeactivateUserForAdmin(adminsDto, deactivatedUserDto);
+            }
+            notificationService.createNotificationDeactivateUserForUserManagement();
+            //todo notification USER_DELETED r:UserManager
+            return deactivatedUserDto;
         } catch (RepositoryException e) {
             throw new BusinessException(e);
         }
@@ -237,9 +246,18 @@ public class UserService {
     public UserDto updateUser(UserDto userDto) throws BusinessException {
         try {
             Validator.validateUser(userDto);
+            //userDto.setPassword(Hashing.sha256().hashString(userDto.getPassword(), StandardCharsets.UTF_8).toString());
+            List<RoleDto> roleDtos = getAllRoles(userDto.getId());
             User newDataUser = UserDtoMapping.userDtoToUser(userDto);
+            newDataUser.setRoles(roleDtos.stream().map(roleDto ->
+            {
+                Role res = roleRepo.findRole(roleDto.getId());
+                res.addUserSimple(newDataUser);
+                return res;
+            }).collect(Collectors.toList()));
             User response = userRepo.updateUser(newDataUser);
-            return UserDtoMapping.userToUserDtoIncomplet(response);
+            //todo notification user_update r:updated user and the initiator
+            return UserDtoMapping.userToUserDtoWithoutBugId(response);
         } catch (RepositoryException e) {
             throw new BusinessException(e);
         }
@@ -275,10 +293,19 @@ public class UserService {
         }).collect(Collectors.toList()));
         User res = null;
         try {
+            UserDto initiator = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(usernameLogedIn));
+            UserDto userToBeUpdated = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(userDto.getUsername()));
+            UserDto oldUserData = new UserDto(0, userToBeUpdated.getFailedLoginAttempt(), userToBeUpdated.getFirstName(), userToBeUpdated.getLastName(), userToBeUpdated.getEmail(), userToBeUpdated.getMobileNumber(), userToBeUpdated.getPassword(), userToBeUpdated.getUsername(), userToBeUpdated.getStatus());
             res = userRepo.updateUser(newDataUser);
-            return UserDtoMapping.userToUserDtoIncomplet(res);
+            UserDto modifiedUserDt = UserDtoMapping.userToUserDtoWithoutBugId(res);
+            notificationService.createNotificationUpdateUser(initiator, modifiedUserDt, oldUserData);
+            return modifiedUserDt;
         } catch (RepositoryException e) {
             throw new BusinessException(e);
         }
+    }
+
+    public List<NotificationDto> findAllNotificationByUsername(String username) {
+        return notificationService.findAllNotificationsByUsername(username);
     }
 }

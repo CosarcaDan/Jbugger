@@ -1,16 +1,16 @@
-import {Pipe,PipeTransform} from "@angular/core";
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
-  name:'summary'
+  name: 'summary'
 })
-export class SummaryPipe implements PipeTransform{
+export class SummaryPipe implements PipeTransform {
   transform(value: string, args?: any): any {
-    if(!value){
+    if (!value) {
       return null;
     }
-    if(value.length > 15) {
-      return value.substr(0, 14) + " .... ";
-    }else{
+    if (value.length > 15) {
+      return value.substr(0, 14) + ' .... ';
+    } else {
       return value;
     }
 

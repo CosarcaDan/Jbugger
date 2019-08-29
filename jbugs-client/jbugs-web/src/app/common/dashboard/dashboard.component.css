@@ -29,3 +29,13 @@
   background-color: #A9A;
   top: +2px;
 }
+
+label {
+  font-weight: bold;
+  text-align: left;
+}
+
+a {
+  font-weight: bold;
+  text-align: left;
+}

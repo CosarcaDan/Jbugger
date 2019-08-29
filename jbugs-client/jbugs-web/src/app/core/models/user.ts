@@ -1,6 +1,6 @@
 export interface User {
   id: number;
-  counter: number;
+  failedLoginAttempt: number;
   firstName: string;
   lastName: string;
   email: string;

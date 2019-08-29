@@ -1,6 +1,6 @@
 <form [formGroup]="angForm" novalidate>
   <div class="form-group roles">
-    <label>Select Role:</label>
+    <label>{{languageService.getText('role-select')}}: </label>
     <select class="form-control" formControlName="roles" [(ngModel)]="selectedRole" #role
             (change)="getNewPermissions(role.value)">
       <option *ngFor="let opt of roles" [value]="opt.id">{{opt.type}}</option>
@@ -8,8 +8,8 @@
   </div>
 
   <div class="form-group">
-    <div class="example-container" >
-      <label>Permissions in Role</label>
+    <div class="example-container">
+      <label>{{languageService.getText('perm-inRole')}}</label>
       <div
         cdkDropList
         #permissionsInRoleList="cdkDropList"
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="example-container">
-      <label>Permissions not in Role</label>
+      <label>{{languageService.getText('perm-notInRole')}}</label>
       <div
         cdkDropList
         #permissionsNotInRoleList="cdkDropList"
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    </div>
+  </div>
 
 
 </form>

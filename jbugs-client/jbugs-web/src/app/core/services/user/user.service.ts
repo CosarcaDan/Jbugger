@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {UserLogin} from '../../models/userLogin';
-import {map} from 'rxjs/operators';
 import {Token} from '../../models/token';
 import {User} from '../../models/user';
 import {Role} from '../../models/role';
@@ -52,8 +51,16 @@ export class UserService {
     return this.http.get(this.baseUrl + '/' + id);
   }
 
+  public getUserByUsername(username: string): Observable<User> {
+    return this.http.get<User>(this.baseUrl + '/' + username + '/get');
+  }
+
   public getUserRoles(id: number): Observable<Role[]> {
     return this.http.post<Role[]>(this.baseUrl + '/roles', JSON.stringify(id));
+  }
+
+  public changePassword(user): Observable<User> {
+    return this.http.put<User>(this.baseUrl + '/changePassword', user);
   }
 
 

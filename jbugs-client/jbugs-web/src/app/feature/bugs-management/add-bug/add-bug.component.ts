@@ -6,9 +6,11 @@ import {BugService} from '../../../core/services/bug/bug.service';
 import {Bug} from '../../../core/models/bug';
 import {FileService} from '../../../core/services/file/file.service';
 import {Attachment} from '../../../core/models/attachment';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '../../../core/services/auth/auth.service';
 import {User} from '../../../core/models/user';
+import {LanguageService} from "../../../core/services/language/language.service";
+import {MessageComponent} from "../../../core/message/message.component";
 
 @Component({
   selector: 'app-add-bug',
@@ -25,8 +27,6 @@ export class AddBugComponent implements OnInit {
   uploadedFileName: string;
   myAtt;
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
-
-  //bug attributes
   title: string;
   description: string;
   version: string;
@@ -37,7 +37,7 @@ export class AddBugComponent implements OnInit {
   created: string;
   assigned: string;
 
-  severitys = [
+  severities = [
     {type: 'LOW'},
     {type: 'MEDIUM'},
     {type: 'HIGH'},
@@ -45,18 +45,19 @@ export class AddBugComponent implements OnInit {
   ];
 
   constructor(private fb: FormBuilder, private userService: UserService, private bugService: BugService,
-              private fileService: FileService, public activeModal: NgbActiveModal, private authService: AuthService) {
+              private fileService: FileService, public activeModal: NgbActiveModal, private authService: AuthService,
+              private languageService: LanguageService, private modalService: NgbModal) {
     this.form = fb.group({
       title: [null, [Validators.required,]],
       description: [null, [Validators.required, Validators.minLength(250)]],
       version: [null, [BugValidators.validateVersion]],
       fixedVersion: [null, [BugValidators.validateVersion]],
-      targetDate: [null, []],
+      targetDate: [null, [Validators.required]],
       severity: [null, []],
       createdBy: [null, []],
       status: [null, []],
       assignedTo: [null, []],
-      attachments: ['',[Validators.required]],
+      attachments: ['', []],
     });
   }
 
@@ -70,7 +71,6 @@ export class AddBugComponent implements OnInit {
     this.allUsers = new Array<User>();
     this.userService.getUsers().subscribe((data) => {
       console.log('data:', data);
-      // @ts-ignore
       for (let dataKey of data) {
         this.allUsers.push(dataKey);
       }
@@ -105,14 +105,18 @@ export class AddBugComponent implements OnInit {
       id: null,
       attContent: this.uploadedFileName,
     };
-    this.fileUpload();
+    if (this.myAtt != null) {
+      this.fileUpload(); //uploading a file is not mandatory
+    }
     this.bugService.add(bugToBeAdded, attachmentToBeAdded).subscribe(
-      (data: {}) => {
-        alert(data);
+      () => {
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message = this.languageService.getText('bug-add-successful');
       },
       (error2 => {
         console.log('Error', error2);
-        alert('Bug Add failed :' + error2.error.detailMessage);
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message = this.languageService.getText('bug-add-failed');
       })
     );
     this.clearFile();
@@ -120,9 +124,15 @@ export class AddBugComponent implements OnInit {
   }
 
   onFileChange(event) {
+    let fileSize = event.target.files[0].size / 1024 / 1024; // in MB
+    if (fileSize > 25) {
+      const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+      modalRef.componentInstance.message = this.languageService.getText('file-size');
+    }
     if (event.target.files.length > 0) {
       let files = event.target.files;
       this.uploadedFileName = files[0].name;
+      console.log('Length of file: ', files[0].size);
       this.myAtt = files;
     }
   }
@@ -135,7 +145,7 @@ export class AddBugComponent implements OnInit {
 
   fileUpload() {
     const formModel = this.prepareSave();
-    console.log(formModel.get('file'));
+    console.log('File details ', formModel.get('file'));
     this.fileService.uploadFile(formModel).subscribe(this.clearFile);
   }
 
@@ -143,5 +153,4 @@ export class AddBugComponent implements OnInit {
     this.form.get('attachments').setValue(null);
     this.fileInput.nativeElement.value = '';
   }
-
 }

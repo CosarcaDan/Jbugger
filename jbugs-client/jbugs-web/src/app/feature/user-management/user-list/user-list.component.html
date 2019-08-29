@@ -1,8 +1,8 @@
 <p-table [columns]="cols" [value]="users" selectionMode="single" [(selection)]="selectedUser"
-         (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10" [scrollable]="true" >
+         (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10" [scrollable]="true">
 
   <ng-template pTemplate="caption">
-    List of Users
+    {{languageService.getText('user-list')}}
   </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr>
@@ -15,24 +15,26 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr [pSelectableRow]="rowData">
       <td *ngFor="let col of columns">
-        {{col.field=='status' ? (rowData[col.field] ? 'active': 'inactive' ): rowData[col.field]}}
+        {{col.field == 'status' ? (rowData[col.field] ? 'active' : 'inactive') : rowData[col.field]}}
       </td>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="summary" let-rowData>
     <div style="text-align:left">
-      <button type="button" pButton icon="fa fa-plus" (click)="add()" label="Add"></button>
+      <button type="button" pButton icon="fa fa-plus" (click)="add()"
+              label="{{languageService.getText('add')}}"></button>
     </div>
   </ng-template>
 </p-table>
 
-<p-dialog header="User Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+<p-dialog header="{{languageService.getText('user-details')}}" [(visible)]="displayDialog" [responsive]="true"
+          showEffect="fade" [modal]="true"
           [style]="{width: '400px'}" [contentStyle]="{'max-height':'60vh'}">
   <div class="ui-g ui-fluid" *ngIf="user">
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="usernameEdit">Username</label>
+        <label for="usernameEdit">{{languageService.getText('username')}}</label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="usernameEdit" [(ngModel)]="user.username" disabled/>
@@ -43,7 +45,7 @@
   <div class="ui-g ui-fluid" *ngIf="user">
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="firstNameEdit">First Name</label>
+        <label for="firstNameEdit">{{languageService.getText('firstName')}}</label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="firstNameEdit" [(ngModel)]="user.firstName" required
@@ -52,10 +54,10 @@
         <div class="alert alert-danger"
              *ngIf="firstNameEdit.touched && firstNameEdit.invalid">
           <div *ngIf="firstNameEdit.errors.required">
-            First name is required!
+            {{languageService.getText('firstname') + languageService.getText('something-required')}}
           </div>
           <div *ngIf="firstNameEdit.errors.pattern">
-            First name should start with capital letter and should contain only letters and separators!
+            {{languageService.getText('firstname') + languageService.getText('name-format')}}
           </div>
         </div>
       </div>
@@ -63,7 +65,7 @@
 
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="lastNameEdit">Last Name</label>
+        <label for="lastNameEdit">{{languageService.getText('lastName')}}: </label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="lastNameEdit" [(ngModel)]="user.lastName" required #lastNameEdit="ngModel"
@@ -71,10 +73,10 @@
         <div class="alert alert-danger"
              *ngIf="lastNameEdit.touched && lastNameEdit.invalid">
           <div *ngIf="lastNameEdit.errors.required">
-            Last name is required!
+            {{languageService.getText('lastname') + languageService.getText('something-required')}}
           </div>
           <div *ngIf="lastNameEdit.errors.pattern">
-            Last should start with capital letter and should contain only letters and separators!
+            {{languageService.getText('lastname') + languageService.getText('name-format')}}
           </div>
         </div>
       </div>
@@ -82,7 +84,7 @@
 
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="mobileNumberEdit">Mobile Number</label>
+        <label for="mobileNumberEdit">{{languageService.getText('phoneNumber')}}: </label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="mobileNumberEdit" [(ngModel)]="user.mobileNumber" required #mobileNumberEdit="ngModel"
@@ -91,10 +93,10 @@
         <div class="alert alert-danger"
              *ngIf="mobileNumberEdit.touched && mobileNumberEdit.invalid">
           <div *ngIf="mobileNumberEdit.errors.required">
-            Mobile number is required!
+            {{languageService.getText('phoneNumber') + languageService.getText('something-required')}}
           </div>
           <div *ngIf="mobileNumberEdit.errors.pattern">
-            Mobile number must be from Germany or Romania!
+            {{languageService.getText('phoneNumber') + languageService.getText('phoneNumber-format')}}
           </div>
           <div *ngIf="mobileNumberEdit.errors.minlength">
             Mobile number should have at least 10 characters!
@@ -105,7 +107,7 @@
 
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="emailEdit">Email</label>
+        <label for="emailEdit">Email: </label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="emailEdit" [(ngModel)]="user.email" required #emailEdit="ngModel"
@@ -113,10 +115,10 @@
         <div class="alert alert-danger"
              *ngIf="emailEdit.touched && emailEdit.invalid">
           <div *ngIf="emailEdit.errors.required">
-            Email is required!
+            {{languageService.getText('email-required')}}
           </div>
           <div *ngIf="emailEdit.errors.pattern">
-            Email must be of format [address]@msggroup.com!
+            {{languageService.getText('email-format')}}
           </div>
         </div>
       </div>
@@ -125,7 +127,7 @@
 
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="rolesEdit">Edit roles</label>
+        <label for="rolesEdit">{{languageService.getText('edit-roles')}}: </label>
       </div>
     </div>
     <table>
@@ -157,11 +159,14 @@
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" (click)="activateUser()" label="Activate"
+      <button type="button" pButton icon="fa fa-check" (click)="activateUser()"
+              label="{{languageService.getText('activate')}}"
               [disabled]="user.status"></button>
-      <button type="button" pButton icon="fa fa-close" (click)="deactivateUser()" label="Deactivate"
+      <button type="button" pButton icon="fa fa-close" (click)="deactivateUser()"
+              label="{{languageService.getText('deactivate')}}"
               [disabled]="!user.status"></button>
-      <button type="button" pButton icon="fa fa-check" (click)="edit()" label="Save"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="edit()"
+              label="{{languageService.getText('save')}}"></button>
     </div>
   </p-footer>
 </p-dialog>
