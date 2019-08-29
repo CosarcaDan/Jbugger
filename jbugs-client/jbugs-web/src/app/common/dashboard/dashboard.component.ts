@@ -2,11 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {AuthService} from '../../core/services/auth/auth.service';
-import {NotificationService} from "../../core/services/notification/notification.service";
-import {LanguageService} from "../../core/services/language/language.service";
-import {Notification} from "../../core/models/notification";
-import {not} from "rxjs/internal-compatibility";
-import {User} from "../../core/models/user";
+import {NotificationService} from '../../core/services/notification/notification.service';
+import {LanguageService} from '../../core/services/language/language.service';
+import {Notification} from '../../core/models/notification';
+import {User} from '../../core/models/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -125,9 +124,24 @@ export class DashboardComponent implements OnInit {
         this.languageService.getText('username')+': '+user.username+'</div><div>'+
         'Status: '+( user.status? 'active':'inactive')+'</div>'
       console.log(res);
-
       return res;
-
     }
+    if (notification.type == 'USER_DELETED' || notification.type == 'USER_DEACTIVATED') {
+      let user: User = JSON.parse(notification.message);
+      let res: string = '<div>' + this.languageService.getText('user_deleted') +
+        '</div><div>' +
+        'ID:' + user.id + '</div><div>' +
+        this.languageService.getText('counter') + ': ' + user.failedLoginAttempt + '</div><div>' +
+        this.languageService.getText('firstName') + ': ' + user.firstName + '</div><div>' +
+        this.languageService.getText('lastName') + ': ' + user.lastName + '</div><div>' +
+        'Email: ' + user.email + '</div><div>' +
+        this.languageService.getText('phoneNumber') + ': ' + user.mobileNumber + '</div><div>' +
+        this.languageService.getText('username') + ': ' + user.username + '</div><div>' +
+        'Status: ' + (user.status ? 'active' : 'inactive') + '</div>';
+      console.log(res);
+      return res;
+    }
+
+
   }
 }

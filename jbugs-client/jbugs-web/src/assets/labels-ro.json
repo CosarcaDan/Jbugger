@@ -323,6 +323,10 @@
     {
       "label": "logout",
       "value": "Delogare"
+    },
+    {
+      "label": "user_deleted",
+      "value": "Un utilizator a fost dezactivat: "
     }
   ]
 }
