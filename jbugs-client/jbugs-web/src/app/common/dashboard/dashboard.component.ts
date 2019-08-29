@@ -60,6 +60,7 @@ export class DashboardComponent implements OnInit {
     this.interval = setInterval(this.getMyNotification.bind(this), 3000);
 
     this.intervalRun = true;
+
   }
 
   public goto(link) {
@@ -103,5 +104,10 @@ export class DashboardComponent implements OnInit {
       this.interval = setInterval(this.getMyNotification.bind(this), 3000);
       this.intervalRun = true;
     }
+  }
+
+  notificationClicked(not) {
+    not.isSeen = true;
+    this.displayNotification = true;
   }
 }

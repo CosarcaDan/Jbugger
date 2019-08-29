@@ -16,8 +16,8 @@
 
   <div *ngFor="let not of notifications">
 
-    <div id="notificationDiv">
-      <h1 (click)="displayNotification = true">{{not.type}}</h1>
+    <div id="notificationDiv" [ngClass]="[not.isSeen ? 'greyBackground' : 'redBackground']">
+      <a (click)="notificationClicked(not)">{{not.type}}</a>
     </div>
 
     <p-dialog id="notificationDialog" header="Notification" [(visible)]="displayNotification"
