@@ -17,6 +17,10 @@
       "value": "Prenume"
     },
     {
+      "label": "counter",
+      "value": "Încercări de autentificare eșuate"
+    },
+    {
       "label": "lastName",
       "value": "Nume"
     },
@@ -291,6 +295,22 @@
     {
       "label": "add",
       "value": "Adăugare"
+    },
+    {
+      "label": "edit-pers-data",
+      "value": "Poți săți modifici datele personale "
+    },
+    {
+      "label": "edit-pers-data-2",
+      "value": " sau apăsând pe numele tău de utilizator dreapta sus! Să ai o zi frumoasă!"
+    },
+    {
+      "label": "here",
+      "value": "aici"
+    },
+    {
+      "label": "welcome",
+      "value": "Bun venit"
     },
     {
       "label": "search",

@@ -17,6 +17,10 @@
       "value": "First Name"
     },
     {
+      "label": "counter",
+      "value": "Failed login attempts"
+    },
+    {
       "label": "lastName",
       "value": "Last Name"
     },
@@ -291,6 +295,22 @@
     {
       "label": "add",
       "value": "Add"
+    },
+    {
+      "label": "edit-pers-data",
+      "value": "You can edit your personal data "
+    },
+    {
+      "label": "edit-pers-data-2",
+      "value": " or by clicking on your username in the top right! Have a great day!"
+    },
+    {
+      "label": "here",
+      "value": "here"
+    },
+    {
+      "label": "welcome",
+      "value": "Welcome"
     },
     {
       "label": "search",

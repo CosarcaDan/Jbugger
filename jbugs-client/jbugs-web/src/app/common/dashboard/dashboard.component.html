@@ -23,8 +23,8 @@
     <p-dialog id="notificationDialog" header="Notification" [(visible)]="displayNotification"
               (onShow)="notificationDialogClearIntervalWhenVisible()"
               (onHide)="notificationDialogStartIntervalWhenVisible()"
-              [style]="{width: '350px', minWidth: '200px'}" appendTo="body" [positionLeft]="0">
-      <p>{{not.message}}</p>
+              [style]="{width: '350px', minWidth: '200px'}" appendTo="body" [positionLeft]="0" >
+      <div [innerHTML]="notificationFormatter(not)"></div>
     </p-dialog>
   </div>
 

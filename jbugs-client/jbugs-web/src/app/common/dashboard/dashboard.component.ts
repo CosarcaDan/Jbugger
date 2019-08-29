@@ -4,6 +4,9 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../core/services/auth/auth.service';
 import {NotificationService} from "../../core/services/notification/notification.service";
 import {LanguageService} from "../../core/services/language/language.service";
+import {Notification} from "../../core/models/notification";
+import {not} from "rxjs/internal-compatibility";
+import {User} from "../../core/models/user";
 
 @Component({
   selector: 'app-dashboard',
@@ -102,6 +105,29 @@ export class DashboardComponent implements OnInit {
     if (!this.intervalRun) {
       this.interval = setInterval(this.getMyNotification.bind(this), 3000);
       this.intervalRun = true;
+    }
+  }
+  notificationFormatter(notification:Notification):string{
+    if(notification.type == "WELCOME_NEW_USER")
+    {
+      //"{"id":8,"failedLoginAttempt":0,"firstName":"Test","lastName":"Felh","email":"testfh@msggroup.com","mobileNumber":"0740541012","password":"f9b8e085ea3877ca8e8074aaa0c21ac9a9808275d835d680a6a9b530e2f7f27c","username":"felht","status":true}"
+      let user: User = JSON.parse(notification.message)
+      let res:string ='<div>'+this.languageService.getText('welcome')+' '+user.firstName+' '+user.lastName+'! '+
+        this.languageService.getText('edit-pers-data')+`<a href="dashboard/profile" ">`+this.languageService.getText('here')+`</a>`+
+        this.languageService.getText('edit-pers-data-2')+
+        '</div><div>'+
+        "ID:"+user.id+'</div><div>'+
+        this.languageService.getText('counter')+': '+user.failedLoginAttempt+'</div><div>'+
+        this.languageService.getText('firstName')+': '+user.firstName+'</div><div>'+
+        this.languageService.getText('lastName')+': '+user.lastName+'</div><div>'+
+        'Email: '+user.email+'</div><div>'+
+        this.languageService.getText('phoneNumber')+': '+user.mobileNumber+'</div><div>'+
+        this.languageService.getText('username')+': '+user.username+'</div><div>'+
+        'Status: '+( user.status? 'active':'inactive')+'</div>'
+      console.log(res);
+
+      return res;
+
     }
   }
 }
