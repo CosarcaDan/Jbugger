@@ -9,8 +9,8 @@ import {Attachment} from '../../../core/models/attachment';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '../../../core/services/auth/auth.service';
 import {User} from '../../../core/models/user';
-import {LanguageService} from "../../../core/services/language/language.service";
-import {MessageComponent} from "../../../core/message/message.component";
+import {LanguageService} from '../../../core/services/language/language.service';
+import {MessageComponent} from '../../../core/message/message.component';
 
 @Component({
   selector: 'app-add-bug',

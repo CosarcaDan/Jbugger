@@ -17,6 +17,10 @@
       "value": "Prenume"
     },
     {
+      "label": "counter",
+      "value": "Încercări de autentificare eșuate"
+    },
+    {
       "label": "lastName",
       "value": "Nume"
     },
@@ -118,7 +122,7 @@
     },
     {
       "label": "user-deactivate-failed",
-      "value": "Utilizator nu a fost activat: "
+      "value": "Utilizatorul nu a fost deactivat: "
     },
     {
       "label": "user-edit-successful",
@@ -186,15 +190,15 @@
     },
     {
       "label": "fixedVersion",
-      "value": "Versiunea în care a fost resolvată"
+      "value": "Versiunea în care a fost rezolvată"
     },
     {
       "label": "fixedVersion-required",
-      "value": "Versiunea în care a fost resolvată este obligatorie!"
+      "value": "Versiunea în care a fost rezolvată este obligatorie!"
     },
     {
       "label": "fixedVersion-format",
-      "value": "Versiunea în care a fost resolvată trebuie să fie de formatul x.x.x!"
+      "value": "Versiunea în care a fost rezolvată trebuie să fie de formatul x.x.x!"
     },
     {
       "label": "attachment",
@@ -213,8 +217,12 @@
       "value": "Închide Bug"
     },
     {
-      "label": "export-bug",
+      "label": "export-into-pdf",
       "value": "Exportare în PDF"
+    },
+    {
+      "label": "export-into-excel",
+      "value": "Exportare în Excel"
     },
     {
       "label": "targetDate",
@@ -257,6 +265,10 @@
       "value": "Notificări"
     },
     {
+      "label": "notification",
+      "value": "Notificare"
+    },
+    {
       "label": "new-password",
       "value": "Parolă nouă"
     },
@@ -289,6 +301,22 @@
       "value": "Adăugare"
     },
     {
+      "label": "edit-pers-data",
+      "value": "Poți săți modifici datele personale "
+    },
+    {
+      "label": "edit-pers-data-2",
+      "value": " sau apăsând pe numele tău de utilizator dreapta sus! Să ai o zi frumoasă!"
+    },
+    {
+      "label": "here",
+      "value": "aici"
+    },
+    {
+      "label": "welcome",
+      "value": "Bun venit"
+    },
+    {
       "label": "search",
       "value": "Căutare"
     },
@@ -299,6 +327,22 @@
     {
       "label": "logout",
       "value": "Delogare"
+    },
+    {
+      "label": "user_deleted",
+      "value": "Un utilizator a fost dezactivat: "
+    },
+    {
+      "label": "user_updated",
+      "value": "Actualizare cu succes! "
+    },
+    {
+      "label": "user_updated_new",
+      "value": "Profilul nou: "
+    },
+    {
+      "label": "user_updated_old",
+      "value": "Profilul vechi: "
     }
   ]
 }

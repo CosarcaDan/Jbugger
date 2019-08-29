@@ -175,5 +175,11 @@ public class BugRESTController {
         }
     }
 
+    @DELETE
+    @Path("/delete-attachment/{id}")
+    public Response deleteAttachment(@PathParam("id") int id) {
+        attachmentService.deleteAttachment(id);
+        return Response.status(200).build();
+    }
 
 }

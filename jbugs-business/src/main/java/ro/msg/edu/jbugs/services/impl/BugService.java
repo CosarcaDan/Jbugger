@@ -7,8 +7,10 @@ import com.itextpdf.text.pdf.PdfFileSpecification;
 import com.itextpdf.text.pdf.PdfWriter;
 import ro.msg.edu.jbugs.dto.AttachmentDto;
 import ro.msg.edu.jbugs.dto.BugDto;
+import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.AttachmentDtoMapping;
 import ro.msg.edu.jbugs.dto.mappers.BugDtoMapping;
+import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
 import ro.msg.edu.jbugs.entity.Attachment;
 import ro.msg.edu.jbugs.entity.Bug;
 import ro.msg.edu.jbugs.entity.User;
@@ -45,6 +47,9 @@ public class BugService {
 
     @EJB
     private UserRepo userRepo;
+
+    @EJB
+    private NotificationService notificationService;
 
     public BugDto addBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
@@ -154,14 +159,41 @@ public class BugService {
         if (!bug.getStatus().equals(Bug.Status.FIXED) && !(bug.getStatus().equals(Bug.Status.REJECTED)))
             throw new BusinessException("Bug has to to FIXED or REJECTED in order to be CLOSED", "msg - 011");
         bug.setStatus(Bug.Status.CLOSED);
-        //toDo notification BUG_CLOSED r:creator assigned
-        return BugDtoMapping.bugToBugDtoComplet(bug);
+        try {
+            BugDto closedBugDto = BugDtoMapping.bugToBugDtoComplet(bug);
+            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getCreated()));
+            UserDto assignedDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getAssigned()));
+            notificationService.createNotificationCloseBug(creatorDto, assignedDto, closedBugDto);
+            //toDo notification BUG_CLOSED r:creator assigned
+            return closedBugDto;
+        } catch (RepositoryException e) {
+            throw new BusinessException(e);
+        }
+    }
+
+    private boolean isOnlyStatusChanged(BugDto bugdto, Bug bug) {
+        if (!bugdto.getTitle().equals(bug.getTitle()))
+            return false;
+        if (!bugdto.getVersion().equals(bug.getVersion()))
+            return false;
+        if (!bugdto.getFixedVersion().equals(bug.getFixedVersion()))
+            return false;
+        if (!bugdto.getDescription().equals(bug.getDescription()))
+            return false;
+        if (!bugdto.getSeverity().equals(bug.getSeverity().toString()))
+            return false;
+        if (!bugdto.getTargetDate().equals(bug.getTargetDate()))
+            return false;
+        return bugdto.getAssigned().equals(bug.getAssigned().getUsername());
+        //todo changed attachemnt
     }
 
     //Todo Validations
     public BugDto updateBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
         Bug bug = bugRepo.findBug(bugDto.getId());
+        BugDto oldBugDto = BugDtoMapping.bugToBugDtoComplet(bug);
+        boolean onlyStatusChanged = isOnlyStatusChanged(bugDto, bug);
         bug.setTitle(bugDto.getTitle());
         bug.setDescription(bugDto.getDescription());
         bug.setVersion(bugDto.getVersion());
@@ -170,12 +202,19 @@ public class BugService {
         bug.setSeverity(Bug.Severity.valueOf(bugDto.getSeverity()));
         try {
             User assigned = userRepo.findUserByUsername(bugDto.getAssigned());
+            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(bugDto.getCreated()));
+            UserDto assignedDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(bugDto.getAssigned()));
             bug.setAssigned(assigned);
             if (!bug.getStatus().equals(Bug.Status.valueOf(bugDto.getStatus())))
                 updateStatusBug(bugDto);
-
             //todo notification BUG_UPDATED r: bugCreator, AssignedTo
-            return BugDtoMapping.bugToBugDtoComplet(bug); //todo see if status has been schanged
+            BugDto updatedBug = BugDtoMapping.bugToBugDtoComplet(bug);
+            if (onlyStatusChanged) {
+                notificationService.createNotificationBugEditOnlyStatus(oldBugDto, updatedBug, creatorDto, assignedDto);
+            } else {
+                notificationService.createNotificationBugEdit(oldBugDto, updatedBug, creatorDto, assignedDto);
+            }
+            return updatedBug; //todo see if status has been schanged
         } catch (RepositoryException e) {
             throw new BusinessException(e);
         }
@@ -212,7 +251,7 @@ public class BugService {
 
 
         List<Paragraph> paragraphList = new ArrayList<>();
-        newElement("Description", bug.getDescription()).forEach(p -> paragraphList.add(p));
+        newElement("Description: ", bug.getDescription()).forEach(p -> paragraphList.add(p));
         paragraphList.add(newShortElement("Version: ", bug.getVersion()));
         paragraphList.add(newShortElement("Target date: ", bug.getTargetDate().toString().split(" ")[0]));
         paragraphList.add(newShortElement("Status: ", bug.getStatus().name()));
@@ -254,8 +293,8 @@ public class BugService {
         Paragraph textParagraph = new Paragraph();
         textParagraph.add(textChunk);
         textParagraph.setAlignment(Element.ALIGN_LEFT);
-        textParagraph.setMultipliedLeading(1.0f);
-        textParagraph.setSpacingAfter(1.2f);
+        textParagraph.setMultipliedLeading(1.5f);
+        textParagraph.setSpacingAfter(1.5f);
 
         result.add(textParagraph);
 
@@ -285,7 +324,7 @@ public class BugService {
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
         Font font = FontFactory.getFont("/fonts/Roboto-Regular.ttf",
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.BLACK);
-        Chunk subtitleChunk = new Chunk("Attachments", subtitleFont);
+        Chunk subtitleChunk = new Chunk("Attachments:", subtitleFont);
 
         Paragraph subtitleParagraph = new Paragraph();
         subtitleParagraph.add(subtitleChunk);
@@ -316,7 +355,7 @@ public class BugService {
             textParagraph.add(textChunk);
             textParagraph.add(attChunk);
             textParagraph.setAlignment(Element.ALIGN_LEFT);
-            textParagraph.setMultipliedLeading(1.0f);
+            textParagraph.setMultipliedLeading(1.5f);
             textParagraph.setSpacingAfter(1.2f);
 
             result.add(textParagraph);

@@ -5,8 +5,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddUserComponent} from '../add-user/add-user.component';
 import {RoleService} from '../../../core/services/role/role.service';
 import {Role} from '../../../core/models/role';
-import {LanguageService} from "../../../core/services/language/language.service";
-import {MessageComponent} from "../../../core/message/message.component";
+import {LanguageService} from '../../../core/services/language/language.service';
+import {MessageComponent} from '../../../core/message/message.component';
 
 @Component({
   selector: 'app-get-user',
@@ -36,6 +36,7 @@ export class UserListComponent implements OnInit {
     username: '',
     status: null,
   };
+  private language: string;
 
 
   constructor(private userService: UserService, private roleService: RoleService, private modalService: NgbModal, private  languageService: LanguageService) {
@@ -47,6 +48,7 @@ export class UserListComponent implements OnInit {
     this.languageService.getText('save');
     this.languageService.getText('save');
     this.getUsers();
+    this.language = localStorage.getItem('language');
     //this.getRoles();
 
     this.cols = [
@@ -100,7 +102,7 @@ export class UserListComponent implements OnInit {
 
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-activate-successful');
-        this.getUsers();
+        modalRef.result.then(this.getUsers);
       },
       (error2 => {
         console.log('Error', error2);
@@ -117,7 +119,7 @@ export class UserListComponent implements OnInit {
       () => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-deactivate-successful');
-        this.getUsers();
+        modalRef.result.then(this.getUsers);
       },
       (error2 => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
@@ -134,7 +136,7 @@ export class UserListComponent implements OnInit {
       (data: {}) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-edit-successful');
-        this.getUsers();
+        modalRef.result.then(this.getUsers);
       },
       (error2 => {
         console.log('Error', error2);

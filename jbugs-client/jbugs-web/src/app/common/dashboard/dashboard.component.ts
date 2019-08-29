@@ -2,8 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {AuthService} from '../../core/services/auth/auth.service';
-import {NotificationService} from "../../core/services/notification/notification.service";
-import {LanguageService} from "../../core/services/language/language.service";
+import {NotificationService} from '../../core/services/notification/notification.service';
+import {LanguageService} from '../../core/services/language/language.service';
+import {Notification} from '../../core/models/notification';
+import {User} from '../../core/models/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,8 +20,6 @@ export class DashboardComponent implements OnInit {
   selectedLanguage = localStorage.getItem('language') == 'en' ? 'English' : 'Romanian';
 
   user = this.authService.getUsername();
-  displayNotification: boolean;
-
   interval;
 
   notifications: Notification[];
@@ -60,7 +60,6 @@ export class DashboardComponent implements OnInit {
     this.interval = setInterval(this.getMyNotification.bind(this), 3000);
 
     this.intervalRun = true;
-
   }
 
   public goto(link) {
@@ -106,8 +105,63 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  notificationClicked(not) {
-    not.isSeen = true;
-    this.displayNotification = true;
+  showNot(notification: Notification) {
+    this.notifications.forEach(not => {
+      not.show = not.id == notification.id;
+    });
+    notification.isSeen = true;
+  }
+
+  hide() {
+    this.notifications.forEach(not => {
+      not.show = false;
+    })
+  }
+
+
+  notificationFormatter(notification: Notification): string {
+    if (notification.type == "WELCOME_NEW_USER") {
+      let user: User = JSON.parse(notification.message);
+      return '<div>' + this.languageService.getText('welcome') + ' ' + user.firstName + ' ' + user.lastName + '! ' +
+        this.languageService.getText('edit-pers-data') + `<a href="dashboard/profile" ">` + this.languageService.getText('here') + `</a>` +
+        this.languageService.getText('edit-pers-data-2') +
+        '</div><div>' +
+        this.languageService.getText('firstName') + ': ' + user.firstName + '</div><div>' +
+        this.languageService.getText('lastName') + ': ' + user.lastName + '</div><div>' +
+        'Email: ' + user.email + '</div><div>' +
+        this.languageService.getText('phoneNumber') + ': ' + user.mobileNumber + '</div><div>' +
+        this.languageService.getText('username') + ': ' + user.username + '</div><div>' +
+        'Status: ' + (localStorage.getItem('language') == 'en' ? user.status ? 'active' : 'inactive' : user.status ? 'activ' : 'inactiv') + '</div>';
+    }
+    if (notification.type == 'USER_DELETED' || notification.type == 'USER_DEACTIVATED') {
+      let user: User = JSON.parse(notification.message);
+      return '<div>' + this.languageService.getText('user_deleted') +
+        '</div><div>' +
+        this.languageService.getText('firstName') + ': ' + user.firstName + '</div><div>' +
+        this.languageService.getText('lastName') + ': ' + user.lastName + '</div><div>' +
+        'Email: ' + user.email + '</div><div>' +
+        this.languageService.getText('phoneNumber') + ': ' + user.mobileNumber + '</div><div>' +
+        this.languageService.getText('username') + ': ' + user.username + '</div><div>' +
+        'Status: ' + (localStorage.getItem('language') == 'en' ? user.status ? 'active' : 'inactive' : user.status ? 'activ' : 'inactiv') + '</div>';
+    }
+    if (notification.type == 'USER_UPDATED') {
+      let user: User[] = JSON.parse(notification.message);
+      return '<div>' + this.languageService.getText('user_updated') + '<p><br></p></div>' +
+        '<div>' + this.languageService.getText('user_updated_new') + '</div><div>' +
+        this.languageService.getText('firstName') + ': ' + user[0].firstName + '</div><div>' +
+        this.languageService.getText('lastName') + ': ' + user[0].lastName + '</div><div>' +
+        'Email: ' + user[0].email + '</div><div>' +
+        this.languageService.getText('phoneNumber') + ': ' + user[0].mobileNumber + '</div><div>' +
+        this.languageService.getText('username') + ': ' + user[0].username + '</div><div>' +
+        'Status: ' + (user[0].status ? 'active' : 'inactive') + '<p><br></p></div></div>' +
+
+        '<div>' + this.languageService.getText('user_updated_old') + '</div><div>' +
+        this.languageService.getText('firstName') + ': ' + user[1].firstName + '</div><div>' +
+        this.languageService.getText('lastName') + ': ' + user[1].lastName + '</div><div>' +
+        'Email: ' + user[0].email + '</div><div>' +
+        this.languageService.getText('phoneNumber') + ': ' + user[1].mobileNumber + '</div><div>' +
+        this.languageService.getText('username') + ': ' + user[1].username + '</div><div>' +
+        'Status: ' + (user[0].status ? 'active' : 'inactive') + '<br></div>';
+    }
   }
 }

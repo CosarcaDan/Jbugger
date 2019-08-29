@@ -6,15 +6,15 @@ import {Bug} from '../../../core/models/bug';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddBugComponent} from '../add-bug/add-bug.component';
 import {AuthService} from '../../../core/services/auth/auth.service';
-import {Attachment} from "../../../core/models/attachment";
-import {FileService} from "../../../core/services/file/file.service";
-import {User} from "../../../core/models/user";
-import {UserService} from "../../../core/services/user/user.service";
-import {Table} from "primeng/table";
-import {DatePipe} from "@angular/common";
-import {ExcelService} from "../../../core/services/excel/excel.service";
-import {LanguageService} from "../../../core/services/language/language.service";
-import {MessageComponent} from "../../../core/message/message.component";
+import {Attachment} from '../../../core/models/attachment';
+import {FileService} from '../../../core/services/file/file.service';
+import {User} from '../../../core/models/user';
+import {UserService} from '../../../core/services/user/user.service';
+import {Table} from 'primeng/table';
+import {DatePipe} from '@angular/common';
+import {ExcelService} from '../../../core/services/excel/excel.service';
+import {LanguageService} from '../../../core/services/language/language.service';
+import {MessageComponent} from '../../../core/message/message.component';
 
 
 @Component({
@@ -189,9 +189,9 @@ export class BugsListComponent implements OnInit {
         this.allUsers.push(dataKey);
       }
       this.mappedUsers = this.allUsers.map(user => {
-          return {label: user.firstName + ' ' + user.lastName + ' (' + user.username + ')', value: user.username}
+        return {label: user.firstName + ' ' + user.lastName + ' (' + user.username + ')', value: user.username};
         }
-      )
+      );
     });
   }
 
@@ -242,7 +242,7 @@ export class BugsListComponent implements OnInit {
     this.bugServices.deleteBugAfterId(id).subscribe(
       (data) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('bug-close-failed');
+        modalRef.componentInstance.message = this.languageService.getText('bug-close-successful');
       },
       (error1 => {
         console.log('Error', error1);

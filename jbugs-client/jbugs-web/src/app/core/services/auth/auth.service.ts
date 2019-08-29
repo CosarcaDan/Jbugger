@@ -78,15 +78,19 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('permissionsNotInRole')).filter(p => p == permission).length != 0;
   }
 
-  private b64c: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";   // base64 dictionary
-  private b64u: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";  // base64url dictionary
+  private b64c: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';   // base64 dictionary
+  private b64u: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';  // base64url dictionary
   private b64pad: string = '=';
   /* base64_charIndex
    * Internal helper to translate a base64 character to its integer index.
    */
   private base64_charIndex(c) {
-    if (c == "+") return 62;
-    if (c == "/") return 63;
+    if (c == '+') {
+      return 62;
+    }
+    if (c == '/') {
+      return 63;
+    }
     return this.b64u.indexOf(c)
   }
   /* base64_decode
@@ -131,7 +135,7 @@ export class AuthService {
   private getTokenExpirationDate(token: string) {
     let decoded: any;
     decoded = this.decodeToken(token);
-    if (typeof decoded.exp === "undefined") {
+    if (typeof decoded.exp === 'undefined') {
       return null;
     }
     let date = new Date(0); // The 0 here is the key, which sets the date to the epoch
