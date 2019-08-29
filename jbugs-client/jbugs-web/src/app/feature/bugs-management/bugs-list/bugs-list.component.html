@@ -237,8 +237,12 @@
           </td>
           <td>
             <div class="ui-g-8" *ngFor="let att of currentAttachments">
-              <a href="http://localhost:8080/jbugs/services/files/download/{{att.attContent}}">{{att.attContent}}</a>
+              <table>
+                <tr><td><a href="http://localhost:8080/jbugs/services/files/download/{{att.attContent}}">{{att.attContent}}</a></td>
+                  <td><button pButton icon="fa fa-trash" (click)="deleteAttachment(att.id)"></button></td></tr>
+              </table>
             </div>
+
           </td>
         </tr>
       </table>

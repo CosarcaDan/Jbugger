@@ -62,4 +62,7 @@ export class BugService {
   public getAttachments(bug: Bug) {
     return this.http.post<Array<Attachment>>(this.baseUrl + '/attachments', bug);
   }
+  public deleteAttachments(attachmentId:number) {
+    return this.http.delete(this.baseUrl + '/delete-attachment/'+attachmentId);
+  }
 }

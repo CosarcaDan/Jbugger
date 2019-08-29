@@ -368,4 +368,13 @@ export class BugsListComponent implements OnInit {
       this.excelService.exportAsExcelFile(this.dt.value, 'bugs');
     }
   }
+
+  deleteAttachment(id: number) {
+    this.bugServices.deleteAttachments(id).subscribe();
+    this.getAttachments(this.bug).subscribe(
+      res => {
+        this.currentAttachments = res;
+      }
+    )
+  }
 }

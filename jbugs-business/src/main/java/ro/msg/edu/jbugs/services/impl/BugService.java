@@ -376,5 +376,4 @@ public class BugService {
         bug.addAttachment(AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto));
         bugRepo.update(bug);
     }
-
 }

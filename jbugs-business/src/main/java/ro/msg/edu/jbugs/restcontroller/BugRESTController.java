@@ -6,7 +6,6 @@ import com.itextpdf.text.DocumentException;
 import ro.msg.edu.jbugs.dto.AttachmentDto;
 import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.UserDto;
-import ro.msg.edu.jbugs.entity.Attachment;
 import ro.msg.edu.jbugs.exceptions.BusinessException;
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
 import ro.msg.edu.jbugs.services.impl.AttachmentService;
@@ -167,10 +166,7 @@ public class BugRESTController {
             String pdf = bugService.makePDF(bugDto);
             String response = gson.toJson(pdf);
             return Response.status(200).entity(response).build();
-        } catch (DocumentException e) {
-            String responseError = gson.toJson(e);
-            return Response.status(500).entity(responseError).build();
-        } catch (IOException e) {
+        } catch (DocumentException | IOException e) {
             String responseError = gson.toJson(e);
             return Response.status(500).entity(responseError).build();
         }
@@ -180,6 +176,7 @@ public class BugRESTController {
     @Path("/delete-attachment/{id}")
     public Response deleteAttachment(@PathParam("id") int id)
     {
+//        this.bugService.deleteAttachment(id);
         attachmentService.deleteAttachment(id);
         return Response.status(200).build();
     }
