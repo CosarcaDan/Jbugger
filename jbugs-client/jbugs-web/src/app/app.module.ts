@@ -18,6 +18,7 @@ import {
   DialogModule,
   FileUploadModule,
   InputTextModule,
+  ListboxModule,
   MultiSelectModule,
   PaginatorModule,
   SelectButtonModule,
@@ -38,7 +39,7 @@ import {NgxFlagIconCssModule} from 'ngx-flag-icon-css';
 import {NgbdWelcomeModalContent} from './core/services/auth/auth.service';
 import {RecaptchaModule} from 'ng-recaptcha';
 import {ProfileComponent} from './feature/profile/profile.component';
-import { MessageComponent } from './core/message/message.component';
+import {MessageComponent} from './core/message/message.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { MessageComponent } from './core/message/message.component';
     AngularFontAwesomeModule,
     NgxFlagIconCssModule,
     AutoCompleteModule,
+    ListboxModule,
     RecaptchaModule.forRoot()
   ],
   providers: [{

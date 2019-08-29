@@ -23,6 +23,8 @@
     "angular-font-awesome": "^3.1.2",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
+    "exceljs": "^1.15.0",
+    "file-saver": "^2.0.2",
     "flag-icon-css": "^3.3.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
@@ -37,6 +39,7 @@
     "rxjs": "6.4.0",
     "tslib": "^1.10.0",
     "xlsx": "^0.15.1",
+    "xlsx-style": "^0.8.13",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

@@ -21,7 +21,7 @@ export class PermissionManagementComponent implements OnInit {
   selectedRole: number;
   private permissionsInRole: Array<Permission>;
 
-  constructor(private roleService: RoleService, private fb: FormBuilder, private router: Router, private languageService:LanguageService) {
+  constructor(private roleService: RoleService, private fb: FormBuilder, private router: Router, private languageService: LanguageService) {
   }
 
   ngOnInit() {

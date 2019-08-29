@@ -36,8 +36,8 @@ export class AddUserComponent implements OnInit {
 
   constructor(private router: Router, private userService: UserService,
               private roleService: RoleService, private fb: FormBuilder,
-              public activeModal: NgbActiveModal, private languageService:LanguageService,
-              private modalService:NgbModal) {
+              public activeModal: NgbActiveModal, private languageService: LanguageService,
+              private modalService: NgbModal) {
     this.form = fb.group({
       firstname: [null, [Validators.required, AddUserValidators.validateName]],
       lastname: [null, [Validators.required, AddUserValidators.validateName]],
@@ -77,7 +77,7 @@ export class AddUserComponent implements OnInit {
 
     let userToBeAdded: User = {
       id: null,
-      counter: null,
+      failedLoginAttempt: null,
       firstName: this.firstname,
       lastName: this.lastname,
       email: this.email,
@@ -87,13 +87,13 @@ export class AddUserComponent implements OnInit {
       status: null
     };
     this.userService.add(userToBeAdded, this.selectedRoles).subscribe(() => {
-      const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-      modalRef.componentInstance.message=this.languageService.getText('user-add-successful');
-    },
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message = this.languageService.getText('user-add-successful');
+      },
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('user-add-failed');
+        modalRef.componentInstance.message = this.languageService.getText('user-add-failed');
       }));
     this.activeModal.close();
 

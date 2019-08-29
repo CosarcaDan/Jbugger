@@ -22,12 +22,14 @@
 
   <ng-template pTemplate="summary" let-rowData>
     <div style="text-align:left">
-      <button type="button" pButton icon="fa fa-plus" (click)="add()" label="{{languageService.getText('add')}}"></button>
+      <button type="button" pButton icon="fa fa-plus" (click)="add()"
+              label="{{languageService.getText('add')}}"></button>
     </div>
   </ng-template>
 </p-table>
 
-<p-dialog header="{{languageService.getText('user-details')}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+<p-dialog header="{{languageService.getText('user-details')}}" [(visible)]="displayDialog" [responsive]="true"
+          showEffect="fade" [modal]="true"
           [style]="{width: '400px'}" [contentStyle]="{'max-height':'60vh'}">
   <div class="ui-g ui-fluid" *ngIf="user">
     <div class="ui-g-12">
@@ -52,10 +54,10 @@
         <div class="alert alert-danger"
              *ngIf="firstNameEdit.touched && firstNameEdit.invalid">
           <div *ngIf="firstNameEdit.errors.required">
-            {{languageService.getText('firstname')+languageService.getText('something-required')}}
+            {{languageService.getText('firstname') + languageService.getText('something-required')}}
           </div>
           <div *ngIf="firstNameEdit.errors.pattern">
-            {{languageService.getText('firstname')+languageService.getText('name-format')}}
+            {{languageService.getText('firstname') + languageService.getText('name-format')}}
           </div>
         </div>
       </div>
@@ -71,10 +73,10 @@
         <div class="alert alert-danger"
              *ngIf="lastNameEdit.touched && lastNameEdit.invalid">
           <div *ngIf="lastNameEdit.errors.required">
-            {{languageService.getText('lastname')+languageService.getText('something-required')}}
+            {{languageService.getText('lastname') + languageService.getText('something-required')}}
           </div>
           <div *ngIf="lastNameEdit.errors.pattern">
-            {{languageService.getText('lastname')+languageService.getText('name-format')}}
+            {{languageService.getText('lastname') + languageService.getText('name-format')}}
           </div>
         </div>
       </div>
@@ -91,10 +93,10 @@
         <div class="alert alert-danger"
              *ngIf="mobileNumberEdit.touched && mobileNumberEdit.invalid">
           <div *ngIf="mobileNumberEdit.errors.required">
-            {{languageService.getText('phoneNumber')+languageService.getText('something-required')}}
+            {{languageService.getText('phoneNumber') + languageService.getText('something-required')}}
           </div>
           <div *ngIf="mobileNumberEdit.errors.pattern">
-            {{languageService.getText('phoneNumber')+languageService.getText('phoneNumber-format')}}
+            {{languageService.getText('phoneNumber') + languageService.getText('phoneNumber-format')}}
           </div>
           <div *ngIf="mobileNumberEdit.errors.minlength">
             Mobile number should have at least 10 characters!
@@ -157,11 +159,14 @@
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" (click)="activateUser()" label="{{languageService.getText('activate')}}"
+      <button type="button" pButton icon="fa fa-check" (click)="activateUser()"
+              label="{{languageService.getText('activate')}}"
               [disabled]="user.status"></button>
-      <button type="button" pButton icon="fa fa-close" (click)="deactivateUser()" label="{{languageService.getText('deactivate')}}"
+      <button type="button" pButton icon="fa fa-close" (click)="deactivateUser()"
+              label="{{languageService.getText('deactivate')}}"
               [disabled]="!user.status"></button>
-      <button type="button" pButton icon="fa fa-check" (click)="edit()" label="{{languageService.getText('save')}}"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="edit()"
+              label="{{languageService.getText('save')}}"></button>
     </div>
   </p-footer>
 </p-dialog>

@@ -4,12 +4,24 @@
 
   <ng-template pTemplate="caption">
     <div style="text-align: right">
+
+      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{languageService.getText('export-into-excel')}}"
+              (click)="exportAsXLSX()" style="float:left"></button>
+
       <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
 
-      <input type="text" pInputText size="20" placeholder="{{languageService.getText('createdBy')}}"
-             [(ngModel)]="bugSearchCriteria.created">
-      <input type="text" pInputText size="20" placeholder="{{languageService.getText('assignedTo')}}"
-             [(ngModel)]="bugSearchCriteria.assigned">
+      <p-autoComplete appendTo="body" [suggestions]="filteredBugs"
+                      (completeMethod)="filterBugs($event)" [size]="30"
+                      placeholder="{{languageService.getText('createdBy')}}" [minLength]="1" forceSelection="true"
+                      [(ngModel)]="bugSearchCriteria.created"
+      ></p-autoComplete>
+
+      <p-autoComplete appendTo="body" [suggestions]="filteredBugs"
+                      (completeMethod)="filterBugs($event)" [size]="30"
+                      placeholder="{{languageService.getText('assignedTo')}}" [minLength]="1" forceSelection="true"
+                      [(ngModel)]="bugSearchCriteria.assigned"
+      ></p-autoComplete>
+
       <p-dropdown [options]="status" size="20" placeholder="Status" id="status"
                   [(ngModel)]="bugSearchCriteria.status"></p-dropdown>
 
@@ -62,16 +74,17 @@
                        (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
 
 
-
         <p-autoComplete appendTo="body" *ngSwitchCase="'created'" [suggestions]="filteredBugs"
                         (completeMethod)="filterBugs($event)" [size]="20"
-                        placeholder="{{this.languageService.getText('createdBy')}}" [minLength]="1" forceSelection="true"
+                        placeholder="{{this.languageService.getText('createdBy')}}" [minLength]="1"
+                        forceSelection="true"
                         (onSelect)="dt.filter($event, col.field, 'contains')"
         ></p-autoComplete>
 
         <p-autoComplete appendTo="body" *ngSwitchCase="'assigned'" [suggestions]="filteredBugs"
                         (completeMethod)="filterBugs($event)" [size]="20"
-                        placeholder="{{this.languageService.getText('assignedTo')}}" [minLength]="1" forceSelection="true"
+                        placeholder="{{this.languageService.getText('assignedTo')}}" [minLength]="1"
+                        forceSelection="true"
                         (onSelect)="dt.filter($event, col.field, 'contains')"
         ></p-autoComplete>
 
@@ -82,7 +95,6 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr [pSelectableRow]="rowData">
       <td *ngFor="let col of columns" [ngSwitch]="col.field">
-        <!--        <div *ngSwitchCase="'targetDate'"> {{rowData[col.field] | date:'dd/MM/yyyy'}} </div>-->
         <div *ngSwitchCase="'description'"> {{rowData[col.field] | summary}} </div>
         <span *ngSwitchCase="'targetDate'"> {{rowData[col.field] | date:'dd.MM.yyyy'}} </span>
         <span *ngSwitchDefault> {{rowData[col.field] }}</span>
@@ -92,7 +104,8 @@
 
   <ng-template pTemplate="summary" let-rowData>
     <div style="text-align:left">
-      <button type="button" pButton icon="fa fa-plus" (click)="add()" label="{{languageService.getText('add')}}"></button>
+      <button type="button" pButton icon="fa fa-plus" (click)="add()"
+              label="{{languageService.getText('add')}}"></button>
       <app-add-bug *ngIf="loadComponent">
       </app-add-bug>
     </div>
@@ -210,11 +223,10 @@
       </div>
       <div class="ui-g-8">
         <p-dropdown id="assignedEdit" appendTo="body" [options]="mappedUsers" [style]="{'width':'100%'}"
-                    [(ngModel)]="bug.assigned" ></p-dropdown>
+                    [(ngModel)]="bug.assigned"></p-dropdown>
       </div>
     </div>
 
-    <!--  Attachments -->
 
     <div class="ui-g-12" *ngIf="(currentAttachments!=null && currentAttachments.length!=0)">
       <table>
@@ -248,8 +260,6 @@
       </div>
     </div>
 
-    <!--  Attachment -->
-
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
@@ -258,7 +268,7 @@
               label="{{languageService.getText('close-bug')}}"></button>
       <button type="button" pButton (click)="save()" label="{{languageService.getText('save')}}"></button>
       <button type="button" pButton (click)="export()" *ngIf="this.authService.hasPermission('BUG_EXPORT_PDF')"
-              label="{{languageService.getText('export-bug')}}"></button>
+              label="{{languageService.getText('export-into-pdf')}}"></button>
     </div>
   </p-footer>
 </p-dialog>

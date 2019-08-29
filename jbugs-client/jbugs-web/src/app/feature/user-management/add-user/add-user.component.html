@@ -9,10 +9,10 @@
     <div class="alert alert-danger"
          *ngIf="form.get('firstname').touched && form.get('firstname').invalid">
       <div *ngIf="form.get('firstname').errors.required">
-        {{languageService.getText('firstname')+languageService.getText('something-required')}}
+        {{languageService.getText('firstname') + languageService.getText('something-required')}}
       </div>
       <div *ngIf="form.get('firstname').errors.validateName">
-        {{languageService.getText('firstname')+languageService.getText('name-format')}}
+        {{languageService.getText('firstname') + languageService.getText('name-format')}}
       </div>
     </div>
   </div>
@@ -27,10 +27,10 @@
     <div class="alert alert-danger"
          *ngIf="form.get('lastname').touched && form.get('lastname').invalid">
       <div *ngIf="form.get('lastname').errors.required">
-        {{languageService.getText('lastname')+languageService.getText('something-required')}}
+        {{languageService.getText('lastname') + languageService.getText('something-required')}}
       </div>
       <div *ngIf="form.get('lastname').errors.validateName">
-        {{languageService.getText('lastname')+languageService.getText('name-format')}}
+        {{languageService.getText('lastname') + languageService.getText('name-format')}}
       </div>
     </div>
   </div>
@@ -45,10 +45,10 @@
     <div class="alert alert-danger"
          *ngIf="form.get('mobilenumber').touched && form.get('mobilenumber').invalid">
       <div *ngIf="form.get('mobilenumber').errors.required">
-        {{languageService.getText('phoneNumber')+languageService.getText('something-required')}}
+        {{languageService.getText('phoneNumber') + languageService.getText('something-required')}}
       </div>
       <div *ngIf="form.get('mobilenumber').errors.validateNumber">
-        {{languageService.getText('phoneNumber')+languageService.getText('phoneNumber-format')}}
+        {{languageService.getText('phoneNumber') + languageService.getText('phoneNumber-format')}}
       </div>
 
     </div>

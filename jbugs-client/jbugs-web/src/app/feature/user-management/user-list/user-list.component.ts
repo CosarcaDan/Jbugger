@@ -27,7 +27,7 @@ export class UserListComponent implements OnInit {
 
   user: User = {
     id: 0,
-    counter: 0,
+    failedLoginAttempt: 0,
     firstName: '',
     lastName: '',
     email: '',
@@ -38,7 +38,7 @@ export class UserListComponent implements OnInit {
   };
 
 
-  constructor(private userService: UserService, private roleService: RoleService, private modalService: NgbModal,private  languageService:LanguageService) {
+  constructor(private userService: UserService, private roleService: RoleService, private modalService: NgbModal, private  languageService: LanguageService) {
   }
 
   ngOnInit() {
@@ -99,15 +99,16 @@ export class UserListComponent implements OnInit {
       () => {
 
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('user-activate-successful');
+        modalRef.componentInstance.message = this.languageService.getText('user-activate-successful');
         this.getUsers();
       },
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('user-activate-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('user-activate-failed') + error2.error.detailMessage;
       }))
     ;
+    this.displayDialog = false;
   }
 
   deactivateUser() {
@@ -115,14 +116,15 @@ export class UserListComponent implements OnInit {
     this.userService.deactivate(this.user).subscribe(
       () => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('user-deactivate-successful');
+        modalRef.componentInstance.message = this.languageService.getText('user-deactivate-successful');
         this.getUsers();
       },
       (error2 => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('user-deactivate-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('user-deactivate-failed') + error2.error.detailMessage;
       }))
     ;
+    this.displayDialog = false;
   }
 
   edit() {
@@ -131,13 +133,13 @@ export class UserListComponent implements OnInit {
     this.userService.edit(this.user, this.selectedRoles).subscribe(
       (data: {}) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('user-edit-successful');
+        modalRef.componentInstance.message = this.languageService.getText('user-edit-successful');
         this.getUsers();
       },
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('user-edit-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('user-edit-failed') + error2.error.detailMessage;
       }))
     ;
     this.displayDialog = false;

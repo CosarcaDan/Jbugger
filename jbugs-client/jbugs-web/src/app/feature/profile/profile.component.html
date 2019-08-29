@@ -12,10 +12,10 @@
       <div class="alert alert-danger"
            *ngIf="form.get('firstName').touched && form.get('firstName').invalid">
         <div *ngIf="form.get('firstName').errors.required">
-          {{languageService.getText('firstName')+languageService.getText('something-required')}}
+          {{languageService.getText('firstName') + languageService.getText('something-required')}}
         </div>
         <div *ngIf="form.get('firstName').errors.validateName">
-          {{languageService.getText('firstName')+languageService.getText('name-format')}}
+          {{languageService.getText('firstName') + languageService.getText('name-format')}}
         </div>
       </div>
     </div>
@@ -31,10 +31,10 @@
       <div class="alert alert-danger"
            *ngIf="form.get('lastName').touched && form.get('lastName').invalid">
         <div *ngIf="form.get('lastName').errors.required">
-          {{languageService.getText('lastName')+languageService.getText('something-required')}}
+          {{languageService.getText('lastName') + languageService.getText('something-required')}}
         </div>
         <div *ngIf="form.get('lastName').errors.validateName">
-          {{languageService.getText('lastName')+languageService.getText('name-format')}}
+          {{languageService.getText('lastName') + languageService.getText('name-format')}}
         </div>
       </div>
     </div>
@@ -52,10 +52,10 @@
       <div class="alert alert-danger"
            *ngIf="form.get('mobileNumber').touched && form.get('mobileNumber').invalid">
         <div *ngIf="form.get('mobileNumber').errors.required">
-          {{languageService.getText('phoneNumber')+languageService.getText('something-required')}}
+          {{languageService.getText('phoneNumber') + languageService.getText('something-required')}}
         </div>
         <div *ngIf="form.get('mobileNumber').errors.validateNumber">
-          {{languageService.getText('phoneNumber')+languageService.getText('phoneNumber-format')}}
+          {{languageService.getText('phoneNumber') + languageService.getText('phoneNumber-format')}}
         </div>
       </div>
     </div>

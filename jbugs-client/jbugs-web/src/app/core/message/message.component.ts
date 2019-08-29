@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-message',
@@ -9,7 +9,9 @@ import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 export class MessageComponent implements OnInit {
 
   @Input() message;
-  constructor(public activeModal: NgbActiveModal) { }
+
+  constructor(public activeModal: NgbActiveModal) {
+  }
 
   ngOnInit() {
   }

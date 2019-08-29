@@ -1,4 +1,4 @@
-form {
+  form {
   padding: 20px;
   width: 400px;
 
@@ -20,7 +20,10 @@ button {
 .logo {
   position: absolute;
   right: 10%;
-  top: 10%;
+  top: 7%;
+  background: transparent;
+  height: 400px;
+  width: auto;
 }
 
 

@@ -6,7 +6,6 @@ import {AuthService} from '../../core/services/auth/auth.service';
 import {AddUserValidators} from '../user-management/add-user/add-user.validators';
 import {LanguageService} from "../../core/services/language/language.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {AddBugComponent} from "../bugs-management/add-bug/add-bug.component";
 import {MessageComponent} from "../../core/message/message.component";
 
 @Component({
@@ -28,7 +27,7 @@ export class ProfileComponent implements OnInit {
   users: Array<User>;
 
   constructor(private userService: UserService, private fb: FormBuilder,
-              private authService: AuthService,private languageService:LanguageService, private modalService:NgbModal) {
+              private authService: AuthService, private languageService: LanguageService, private modalService: NgbModal) {
     this.form = fb.group({
       firstName: [null, [Validators.required, AddUserValidators.validateName]],
       lastName: [null, [Validators.required, AddUserValidators.validateName]],
@@ -53,7 +52,7 @@ export class ProfileComponent implements OnInit {
           id: null,
           username: this.username,
           password: this.newPassword,
-          counter: this.loggedUser.counter,
+          failedLoginAttempt: this.loggedUser.failedLoginAttempt,
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
@@ -63,24 +62,24 @@ export class ProfileComponent implements OnInit {
         this.userService.changePassword(this.loggedUser).subscribe(
           () => {
             const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-            modalRef.componentInstance.message=this.languageService.getText('password-successful')
+            modalRef.componentInstance.message = this.languageService.getText('password-successful')
           },
           (error2 => {
             console.log('Error', error2);
             const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-           modalRef.componentInstance.message=this.languageService.getText('password-edit-failed')+ error2.error.detailMessage;
+            modalRef.componentInstance.message = this.languageService.getText('password-edit-failed') + error2.error.detailMessage;
           })
         );
       } else {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('password-not-equal')
+        modalRef.componentInstance.message = this.languageService.getText('password-not-equal')
       }
     } else {
       this.loggedUser = {
         id: null,
         username: this.username,
         password: this.loggedUser.password,
-        counter: this.loggedUser.counter,
+        failedLoginAttempt: this.loggedUser.failedLoginAttempt,
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
@@ -90,12 +89,12 @@ export class ProfileComponent implements OnInit {
       this.userService.changePassword(this.loggedUser).subscribe(
         () => {
           const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-          modalRef.componentInstance.message=this.languageService.getText('pers-data-edit-successful')
+          modalRef.componentInstance.message = this.languageService.getText('pers-data-edit-successful')
         },
         (error2 => {
           console.log('Error', error2);
           const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-          modalRef.componentInstance.message=this.languageService.getText('pers-data-edit-failed')+ error2.error.detailMessage;
+          modalRef.componentInstance.message = this.languageService.getText('pers-data-edit-failed') + error2.error.detailMessage;
         })
       );
     }

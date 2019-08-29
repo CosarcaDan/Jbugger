@@ -46,7 +46,7 @@ export class AddBugComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private userService: UserService, private bugService: BugService,
               private fileService: FileService, public activeModal: NgbActiveModal, private authService: AuthService,
-              private languageService:LanguageService, private modalService:NgbModal) {
+              private languageService: LanguageService, private modalService: NgbModal) {
     this.form = fb.group({
       title: [null, [Validators.required,]],
       description: [null, [Validators.required, Validators.minLength(250)]],
@@ -111,12 +111,12 @@ export class AddBugComponent implements OnInit {
     this.bugService.add(bugToBeAdded, attachmentToBeAdded).subscribe(
       () => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('bug-add-successful');
+        modalRef.componentInstance.message = this.languageService.getText('bug-add-successful');
       },
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message=this.languageService.getText('bug-add-failed');
+        modalRef.componentInstance.message = this.languageService.getText('bug-add-failed');
       })
     );
     this.clearFile();
@@ -127,7 +127,7 @@ export class AddBugComponent implements OnInit {
     let fileSize = event.target.files[0].size / 1024 / 1024; // in MB
     if (fileSize > 25) {
       const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-      modalRef.componentInstance.message=this.languageService.getText('file-size');
+      modalRef.componentInstance.message = this.languageService.getText('file-size');
     }
     if (event.target.files.length > 0) {
       let files = event.target.files;
