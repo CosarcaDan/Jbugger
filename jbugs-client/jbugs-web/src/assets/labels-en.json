@@ -331,7 +331,34 @@
     {
       "label": "bug-details",
       "value": "Bug Details"
+    },
+    {
+      "label": "bugUpdated",
+      "value": "Bug updated successfully"
+    },
+    {
+      "label": "oldBugData",
+      "value": "Bug data before update"
+    },
+    {
+      "label": "newBugData",
+      "value": "Bug data after update"
+    },
+
+    {
+      "label": "oldBugStatus",
+      "value": "Bug status before update"
+    },
+    {
+      "label": "newBugStatus",
+      "value": "Bug status after update"
+    },
+    {
+      "label": "bugStatusUpdate",
+      "value": "Bug updated successfully"
     }
+
+
 
   ]
 }
