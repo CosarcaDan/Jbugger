@@ -113,10 +113,6 @@ export class DashboardComponent implements OnInit {
       let user: User = JSON.parse(notification.message)
       let res:string ='<div>'+this.languageService.getText('welcome')+' '+user.firstName+' '+user.lastName+'! '+
         this.languageService.getText('edit-pers-data')+`<a href="dashboard/profile" ">`+this.languageService.getText('here')+`</a>`+
-        this.languageService.getText('edit-pers-data-2')+
-        '</div><div>'+
-        "ID:"+user.id+'</div><div>'+
-        this.languageService.getText('counter')+': '+user.failedLoginAttempt+'</div><div>'+
         this.languageService.getText('firstName')+': '+user.firstName+'</div><div>'+
         this.languageService.getText('lastName')+': '+user.lastName+'</div><div>'+
         'Email: '+user.email+'</div><div>'+
@@ -129,9 +125,6 @@ export class DashboardComponent implements OnInit {
     if (notification.type == 'USER_DELETED' || notification.type == 'USER_DEACTIVATED') {
       let user: User = JSON.parse(notification.message);
       let res: string = '<div>' + this.languageService.getText('user_deleted') +
-        '</div><div>' +
-        'ID:' + user.id + '</div><div>' +
-        this.languageService.getText('counter') + ': ' + user.failedLoginAttempt + '</div><div>' +
         this.languageService.getText('firstName') + ': ' + user.firstName + '</div><div>' +
         this.languageService.getText('lastName') + ': ' + user.lastName + '</div><div>' +
         'Email: ' + user.email + '</div><div>' +
@@ -141,7 +134,26 @@ export class DashboardComponent implements OnInit {
       console.log(res);
       return res;
     }
+    if (notification.type == 'USER_UPDATED') {
+      let user: User[] = JSON.parse(notification.message);
+      let res: string = '<div>' + this.languageService.getText('user_updated') + '<p><br></p></div>' +
+        '<div>' + this.languageService.getText('user_updated_new') + '</div><div>' +
+        this.languageService.getText('firstName') + ': ' + user[0].firstName + '</div><div>' +
+        this.languageService.getText('lastName') + ': ' + user[0].lastName + '</div><div>' +
+        'Email: ' + user[0].email + '</div><div>' +
+        this.languageService.getText('phoneNumber') + ': ' + user[0].mobileNumber + '</div><div>' +
+        this.languageService.getText('username') + ': ' + user[0].username + '</div><div>' +
+        'Status: ' + (user[0].status ? 'active' : 'inactive') + '<p><br></p></div></div>' +
 
-
+        '<div>' + this.languageService.getText('user_updated_old') + '</div><div>' +
+        this.languageService.getText('firstName') + ': ' + user[1].firstName + '</div><div>' +
+        this.languageService.getText('lastName') + ': ' + user[1].lastName + '</div><div>' +
+        'Email: ' + user[0].email + '</div><div>' +
+        this.languageService.getText('phoneNumber') + ': ' + user[1].mobileNumber + '</div><div>' +
+        this.languageService.getText('username') + ': ' + user[1].username + '</div><div>' +
+        'Status: ' + (user[0].status ? 'active' : 'inactive') + '<br></div>'
+      ;
+      return res;
+    }
   }
 }

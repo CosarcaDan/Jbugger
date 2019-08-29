@@ -327,6 +327,18 @@
     {
       "label": "user_deleted",
       "value": "A user was deactivated: "
+    },
+    {
+      "label": "user_updated",
+      "value": "Actualizare cu succes! "
+    },
+    {
+      "label": "user_updated_new",
+      "value": "New profile: "
+    },
+    {
+      "label": "user_updated_old",
+      "value": "Old profile: "
     }
   ]
 }
