@@ -6,6 +6,7 @@ export class Notification {
   url: string;
   isSeen: boolean;
   receiver: string;
+  show?: boolean
 
 
 }

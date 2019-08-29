@@ -36,6 +36,7 @@ export class UserListComponent implements OnInit {
     username: '',
     status: null,
   };
+  private language: string;
 
 
   constructor(private userService: UserService, private roleService: RoleService, private modalService: NgbModal, private  languageService: LanguageService) {
@@ -47,6 +48,7 @@ export class UserListComponent implements OnInit {
     this.languageService.getText('save');
     this.languageService.getText('save');
     this.getUsers();
+    this.language=localStorage.getItem('language');
     //this.getRoles();
 
     this.cols = [

@@ -106,39 +106,49 @@ export class DashboardComponent implements OnInit {
       this.intervalRun = true;
     }
   }
+
+  showNot(notification:Notification){
+    console.log('showw:',notification.type)
+    this.notifications.forEach(not=>{
+      if(not.id == notification.id)
+        not.show=true;
+      else
+        not.show=false;
+    })
+  }
+  hide(){
+    this.notifications.forEach(not=>{
+        not.show=false;
+    })
+  }
+
+
   notificationFormatter(notification:Notification):string{
     if(notification.type == "WELCOME_NEW_USER")
     {
-      //"{"id":8,"failedLoginAttempt":0,"firstName":"Test","lastName":"Felh","email":"testfh@msggroup.com","mobileNumber":"0740541012","password":"f9b8e085ea3877ca8e8074aaa0c21ac9a9808275d835d680a6a9b530e2f7f27c","username":"felht","status":true}"
-      let user: User = JSON.parse(notification.message)
+      let user: User = JSON.parse(notification.message);
       let res:string ='<div>'+this.languageService.getText('welcome')+' '+user.firstName+' '+user.lastName+'! '+
         this.languageService.getText('edit-pers-data')+`<a href="dashboard/profile" ">`+this.languageService.getText('here')+`</a>`+
         this.languageService.getText('edit-pers-data-2')+
         '</div><div>'+
-        "ID:"+user.id+'</div><div>'+
-        this.languageService.getText('counter')+': '+user.failedLoginAttempt+'</div><div>'+
         this.languageService.getText('firstName')+': '+user.firstName+'</div><div>'+
         this.languageService.getText('lastName')+': '+user.lastName+'</div><div>'+
         'Email: '+user.email+'</div><div>'+
         this.languageService.getText('phoneNumber')+': '+user.mobileNumber+'</div><div>'+
         this.languageService.getText('username')+': '+user.username+'</div><div>'+
-        'Status: '+( user.status? 'active':'inactive')+'</div>'
-      console.log(res);
+        'Status: '+( localStorage.getItem('language')=='en'?user.status? 'active':'inactive':user.status? 'activ':'inactiv')+'</div>';
       return res;
     }
     if (notification.type == 'USER_DELETED' || notification.type == 'USER_DEACTIVATED') {
       let user: User = JSON.parse(notification.message);
       let res: string = '<div>' + this.languageService.getText('user_deleted') +
         '</div><div>' +
-        'ID:' + user.id + '</div><div>' +
-        this.languageService.getText('counter') + ': ' + user.failedLoginAttempt + '</div><div>' +
         this.languageService.getText('firstName') + ': ' + user.firstName + '</div><div>' +
         this.languageService.getText('lastName') + ': ' + user.lastName + '</div><div>' +
         'Email: ' + user.email + '</div><div>' +
         this.languageService.getText('phoneNumber') + ': ' + user.mobileNumber + '</div><div>' +
         this.languageService.getText('username') + ': ' + user.username + '</div><div>' +
-        'Status: ' + (user.status ? 'active' : 'inactive') + '</div>';
-      console.log(res);
+        'Status: ' + (localStorage.getItem('language')=='en'?user.status? 'active':'inactive':user.status? 'activ':'inactiv') + '</div>';
       return res;
     }
 

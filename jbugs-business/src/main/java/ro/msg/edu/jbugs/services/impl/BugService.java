@@ -253,7 +253,7 @@ public class BugService {
 
 
         List<Paragraph> paragraphList = new ArrayList<>();
-        newElement("Description", bug.getDescription()).forEach(p -> paragraphList.add(p));
+        newElement("Description: ", bug.getDescription()).forEach(p -> paragraphList.add(p));
         paragraphList.add(newShortElement("Version: ", bug.getVersion()));
         paragraphList.add(newShortElement("Target date: ", bug.getTargetDate().toString().split(" ")[0]));
         paragraphList.add(newShortElement("Status: ", bug.getStatus().name()));
@@ -295,8 +295,8 @@ public class BugService {
         Paragraph textParagraph = new Paragraph();
         textParagraph.add(textChunk);
         textParagraph.setAlignment(Element.ALIGN_LEFT);
-        textParagraph.setMultipliedLeading(1.0f);
-        textParagraph.setSpacingAfter(1.2f);
+        textParagraph.setMultipliedLeading(1.5f);
+        textParagraph.setSpacingAfter(1.5f);
 
         result.add(textParagraph);
 
@@ -326,7 +326,7 @@ public class BugService {
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
         Font font = FontFactory.getFont("/fonts/Roboto-Regular.ttf",
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.BLACK);
-        Chunk subtitleChunk = new Chunk("Attachments", subtitleFont);
+        Chunk subtitleChunk = new Chunk("Attachments:", subtitleFont);
 
         Paragraph subtitleParagraph = new Paragraph();
         subtitleParagraph.add(subtitleChunk);
@@ -357,7 +357,7 @@ public class BugService {
             textParagraph.add(textChunk);
             textParagraph.add(attChunk);
             textParagraph.setAlignment(Element.ALIGN_LEFT);
-            textParagraph.setMultipliedLeading(1.0f);
+            textParagraph.setMultipliedLeading(1.5f);
             textParagraph.setSpacingAfter(1.2f);
 
             result.add(textParagraph);
