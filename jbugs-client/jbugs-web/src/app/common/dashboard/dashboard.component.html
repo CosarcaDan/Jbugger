@@ -1,16 +1,32 @@
 <p-menubar [model]="items">
   <div>
-    <label>Hello, {{authService.getUsername()}}!&#10240;&#10240;</label>
-    <p-selectButton [options]="languages" [(ngModel)]="selectedLanguage"></p-selectButton>
-    <button pButton (click)="logout()" label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>
+    <label>{{languageService.getText('greet')}}, </label><a [routerLink]="['profile']">{{authService.getUsername()}}</a><label>!&#10240;&#10240;</label>
+    <p-selectButton [options]="languages" [(ngModel)]="selectedLanguage"
+                    (click)="setLanguage(selectedLanguage)"></p-selectButton>
+    <button pButton (click)="logout()" label="{{languageService.getText('logout')}}" icon="fa fa-sign-out"
+            style="margin-left:.25em"></button>
     <!--  npm install ngx-flag-icon-css flag-icon-css-->
 
   </div>
 </p-menubar>
+
+<p-dialog header="Notification" [(visible)]="displayNotification"
+          [style]="{width: '350px', minWidth: '200px'}">
+  <p>Uite-maaa</p>
+</p-dialog>
+
 <p-sidebar [(visible)]="display" position="right" styleClass="ui-sidebar-md">
-  Notifications
+  <h1>{{languageService.getText('notifications')}}</h1>
+
+  <div *ngFor="let not of notification">
+
+    <div id="logo">
+      <h1 (click)="displayNotification = true">{{not}}</h1>
+    </div>
+
+  </div>
 </p-sidebar>
 
 <button id="notification" type="text" (click)="display = true" pButton class="ui-button-rounded ui-button-success"
-        label="Notifications"></button>
+        label="{{languageService.getText('notifications')}}"></button>
 <router-outlet></router-outlet>

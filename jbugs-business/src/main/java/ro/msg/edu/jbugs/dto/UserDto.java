@@ -15,7 +15,7 @@ import java.util.Objects;
 //@XmlRootElement
 public class UserDto implements Serializable {
     private Integer id;
-    private Integer counter;
+    private Integer failedLoginAttempt;
     private String firstName;
     private String lastName;
     private String email;
@@ -23,8 +23,8 @@ public class UserDto implements Serializable {
     private String password;
     private String username;
     private Boolean status;
-    private List<BugDto> createdBy;
-    private List<BugDto> assignedTo;
+    private List<Integer> createdBugsId;
+    private List<Integer> assignedBugsId;
     private List<RoleDto> roles;
 
 
@@ -60,29 +60,29 @@ public class UserDto implements Serializable {
         this.status = status;
     }
 
-    public List<BugDto> getCreatedBy() {
-        return createdBy;
+    public List<Integer> getCreatedBugsId() {
+        return createdBugsId;
     }
 
-    public void setCreatedBy(List<BugDto> createdBy) {
-        this.createdBy = createdBy;
+    public void setCreatedBugsId(List<Integer> createdBugsId) {
+        this.createdBugsId = createdBugsId;
     }
 
-    public List<BugDto> getAssignedTo() {
-        return assignedTo;
+    public List<Integer> getAssignedBugsId() {
+        return assignedBugsId;
     }
 
 
-    public void setAssignedTo(List<BugDto> assignedTo) {
-        this.assignedTo = assignedTo;
+    public void setAssignedBugsId(List<Integer> assignedBugsId) {
+        this.assignedBugsId = assignedBugsId;
     }
 
     public UserDto() {
     }
 
-    public UserDto(Integer id, Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status, List<BugDto> createdBy, List<BugDto> assignTo) {
+    public UserDto(Integer id, Integer failedLoginAttempt, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status, List<Integer> createdBugs, List<Integer> assignTo) {
         this.id = id;
-        this.counter = counter;
+        this.failedLoginAttempt = failedLoginAttempt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -91,13 +91,13 @@ public class UserDto implements Serializable {
         this.username = username;
         this.status = status;
 
-        this.createdBy = createdBy;
-        this.assignedTo = assignTo;
+        this.createdBugsId = createdBugs;
+        this.assignedBugsId = assignTo;
     }
 
-    public UserDto(Integer id, Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status, List<BugDto> createdBy, List<BugDto> assignTo, List<RoleDto> roles) {
+    public UserDto(Integer id, Integer failedLoginAttempt, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status, List<Integer> createdBugs, List<Integer> assignTo, List<RoleDto> roles) {
         this.id = id;
-        this.counter = counter;
+        this.failedLoginAttempt = failedLoginAttempt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -106,8 +106,8 @@ public class UserDto implements Serializable {
         this.username = username;
         this.status = status;
 
-        this.createdBy = createdBy;
-        this.assignedTo = assignTo;
+        this.createdBugsId = createdBugs;
+        this.assignedBugsId = assignTo;
 
         this.roles = roles;
     }
@@ -117,9 +117,9 @@ public class UserDto implements Serializable {
         this.password = uld.getPassword();
     }
 
-    public UserDto(Integer id, Integer counter, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
+    public UserDto(Integer id, Integer failedLoginAttempt, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
         this.id = id;
-        this.counter = counter;
+        this.failedLoginAttempt = failedLoginAttempt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -137,12 +137,12 @@ public class UserDto implements Serializable {
         this.id = id;
     }
 
-    public Integer getCounter() {
-        return counter;
+    public Integer getFailedLoginAttempt() {
+        return failedLoginAttempt;
     }
 
-    public void setCounter(Integer counter) {
-        this.counter = counter;
+    public void setFailedLoginAttempt(Integer failedLoginAttempt) {
+        this.failedLoginAttempt = failedLoginAttempt;
     }
 
     public String getFirstName() {
@@ -183,7 +183,7 @@ public class UserDto implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         UserDto userDto = (UserDto) o;
         return Objects.equals(id, userDto.id) &&
-                Objects.equals(counter, userDto.counter) &&
+                Objects.equals(failedLoginAttempt, userDto.failedLoginAttempt) &&
                 Objects.equals(firstName, userDto.firstName) &&
                 Objects.equals(lastName, userDto.lastName) &&
                 Objects.equals(email, userDto.email) &&
@@ -191,20 +191,20 @@ public class UserDto implements Serializable {
                 Objects.equals(password, userDto.password) &&
                 Objects.equals(username, userDto.username) &&
                 Objects.equals(status, userDto.status) &&
-                Objects.equals(createdBy, userDto.createdBy) &&
-                Objects.equals(assignedTo, userDto.assignedTo);
+                Objects.equals(createdBugsId, userDto.createdBugsId) &&
+                Objects.equals(assignedBugsId, userDto.assignedBugsId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, counter, firstName, lastName, email, mobileNumber, password, username, status, createdBy, assignedTo);
+        return Objects.hash(id, failedLoginAttempt, firstName, lastName, email, mobileNumber, password, username, status, createdBugsId, assignedBugsId);
     }
 
     @Override
     public String toString() {
         return "UserDto{" +
                 "id=" + id +
-                ", counter=" + counter +
+                ", failedLoginAttempt=" + failedLoginAttempt +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
@@ -212,8 +212,8 @@ public class UserDto implements Serializable {
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
                 ", status=" + status +
-                ", createdBy=" + createdBy +
-                ", assignedTo=" + assignedTo +
+                ", createdBugsId=" + createdBugsId +
+                ", assignedBugsId=" + assignedBugsId +
                 '}';
     }
 

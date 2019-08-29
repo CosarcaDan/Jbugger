@@ -8,7 +8,9 @@ import {UserService} from '../../../core/services/user/user.service';
 import {RoleService} from '../../../core/services/role/role.service';
 import {User} from '../../../core/models/user';
 import {Role} from '../../../core/models/role';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LanguageService} from '../../../core/services/language/language.service';
+import {MessageComponent} from '../../../core/message/message.component';
 
 
 @Component({
@@ -33,7 +35,9 @@ export class AddUserComponent implements OnInit {
   roles: Array<Role>;
 
   constructor(private router: Router, private userService: UserService,
-              private roleService: RoleService, private fb: FormBuilder, public activeModal: NgbActiveModal) {
+              private roleService: RoleService, private fb: FormBuilder,
+              public activeModal: NgbActiveModal, private languageService: LanguageService,
+              private modalService: NgbModal) {
     this.form = fb.group({
       firstname: [null, [Validators.required, AddUserValidators.validateName]],
       lastname: [null, [Validators.required, AddUserValidators.validateName]],
@@ -73,7 +77,7 @@ export class AddUserComponent implements OnInit {
 
     let userToBeAdded: User = {
       id: null,
-      counter: null,
+      failedLoginAttempt: null,
       firstName: this.firstname,
       lastName: this.lastname,
       email: this.email,
@@ -83,8 +87,14 @@ export class AddUserComponent implements OnInit {
       status: null
     };
     this.userService.add(userToBeAdded, this.selectedRoles).subscribe(() => {
-      alert('User added successfully! ');
-    });
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message = this.languageService.getText('user-add-successful');
+      },
+      (error2 => {
+        console.log('Error', error2);
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message = this.languageService.getText('user-add-failed');
+      }));
     this.activeModal.close();
 
   }

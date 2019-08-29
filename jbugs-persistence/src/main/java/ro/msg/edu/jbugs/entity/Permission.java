@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "permissions")
 @NamedQueries({
-        @NamedQuery(name = Permission.GET_ALL_PERMISSIONS, query = "select p from Permission p")
+        @NamedQuery(name = Permission.GET_ALL_PERMISSIONS, query = "select p from Permission p"),
 })
 public class Permission implements Serializable {
     public static final String GET_ALL_PERMISSIONS = "get all permissions";

@@ -4,13 +4,16 @@ import {User} from '../../core/models/user';
 import {UserService} from '../../core/services/user/user.service';
 import {AuthService} from '../../core/services/auth/auth.service';
 import {AddUserValidators} from '../user-management/add-user/add-user.validators';
+import {LanguageService} from '../../core/services/language/language.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {MessageComponent} from '../../core/message/message.component';
 
 @Component({
   selector: 'app-password-management',
-  templateUrl: './password-management.component.html',
-  styleUrls: ['./password-management.component.css']
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
-export class PasswordManagementComponent implements OnInit {
+export class ProfileComponent implements OnInit {
 
   form: FormGroup;
   loggedUser: User;
@@ -24,7 +27,7 @@ export class PasswordManagementComponent implements OnInit {
   users: Array<User>;
 
   constructor(private userService: UserService, private fb: FormBuilder,
-              private authService: AuthService) {
+              private authService: AuthService, private languageService: LanguageService, private modalService: NgbModal) {
     this.form = fb.group({
       firstName: [null, [Validators.required, AddUserValidators.validateName]],
       lastName: [null, [Validators.required, AddUserValidators.validateName]],
@@ -49,7 +52,7 @@ export class PasswordManagementComponent implements OnInit {
           id: null,
           username: this.username,
           password: this.newPassword,
-          counter: this.loggedUser.counter,
+          failedLoginAttempt: this.loggedUser.failedLoginAttempt,
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
@@ -57,23 +60,26 @@ export class PasswordManagementComponent implements OnInit {
           status: this.loggedUser.status,
         };
         this.userService.changePassword(this.loggedUser).subscribe(
-          (data: {}) => {
-            alert(data);
+          () => {
+            const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+            modalRef.componentInstance.message = this.languageService.getText('password-successful');
           },
           (error2 => {
             console.log('Error', error2);
-            alert('Editing data failed:' + error2.error.detailMessage);
+            const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+            modalRef.componentInstance.message = this.languageService.getText('password-edit-failed') + error2.error.detailMessage;
           })
         );
       } else {
-        alert('Passwords are not equal. Please retry!');
+        const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+        modalRef.componentInstance.message = this.languageService.getText('password-not-equal');
       }
     } else {
       this.loggedUser = {
         id: null,
         username: this.username,
         password: this.loggedUser.password,
-        counter: this.loggedUser.counter,
+        failedLoginAttempt: this.loggedUser.failedLoginAttempt,
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
@@ -81,12 +87,14 @@ export class PasswordManagementComponent implements OnInit {
         status: this.loggedUser.status,
       };
       this.userService.changePassword(this.loggedUser).subscribe(
-        (data: {}) => {
-          alert(data);
+        () => {
+          const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+          modalRef.componentInstance.message = this.languageService.getText('pers-data-edit-successful');
         },
         (error2 => {
           console.log('Error', error2);
-          alert('Editing data failed :' + error2.error.detailMessage);
+          const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+          modalRef.componentInstance.message = this.languageService.getText('pers-data-edit-failed') + error2.error.detailMessage;
         })
       );
     }

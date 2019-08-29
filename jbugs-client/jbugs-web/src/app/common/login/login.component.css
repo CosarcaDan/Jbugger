@@ -20,7 +20,10 @@ button {
 .logo {
   position: absolute;
   right: 10%;
-  top: 10%;
+  top: 15%;
+  background: transparent;
+  height: 400px;
+  width: auto;
 }
 
 

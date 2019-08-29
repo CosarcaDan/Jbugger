@@ -1,18 +1,20 @@
 package ro.msg.edu.jbugs.services.impl;
 
-import ro.msg.edu.jbugs.repo.NotificationRepo;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ro.msg.edu.jbugs.dto.NotificationDto;
+import ro.msg.edu.jbugs.dto.UserDto;
 import ro.msg.edu.jbugs.dto.mappers.NotificationDtoMapping;
+import ro.msg.edu.jbugs.dto.mappers.UserDtoMapping;
 import ro.msg.edu.jbugs.entity.Notification;
+import ro.msg.edu.jbugs.repo.NotificationRepo;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.jms.*;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Document me.
@@ -27,39 +29,62 @@ public class NotificationService {
     @EJB
     private NotificationRepo notificationRepo;
 
-    public void addNotification(NotificationDto notificationDto) throws IOException {
-        Notification notification = NotificationDtoMapping.notificationDtoTonotification(notificationDto);
+    public void createNotificationNewUser(UserDto receiver) {
+        Gson gson = new GsonBuilder().create();
+        //todo exclude password
+        String welcomeMessage = gson.toJson(receiver);
+        NotificationDto notificationDto = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), welcomeMessage, "WELCOME_NEW_USER", "", false, receiver.getUsername());
+        Notification notification = NotificationDtoMapping.notificationDtoTonotification(notificationDto, UserDtoMapping.userDtoToUser(receiver));
         notificationRepo.addNotification(notification);
-        sendNotification("hello new User: " + notification.getUser().getUsername());
+    }
+
+    public void createNotificationUpdateUser(UserDto initiator, UserDto modified, UserDto modifiedOldData) {
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        List<UserDto> messageList = Arrays.asList(modified, modifiedOldData);
+        String updateMessage = gson.toJson(messageList);
+        NotificationDto notificationDtoForInitiator = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), updateMessage, "USER_UPDATED", "", false, initiator.getUsername());
+        Notification notificationForInitiator = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForInitiator, UserDtoMapping.userDtoToUser(initiator));
+        NotificationDto notificationDtoForModified = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), updateMessage, "USER_UPDATED", "", false, modified.getUsername());
+        Notification notificationForModified = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForModified, UserDtoMapping.userDtoToUser(modified));
+        notificationRepo.addNotification(notificationForInitiator);
+        notificationRepo.addNotification(notificationForModified);
+    }
+
+    public void createNotificationDeactivateUserForAdmin(List<UserDto> admins, UserDto deactivatedUser) {
+        Gson gson = new GsonBuilder().create();
+        String deleteMessage = gson.toJson(deactivatedUser);
+        for (UserDto admin : admins) {
+            NotificationDto notificationDtoForAdmin = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), deleteMessage, "USER_DEACTIVATED", "", false, admin.getUsername());
+            Notification notificationForAdmin = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForAdmin, UserDtoMapping.userDtoToUser(admin));
+            notificationRepo.addNotification(notificationForAdmin);
+        }
 
     }
 
-    public NotificationDto findNotification(Integer id){
+    //USER_DELETED notification
+    public void createNotificationDeactivateUserForUserManagement(List<UserDto> usersWithUserManagementPermission,
+                                                                  UserDto deactivatedUser) {
+        Gson gson = new GsonBuilder().create();
+        String deleteMessage = gson.toJson(deactivatedUser);
+        for (UserDto userWithManagementPermission : usersWithUserManagementPermission) {
+            NotificationDto notificationDtoForManagementPerm = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), deleteMessage, "USER_DELETED", "", false,
+                    userWithManagementPermission.getUsername());
+            Notification notificationForUserManagPerm = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForManagementPerm,
+                    UserDtoMapping.userDtoToUser(userWithManagementPermission));
+            notificationRepo.addNotification(notificationForUserManagPerm);
+        }
+    }
+
+    public NotificationDto findNotification(Integer id) {
         Notification notification = notificationRepo.findNotification(id);
         NotificationDto notificationDto = NotificationDtoMapping.notificationTonotificationDto(notification);
         return notificationDto;
     }
 
-    //todo what?
-    private void sendNotification(String text) throws IOException {
-        //maby try with resource? or finally
-        try {
-            Context ic = new InitialContext();
-            ConnectionFactory cf = (ConnectionFactory) ic.lookup("java:comp/DefaultJMSConnectionFactory");
-            Queue queue = (Queue) ic.lookup("tutorialQueue");
-
-            Connection connection = cf.createConnection();
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            MessageProducer publisher = session.createProducer(queue);
-            connection.start();
-
-            TextMessage message = session.createTextMessage(text);
-            publisher.send(message);
-
-        } catch (NamingException | JMSException e) {
-            System.out.println("Error while trying to send <" + text + "> message: " + e.getMessage());
-        }
-
-        System.out.println("Message sent: " + text);
+    public List<NotificationDto> findAllNotificationsByUsername(String username) {
+        List<Notification> notifications = notificationRepo.findAllNotificationsByUsername(username);
+        return notifications.stream().map(NotificationDtoMapping::notificationTonotificationDto).collect(Collectors.toList());
     }
+
+
 }
