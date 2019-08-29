@@ -24,6 +24,8 @@ export class DashboardComponent implements OnInit {
 
   notifications: Notification[];
 
+  intervalRun: boolean;
+
   constructor(private router: Router, private authService: AuthService, private notificationService: NotificationService, private languageService: LanguageService) {
   }
 
@@ -55,8 +57,9 @@ export class DashboardComponent implements OnInit {
     ];
 
 
-    this.interval = setInterval(this.getMyNotification.bind(this), 10000);
+    this.interval = setInterval(this.getMyNotification.bind(this), 3000);
 
+    this.intervalRun = true;
   }
 
   public goto(link) {
@@ -68,16 +71,8 @@ export class DashboardComponent implements OnInit {
     this.authService.logout();
   }
 
-  consoleLog(not: string) {
-    console.log(not);
-  }
-
-  showDialog(event) {
-    this.displayNotification = true;
-  }
-
   getMyNotification() {
-    console.log('UsernameFrorNotification', this.user);
+    console.log('UsernameFromNotification', this.user);
     this.notificationService.getMyNotification(this.user).subscribe((data) => {
       this.notifications = data;
       console.log(this.notifications)
@@ -98,4 +93,15 @@ export class DashboardComponent implements OnInit {
     location.reload();
   }
 
+  notificationDialogClearIntervalWhenVisible() {
+    clearInterval(this.interval);
+    this.intervalRun = false;
+  }
+
+  notificationDialogStartIntervalWhenVisible() {
+    if (!this.intervalRun) {
+      this.interval = setInterval(this.getMyNotification.bind(this), 3000);
+      this.intervalRun = true;
+    }
+  }
 }
