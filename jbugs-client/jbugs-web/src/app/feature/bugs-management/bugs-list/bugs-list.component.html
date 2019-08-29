@@ -76,7 +76,6 @@
                         placeholder="Assigned to" [minLength]="1" forceSelection="true"
                         (onSelect)="dt.filter($event, col.field, 'contains')"
         ></p-autoComplete>
-
       </th>
     </tr>
   </ng-template>
@@ -98,7 +97,6 @@
       </app-add-bug>
     </div>
   </ng-template>
-
 </p-table>
 
 <p-dialog header="Bug Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
@@ -252,8 +250,6 @@
         >
       </div>
     </div>
-
-    <!--  Attachment -->
 
   </div>
   <p-footer>
