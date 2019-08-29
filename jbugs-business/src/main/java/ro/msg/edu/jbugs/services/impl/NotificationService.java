@@ -61,11 +61,18 @@ public class NotificationService {
 
     }
 
-
-    public void createNotificationDeactivateUserForUserManagement() {
+    //USER_DELETED notification
+    public void createNotificationDeactivateUserForUserManagement(List<UserDto> usersWithUserManagementPermission,
+                                                                  UserDto deactivatedUser) {
         Gson gson = new GsonBuilder().create();
-
-
+        String deleteMessage = gson.toJson(deactivatedUser);
+        for (UserDto userWithManagementPermission : usersWithUserManagementPermission) {
+            NotificationDto notificationDtoForManagementPerm = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), deleteMessage, "USER_DELETED", "", false,
+                    userWithManagementPermission.getUsername());
+            Notification notificationForUserManagPerm = NotificationDtoMapping.notificationDtoTonotification(notificationDtoForManagementPerm,
+                    UserDtoMapping.userDtoToUser(userWithManagementPermission));
+            notificationRepo.addNotification(notificationForUserManagPerm);
+        }
     }
 
     public NotificationDto findNotification(Integer id) {

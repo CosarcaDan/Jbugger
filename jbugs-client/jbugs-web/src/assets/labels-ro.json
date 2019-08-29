@@ -190,15 +190,15 @@
     },
     {
       "label": "fixedVersion",
-      "value": "Versiunea în care a fost resolvată"
+      "value": "Versiunea în care a fost rezolvată"
     },
     {
       "label": "fixedVersion-required",
-      "value": "Versiunea în care a fost resolvată este obligatorie!"
+      "value": "Versiunea în care a fost rezolvată este obligatorie!"
     },
     {
       "label": "fixedVersion-format",
-      "value": "Versiunea în care a fost resolvată trebuie să fie de formatul x.x.x!"
+      "value": "Versiunea în care a fost rezolvată trebuie să fie de formatul x.x.x!"
     },
     {
       "label": "attachment",

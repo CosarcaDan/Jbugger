@@ -4,9 +4,9 @@ import {User} from '../../core/models/user';
 import {UserService} from '../../core/services/user/user.service';
 import {AuthService} from '../../core/services/auth/auth.service';
 import {AddUserValidators} from '../user-management/add-user/add-user.validators';
-import {LanguageService} from "../../core/services/language/language.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {MessageComponent} from "../../core/message/message.component";
+import {LanguageService} from '../../core/services/language/language.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {MessageComponent} from '../../core/message/message.component';
 
 @Component({
   selector: 'app-password-management',
@@ -62,7 +62,7 @@ export class ProfileComponent implements OnInit {
         this.userService.changePassword(this.loggedUser).subscribe(
           () => {
             const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-            modalRef.componentInstance.message = this.languageService.getText('password-successful')
+            modalRef.componentInstance.message = this.languageService.getText('password-successful');
           },
           (error2 => {
             console.log('Error', error2);
@@ -72,7 +72,7 @@ export class ProfileComponent implements OnInit {
         );
       } else {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('password-not-equal')
+        modalRef.componentInstance.message = this.languageService.getText('password-not-equal');
       }
     } else {
       this.loggedUser = {
@@ -89,7 +89,7 @@ export class ProfileComponent implements OnInit {
       this.userService.changePassword(this.loggedUser).subscribe(
         () => {
           const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-          modalRef.componentInstance.message = this.languageService.getText('pers-data-edit-successful')
+          modalRef.componentInstance.message = this.languageService.getText('pers-data-edit-successful');
         },
         (error2 => {
           console.log('Error', error2);

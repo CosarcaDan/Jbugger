@@ -156,7 +156,8 @@
       </div>
       <div class="ui-g-8">
         <input pInputText id="versionEdit" [(ngModel)]="bug.version"
-               pattern="^(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)$" required #versionEdit='ngModel'/>
+               pattern="^^(0|[1-9a-zA-Z][0-9a-zA-z]?)\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)$"
+               required #versionEdit='ngModel'/>
         <div class="alert alert-danger"
              *ngIf="versionEdit.touched && versionEdit.invalid">
           <div *ngIf="versionEdit.errors.required">
@@ -196,12 +197,10 @@
       </div>
       <div class="ui-g-8">
         <input pInputText id="fixedVersionEdit" [(ngModel)]="bug.fixedVersion"
-               pattern="^(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)\.(0|[1-9][0-9]?)$" required #fixedVersionEdit='ngModel'/>
+               pattern="^(0|[1-9a-zA-Z][0-9a-zA-z]?)\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)$"
+               #fixedVersionEdit='ngModel'/>
         <div class="alert alert-danger"
              *ngIf="fixedVersionEdit.touched && fixedVersionEdit.invalid">
-          <div *ngIf="fixedVersionEdit.errors.required">
-            {{languageService.getText('fixedVersion-required')}}
-          </div>
           <div *ngIf="fixedVersionEdit.errors.pattern">
             {{languageService.getText('fixedVersion-format')}}
           </div>

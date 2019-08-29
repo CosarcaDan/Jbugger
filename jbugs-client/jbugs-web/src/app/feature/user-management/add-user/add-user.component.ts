@@ -9,8 +9,8 @@ import {RoleService} from '../../../core/services/role/role.service';
 import {User} from '../../../core/models/user';
 import {Role} from '../../../core/models/role';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {LanguageService} from "../../../core/services/language/language.service";
-import {MessageComponent} from "../../../core/message/message.component";
+import {LanguageService} from '../../../core/services/language/language.service';
+import {MessageComponent} from '../../../core/message/message.component';
 
 
 @Component({
