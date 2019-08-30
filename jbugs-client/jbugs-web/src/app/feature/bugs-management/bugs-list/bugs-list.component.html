@@ -250,12 +250,19 @@
       </div>
       <div class="ui-g-8">
         <input type="file"
+               pattern="([a-zA-Z0-9\s_\\.\-\(\):])+(.pdf|.doc|.odf|.xlsx|.xls|.png|.jpg)$"
                accept=".pdf,.doc, .odf, .xlsx, .xls,.docx,.png,.jpg;"
                id="attachments"
                (change)="onFileChange($event)"
                #fileInput="ngModel"
                [(ngModel)]="attachments"
         >
+        <div class="alert alert-danger"
+             *ngIf="fileInput.touched && fileInput.invalid">
+          <div *ngIf="fileInput.errors.pattern">
+            {{languageService.getText('file_extension')}}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -265,7 +272,9 @@
       <button type="button" pButton (click)="delete(bug.id)"
               *ngIf="this.authService.hasPermission('BUG_CLOSE') && (bug.status == 'FIXED' || bug.status == 'REJECTED') "
               label="{{languageService.getText('close-bug')}}"></button>
-      <button type="button" pButton (click)="save()" label="{{languageService.getText('save')}}"></button>
+      <button type="button" pButton (click)="save()" [disabled]="(!checkDescription() ||
+      !checkTitle() || !checkVersion() || !checkFixedInVersion() || !checkFileExtension())"
+              label="{{languageService.getText('save')}}"></button>
       <button type="button" pButton (click)="export()" *ngIf="this.authService.hasPermission('BUG_EXPORT_PDF')"
               label="{{languageService.getText('export-into-pdf')}}"></button>
     </div>

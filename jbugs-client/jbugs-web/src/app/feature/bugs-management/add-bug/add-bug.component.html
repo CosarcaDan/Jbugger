@@ -138,6 +138,12 @@
          #fileInput
          formControlName="attachments"
   >
+    <div class="alert alert-danger"
+         *ngIf="form.get('attachments').touched && form.get('attachments').invalid">
+      <div *ngIf="form.get('attachments').errors.validateFileExtension">
+        {{languageService.getText('file_extension')}}
+      </div>
+    </div>
   </div>
   <button class="btn btn-primary"
           type="button"
