@@ -85,7 +85,6 @@
                id="roles"
                (change)="onClicked(role, $event)"
         />
-
         {{role.type}}
       </label>
     </div>
@@ -95,6 +94,6 @@
   <button class="btn btn-primary"
           type="button"
           (click)="addUser()"
-          [disabled]="form.invalid">{{languageService.getText('save')}}
+          [disabled]="(form.invalid)">{{languageService.getText('save')}}
   </button>
 </form>

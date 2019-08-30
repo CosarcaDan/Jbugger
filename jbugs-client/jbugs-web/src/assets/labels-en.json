@@ -377,6 +377,14 @@
       "value": "Old profile: "
     },
     {
+      "label": "file_extension",
+      "value": "File extension is invalid!"
+    },
+    {
+      "label": "file_not_added",
+      "value": "File size exceeds 25MB and it couldn't be attached to the bug!"
+    },
+    {
       "label": "msg - 004",
       "value": "User already active!"
     },
@@ -436,6 +444,5 @@
       "label": "msg - 018",
       "value": "Bug has to to FIXED or REJECTED in order to be CLOSED!"
     }
-
   ]
 }

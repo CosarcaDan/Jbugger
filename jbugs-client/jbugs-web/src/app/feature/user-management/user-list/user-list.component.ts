@@ -180,4 +180,37 @@ export class UserListComponent implements OnInit {
       }
     }
   }
+
+  checkFirstName(): boolean {
+    let regex = new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
+    if (regex.test(this.user.firstName)) {
+      return true;
+    }
+    return false;
+  }
+
+  checkLastName(): boolean {
+    let regex = new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
+    if (regex.test(this.user.lastName)) {
+      return true;
+    }
+    return false;
+  }
+
+  checkPhone(): boolean {
+    let regex = new RegExp('^(\\+49)?1(5[12579]|6[023]|7[0-9])[0-9]{7}$|^(004|\\+4)?07[2-8][0-9]{7}$');
+    if (regex.test(this.user.mobileNumber)) {
+      return true;
+    }
+    return false;
+
+  }
+
+  checkEmail(): boolean {
+    let regex = new RegExp('^[a-zA-Z0-9-_.]*@msggroup\\.com$');
+    if (regex.test(this.user.email)) {
+      return true;
+    }
+    return false;
+  }
 }

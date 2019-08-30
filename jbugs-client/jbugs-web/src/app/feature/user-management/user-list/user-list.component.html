@@ -166,7 +166,8 @@
               label="{{languageService.getText('deactivate')}}"
               [disabled]="!user.status"></button>
       <button type="button" pButton icon="fa fa-check" (click)="edit()"
-              label="{{languageService.getText('save')}}"></button>
+              label="{{languageService.getText('save')}}"
+              [disabled]="(!checkFirstName()|| !checkLastName() || !checkEmail() || !checkPhone())"></button>
     </div>
   </p-footer>
 </p-dialog>

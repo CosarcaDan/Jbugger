@@ -36,6 +36,7 @@ export class AddBugComponent implements OnInit {
   severity: string;
   created: string;
   assigned: string;
+  fileSize: number;
 
   severities = [
     {type: 'LOW'},
@@ -57,7 +58,7 @@ export class AddBugComponent implements OnInit {
       createdBy: [null, []],
       status: [null, []],
       assignedTo: [null, []],
-      attachments: ['', []],
+      attachments: ['', [BugValidators.validateFileExtension]],
     });
   }
 
@@ -105,8 +106,11 @@ export class AddBugComponent implements OnInit {
       id: null,
       attContent: this.uploadedFileName,
     };
-    if (this.myAtt != null) {
+    if (this.myAtt != null && this.checkFileSize()) {
       this.fileUpload(); //uploading a file is not mandatory
+    }
+    if (!this.checkFileSize()) {
+      attachmentToBeAdded.attContent = null;
     }
     this.bugService.add(bugToBeAdded, attachmentToBeAdded).subscribe(
       () => {
@@ -124,17 +128,25 @@ export class AddBugComponent implements OnInit {
   }
 
   onFileChange(event) {
-    let fileSize = event.target.files[0].size / 1024 / 1024; // in MB
-    if (fileSize > 25) {
+    this.fileSize = event.target.files[0].size / 1024 / 1024; // in MB
+    if (this.fileSize > 25) {
+      this.clearFile();
       const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
       modalRef.componentInstance.message = this.languageService.getText('file-size');
     }
     if (event.target.files.length > 0) {
       let files = event.target.files;
       this.uploadedFileName = files[0].name;
-      console.log('Length of file: ', files[0].size);
       this.myAtt = files;
     }
+  }
+
+  checkFileSize(): boolean {
+    if (this.fileSize > 25) {
+      return false;
+    }
+    return true;
+
   }
 
   private prepareSave(): FormData {
@@ -145,8 +157,9 @@ export class AddBugComponent implements OnInit {
 
   fileUpload() {
     const formModel = this.prepareSave();
-    console.log('File details ', formModel.get('file'));
+    if (this.checkFileSize()) {
     this.fileService.uploadFile(formModel).subscribe(this.clearFile);
+    }
   }
 
   clearFile() {

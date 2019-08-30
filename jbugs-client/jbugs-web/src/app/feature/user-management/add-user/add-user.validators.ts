@@ -15,7 +15,6 @@ export class AddUserValidators {
     let value: string = control.value;
     let regexExpression = new RegExp('^[A-ZÜÄÖÂÎĂȚȘ]');
     if (value && !regexExpression.test(value)) {
-      console.log('aici');
       return {validateBeginWithUpperCase: true};
     }
   }
