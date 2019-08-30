@@ -243,6 +243,9 @@ export class BugsListComponent implements OnInit {
       (data) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('bug-close-successful');
+        modalRef.result.then(() => {
+          this.search();
+        });
       },
       (error1 => {
         console.log('Error', error1);
@@ -267,7 +270,9 @@ export class BugsListComponent implements OnInit {
       (data) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('bug-edit-successful');
-        this.search();
+        modalRef.result.then(() => {
+          this.search();
+        });
       },
       (error2 => {
         console.log('Error', error2);
