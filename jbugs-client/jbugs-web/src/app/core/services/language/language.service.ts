@@ -16,7 +16,6 @@ export class LanguageService implements OnInit {
   ngOnInit(): void {
     this.http.get('./assets/labels-' + localStorage.getItem('language') + '.json').subscribe(
       (res: { labels: { label, value }[] }) => {
-        console.log('res', res);
         this.labels = res.labels;
         this.languageLoaded = localStorage.getItem('language');
       }

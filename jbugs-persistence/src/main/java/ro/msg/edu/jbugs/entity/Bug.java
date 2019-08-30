@@ -179,6 +179,10 @@ public class Bug implements Serializable {
         this.attachments.add(attachment);
     }
 
+    public void removeAttachmentAfterId(Integer id) {
+        this.attachments.removeIf(attachment -> attachment.getId().equals(id));
+    }
+
     public enum Status{
         NEW, IN_PROGRESS, FIXED, CLOSED, REJECTED, INFONEEDED
     }

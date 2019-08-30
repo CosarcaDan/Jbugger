@@ -1,9 +1,11 @@
 import {Component, Injectable, Input} from '@angular/core';
 import {UserLogin} from '../../models/userLogin';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {delay} from 'q';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {BackendError} from "../../models/backendError";
+import {MessageComponent} from "../../message/message.component";
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +20,11 @@ export class AuthService {
     let token = localStorage.getItem('token');
     if (!token)
       return 'Bearer ';
-    // if(this.isTokenExpired(token))
-    // {
-    //   this.renew(this.decodeToken(token).subject);
-    //   token=localStorage.getItem('token');
-    // }
+    if(this.isTokenExpired(token))
+    {
+      this.renew(this.decodeToken(token).subject);
+      token=localStorage.getItem('token');
+    }
     return 'Bearer ' + token;
   }
   getUsername() {
@@ -38,8 +40,15 @@ export class AuthService {
       await delay(1000);
       modalRef.close();
       this.router.navigate(['dashboard']);
-    }, (error1) => {
-      console.log('Error', error1);
+    }, (error1:HttpErrorResponse) => {
+      console.log('Error', error1.error.errorCode);
+      const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
+      if(error1.error.errorCode == 'msg - 001')
+        modalRef.componentInstance.message = "Username or password Incorrect!";
+      if(error1.error.errorCode == 'msg - 002')
+        modalRef.componentInstance.message = "You entered an incorrect password 5 times, your User got deactivated. Please contact your administrator!";
+      if(error1.error.errorCode == 'msg - 003')
+        modalRef.componentInstance.message = "Your User is deactivated. Please contact your administrator!";
     });
   }
   public logout() {

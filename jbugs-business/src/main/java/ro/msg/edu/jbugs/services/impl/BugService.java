@@ -56,23 +56,23 @@ public class BugService {
         User creator = userRepo.findUser(Integer.parseInt(bugDto.getCreated()));
         User assigned = userRepo.findUser(Integer.parseInt(bugDto.getAssigned()));
         Bug bug = BugDtoMapping.bugDtoToBug(bugDto, creator, assigned);
-        return BugDtoMapping.bugToBugDtoComplet(bugRepo.addBug(bug));
+        return BugDtoMapping.bugToBugDtoComplete(bugRepo.addBug(bug));
     }
 
     public BugDto findBug(Integer id) throws BusinessException {
         try {
             Bug bug = bugRepo.findBug(id);
-            BugDto bugDto = BugDtoMapping.bugToBugDtoComplet(bug);
+            BugDto bugDto = BugDtoMapping.bugToBugDtoComplete(bug);
             return bugDto;
         } catch (EntityNotFoundException ex) {
-            throw new BusinessException("Bug with given id not found", "msg - 020");
+            throw new BusinessException("Bug with given id not found", "msg - 014");
         }
 
     }
 
     public List<BugDto> getAllBug() {
         List<Bug> bugList = bugRepo.getAllBugs();
-        List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
+        List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplete).collect(Collectors.toList());
         return bugDtoList;
     }
 
@@ -108,7 +108,7 @@ public class BugService {
             bugList = bugRepo.getBugsAfterSearchCriteriaWithSeverityAndStatus(severity, status, creator, assigned);
         }
 
-        return bugList.stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
+        return bugList.stream().map(BugDtoMapping::bugToBugDtoComplete).collect(Collectors.toList());
     }
 
     public Integer deleteOldBugs() {
@@ -125,45 +125,45 @@ public class BugService {
         if (bug.getStatus().equals(Bug.Status.NEW)) {
             if (newStatus.equals(Bug.Status.REJECTED) || newStatus.equals(Bug.Status.IN_PROGRESS)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoComplet(bug);
+                return BugDtoMapping.bugToBugDtoComplete(bug);
             }
         } else if (bug.getStatus().equals(Bug.Status.IN_PROGRESS)) {
             if (newStatus.equals(Bug.Status.REJECTED) || newStatus.equals(Bug.Status.INFONEEDED) || newStatus.equals(Bug.Status.FIXED)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoComplet(bug);
+                return BugDtoMapping.bugToBugDtoComplete(bug);
             }
         } else if (bug.getStatus().equals(Bug.Status.INFONEEDED)) {
             if (newStatus.equals(Bug.Status.IN_PROGRESS)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoComplet(bug);
+                return BugDtoMapping.bugToBugDtoComplete(bug);
             }
         } else if (bug.getStatus().equals(Bug.Status.FIXED)) {
             if (newStatus.equals(Bug.Status.NEW) || newStatus.equals(Bug.Status.CLOSED)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoComplet(bug);
+                return BugDtoMapping.bugToBugDtoComplete(bug);
             }
         } else if ((bug.getStatus().equals(Bug.Status.REJECTED))) {
             if (newStatus.equals(Bug.Status.CLOSED)) {
                 bug.setStatus(newStatus);
-                return BugDtoMapping.bugToBugDtoComplet(bug);
+                return BugDtoMapping.bugToBugDtoComplete(bug);
             }
         }
-        throw new BusinessException("Invalid Bug Status progression", "msg - 011");
+        throw new BusinessException("Invalid Bug Status progression", "msg - 016");
 
     }
 
     public BugDto closeBug(BugDto bugDto) throws BusinessException {
         Bug bug = bugRepo.findBug(bugDto.getId());
         if (bug.getStatus().equals(Bug.Status.CLOSED))
-            throw new BusinessException("Bug already closed", "msg - 010");
+            throw new BusinessException("Bug already closed", "msg - 017");
         if (!bug.getStatus().equals(Bug.Status.FIXED) && !(bug.getStatus().equals(Bug.Status.REJECTED)))
-            throw new BusinessException("Bug has to to FIXED or REJECTED in order to be CLOSED", "msg - 011");
+            throw new BusinessException("Bug has to to FIXED or REJECTED in order to be CLOSED", "msg - 018");
         bug.setStatus(Bug.Status.CLOSED);
         try {
-            BugDto closedBugDto = BugDtoMapping.bugToBugDtoComplet(bug);
-            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId( userRepo.findUserByUsername(closedBugDto.getCreated()));
+            BugDto closedBugDto = BugDtoMapping.bugToBugDtoComplete(bug);
+            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getCreated()));
             UserDto assignedDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getAssigned()));
-            notificationService.createNotificationCloseBug(creatorDto,assignedDto,closedBugDto);
+            notificationService.createNotificationCloseBug(creatorDto, assignedDto, closedBugDto);
             //toDo notification BUG_CLOSED r:creator assigned
             return closedBugDto;
         } catch (RepositoryException e) {
@@ -171,31 +171,29 @@ public class BugService {
         }
     }
 
-    private boolean isOnlyStatusChanged(BugDto bugdto, Bug bug){
-        if(!bugdto.getTitle().equals(bug.getTitle()))
+    private boolean isOnlyStatusChanged(BugDto bugdto, Bug bug) {
+        if (!bugdto.getTitle().equals(bug.getTitle()))
             return false;
-        if(!bugdto.getVersion().equals(bug.getVersion()))
+        if (!bugdto.getVersion().equals(bug.getVersion()))
             return false;
-        if(!bugdto.getFixedVersion().equals(bug.getFixedVersion()))
+        if (!bugdto.getFixedVersion().equals(bug.getFixedVersion()))
             return false;
-        if(!bugdto.getDescription().equals(bug.getDescription()))
+        if (!bugdto.getDescription().equals(bug.getDescription()))
             return false;
-        if(!bugdto.getSeverity().equals(bug.getSeverity().toString()))
+        if (!bugdto.getSeverity().equals(bug.getSeverity().toString()))
             return false;
-        if(!bugdto.getTargetDate().equals(bug.getTargetDate()))
+        if (!bugdto.getTargetDate().equals(bug.getTargetDate()))
             return false;
-        if(!bugdto.getAssigned().equals(bug.getAssigned().getUsername()))
-            return false;
+        return bugdto.getAssigned().equals(bug.getAssigned().getUsername());
         //todo changed attachemnt
-        return true;
     }
 
     //Todo Validations
     public BugDto updateBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
         Bug bug = bugRepo.findBug(bugDto.getId());
-        BugDto oldBugDto = BugDtoMapping.bugToBugDtoComplet(bug);
-        boolean onlyStatusChanged = isOnlyStatusChanged(bugDto,bug);
+        BugDto oldBugDto = BugDtoMapping.bugToBugDtoComplete(bug);
+        boolean onlyStatusChanged = isOnlyStatusChanged(bugDto, bug);
         bug.setTitle(bugDto.getTitle());
         bug.setDescription(bugDto.getDescription());
         bug.setVersion(bugDto.getVersion());
@@ -204,17 +202,17 @@ public class BugService {
         bug.setSeverity(Bug.Severity.valueOf(bugDto.getSeverity()));
         try {
             User assigned = userRepo.findUserByUsername(bugDto.getAssigned());
-            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId( userRepo.findUserByUsername(bugDto.getCreated()));
+            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(bugDto.getCreated()));
             UserDto assignedDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(bugDto.getAssigned()));
             bug.setAssigned(assigned);
             if (!bug.getStatus().equals(Bug.Status.valueOf(bugDto.getStatus())))
                 updateStatusBug(bugDto);
             //todo notification BUG_UPDATED r: bugCreator, AssignedTo
-            BugDto updatedBug = BugDtoMapping.bugToBugDtoComplet(bug);
-            if(onlyStatusChanged){
-                notificationService.createNotificationBugEditOnlyStatus(oldBugDto,updatedBug,creatorDto,assignedDto);
-            }else{
-                notificationService.createNotificationBugEdit(oldBugDto,updatedBug,creatorDto,assignedDto);
+            BugDto updatedBug = BugDtoMapping.bugToBugDtoComplete(bug);
+            if (onlyStatusChanged) {
+                notificationService.createNotificationBugEditOnlyStatus(oldBugDto, updatedBug, creatorDto, assignedDto);
+            } else {
+                notificationService.createNotificationBugEdit(oldBugDto, updatedBug, creatorDto, assignedDto);
             }
             return updatedBug; //todo see if status has been schanged
         } catch (RepositoryException e) {
@@ -253,7 +251,7 @@ public class BugService {
 
 
         List<Paragraph> paragraphList = new ArrayList<>();
-        newElement("Description", bug.getDescription()).forEach(p -> paragraphList.add(p));
+        newElement("Description: ", bug.getDescription()).forEach(p -> paragraphList.add(p));
         paragraphList.add(newShortElement("Version: ", bug.getVersion()));
         paragraphList.add(newShortElement("Target date: ", bug.getTargetDate().toString().split(" ")[0]));
         paragraphList.add(newShortElement("Status: ", bug.getStatus().name()));
@@ -295,8 +293,8 @@ public class BugService {
         Paragraph textParagraph = new Paragraph();
         textParagraph.add(textChunk);
         textParagraph.setAlignment(Element.ALIGN_LEFT);
-        textParagraph.setMultipliedLeading(1.0f);
-        textParagraph.setSpacingAfter(1.2f);
+        textParagraph.setMultipliedLeading(1.5f);
+        textParagraph.setSpacingAfter(1.5f);
 
         result.add(textParagraph);
 
@@ -326,7 +324,7 @@ public class BugService {
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
         Font font = FontFactory.getFont("/fonts/Roboto-Regular.ttf",
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.BLACK);
-        Chunk subtitleChunk = new Chunk("Attachments", subtitleFont);
+        Chunk subtitleChunk = new Chunk("Attachments:", subtitleFont);
 
         Paragraph subtitleParagraph = new Paragraph();
         subtitleParagraph.add(subtitleChunk);
@@ -357,7 +355,7 @@ public class BugService {
             textParagraph.add(textChunk);
             textParagraph.add(attChunk);
             textParagraph.setAlignment(Element.ALIGN_LEFT);
-            textParagraph.setMultipliedLeading(1.0f);
+            textParagraph.setMultipliedLeading(1.5f);
             textParagraph.setSpacingAfter(1.2f);
 
             result.add(textParagraph);
@@ -377,4 +375,9 @@ public class BugService {
         bugRepo.update(bug);
     }
 
+    public void deleteAttachment(BugDto bugDto, Integer id) {
+        Bug bug = bugRepo.findBug(bugDto.getId());
+        bug.removeAttachmentAfterId(id);
+        bugRepo.update(bug);
+    }
 }

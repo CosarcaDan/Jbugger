@@ -69,7 +69,7 @@ public class UserService {
             UserDto userDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
             return userDto;
         } catch (EntityNotFoundException ex) {
-            throw new BusinessException("No User found with given Id", "msg - 006");
+            throw new BusinessException("Description to short", "msg - 012");
         }
     }
 
@@ -79,7 +79,7 @@ public class UserService {
             UserDto userDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
             return userDto;
         } catch (EntityNotFoundException | RepositoryException ex) {
-            throw new BusinessException("No User found with given Id", "msg - 006");
+            throw new BusinessException("Description to short", "msg - 012");
         }
     }
 
@@ -102,10 +102,10 @@ public class UserService {
         try {
             User user = userRepo.findUser(id);
             List<Bug> bugList = userRepo.findAllCreatedBugs(user);
-            List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
+            List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplete).collect(Collectors.toList());
             return bugDtoList;
         } catch (EntityNotFoundException ex) {
-            throw new BusinessException("No User found with given Id", "msg - 006");
+            throw new BusinessException("Description to short", "msg - 012");
         }
     }
 
@@ -114,10 +114,10 @@ public class UserService {
         try {
             User user = userRepo.findUser(id);
             List<Bug> bugList = userRepo.findAllAssignedBugs(user);
-            List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplet).collect(Collectors.toList());
+            List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplete).collect(Collectors.toList());
             return bugDtoList;
         } catch (EntityNotFoundException ex) {
-            throw new BusinessException("No User found with given Id", "msg - 006");
+            throw new BusinessException("Description to short", "msg - 012");
         }
     }
 
@@ -128,7 +128,7 @@ public class UserService {
             List<RoleDto> bugsDto = roles.stream().map(RoleDtoMapping::roleToRoleDto).collect(Collectors.toList());
             return bugsDto;
         } catch (EntityNotFoundException ex) {
-            throw new BusinessException("No User found with given Id", "msg - 006");
+            throw new BusinessException("Description to short", "msg - 012");
         }
     }
 
@@ -166,8 +166,7 @@ public class UserService {
             passwordFailed(userDto.getUsername());
             throw new BusinessException(ex);
         }
-        UserDto logedInUserDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
-        return logedInUserDto;
+        return UserDtoMapping.userToUserDtoWithoutBugId(user);
     }
 
     public void passwordFailed(String username) throws BusinessException {
@@ -180,7 +179,7 @@ public class UserService {
                     throw new BusinessException("Password failed too may times, User deactivated", "msg - 003");
                 }
             } else {
-                throw new BusinessException("User Inactive", "msg - 005");
+                throw new BusinessException("User Inactive", "msg - 002");
             }
         } catch (RepositoryException e) {
             throw new BusinessException(e);
@@ -191,7 +190,7 @@ public class UserService {
         try {
             User user = userRepo.findUserByUsername(username);
             if (user.getStatus()) {
-                throw new BusinessException("User already active", "msg - 007");
+                throw new BusinessException("User already active", "msg - 004");
             } else {
                 userRepo.setStatusTrue(user);
                 return UserDtoMapping.userToUserDtoWithoutBugId(user);
@@ -206,12 +205,12 @@ public class UserService {
         try {
             User user = userRepo.findUserByUsername(username);
             if (!user.getStatus()) {
-                throw new BusinessException("User already deactivated", "msg - 008");
+                throw new BusinessException("User already deactivated", "msg - 005");
             }
             if (user.getAssignedBugs() != null && !user.getAssignedBugs().isEmpty() && (login != null && !login)) {
                 for (Bug bug : user.getAssignedBugs()) {
                     if (!bug.getStatus().equals(Bug.Status.CLOSED))
-                        throw new BusinessException("User still has unclosed bugs", "msg - 009");
+                        throw new BusinessException("User still has unclosed bugs", "msg - 010");
                 }
             }
             userRepo.setStatusFalse(user);

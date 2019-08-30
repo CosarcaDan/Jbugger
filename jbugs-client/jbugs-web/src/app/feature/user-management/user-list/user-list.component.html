@@ -15,7 +15,7 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr [pSelectableRow]="rowData">
       <td *ngFor="let col of columns">
-        {{col.field == 'status' ? (rowData[col.field] ? 'active' : 'inactive') : rowData[col.field]}}
+        {{col.field == 'status' ? (language == 'en' ? (rowData[col.field] ? 'active' : 'inactive') : (rowData[col.field] ? 'activ' : 'inactiv')) : rowData[col.field]}}
       </td>
     </tr>
   </ng-template>
@@ -147,13 +147,13 @@
 
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label>Status</label>
+        <label>Status: </label>
       </div>
       <div class="ui-g-8" *ngIf="user.status">
-        <input pInputText id="statusEditActive" value="active" disabled/>
+        <input pInputText id="statusEditActive" value="{{(language=='en'?'active': 'activ')}}" disabled/>
       </div>
       <div class="ui-g-8" *ngIf="!user.status">
-        <input pInputText id="statusEditInactive" value="inactive" disabled/>
+        <input pInputText id="statusEditInactive" value="{{(language=='en'?'inactive': 'inactiv')}}" disabled/>
       </div>
     </div>
   </div>

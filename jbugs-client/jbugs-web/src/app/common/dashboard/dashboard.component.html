@@ -16,14 +16,14 @@
 
   <div *ngFor="let not of notifications">
 
-    <div id="notificationDiv">
-      <h1 (click)="displayNotification = true">{{not.type}}</h1>
+    <div id="notificationDiv" [ngClass]="[not.isSeen ? 'greyBackground' : 'redBackground']">
+      <a (click)="showNot(not)">{{not.type}}</a>
     </div>
 
-    <p-dialog id="notificationDialog" header="Notification" [(visible)]="displayNotification"
-              (onShow)="notificationDialogClearIntervalWhenVisible()"
-              (onHide)="notificationDialogStartIntervalWhenVisible()"
-              [style]="{width: '350px', minWidth: '200px'}" appendTo="body" [positionLeft]="0" >
+    <p-dialog id="notificationDialog" header="Notification" [(visible)]="not.show"
+              (onShow)="notificationDialogClearIntervalWhenVisible(); "
+              (onHide)="notificationDialogStartIntervalWhenVisible(); hide()"
+              [style]="{width: '350px', minWidth: '200px'}" appendTo="body" [positionLeft]="0">
       <div [innerHTML]="notificationFormatter(not)"></div>
     </p-dialog>
   </div>

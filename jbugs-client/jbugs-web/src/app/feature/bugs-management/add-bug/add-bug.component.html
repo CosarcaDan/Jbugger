@@ -60,9 +60,6 @@
            id="fixedVersion">
     <div class="alert alert-danger"
          *ngIf="form.get('fixedVersion').touched && form.get('fixedVersion').invalid">
-      <div *ngIf="form.get('fixedVersion').errors.required">
-        {{languageService.getText('fixedVersion-required')}}
-      </div>
       <div *ngIf="form.get('fixedVersion').errors.validateVersion">
         {{languageService.getText('fixedVersion-format')}}
       </div>

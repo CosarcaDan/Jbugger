@@ -5,7 +5,8 @@
   <ng-template pTemplate="caption">
     <div style="text-align: right">
 
-      <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="{{languageService.getText('export-into-excel')}}"
+      <button type="button" pButton icon="fa fa-file-o" iconPos="left"
+              label="{{languageService.getText('export-into-excel')}}"
               (click)="exportAsXLSX()" style="float:left"></button>
 
       <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -237,8 +238,12 @@
           </td>
           <td>
             <div class="ui-g-8" *ngFor="let att of currentAttachments">
-              <a href="http://localhost:8080/jbugs/services/files/download/{{att.attContent}}">{{att.attContent}}</a>
+              <table>
+                <tr><td><a href="http://localhost:8080/jbugs/services/files/download/{{att.attContent}}">{{att.attContent}}</a></td>
+                  <td><button pButton icon="fa fa-trash" (click)="deleteAttachment(att.id)"></button></td></tr>
+              </table>
             </div>
+
           </td>
         </tr>
       </table>

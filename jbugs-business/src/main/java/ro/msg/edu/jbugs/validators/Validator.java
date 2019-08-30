@@ -8,28 +8,28 @@ public class Validator {
 
     public static void validateUser(UserDto user) throws BusinessException {
         if (!validateName(user.getFirstName())){
-            throw new BusinessException("Firstname invalid", "msg - 013");
+            throw new BusinessException("Firstname invalid", "msg - 006");
         }
         if(!validateName(user.getLastName())){
-            throw new BusinessException("Lastname invalid", "msg - 014");
+            throw new BusinessException("Lastname invalid", "msg - 007");
         }
         if(!validateDEPhoneNumber(user.getMobileNumber()) && !validateROPhoneNumber(user.getMobileNumber())){
-            throw new BusinessException("Phone number invalid", "msg - 015");
+            throw new BusinessException("Phone number invalid", "msg - 008");
         }
         if(!validateEmail(user.getEmail())){
-            throw new BusinessException("Invalid Email", "msg - 016");
+            throw new BusinessException("Invalid Email", "msg - 009");
         }
     }
 
     public static void validateBug(BugDto bug) throws BusinessException {
         if(!validateDescription(bug.getDescription())) {
-            throw new BusinessException("Description to short", "msg - 017");
+            throw new BusinessException("Description to short", "msg - 012");
         }
         if(!validateVersion(bug.getVersion())){
-            throw new BusinessException("Version Format Invalid", "msg - 018");
+             throw new BusinessException("Version Format Invalid", "msg - 013");
         }
         if(bug.getDescription().length() < 250){
-            throw new BusinessException("Description has to be at least 250 Characters long", "msg - 020");
+            throw new BusinessException("Description has to be at least 250 Characters long", "msg - 015");
         }
     }
 

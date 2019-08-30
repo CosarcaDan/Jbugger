@@ -189,7 +189,7 @@ export class BugsListComponent implements OnInit {
         this.allUsers.push(dataKey);
       }
       this.mappedUsers = this.allUsers.map(user => {
-          return {label: user.firstName + ' ' + user.lastName + ' (' + user.username + ')', value: user.username};
+        return {label: user.firstName + ' ' + user.lastName + ' (' + user.username + ')', value: user.username};
         }
       );
     });
@@ -250,7 +250,7 @@ export class BugsListComponent implements OnInit {
       (error1 => {
         console.log('Error', error1);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('bug-close-failed') + error1.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('bug-close-failed') + this.languageService.getText(error1.error.errorCode);
       }));
     this.displayDialog = false;
     this.search();
@@ -277,7 +277,7 @@ export class BugsListComponent implements OnInit {
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('bug-edit-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('bug-edit-failed') + this.languageService.getText(error2.error.errorCode);
       })
     );
 
@@ -372,5 +372,14 @@ export class BugsListComponent implements OnInit {
     } else {
       this.excelService.exportAsExcelFile(this.dt.value, 'bugs');
     }
+  }
+
+  deleteAttachment(id: number) {
+    this.bugServices.deleteAttachments(this.bug,id).subscribe();
+    this.getAttachments(this.bug).subscribe(
+      res => {
+        this.currentAttachments = res;
+      }
+    )
   }
 }
