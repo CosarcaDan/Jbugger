@@ -44,4 +44,9 @@ public class NotificationRepo {
         query.setParameter("username", username);
         return query.getResultList();
     }
+
+    public Notification update(Notification notification) {
+        Notification res = entityManager.merge(notification);
+        return res;
+    }
 }

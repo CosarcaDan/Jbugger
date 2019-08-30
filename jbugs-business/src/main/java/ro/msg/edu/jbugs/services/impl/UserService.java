@@ -139,19 +139,21 @@ public class UserService {
         } else {
             firstPart = lastname;
         }
-        String firstPartLower = firstPart.toLowerCase();
+        String username = firstPart.toLowerCase();
+        String tempUsername;
+        int nr = 0;
         int charPosition = 0;
-        String username = firstPartLower;
         do {
-            if (charPosition >= firstname.length()) {
-                username = username + "x";
-            } else {
-                username = (username + firstname.charAt(charPosition)).toLowerCase();
-                charPosition++;
-            }
-        } while (!userRepo.isUsernameUnique(username));
+                username = (username + firstname.charAt(charPosition++)).toLowerCase();
+        } while (!userRepo.isUsernameUnique(username) && charPosition < firstname.length());
+        if(userRepo.isUsernameUnique(username))
+            return username;
+        do {
+            tempUsername = username + (nr++);
 
-        return username;
+        } while (!userRepo.isUsernameUnique(tempUsername));
+
+        return tempUsername;
 
     }
 
@@ -318,5 +320,9 @@ public class UserService {
 
     public List<NotificationDto> findAllNotificationByUsername(String username) {
         return notificationService.findAllNotificationsByUsername(username);
+    }
+
+    public void seenNotification(int id) {
+        notificationService.seen(id);
     }
 }

@@ -377,6 +377,14 @@
       "value": "Profilul vechi: "
     },
     {
+      "label": "file_extension",
+      "value": "Extensia fisierului este invalida!"
+    },
+    {
+      "label": "file_not_added",
+      "value": "Marimea fisierului este prea mare și nu a putut fi atașat erorii!"
+    },
+    {
       "label": "msg - 004",
       "value": "Utilizator deja activ!"
     },

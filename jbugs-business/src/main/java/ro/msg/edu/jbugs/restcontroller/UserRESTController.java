@@ -127,9 +127,13 @@ public class UserRESTController {
             User userAdded = userService.addUser(user);
             UserDto userAddededDto = UserDtoMapping.userToUserDtoWithoutBugId(userAdded);
             //adds the roles of the user
-            RoleDto[] list = gson.fromJson(roles, RoleDto[].class);
-            Arrays.stream(list).forEach(role -> userService.addRoleToUser(userAddededDto, role));
-            EmailService.sendMail("Ob.P3ter@gmail.com,sonyaparau@yahoo.com,cosarcadan@gmail.com,daiarus@yahoo.com", "Welcome to Jbugger", "Welcome to Jbugger!\nYour username is:" + userAdded.getUsername() + "\nYour password is: defaultPass\nPlease change it on your first login.");
+
+            new Thread(() -> {
+                RoleDto[] list = gson.fromJson(roles, RoleDto[].class);
+                Arrays.stream(list).forEach(role -> userService.addRoleToUser(userAddededDto, role));
+                EmailService.sendMail("Ob.P3ter@gmail.com,sonyaparau@yahoo.com,cosarcadan@gmail.com,daiarus@yahoo.com", "Welcome to Jbugger", "Welcome to Jbugger!\nYour username is:" + userAdded.getUsername() + "\nYour password is: defaultPass\nPlease change it on your first login.");
+            }).start();
+
             String response = gson.toJson("User was successfully added!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
@@ -273,6 +277,13 @@ public class UserRESTController {
             String error = gson.toJson(e);
             return Response.status(500).entity(error).build();
         }
+    }
+    @DELETE
+    @Path("/notifications/{id}/seen")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response seen(@PathParam("id") int id) {
+        userService.seenNotification(id);
+        return Response.status(200).build();
     }
 
 
