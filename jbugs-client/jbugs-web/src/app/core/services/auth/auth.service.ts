@@ -4,8 +4,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {delay} from 'q';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {BackendError} from "../../models/backendError";
-import {MessageComponent} from "../../message/message.component";
+import {MessageComponent} from '../../message/message.component';
 
 @Injectable({
   providedIn: 'root'

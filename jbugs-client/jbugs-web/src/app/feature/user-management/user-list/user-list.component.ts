@@ -7,7 +7,6 @@ import {RoleService} from '../../../core/services/role/role.service';
 import {Role} from '../../../core/models/role';
 import {LanguageService} from '../../../core/services/language/language.service';
 import {MessageComponent} from '../../../core/message/message.component';
-import {delay} from "rxjs/operators";
 
 @Component({
   selector: 'app-get-user',
@@ -182,7 +181,7 @@ export class UserListComponent implements OnInit {
   }
 
   checkFirstName(): boolean {
-    let regex = new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
+    let regex = new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{0,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
     if (regex.test(this.user.firstName)) {
       return true;
     }
@@ -190,7 +189,7 @@ export class UserListComponent implements OnInit {
   }
 
   checkLastName(): boolean {
-    let regex = new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
+    let regex = new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{0,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
     if (regex.test(this.user.lastName)) {
       return true;
     }
