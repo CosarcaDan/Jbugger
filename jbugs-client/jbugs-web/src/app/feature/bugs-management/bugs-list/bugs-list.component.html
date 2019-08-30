@@ -9,7 +9,8 @@
               label="{{languageService.getText('export-into-excel')}}"
               (click)="exportAsXLSX()" style="float:left"></button>
 
-      <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+      <p-button icon="pi pi-trash" (onClick)="bugSearchCriteria.created= ''; bugSearchCriteria.assigned= '';
+                                               bugSearchCriteria.status= '';  bugSearchCriteria.severity= '';"></p-button>
 
       <p-autoComplete appendTo="body" [suggestions]="filteredBugs"
                       (completeMethod)="filterBugs($event)" [size]="30"
@@ -23,11 +24,14 @@
                       [(ngModel)]="bugSearchCriteria.assigned"
       ></p-autoComplete>
 
-      <p-dropdown [options]="status" size="20" placeholder="Status" id="status"
+      <p-dropdown [options]="statusForGlobal" size="20" placeholder="{{languageService.getText('all-statuses')}}"
+                  id="status"
                   [(ngModel)]="bugSearchCriteria.status"></p-dropdown>
 
-      <p-dropdown [options]="severity" size="20" placeholder="{{languageService.getText('severity')}}" id="severity"
+      <p-dropdown [options]="severityForGlobal" size="20" placeholder="{{languageService.getText('all-severities')}}"
+                  id="severity"
                   [(ngModel)]="bugSearchCriteria.severity"></p-dropdown>
+
       <p-button icon="pi pi-search" label="{{languageService.getText('search')}}" (click)="search()"></p-button>
 
     </div>
@@ -55,9 +59,11 @@
                (input)="dt.filter($event.target.value, col.field, 'contains')">
 
         <p-calendar appendTo="body" *ngSwitchCase="'targetDate'" [style]="{'width':'200%'}"
-                    dateFormat="dd.mm.yy"
+                    dateFormat="dd.mm.yy" [showButtonBar]="true" [readonlyInput]="true"
                     placeholder="{{languageService.getText('targetDate')}}"
-                    (onSelect)="dt.filter($event, col.field, 'dateFilter')"></p-calendar>
+                    (onSelect)="dt.filter($event, col.field, 'dateFilter')"
+                    (onClearClick)="dt.filter($event.target.value, col.field, 'contains');"
+        ></p-calendar>
 
         <p-multiSelect appendTo="body" *ngSwitchCase="'status'" [options]="status"
                        [style]="{'width':'100%'}"
@@ -80,6 +86,7 @@
                         placeholder="{{this.languageService.getText('createdBy')}}" [minLength]="1"
                         forceSelection="true"
                         (onSelect)="dt.filter($event, col.field, 'contains')"
+                        (onClear)="dt.filter($event.target.value, col.field, 'contains')"
         ></p-autoComplete>
 
         <p-autoComplete appendTo="body" *ngSwitchCase="'assigned'" [suggestions]="filteredBugs"
@@ -87,6 +94,7 @@
                         placeholder="{{this.languageService.getText('assignedTo')}}" [minLength]="1"
                         forceSelection="true"
                         (onSelect)="dt.filter($event, col.field, 'contains')"
+                        (onClear)="dt.filter($event.target.value, col.field, 'contains')"
         ></p-autoComplete>
 
       </th>

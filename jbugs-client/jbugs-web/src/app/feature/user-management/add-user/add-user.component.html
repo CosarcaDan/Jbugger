@@ -94,7 +94,7 @@
   <br>
   <button class="btn btn-primary"
           type="button"
-          (click)="addUser()"
+          (click)="addUser()" [class.grey]="form.invalid"
           [disabled]="form.invalid">{{languageService.getText('save')}}
   </button>
 </form>

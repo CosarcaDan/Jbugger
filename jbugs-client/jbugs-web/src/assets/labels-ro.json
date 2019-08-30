@@ -234,11 +234,11 @@
     },
     {
       "label": "all-statuses",
-      "value": "Toate"
+      "value": "Orice status"
     },
     {
       "label": "all-severities",
-      "value": "Toate"
+      "value": "Orice severitate"
     },
     {
       "label": "bug-close-successful",

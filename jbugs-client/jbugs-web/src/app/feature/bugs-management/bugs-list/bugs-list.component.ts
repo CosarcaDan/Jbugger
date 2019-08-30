@@ -25,9 +25,14 @@ import {MessageComponent} from '../../../core/message/message.component';
 
 })
 export class BugsListComponent implements OnInit {
+
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
+
   cols: any[];
 
   status: SelectItem[];
+
+  statusForGlobal: SelectItem[];
 
   statusNew: SelectItem[];
 
@@ -41,11 +46,11 @@ export class BugsListComponent implements OnInit {
 
   severity: SelectItem[];
 
+  severityForGlobal: SelectItem[];
+
   bugs: Array<Bug>;
 
   newBug: boolean;
-
-  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
   allUsers: Array<User>;
 
@@ -131,6 +136,16 @@ export class BugsListComponent implements OnInit {
       {label: 'INFO_NEEDED', value: 'INFONEEDED'}
     ];
 
+    this.statusForGlobal = [
+      {label: this.languageService.getText('all-statuses'), value: ''},
+      {label: 'NEW', value: 'NEW'},
+      {label: 'IN_PROGRESS', value: 'IN_PROGRESS'},
+      {label: 'FIXED', value: 'FIXED'},
+      {label: 'CLOSED', value: 'CLOSED'},
+      {label: 'REJECTED', value: 'REJECTED'},
+      {label: 'INFO_NEEDED', value: 'INFONEEDED'}
+    ];
+
     this.statusNew = [
       {label: 'New', value: 'NEW'},
       {label: 'In progress', value: 'IN_PROGRESS'},
@@ -165,13 +180,22 @@ export class BugsListComponent implements OnInit {
       {label: 'CRITICAL', value: 'CRITICAL'},
     ];
 
+    this.severityForGlobal = [
+      {label: this.languageService.getText('all-severities'), value: ''},
+      {label: 'LOW', value: 'LOW'},
+      {label: 'MEDIUM', value: 'MEDIUM'},
+      {label: 'HIGH', value: 'HIGH'},
+      {label: 'CRITICAL', value: 'CRITICAL'},
+    ];
+
     this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
-      if (filter === undefined || filter === null || (filter.length === 0 || filter === '') && value === null) {
+      if (filter === undefined || filter === null || (filter.length === 0 || filter === '') && value === null || filter === '') {
         return true;
       }
       if (value === undefined || value === null || value.length === 0) {
         return false;
       }
+
       if (new DatePipe('en').transform(value, 'dd.MM.yyyy') == new DatePipe('en').transform(filter, 'dd.MM.yyyy')) {
         return true;
       }
@@ -194,7 +218,6 @@ export class BugsListComponent implements OnInit {
       );
     });
   }
-
 
   getBugs() {
     this.bugs = [];
@@ -314,6 +337,7 @@ export class BugsListComponent implements OnInit {
     )
 
   }
+
 
   private cloneBug(b: Bug): Bug {
     let bug = {

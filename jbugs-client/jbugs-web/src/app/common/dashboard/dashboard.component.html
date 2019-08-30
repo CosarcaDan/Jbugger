@@ -11,7 +11,7 @@
 </p-menubar>
 
 
-<p-sidebar [(visible)]="display" position="right" styleClass="ui-sidebar-md">
+<p-sidebar [(visible)]="display" position="right" styleClass="ui-sidebar-md" [blockScroll]="true">
   <h1>{{languageService.getText('notifications')}}</h1>
 
   <div *ngFor="let not of notifications">

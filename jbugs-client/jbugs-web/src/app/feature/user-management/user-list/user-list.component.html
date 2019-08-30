@@ -160,10 +160,10 @@
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" pButton icon="fa fa-check" (click)="activateUser()"
-              label="{{languageService.getText('activate')}}"
+              label="{{languageService.getText('activate')}}" [class.grey]="user.status"
               [disabled]="user.status"></button>
       <button type="button" pButton icon="fa fa-close" (click)="deactivateUser()"
-              label="{{languageService.getText('deactivate')}}"
+              label="{{languageService.getText('deactivate')}}" [class.grey]="!user.status"
               [disabled]="!user.status"></button>
       <button type="button" pButton icon="fa fa-check" (click)="edit()"
               label="{{languageService.getText('save')}}"></button>
