@@ -107,7 +107,7 @@ export class UserListComponent implements OnInit {
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('user-activate-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('user-activate-failed') + this.languageService.getText(error2.error.errorCode);
       }))
     ;
     this.displayDialog = false;
@@ -123,7 +123,7 @@ export class UserListComponent implements OnInit {
       },
       (error2 => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('user-deactivate-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('user-deactivate-failed') + this.languageService.getText(error2.error.errorCode);
       }))
     ;
     this.displayDialog = false;
@@ -141,7 +141,7 @@ export class UserListComponent implements OnInit {
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('user-edit-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('user-edit-failed') + this.languageService.getText(error2.error.errorCode);
       }))
     ;
     this.displayDialog = false;

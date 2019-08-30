@@ -76,10 +76,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getMyNotification() {
-    console.log('UsernameFromNotification', this.user);
     this.notificationService.getMyNotification(this.user).subscribe((data) => {
       this.notifications = data;
-      console.log(this.notifications)
     })
   }
 

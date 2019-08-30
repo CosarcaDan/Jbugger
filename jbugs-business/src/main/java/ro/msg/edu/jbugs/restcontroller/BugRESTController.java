@@ -3,6 +3,7 @@ package ro.msg.edu.jbugs.restcontroller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.itextpdf.text.DocumentException;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import ro.msg.edu.jbugs.dto.AttachmentDto;
 import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.UserDto;
@@ -172,10 +173,11 @@ public class BugRESTController {
         }
     }
 
-    @DELETE
-    @Path("/delete-attachment/{id}")
-    public Response deleteAttachment(@PathParam("id") int id) {
-//        this.bugService.deleteAttachment(id);
+    @POST
+    @Path("/delete-attachment")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response deleteAttachment(@FormDataParam("bug") BugDto bug ,@FormDataParam("id") Integer id) {
+        this.bugService.deleteAttachment(bug,id);
         attachmentService.deleteAttachment(id);
         return Response.status(200).build();
     }

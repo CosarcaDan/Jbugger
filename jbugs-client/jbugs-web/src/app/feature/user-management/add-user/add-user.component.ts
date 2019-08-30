@@ -93,7 +93,7 @@ export class AddUserComponent implements OnInit {
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('user-add-failed');
+        modalRef.componentInstance.message = this.languageService.getText('user-add-failed')+this.languageService.getText(error2.error.errorCode);
       }));
     this.activeModal.close();
 
