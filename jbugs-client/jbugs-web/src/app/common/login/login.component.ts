@@ -6,7 +6,7 @@ import {UserLogin} from '../../core/models/userLogin';
 import {Token} from '../../core/models/token';
 import {LoginValidators} from './login.validators';
 import {AuthService} from '../../core/services/auth/auth.service';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
 
   constructor(private router: Router, private userService: UserService, private fb: FormBuilder,
-              private authService: AuthService,private modalService:NgbModal) {
+              private authService: AuthService, private modalService: NgbModal) {
     this.form = fb.group({
       username: [null, [Validators.required, LoginValidators.cannotContainSpace,
         LoginValidators.cannotContainUpperCaseLetter]],

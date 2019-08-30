@@ -61,7 +61,7 @@ const routes: Routes = [
         component: ProfileComponent
       },
       {
-        path: 'view-bug/:id',
+        path: 'bugs/:id',
         component: ViewBugComponent
       },
     ]

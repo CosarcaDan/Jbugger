@@ -10,8 +10,8 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(req.url,req.url.match('./assets/labels-.*'))
-    if(req.url.match('./assets/labels-.*'))
+    console.log(req.url, req.url.match('./assets/labels-.*'));
+    if (req.url.match('./assets/labels-.*'))
       return next.handle(req);
     if (
       req.url == 'http://localhost:8080/jbugs/services/bugs/add' ||
@@ -34,7 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
         req.url == 'http://localhost:8080/jbugs/services/roles/remove-permissions' ||
         req.url == 'http://localhost:8080/jbugs/services/files/upload' ||
           req.url.match('http://localhost:8080/jbugs/services/users/.*/edit')||
-          req.url == 'http://localhost:8080/jbugs/services/users/add' ||
+        req.url == 'http://localhost:8080/jbugs/services/users/add' ||
         req.url == 'http://localhost:8080/jbugs/services/bugs/delete-attachment'
       ) {
         req = req.clone({

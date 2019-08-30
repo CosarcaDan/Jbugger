@@ -85,12 +85,14 @@ public class UserRESTController {
         Gson gson = new GsonBuilder().create();
         try {
             List<Permission> userPerm = userService.getUserPermissionsByUsername(user.getUsername());
-            StringBuilder response = new StringBuilder("[");
+            StringBuilder response = new StringBuilder();
+            response.append("[");
             userPerm.forEach(p -> {
                 response.append(gson.toJson(PermissionDtoMapping.permissionToPermissionDto(p)));
                 response.append(",");
             });
-            response.deleteCharAt(response.length() - 1);
+            if (response.charAt(response.length() - 1) != '[')
+                response.deleteCharAt(response.length() - 1);
             response.append("]");
             return Response.status(200).entity(response.toString()).build();
         } catch (BusinessException e) {
@@ -178,7 +180,7 @@ public class UserRESTController {
         Gson gson = new GsonBuilder().create();
         try {
 
-            this.userService.updateWithRoles(userDto, securityContext.getUserPrincipal().getName(),Arrays.asList((gson.fromJson(roles, RoleDto[].class))));
+            this.userService.updateWithRoles(userDto, securityContext.getUserPrincipal().getName(), Arrays.asList((gson.fromJson(roles, RoleDto[].class))));
             String response = gson.toJson("User was successfully edited! ");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
@@ -269,6 +271,7 @@ public class UserRESTController {
             return Response.status(500).entity(error).build();
         }
     }
+
     @DELETE
     @Path("/notifications/{id}/seen")
     @Consumes({MediaType.APPLICATION_JSON})

@@ -137,7 +137,7 @@ public class BugRESTController {
     public Response editBug(@NotNull @FormParam("bug") BugDto bugDto, @NotNull @FormParam("attachment") AttachmentDto attachment) {
         try {
             if (bugService.getAttachments(bugDto).stream().noneMatch(att -> att.getAttContent().equals(attachment.getAttContent()))) {
-                    bugService.addAttachment(bugDto, attachment);
+                bugService.addAttachment(bugDto, attachment);
             }
             bugService.updateBug(bugDto);
             return Response.status(200).build();
@@ -178,8 +178,8 @@ public class BugRESTController {
     @POST
     @Path("/delete-attachment")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response deleteAttachment(@FormDataParam("bug") BugDto bug ,@FormDataParam("id") Integer id) {
-        this.bugService.deleteAttachment(bug,id);
+    public Response deleteAttachment(@FormDataParam("bug") BugDto bug, @FormDataParam("id") Integer id) {
+        this.bugService.deleteAttachment(bug, id);
         attachmentService.deleteAttachment(id);
         return Response.status(200).build();
     }

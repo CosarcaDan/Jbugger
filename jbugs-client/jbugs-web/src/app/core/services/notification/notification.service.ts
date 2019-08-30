@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {User} from '../../models/user';
-import {Notification} from "../../../core/models/notification";
+import {Notification} from '../../../core/models/notification';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,8 +31,8 @@ export class NotificationService {
     return this.http.post(this.baseUrl, this.user);
   }
 
-  public seen(notification: Notification){
-    return this.http.delete(this.baseUrl+'/'+notification.id+'/seen');
+  public seen(notification: Notification) {
+    return this.http.delete(this.baseUrl + '/' + notification.id + '/seen');
   }
 
 }

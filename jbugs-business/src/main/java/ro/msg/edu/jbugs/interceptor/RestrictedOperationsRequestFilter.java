@@ -50,7 +50,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
             return;
         }
 
-        if (thePath.get(0).equals("^users/.*/get") || thePath.get(0).equals("^users/changePassword")) {
+        if (thePath.get(0).equals("^users/.*/get") || thePath.get(0).equals("^users/changePassword") || thePath.get(0).equals("^users/permissions")) {
             String json = null;
             try {
                 json = IOUtils.toString(ctx.getEntityStream(), Charsets.UTF_8);
@@ -60,14 +60,20 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                 e.printStackTrace();
             }
 
-            if ((thePath.get(0).equals("^users/changePassword") && json != null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())) ||
-                    (thePath.get(0).equals("^users/.*/get") && json != null && ctx.getUriInfo().getPath().split("/")[1].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject()))
-            )
-                return;
-            else
-                ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("Permissions missing")
-                        .build());
+            if (thePath.get(0).equals("^users/permissions"))
+                if ((thePath.get(0).equals("^users/permissions") && json != null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())))
+                    return;
+
+
+            if (thePath.get(0).equals("^users/changePassword") || thePath.get(0).equals("^users/.*/get"))
+                if ((thePath.get(0).equals("^users/changePassword") && json != null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())) ||
+                        (thePath.get(0).equals("^users/.*/get") && json != null && ctx.getUriInfo().getPath().split("/")[1].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject()))
+                )
+                    return;
+                else
+                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                            .entity("Permissions missing")
+                            .build());
         }
 
         List<String> permissionsRequired = permissions.get(thePath.get(0));
@@ -97,7 +103,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                         .build());
             }
             try {
-                if (checkAccessAndSetSecurityContext(ctx,header, permissionsRequired))
+                if (checkAccessAndSetSecurityContext(ctx, header, permissionsRequired))
                     return;
                 else
                     ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
@@ -111,7 +117,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
         }
     }
 
-    private boolean checkAccessAndSetSecurityContext(ContainerRequestContext requestContext,String token, List<String> permissions) throws BusinessException {
+    private boolean checkAccessAndSetSecurityContext(ContainerRequestContext requestContext, String token, List<String> permissions) throws BusinessException {
         String username = TokenManager.decodeJWT(token).getSubject();
         List<Permission> userPermissions = userService.getUserPermissionsByUsername(username);
 
@@ -123,7 +129,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
 
             @Override
             public boolean isUserInRole(String permission) {
-                return userPermissions.stream().anyMatch(p->p.getType().equals(permission));
+                return userPermissions.stream().anyMatch(p -> p.getType().equals(permission));
             }
 
             @Override
