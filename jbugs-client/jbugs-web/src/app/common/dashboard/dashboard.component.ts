@@ -78,6 +78,8 @@ export class DashboardComponent implements OnInit {
   getMyNotification() {
     this.notificationService.getMyNotification(this.user).subscribe((data) => {
       this.notifications = data;
+      this.notifications = this.notifications.reverse();
+
     })
   }
 
@@ -222,5 +224,6 @@ export class DashboardComponent implements OnInit {
       return res;
 
     }
+
   }
 }

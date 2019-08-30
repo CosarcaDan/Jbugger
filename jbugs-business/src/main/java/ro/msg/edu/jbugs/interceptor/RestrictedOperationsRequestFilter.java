@@ -50,7 +50,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
             return;
         }
 
-        if (thePath.get(0).equals("^users/.*/get") || thePath.get(0).equals("^users/changePassword")) {
+        if (thePath.get(0).equals("^users/.*/get") || thePath.get(0).equals("^users/changePassword") || thePath.get(0).equals("^users/permissions")) {
             String json = null;
             try {
                 json = IOUtils.toString(ctx.getEntityStream(), Charsets.UTF_8);
@@ -60,6 +60,12 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                 e.printStackTrace();
             }
 
+            if (thePath.get(0).equals("^users/permissions"))
+            if ((thePath.get(0).equals("^users/permissions") && json != null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())))
+                return;
+
+
+            if(thePath.get(0).equals("^users/changePassword") || thePath.get(0).equals("^users/.*/get"))
             if ((thePath.get(0).equals("^users/changePassword") && json != null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())) ||
                     (thePath.get(0).equals("^users/.*/get") && json != null && ctx.getUriInfo().getPath().split("/")[1].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject()))
             )
