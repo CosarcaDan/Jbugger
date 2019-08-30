@@ -49,7 +49,7 @@
       </div>
       <div class="ui-g-8">
         <input pInputText id="firstNameEdit" [(ngModel)]="user.firstName" required
-               pattern="^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$"
+               pattern="^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{0,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$"
                #firstNameEdit="ngModel"/>
         <div class="alert alert-danger"
              *ngIf="firstNameEdit.touched && firstNameEdit.invalid">
@@ -69,7 +69,7 @@
       </div>
       <div class="ui-g-8">
         <input pInputText id="lastNameEdit" [(ngModel)]="user.lastName" required #lastNameEdit="ngModel"
-               pattern="^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$"/>
+               pattern="^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{0,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$"/>
         <div class="alert alert-danger"
              *ngIf="lastNameEdit.touched && lastNameEdit.invalid">
           <div *ngIf="lastNameEdit.errors.required">
