@@ -109,6 +109,7 @@ export class AuthService {
   private base64Decode(data: string) {
     let dst = "";
     let i = 0, a, b, c, d, z;
+    data+='==='
     let len = data.length;
     for (; i < len - 3; i += 4) {
       a = this.base64_charIndex(data.charAt(i + 0));
@@ -151,6 +152,7 @@ export class AuthService {
     return date;
   }
   private isTokenExpired(token: string, offsetSeconds?: number) {
+
     let date = this.getTokenExpirationDate(token);
     offsetSeconds = offsetSeconds || 0;
     if (date === null) {
