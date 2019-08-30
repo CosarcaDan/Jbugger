@@ -60,9 +60,8 @@ export class UserListComponent implements OnInit {
   }
 
   public getUsers() {
-    this.userService.getUsers().subscribe((data: {}) => {
+    this.userService.getUsers().subscribe((data) => {
       console.log(data);
-      // @ts-ignore
       this.users = data;
 
     });
