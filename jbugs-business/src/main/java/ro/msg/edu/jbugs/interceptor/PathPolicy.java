@@ -15,6 +15,7 @@ public class PathPolicy {
         pathPermissions.put("^users/renew", new ArrayList<>());
         pathPermissions.put("^bugs/delete-attachment", new ArrayList<>());
         pathPermissions.put("^users/notifications", new ArrayList<>());
+        pathPermissions.put("^users/notifications/.*/seen", new ArrayList<>());
         pathPermissions.put("^files/upload$", new ArrayList<>());
         pathPermissions.put("^files/download.*", new ArrayList<>());
 

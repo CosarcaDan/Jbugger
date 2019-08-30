@@ -319,4 +319,8 @@ public class UserService {
     public List<NotificationDto> findAllNotificationByUsername(String username) {
         return notificationService.findAllNotificationsByUsername(username);
     }
+
+    public void seenNotification(int id) {
+        notificationService.seen(id);
+    }
 }

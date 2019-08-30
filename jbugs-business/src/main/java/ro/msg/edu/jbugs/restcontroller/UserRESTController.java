@@ -274,6 +274,13 @@ public class UserRESTController {
             return Response.status(500).entity(error).build();
         }
     }
+    @DELETE
+    @Path("/notifications/{id}/seen")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response seen(@PathParam("id") int id) {
+        userService.seenNotification(id);
+        return Response.status(200).build();
+    }
 
 
 }
