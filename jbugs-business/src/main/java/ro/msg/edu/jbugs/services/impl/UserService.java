@@ -38,7 +38,6 @@ public class UserService {
 
     //ToDo validate pentru id
 
-    private String usernameLogedIn;
 
     @EJB
     private UserRepo userRepo;
@@ -162,7 +161,7 @@ public class UserService {
         try {
             user = userRepo.findByUsernameAndPassword(userDto.getUsername(), encriptedPassword);
             userRepo.setFailedLoginAttemptToZero(user);
-            this.usernameLogedIn = user.getUsername();
+
         } catch (RepositoryException ex) {
             passwordFailed(userDto.getUsername());
             throw new BusinessException(ex);
@@ -292,7 +291,9 @@ public class UserService {
         return true;
     }
 
-    public UserDto updateWithRoles(UserDto userDto, List<RoleDto> roleDtos) throws BusinessException {
+
+
+    public UserDto updateWithRoles(UserDto userDto,String usernameLogedIn ,List<RoleDto> roleDtos) throws BusinessException {
         Validator.validateUser(userDto);
         User newDataUser = UserDtoMapping.userDtoToUser(userDto);
         newDataUser.setRoles(roleDtos.stream().map(roleDto ->

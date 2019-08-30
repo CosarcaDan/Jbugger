@@ -377,63 +377,63 @@
       "value": "Profilul vechi: "
     },
     {
-      "label": "msg-004",
+      "label": "msg - 004",
       "value": "Utilizator deja activ!"
     },
     {
-      "label": "msg-005",
+      "label": "msg - 005",
       "value": "Utilizator deja deactivatat!"
     },
     {
-      "label": "msg-006",
+      "label": "msg - 006",
       "value": "Prenume invalid!"
     },
     {
-      "label": "msg-007",
+      "label": "msg - 007",
       "value": "Nume invalid!"
     },
     {
-      "label": "msg-008",
+      "label": "msg - 008",
       "value": "Număr de telefon invalid"
     },
     {
-      "label": "msg-009",
+      "label": "msg - 009",
       "value": "Email invalid!"
     },
     {
-      "label": "msg-010",
+      "label": "msg - 010",
       "value": "Utilizatorul încă are buguri deschise!"
     },
     {
-      "label": "msg-011",
+      "label": "msg - 011",
       "value": "Utilizator cu ID-ul dat nu a fost găsit!"
     },
     {
-      "label": "msg-012",
+      "label": "msg - 012",
       "value": "Descrierea e prea scurtă!"
     },
     {
-      "label": "msg-013",
+      "label": "msg - 013",
       "value": "Formatul veriunii e incorectă!"
     },
     {
-      "label": "msg-014",
+      "label": "msg - 014",
       "value": "Bug  cu ID-ul dat nu a fost găsit!"
     },
     {
-      "label": "msg-015",
+      "label": "msg - 015",
       "value": "Descrierea e prea scurtă!"
     },
     {
-      "label": "msg-016",
+      "label": "msg - 016",
       "value": "Invalid Bug Status progression!"
     },
     {
-      "label": "msg-017",
+      "label": "msg - 017",
       "value": "Bug deja închis!"
     },
     {
-      "label": "msg-018",
+      "label": "msg - 018",
       "value": "Bugul trebuie să fie FIXED sau REJECTED să devină CLOSED!"
     }
   ]

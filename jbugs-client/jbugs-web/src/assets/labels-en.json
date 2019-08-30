@@ -377,63 +377,63 @@
       "value": "Old profile: "
     },
     {
-      "label": "msg-004",
+      "label": "msg - 004",
       "value": "User already active!"
     },
     {
-      "label": "msg-005",
+      "label": "msg - 005",
       "value": "User already deactivated!"
     },
     {
-      "label": "msg-006",
+      "label": "msg - 006",
       "value": "Invalid First Name!"
     },
     {
-      "label": "msg-007",
+      "label": "msg - 007",
       "value": "Invalid Last Name!"
     },
     {
-      "label": "msg-008",
+      "label": "msg - 008",
       "value": "Invalid Phone number!"
     },
     {
-      "label": "msg-009",
+      "label": "msg - 009",
       "value": "Invalid Email!"
     },
     {
-      "label": "msg-010",
+      "label": "msg - 010",
       "value": "User still has unclosed bugs!"
     },
     {
-      "label": "msg-011",
+      "label": "msg - 011",
       "value": "User found with given ID!"
     },
     {
-      "label": "msg-012",
+      "label": "msg - 012",
       "value": "Description too short!"
     },
     {
-      "label": "msg-013",
+      "label": "msg - 013",
       "value": "Invalid Version Format!"
     },
     {
-      "label": "msg-014",
+      "label": "msg - 014",
       "value": "Bug with given ID not found!"
     },
     {
-      "label": "msg-015",
+      "label": "msg - 015",
       "value": "Description too short!"
     },
     {
-      "label": "msg-016",
+      "label": "msg - 016",
       "value": "Invalid Bug Status progression!"
     },
     {
-      "label": "msg-017",
+      "label": "msg - 017",
       "value": "Bug already closed!"
     },
     {
-      "label": "msg-018",
+      "label": "msg - 018",
       "value": "Bug has to to FIXED or REJECTED in order to be CLOSED!"
     }
 

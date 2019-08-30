@@ -22,8 +22,10 @@ import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -167,11 +169,13 @@ public class UserRESTController {
     @PUT
     @Path("{id}/edit")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response edit(@NotNull @FormDataParam("user") UserDto userDto, @NotNull @FormDataParam("roles") String roles) {
+    public Response edit(@NotNull @FormDataParam("user") UserDto userDto, @NotNull @FormDataParam("roles") String roles,
+                         @Context SecurityContext securityContext) {
         Gson gson = new GsonBuilder().create();
         try {
-            this.userService.updateWithRoles(userDto, Arrays.asList((gson.fromJson(roles, RoleDto[].class))));
-            String response = gson.toJson("User was successfully edited!");
+
+            this.userService.updateWithRoles(userDto, securityContext.getUserPrincipal().getName(),Arrays.asList((gson.fromJson(roles, RoleDto[].class))));
+            String response = gson.toJson("User was successfully edited! ");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
             String error = gson.toJson(e);
