@@ -5,7 +5,7 @@ export class AddUserValidators {
   static validateName(control: AbstractControl): ValidationErrors | null {
     let value: string = control.value;
     let regexp =
-      new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{1,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
+      new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{0,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
     if (value && !regexp.test(value)) {
       return {validateName: true};
     }
@@ -15,7 +15,6 @@ export class AddUserValidators {
     let value: string = control.value;
     let regexExpression = new RegExp('^[A-ZÜÄÖÂÎĂȚȘ]');
     if (value && !regexExpression.test(value)) {
-      console.log('aici');
       return {validateBeginWithUpperCase: true};
     }
   }

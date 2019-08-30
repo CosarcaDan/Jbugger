@@ -49,7 +49,6 @@ export class UserListComponent implements OnInit {
     this.languageService.getText('save');
     this.getUsers();
     this.language = localStorage.getItem('language');
-    //this.getRoles();
 
     this.cols = [
       {field: 'firstName', header: this.languageService.getText('firstName')},
@@ -62,11 +61,8 @@ export class UserListComponent implements OnInit {
   }
 
   public getUsers() {
-    this.userService.getUsers().subscribe((data: {}) => {
-      console.log(data);
-      // @ts-ignore
+    this.userService.getUsers().subscribe((data) => {
       this.users = data;
-
     });
   }
 
@@ -102,12 +98,14 @@ export class UserListComponent implements OnInit {
 
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-activate-successful');
-        modalRef.result.then(this.getUsers);
+        modalRef.result.then(() => {
+          this.getUsers();
+        });
       },
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('user-activate-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('user-activate-failed') + this.languageService.getText(error2.error.errorCode);
       }))
     ;
     this.displayDialog = false;
@@ -119,11 +117,13 @@ export class UserListComponent implements OnInit {
       () => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-deactivate-successful');
-        modalRef.result.then(this.getUsers);
+        modalRef.result.then(() => {
+          this.getUsers();
+        });
       },
       (error2 => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('user-deactivate-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('user-deactivate-failed') + this.languageService.getText(error2.error.errorCode);
       }))
     ;
     this.displayDialog = false;
@@ -136,12 +136,14 @@ export class UserListComponent implements OnInit {
       (data: {}) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-edit-successful');
-        modalRef.result.then(this.getUsers);
+        modalRef.result.then(() => {
+          this.getUsers();
+        });
       },
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('user-edit-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('user-edit-failed') + this.languageService.getText(error2.error.errorCode);
       }))
     ;
     this.displayDialog = false;
@@ -184,5 +186,38 @@ export class UserListComponent implements OnInit {
         this.roles[i].checked = event.target.checked;
       }
     }
+  }
+
+  checkFirstName(): boolean {
+    let regex = new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{0,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
+    if (regex.test(this.user.firstName)) {
+      return true;
+    }
+    return false;
+  }
+
+  checkLastName(): boolean {
+    let regex = new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{0,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
+    if (regex.test(this.user.lastName)) {
+      return true;
+    }
+    return false;
+  }
+
+  checkPhone(): boolean {
+    let regex = new RegExp('^(\\+49)?1(5[12579]|6[023]|7[0-9])[0-9]{7}$|^(004|\\+4)?07[2-8][0-9]{7}$');
+    if (regex.test(this.user.mobileNumber)) {
+      return true;
+    }
+    return false;
+
+  }
+
+  checkEmail(): boolean {
+    let regex = new RegExp('^[a-zA-Z0-9-_.]*@msggroup\\.com$');
+    if (regex.test(this.user.email)) {
+      return true;
+    }
+    return false;
   }
 }

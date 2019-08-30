@@ -23,7 +23,6 @@ export class DashboardComponent implements OnInit {
   selectedLanguage = localStorage.getItem('language') == 'en' ? 'English' : 'Romanian';
 
   user = this.authService.getUsername();
-  displayNotification: boolean;
 
   interval;
 
@@ -77,10 +76,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getMyNotification() {
-    console.log('UsernameFromNotification', this.user);
     this.notificationService.getMyNotification(this.user).subscribe((data) => {
       this.notifications = data;
-      console.log(this.notifications)
     })
   }
 
@@ -111,10 +108,12 @@ export class DashboardComponent implements OnInit {
   }
 
   showNot(notification: Notification) {
+    console.log(notification.type);
     this.notifications.forEach(not => {
       not.show = not.id == notification.id;
     });
     notification.isSeen = true;
+    this.notificationService.seen(notification).subscribe();
   }
 
   hide() {
@@ -207,7 +206,6 @@ export class DashboardComponent implements OnInit {
         this.languageService.getText('targetDate') + ' : ' + formatDate(bugs[1].targetDate, 'dd.MM.yyyy', 'en') + '</div><div>' +
         this.languageService.getText('createdBy') + ' : ' + bugs[1].created + '</div><div>' +
         this.languageService.getText('assignedTo') + ' : ' + bugs[1].assigned + '</div><div>' + '</div>';
-      console.log(res);
       return res;
 
     }
@@ -221,7 +219,6 @@ export class DashboardComponent implements OnInit {
         this.languageService.getText('title') + ' : ' + bugs[1].title + '</div><div>' +
 
         'Status: ' + ' : ' + bugs[1].status + '</div><div>' + '</div>';
-      console.log(res);
       return res;
 
     }

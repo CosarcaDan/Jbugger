@@ -11,9 +11,11 @@ import javax.ejb.EJB;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +97,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                         .build());
             }
             try {
-                if (checkAccess(header, permissionsRequired))
+                if (checkAccessAndSetSecurityContext(ctx, header, permissionsRequired))
                     return;
                 else
                     ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
@@ -106,15 +108,35 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                         .entity("Permissions missing")
                         .build());
             }
-
         }
-
-
     }
 
-    private boolean checkAccess(String token, List<String> permissions) throws BusinessException {
+    private boolean checkAccessAndSetSecurityContext(ContainerRequestContext requestContext, String token, List<String> permissions) throws BusinessException {
         String username = TokenManager.decodeJWT(token).getSubject();
         List<Permission> userPermissions = userService.getUserPermissionsByUsername(username);
+
+        requestContext.setSecurityContext(new SecurityContext() {
+            @Override
+            public Principal getUserPrincipal() {
+                return () -> username;
+            }
+
+            @Override
+            public boolean isUserInRole(String permission) {
+                return userPermissions.stream().anyMatch(p -> p.getType().equals(permission));
+            }
+
+            @Override
+            public boolean isSecure() {
+                return true;
+            }
+
+            @Override
+            public String getAuthenticationScheme() {
+                return "token";
+            }
+        });
+
         return permissions.stream().anyMatch(s -> userPermissions.stream().anyMatch(ss -> ss.getType().equals(s)));
 
     }

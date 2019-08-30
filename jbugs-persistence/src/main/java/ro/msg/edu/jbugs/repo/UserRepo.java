@@ -109,7 +109,7 @@ public class UserRepo {
             User user = (User) query.getSingleResult();
             return user;
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new RepositoryException("findByUsernameAndPassword Failed", "msg-001");
+            throw new RepositoryException("findByUsernameAndPassword Failed", "msg - 001");
         }
     }
 

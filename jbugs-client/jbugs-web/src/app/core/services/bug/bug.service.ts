@@ -62,4 +62,13 @@ export class BugService {
   public getAttachments(bug: Bug) {
     return this.http.post<Array<Attachment>>(this.baseUrl + '/attachments', bug);
   }
+
+  public deleteAttachments(bug: Bug, attachmentId: number) {
+    console.log(JSON.stringify(attachmentId));
+    let body = new FormData();
+    body.append('bug', JSON.stringify(bug));
+    body.append('id', JSON.stringify(attachmentId));
+
+    return this.http.post(this.baseUrl + '/delete-attachment', body);
+  }
 }

@@ -16,7 +16,7 @@ public class AttachmentDtoMapping {
         Attachment attachment = new Attachment();
         attachment.setId(attachmentDto.getId());
         attachment.setAttContent(attachmentDto.getAttContent());
-        attachment.setBug(BugDtoMapping.bugDtoToBugIncomplet(bugDto));
+        attachment.setBug(BugDtoMapping.bugDtoToBugIncomplete(bugDto));
         return attachment;
     }
 

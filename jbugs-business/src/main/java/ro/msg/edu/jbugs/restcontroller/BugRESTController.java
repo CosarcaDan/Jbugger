@@ -3,6 +3,7 @@ package ro.msg.edu.jbugs.restcontroller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.itextpdf.text.DocumentException;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import ro.msg.edu.jbugs.dto.AttachmentDto;
 import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.dto.UserDto;
@@ -117,7 +118,9 @@ public class BugRESTController {
 
             //adds the bug
             BugDto bugAdded = bugService.addBug(bug);
-            bugService.addAttachment(bugAdded, attachment);
+            if (attachment.getAttContent() != null) {
+                bugService.addAttachment(bugAdded, attachment);
+            }
 
             String response = gson.toJson("All OK!");
             return Response.status(200).entity(response).build();
@@ -166,18 +169,17 @@ public class BugRESTController {
             String pdf = bugService.makePDF(bugDto);
             String response = gson.toJson(pdf);
             return Response.status(200).entity(response).build();
-        } catch (DocumentException e) {
-            String responseError = gson.toJson(e);
-            return Response.status(500).entity(responseError).build();
-        } catch (IOException e) {
+        } catch (DocumentException | IOException e) {
             String responseError = gson.toJson(e);
             return Response.status(500).entity(responseError).build();
         }
     }
 
-    @DELETE
-    @Path("/delete-attachment/{id}")
-    public Response deleteAttachment(@PathParam("id") int id) {
+    @POST
+    @Path("/delete-attachment")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response deleteAttachment(@FormDataParam("bug") BugDto bug, @FormDataParam("id") Integer id) {
+        this.bugService.deleteAttachment(bug, id);
         attachmentService.deleteAttachment(id);
         return Response.status(200).build();
     }

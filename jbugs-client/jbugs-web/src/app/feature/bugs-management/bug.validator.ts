@@ -16,4 +16,12 @@ export class BugValidators {
       return {validateVersion: true};
     }
   }
+
+  static validateFileExtension(control: AbstractControl): ValidationErrors | null {
+    let value: string = control.value;
+    let regexExtension = new RegExp('([a-zA-Z0-9\\s_\\\\.\\-\\(\\):])+(.pdf|.doc|.odf|.xlsx|.xls|.png|.jpg)$');
+    if (value && (!regexExtension.test(value))) {
+      return {validateFileExtension: true};
+    }
+  }
 }

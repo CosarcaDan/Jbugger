@@ -43,7 +43,7 @@ export class AddUserComponent implements OnInit {
       lastname: [null, [Validators.required, AddUserValidators.validateName]],
       mobilenumber: [null, [Validators.required, AddUserValidators.validateNumber]],
       email: [null, [Validators.required, AddUserValidators.validateEmail,
-        AddUserValidators.cannotContainSpace]],
+        AddUserValidators.cannotContainSpace]]
     });
   }
 
@@ -73,7 +73,6 @@ export class AddUserComponent implements OnInit {
     this.mobileNumber = this.form.get('mobilenumber').value.toString();
 
     this.getSelectedRoles();
-    //console.log(this.selectedRoles);
 
     let userToBeAdded: User = {
       id: null,
@@ -93,7 +92,7 @@ export class AddUserComponent implements OnInit {
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('user-add-failed');
+        modalRef.componentInstance.message = this.languageService.getText('user-add-failed') + this.languageService.getText(error2.error.errorCode);
       }));
     this.activeModal.close();
 

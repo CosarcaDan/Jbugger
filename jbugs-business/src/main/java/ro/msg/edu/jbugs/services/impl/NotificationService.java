@@ -129,4 +129,10 @@ public class NotificationService {
         List<Notification> notifications = notificationRepo.findAllNotificationsByUsername(username);
         return notifications.stream().map(NotificationDtoMapping::notificationTonotificationDto).collect(Collectors.toList());
     }
+
+    public void seen(Integer id) {
+        Notification notification = notificationRepo.findNotification(id);
+        notification.setSeen(true);
+        notificationRepo.update(notification);
+    }
 }

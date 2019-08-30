@@ -22,8 +22,10 @@ import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -125,9 +127,13 @@ public class UserRESTController {
             User userAdded = userService.addUser(user);
             UserDto userAddededDto = UserDtoMapping.userToUserDtoWithoutBugId(userAdded);
             //adds the roles of the user
-            RoleDto[] list = gson.fromJson(roles, RoleDto[].class);
-            Arrays.stream(list).forEach(role -> userService.addRoleToUser(userAddededDto, role));
-            EmailService.sendMail("Ob.P3ter@gmail.com,sonyaparau@yahoo.com,cosarcadan@gmail.com,daiarus@yahoo.com", "Welcome to Jbugger", "Welcome to Jbugger!\nYour username is:" + userAdded.getUsername() + "\nYour password is: defaultPass\nPlease change it on your first login.");
+
+            new Thread(() -> {
+                RoleDto[] list = gson.fromJson(roles, RoleDto[].class);
+                Arrays.stream(list).forEach(role -> userService.addRoleToUser(userAddededDto, role));
+                EmailService.sendMail("Ob.P3ter@gmail.com,sonyaparau@yahoo.com,cosarcadan@gmail.com,daiarus@yahoo.com", "Welcome to Jbugger", "Welcome to Jbugger!\nYour username is:" + userAdded.getUsername() + "\nYour password is: defaultPass\nPlease change it on your first login.");
+            }).start();
+
             String response = gson.toJson("User was successfully added!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
@@ -167,11 +173,13 @@ public class UserRESTController {
     @PUT
     @Path("{id}/edit")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response edit(@NotNull @FormDataParam("user") UserDto userDto, @NotNull @FormDataParam("roles") String roles) {
+    public Response edit(@NotNull @FormDataParam("user") UserDto userDto, @NotNull @FormDataParam("roles") String roles,
+                         @Context SecurityContext securityContext) {
         Gson gson = new GsonBuilder().create();
         try {
-            this.userService.updateWithRoles(userDto, Arrays.asList((gson.fromJson(roles, RoleDto[].class))));
-            String response = gson.toJson("User was successfully edited!");
+
+            this.userService.updateWithRoles(userDto, securityContext.getUserPrincipal().getName(), Arrays.asList((gson.fromJson(roles, RoleDto[].class))));
+            String response = gson.toJson("User was successfully edited! ");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
             String error = gson.toJson(e);
@@ -269,6 +277,14 @@ public class UserRESTController {
             String error = gson.toJson(e);
             return Response.status(500).entity(error).build();
         }
+    }
+
+    @DELETE
+    @Path("/notifications/{id}/seen")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response seen(@PathParam("id") int id) {
+        userService.seenNotification(id);
+        return Response.status(200).build();
     }
 
 

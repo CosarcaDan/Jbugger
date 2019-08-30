@@ -28,7 +28,7 @@ public class BugDtoMapping {
         return bug;
     }
 
-    public static Bug bugDtoToBugIncomplet(BugDto bugDto) {
+    public static Bug bugDtoToBugIncomplete(BugDto bugDto) {
         Bug bug = new Bug();
         bug.setId(bugDto.getId());
         bug.setTitle(bugDto.getTitle());
@@ -41,7 +41,7 @@ public class BugDtoMapping {
         return bug;
     }
 
-    public static BugDto bugToBugDtoComplet(Bug bug) {
+    public static BugDto bugToBugDtoComplete(Bug bug) {
         BugDto bugDto = new BugDto();
         bugDto.setId(bug.getId());
         bugDto.setTitle(bug.getTitle());

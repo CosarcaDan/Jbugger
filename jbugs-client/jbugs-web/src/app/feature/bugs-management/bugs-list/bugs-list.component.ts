@@ -56,6 +56,8 @@ export class BugsListComponent implements OnInit {
 
   mappedUsers: SelectItem[];
 
+  fileSize: number;
+
 
   bugSearchCriteria: Bug = {
     id: 0,
@@ -226,8 +228,6 @@ export class BugsListComponent implements OnInit {
       // @ts-ignore
       this.bugs = data;
       console.log(this.bugs);
-
-
       for (var bug of this.bugs) {
         var date = new Date(bug.targetDate);
         bug.targetDate = date;
@@ -239,7 +239,6 @@ export class BugsListComponent implements OnInit {
     console.log(this.bugSearchCriteria);
     this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data) => {
       this.bugs = data;
-
       for (var bug of this.bugs) {
         var date = new Date(bug.targetDate);
         bug.targetDate = date;
@@ -266,11 +265,14 @@ export class BugsListComponent implements OnInit {
       (data) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('bug-close-successful');
+        modalRef.result.then(() => {
+          this.search();
+        });
       },
       (error1 => {
         console.log('Error', error1);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('bug-close-failed') + error1.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('bug-close-failed') + this.languageService.getText(error1.error.errorCode);
       }));
     this.displayDialog = false;
     this.search();
@@ -283,19 +285,24 @@ export class BugsListComponent implements OnInit {
       id: null,
       attContent: this.uploadedFileName,
     };
-    if (this.attachments != null)
+    if (this.attachments != null && this.checkFileSize()) {
       this.fileUpload();
-    console.log('BUG TO BE SAVED', this.bug);
+    }
+    if (!this.checkFileSize()) {
+      attachmentToBeAdded.attContent = null;
+    }
     this.bugServices.saveEditBug(this.bug, attachmentToBeAdded).subscribe(
       (data) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('bug-edit-successful');
-        this.search();
+        modalRef.result.then(() => {
+          this.search();
+        });
       },
       (error2 => {
         console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-        modalRef.componentInstance.message = this.languageService.getText('bug-edit-failed') + error2.error.detailMessage;
+        modalRef.componentInstance.message = this.languageService.getText('bug-edit-failed') + this.languageService.getText(error2.error.errorCode);
       })
     );
 
@@ -311,8 +318,9 @@ export class BugsListComponent implements OnInit {
 
   fileUpload() {
     const formModel = this.prepareSave();
-    console.log(formModel.get('file'));
-    this.fileService.uploadFile(formModel).subscribe(this.clearFile);
+    if (this.checkFileSize()) {
+      this.fileService.uploadFile(formModel).subscribe(this.clearFile);
+    }
   }
 
   clearFile() {
@@ -335,6 +343,63 @@ export class BugsListComponent implements OnInit {
         this.displayDialog = true;
       }
     )
+  }
+
+  checkTitle(): boolean {
+    if (this.bug.title.length != 0) {
+      return true;
+    }
+    return false;
+  }
+
+  checkDescription(): boolean {
+    if (this.bug.description.length >= 250) {
+      return true;
+    }
+    return false;
+  }
+
+  checkVersion(): boolean {
+    let regexp = new RegExp('^(0|[1-9a-zA-Z][0-9a-zA-z]?)\\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)\\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)$');
+    if (regexp.test(this.bug.version)) {
+      return true;
+    }
+    return false;
+  }
+
+  //check also null - not required
+  checkFixedInVersion(): boolean {
+    let regexp = new RegExp('^(0|[1-9a-zA-Z][0-9a-zA-z]?)\\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)\\.(0|[1-9a-zA-Z][0-9a-zA-Z]?)$');
+    if (this.bug.fixedVersion == '') {
+      return true;
+    }
+    if (regexp.test(this.bug.fixedVersion)) {
+      return true;
+    }
+    return false;
+
+  }
+
+  //check not null
+  checkFileExtension(): boolean {
+    let regexp = new RegExp('([a-zA-Z0-9\\s_\\\\.\\-\\(\\):])+(.pdf|.doc|.odf|.xlsx|.xls|.png|.jpg)$');
+    if (this.uploadedFileName == '') {
+      return true;
+    }
+    if (regexp.test(this.uploadedFileName)) {
+      return true;
+    }
+    return false;
+    return true;
+
+  }
+
+
+  checkFileSize(): boolean {
+    if (this.fileSize > 25) {
+      return false;
+    }
+    return true;
 
   }
 
@@ -359,8 +424,9 @@ export class BugsListComponent implements OnInit {
   }
 
   onFileChange(event) {
-    let fileSize = event.target.files[0].size / 1024 / 1024; // in MB
-    if (fileSize > 25) {
+    this.fileSize = event.target.files[0].size / 1024 / 1024; // in MB
+    if (this.fileSize > 25) {
+      this.clearFile();
       const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
       modalRef.componentInstance.message = this.languageService.getText('file-size');
     }
@@ -391,5 +457,14 @@ export class BugsListComponent implements OnInit {
     } else {
       this.excelService.exportAsExcelFile(this.dt.value, 'bugs');
     }
+  }
+
+  deleteAttachment(id: number) {
+    this.bugServices.deleteAttachments(this.bug, id).subscribe();
+    this.getAttachments(this.bug).subscribe(
+      res => {
+        this.currentAttachments = res;
+      }
+    )
   }
 }

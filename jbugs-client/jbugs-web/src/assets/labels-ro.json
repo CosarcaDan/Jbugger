@@ -375,6 +375,74 @@
     {
       "label": "user_updated_old",
       "value": "Profilul vechi: "
+    },
+    {
+      "label": "file_extension",
+      "value": "Extensia fisierului este invalida!"
+    },
+    {
+      "label": "file_not_added",
+      "value": "Marimea fisierului este prea mare și nu a putut fi atașat erorii!"
+    },
+    {
+      "label": "msg - 004",
+      "value": "Utilizator deja activ!"
+    },
+    {
+      "label": "msg - 005",
+      "value": "Utilizator deja deactivatat!"
+    },
+    {
+      "label": "msg - 006",
+      "value": "Prenume invalid!"
+    },
+    {
+      "label": "msg - 007",
+      "value": "Nume invalid!"
+    },
+    {
+      "label": "msg - 008",
+      "value": "Număr de telefon invalid"
+    },
+    {
+      "label": "msg - 009",
+      "value": "Email invalid!"
+    },
+    {
+      "label": "msg - 010",
+      "value": "Utilizatorul încă are buguri deschise!"
+    },
+    {
+      "label": "msg - 011",
+      "value": "Utilizator cu ID-ul dat nu a fost găsit!"
+    },
+    {
+      "label": "msg - 012",
+      "value": "Descrierea e prea scurtă!"
+    },
+    {
+      "label": "msg - 013",
+      "value": "Formatul veriunii e incorectă!"
+    },
+    {
+      "label": "msg - 014",
+      "value": "Bug  cu ID-ul dat nu a fost găsit!"
+    },
+    {
+      "label": "msg - 015",
+      "value": "Descrierea e prea scurtă!"
+    },
+    {
+      "label": "msg - 016",
+      "value": "Invalid Bug Status progression!"
+    },
+    {
+      "label": "msg - 017",
+      "value": "Bug deja închis!"
+    },
+    {
+      "label": "msg - 018",
+      "value": "Bugul trebuie să fie FIXED sau REJECTED să devină CLOSED!"
     }
   ]
 }
