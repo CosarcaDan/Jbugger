@@ -11,9 +11,9 @@
 </p-menubar>
 
 
-<p-sidebar [(visible)]="display" position="right" styleClass="ui-sidebar-md">
+<p-sidebar id="sidebar" [(visible)]="display" position="right" styleClass="ui-sidebar-md">
   <h1>{{languageService.getText('notifications')}}</h1>
-
+  <div id="bigNotificationDiv">
   <div *ngFor="let not of notifications">
 
     <div id="notificationDiv" [ngClass]="[not.isSeen ? 'greyBackground' : 'redBackground']">
@@ -27,7 +27,7 @@
       <div [innerHTML]="notificationFormatter(not)"></div>
     </p-dialog>
   </div>
-
+  </div>
 </p-sidebar>
 
 <button id="notification" type="text" (click)="display = true" pButton class="ui-button-rounded ui-button-success"

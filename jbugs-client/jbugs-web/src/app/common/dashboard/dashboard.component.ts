@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
   }
 
   showNot(notification: Notification) {
-    console.log(notification.type)
+    console.log(notification.type);
     this.notifications.forEach(not => {
       not.show = not.id == notification.id;
     });

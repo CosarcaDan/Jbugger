@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
 
   constructor(private router: Router, private userService: UserService, private fb: FormBuilder,
-              private authService: AuthService,private modalService:NgbModal) {
+              private authService: AuthService, private modalService: NgbModal) {
     this.form = fb.group({
       username: [null, [Validators.required, LoginValidators.cannotContainSpace,
         LoginValidators.cannotContainUpperCaseLetter]],

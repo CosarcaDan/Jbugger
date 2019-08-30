@@ -130,7 +130,7 @@ public class NotificationService {
         return notifications.stream().map(NotificationDtoMapping::notificationTonotificationDto).collect(Collectors.toList());
     }
 
-    public void seen(Integer id){
+    public void seen(Integer id) {
         Notification notification = notificationRepo.findNotification(id);
         notification.setSeen(true);
         notificationRepo.update(notification);

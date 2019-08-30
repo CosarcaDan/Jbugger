@@ -144,9 +144,9 @@ public class UserService {
         int nr = 0;
         int charPosition = 0;
         do {
-                username = (username + firstname.charAt(charPosition++)).toLowerCase();
+            username = (username + firstname.charAt(charPosition++)).toLowerCase();
         } while (!userRepo.isUsernameUnique(username) && charPosition < firstname.length());
-        if(userRepo.isUsernameUnique(username))
+        if (userRepo.isUsernameUnique(username))
             return username;
         do {
             tempUsername = username + (nr++);
@@ -294,8 +294,7 @@ public class UserService {
     }
 
 
-
-    public UserDto updateWithRoles(UserDto userDto,String usernameLogedIn ,List<RoleDto> roleDtos) throws BusinessException {
+    public UserDto updateWithRoles(UserDto userDto, String usernameLogedIn, List<RoleDto> roleDtos) throws BusinessException {
         Validator.validateUser(userDto);
         User newDataUser = UserDtoMapping.userDtoToUser(userDto);
         newDataUser.setRoles(roleDtos.stream().map(roleDto ->

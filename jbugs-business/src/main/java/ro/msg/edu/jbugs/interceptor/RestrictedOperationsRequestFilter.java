@@ -103,7 +103,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
                         .build());
             }
             try {
-                if (checkAccessAndSetSecurityContext(ctx,header, permissionsRequired))
+                if (checkAccessAndSetSecurityContext(ctx, header, permissionsRequired))
                     return;
                 else
                     ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
@@ -117,7 +117,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
         }
     }
 
-    private boolean checkAccessAndSetSecurityContext(ContainerRequestContext requestContext,String token, List<String> permissions) throws BusinessException {
+    private boolean checkAccessAndSetSecurityContext(ContainerRequestContext requestContext, String token, List<String> permissions) throws BusinessException {
         String username = TokenManager.decodeJWT(token).getSubject();
         List<Permission> userPermissions = userService.getUserPermissionsByUsername(username);
 
@@ -129,7 +129,7 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
 
             @Override
             public boolean isUserInRole(String permission) {
-                return userPermissions.stream().anyMatch(p->p.getType().equals(permission));
+                return userPermissions.stream().anyMatch(p -> p.getType().equals(permission));
             }
 
             @Override

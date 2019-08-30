@@ -180,7 +180,7 @@ public class UserRESTController {
         Gson gson = new GsonBuilder().create();
         try {
 
-            this.userService.updateWithRoles(userDto, securityContext.getUserPrincipal().getName(),Arrays.asList((gson.fromJson(roles, RoleDto[].class))));
+            this.userService.updateWithRoles(userDto, securityContext.getUserPrincipal().getName(), Arrays.asList((gson.fromJson(roles, RoleDto[].class))));
             String response = gson.toJson("User was successfully edited! ");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {
@@ -280,6 +280,7 @@ public class UserRESTController {
             return Response.status(500).entity(error).build();
         }
     }
+
     @DELETE
     @Path("/notifications/{id}/seen")
     @Consumes({MediaType.APPLICATION_JSON})

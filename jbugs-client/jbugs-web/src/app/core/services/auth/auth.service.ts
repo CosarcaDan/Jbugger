@@ -19,10 +19,9 @@ export class AuthService {
     let token = localStorage.getItem('token');
     if (!token)
       return 'Bearer ';
-    if(this.isTokenExpired(token))
-    {
+    if (this.isTokenExpired(token)) {
       this.renew(this.decodeToken(token).subject);
-      token=localStorage.getItem('token');
+      token = localStorage.getItem('token');
     }
     return 'Bearer ' + token;
   }
@@ -39,14 +38,14 @@ export class AuthService {
       await delay(1000);
       modalRef.close();
       this.router.navigate(['dashboard']);
-    }, (error1:HttpErrorResponse) => {
+    }, (error1: HttpErrorResponse) => {
       console.log('Error', error1.error.errorCode);
       const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
-      if(error1.error.errorCode == 'msg - 001')
+      if (error1.error.errorCode == 'msg - 001')
         modalRef.componentInstance.message = "Username or password Incorrect!";
-      if(error1.error.errorCode == 'msg - 002')
+      if (error1.error.errorCode == 'msg - 002')
         modalRef.componentInstance.message = "You entered an incorrect password 5 times, your User got deactivated. Please contact your administrator!";
-      if(error1.error.errorCode == 'msg - 003')
+      if (error1.error.errorCode == 'msg - 003')
         modalRef.componentInstance.message = "Your User is deactivated. Please contact your administrator!";
     });
   }
@@ -109,7 +108,7 @@ export class AuthService {
   private base64Decode(data: string) {
     let dst = "";
     let i = 0, a, b, c, d, z;
-    data+='==='
+    data+='===';
     let len = data.length;
     for (; i < len - 3; i += 4) {
       a = this.base64_charIndex(data.charAt(i + 0));

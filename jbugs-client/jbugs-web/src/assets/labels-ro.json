@@ -150,7 +150,7 @@
     },
     {
       "label": "assignedTo",
-      "value": "Atribut la"
+      "value": "Atribuit la"
     },
     {
       "label": "severity",
@@ -234,11 +234,11 @@
     },
     {
       "label": "all-statuses",
-      "value": "Toate"
+      "value": "Orice status"
     },
     {
       "label": "all-severities",
-      "value": "Toate"
+      "value": "Orice severitate"
     },
     {
       "label": "bug-close-successful",
