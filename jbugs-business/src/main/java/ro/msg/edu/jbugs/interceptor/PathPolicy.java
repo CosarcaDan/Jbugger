@@ -49,6 +49,7 @@ public class PathPolicy {
         permissions.add("BUG_MANAGEMENT");
         pathPermissions.put("^bugs/add", new ArrayList<>());
 
+
         permissions.clear();
         permissions.add("BUG_MANAGEMENT");
         pathPermissions.put("^bugs/[1234567890]+/.*", new ArrayList<>());

@@ -443,6 +443,10 @@
     {
       "label": "msg - 018",
       "value": "Bugul trebuie să fie FIXED sau REJECTED să devină CLOSED!"
+    },
+    {
+      "label": "more_details",
+      "value": "Vezi mai multe detalii"
     }
   ]
 }

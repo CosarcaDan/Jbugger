@@ -40,6 +40,7 @@ import {NgbdWelcomeModalContent} from './core/services/auth/auth.service';
 import {RecaptchaModule} from 'ng-recaptcha';
 import {ProfileComponent} from './feature/profile/profile.component';
 import {MessageComponent} from './core/message/message.component';
+import {ViewBugComponent} from './feature/bugs-management/view-bug/view-bug.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {MessageComponent} from './core/message/message.component';
     NgbdWelcomeModalContent,
     ProfileComponent,
     MessageComponent,
+    ViewBugComponent,
   ],
   imports: [
     BrowserModule,

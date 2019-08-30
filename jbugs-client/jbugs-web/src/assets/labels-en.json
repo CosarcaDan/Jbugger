@@ -443,6 +443,10 @@
     {
       "label": "msg - 018",
       "value": "Bug has to to FIXED or REJECTED in order to be CLOSED!"
+    },
+    {
+      "label": "more_details",
+      "value": "View more details"
     }
   ]
 }

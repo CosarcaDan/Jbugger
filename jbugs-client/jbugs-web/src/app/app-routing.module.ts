@@ -10,6 +10,7 @@ import {RemovePermissionComponent} from './feature/permission-management/remove-
 import {AuthGuardService} from './core/services/guards/auth-guard.service';
 import {PermissionManagementComponent} from './feature/permission-management/permission-management/permission-management.component';
 import {ProfileComponent} from './feature/profile/profile.component';
+import {ViewBugComponent} from './feature/bugs-management/view-bug/view-bug.component';
 
 
 const routes: Routes = [
@@ -58,6 +59,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent
+      },
+      {
+        path: 'view-bug/:id',
+        component: ViewBugComponent
       },
     ]
   }

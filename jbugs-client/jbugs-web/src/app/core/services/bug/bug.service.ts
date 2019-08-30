@@ -16,8 +16,11 @@ export class BugService {
     })
   };
 
+  public getBug(id: number): Observable<Bug> {
+    return this.http.get<Bug>(this.baseUrl + '/' + id);
+  }
+
   public add(bug, attachment): Observable<Bug> {
-    console.log(bug);
     let body = new HttpParams()
       .set('bug', JSON.stringify(bug))
       .set('attachment', JSON.stringify(attachment));

@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {AuthService} from '../../core/services/auth/auth.service';
-import {NotificationService} from "../../core/services/notification/notification.service";
-import {LanguageService} from "../../core/services/language/language.service";
-import {Notification} from "../../core/models/notification";
-import {User} from "../../core/models/user";
-import {Bug} from "../../core/models/bug";
-import {formatDate} from "@angular/common";
+import {NotificationService} from '../../core/services/notification/notification.service';
+import {LanguageService} from '../../core/services/language/language.service';
+import {Notification} from '../../core/models/notification';
+import {User} from '../../core/models/user';
+import {Bug} from '../../core/models/bug';
+import {formatDate} from '@angular/common';
 
 
 @Component({
@@ -184,7 +184,8 @@ export class DashboardComponent implements OnInit {
     }
     if (notification.type == "BUG_UPDATED") {
       let bugs: Bug[] = JSON.parse(notification.message);
-      let res: string = '<div>' + this.languageService.getText('bugUpdated') + '</div><div>' +
+      let res: string = '<div>' + this.languageService.getText('bugUpdated') + '!</div><div>' +
+        this.languageService.getText('more_details') + ': <a href=\" ' + 'dashboard/view-bug/' + bugs[0].id + '\">here</a><div></div>' +
         this.languageService.getText('oldBugData') + ': <div></div>' +
         this.languageService.getText('title') + ' : ' + bugs[0].title + '</div><div>' +
         this.languageService.getText('description') + ' : ' + bugs[0].description.substr(0, 20) + ' ...</div><div>' +

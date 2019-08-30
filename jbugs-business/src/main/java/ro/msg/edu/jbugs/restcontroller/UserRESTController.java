@@ -192,7 +192,6 @@ public class UserRESTController {
     public Response activate(@NotNull UserDto user) {
         Gson gson = new GsonBuilder().create();
         try {
-            //user.setStatus(true);
             userService.updateUser(user);
             String response = gson.toJson("User was successfully activated!");
             return Response.status(200).entity(response).build();
@@ -230,14 +229,6 @@ public class UserRESTController {
         Gson gson = new GsonBuilder().create();
         String response;
         try {
-            //user.setStatus(false);
-//            if (userService.hasOnlyClosedBugs(user)) {
-//                userService.updateUser(user);
-//                response = gson.toJson("User was successfully deactivated!");
-//            } else {
-//                response = gson.toJson("User has tasks assigned, that are not closed yet and" +
-//                        " cannot be deleted!");
-//            }
             userService.deactivateUser(user.getUsername(), false);
             response = gson.toJson("User was successfully deactivated!");
             return Response.status(200).entity(response).build();
