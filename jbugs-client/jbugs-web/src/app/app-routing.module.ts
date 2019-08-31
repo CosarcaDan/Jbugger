@@ -28,28 +28,12 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     children: [
       {
-        path: 'bugs/add',
-        component: AddBugComponent
-      },
-      {
         path: 'bugs',
         component: BugsListComponent
       },
       {
-        path: 'bugsAdd',
-        component: AddBugComponent
-      },
-      {
         path: 'users',
         component: UserListComponent
-      },
-      {
-        path: 'permissions/add',
-        component: AddPermissionComponent
-      },
-      {
-        path: 'permissions/remove',
-        component: RemovePermissionComponent
       },
       {
         path: 'permissions',

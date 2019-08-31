@@ -10,7 +10,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(req.url, req.url.match('./assets/labels-.*'));
     if (req.url.match('./assets/labels-.*'))
       return next.handle(req);
     if (
@@ -56,7 +55,6 @@ export class AuthInterceptor implements HttpInterceptor {
         });
       }
     }
-    console.log('AuthInterceptor: ', req.url.split('services/')[1]);
     return next.handle(req);
   }
 }
