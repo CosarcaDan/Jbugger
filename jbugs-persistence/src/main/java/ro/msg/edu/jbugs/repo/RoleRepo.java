@@ -54,7 +54,7 @@ public class RoleRepo {
 
     }
 
-    public Role removePermissionToRole(Role roleinp, Permission permission) {
+    public Role removePermissionFromRole(Role roleinp, Permission permission) {
         Role role = entityManager.find(Role.class, roleinp.getId());
         role.removePermission(permission);
         entityManager.merge(role);

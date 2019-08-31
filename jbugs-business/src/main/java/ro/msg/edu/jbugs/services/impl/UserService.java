@@ -48,7 +48,6 @@ public class UserService {
     @EJB
     private NotificationService notificationService;
 
-    //ToDo validate Data
     public User addUser(UserDto userDto) throws BusinessException {
         Validator.validateUser(userDto);
         userDto.setUsername(generateUserName(userDto.getLastName(), userDto.getFirstName()));
@@ -69,7 +68,7 @@ public class UserService {
             UserDto userDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
             return userDto;
         } catch (EntityNotFoundException ex) {
-            throw new BusinessException("Description to short", "msg - 012");
+            throw new BusinessException("User with given id not found", "msg - 011");
         }
     }
 
@@ -79,7 +78,7 @@ public class UserService {
             UserDto userDto = UserDtoMapping.userToUserDtoWithoutBugId(user);
             return userDto;
         } catch (EntityNotFoundException | RepositoryException ex) {
-            throw new BusinessException("Description to short", "msg - 012");
+            throw new BusinessException("User with given id not found", "msg - 011");
         }
     }
 
@@ -97,7 +96,6 @@ public class UserService {
         return userDtoList;
     }
 
-    //todo maybe get username instead of id
     public List<BugDto> getAllCreatedBugs(Integer id) throws BusinessException {
         try {
             User user = userRepo.findUser(id);
@@ -105,11 +103,10 @@ public class UserService {
             List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplete).collect(Collectors.toList());
             return bugDtoList;
         } catch (EntityNotFoundException ex) {
-            throw new BusinessException("Description to short", "msg - 012");
+            throw new BusinessException("User with given id not found", "msg - 011");
         }
     }
 
-    //todo maybe get username instead of id
     public List<BugDto> getAllAssignedBugs(Integer id) throws BusinessException {
         try {
             User user = userRepo.findUser(id);
@@ -117,7 +114,7 @@ public class UserService {
             List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplete).collect(Collectors.toList());
             return bugDtoList;
         } catch (EntityNotFoundException ex) {
-            throw new BusinessException("Description to short", "msg - 012");
+            throw new BusinessException("User with given id not found", "msg - 011");
         }
     }
 
@@ -128,7 +125,7 @@ public class UserService {
             List<RoleDto> bugsDto = roles.stream().map(RoleDtoMapping::roleToRoleDto).collect(Collectors.toList());
             return bugsDto;
         } catch (EntityNotFoundException ex) {
-            throw new BusinessException("Description to short", "msg - 012");
+            throw new BusinessException("User with given id not found", "msg - 011");
         }
     }
 
@@ -175,7 +172,7 @@ public class UserService {
         try {
             User user = userRepo.findUserByUsername(username);
             if (user.getFailedLoginAttempt() < 5 && user.getStatus()) {
-                user.setFailedLoginAttempt(user.getFailedLoginAttempt() + 1); //todo do in repo increse counter
+                user.setFailedLoginAttempt(user.getFailedLoginAttempt() + 1);
                 if (user.getFailedLoginAttempt() == 5) {
                     user.setStatus(false);
                     throw new BusinessException("Password failed too may times, User deactivated", "msg - 003");
@@ -234,7 +231,6 @@ public class UserService {
                         }
                     }).map(UserDtoMapping::userToUserDtoWithoutBugId).collect(Collectors.toList())
                     , deactivatedUserDto);
-            //todo notification USER_DELETED r:UserManager
             return deactivatedUserDto;
         } catch (RepositoryException e) {
             throw new BusinessException(e);
@@ -253,7 +249,6 @@ public class UserService {
         }
     }
 
-    //toDo validate data
     public UserDto updateUser(UserDto userDto) throws BusinessException {
         try {
             Validator.validateUser(userDto);
@@ -267,7 +262,6 @@ public class UserService {
                 return res;
             }).collect(Collectors.toList()));
             User response = userRepo.updateUser(newDataUser);
-            //todo notification user_update r:updated user and the initiator
             return UserDtoMapping.userToUserDtoWithoutBugId(response);
         } catch (RepositoryException e) {
             throw new BusinessException(e);

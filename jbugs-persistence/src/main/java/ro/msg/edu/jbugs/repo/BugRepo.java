@@ -62,8 +62,6 @@ public class BugRepo {
         return bugList;
     }
 
-    //Todo criteri de cautare si posibil paginarea
-
 
     public List<Bug> getBugsAfterSearchCriteriaWithSeverityAndStatus(Bug.Severity severity, Bug.Status status, String creator, String assigned) {
         Query query = entityManager.createNamedQuery(Bug.SEARCH_CRITERIA_WITH_STATUS_AND_SEVERITY);

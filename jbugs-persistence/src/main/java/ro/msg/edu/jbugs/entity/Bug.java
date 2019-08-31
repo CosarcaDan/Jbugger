@@ -63,7 +63,6 @@ public class Bug implements Serializable {
     private Timestamp targetDate;
 
 
-    //ToDo verify if enum works with DB
     @Column(name = "status")
     private Status status;
 
@@ -157,7 +156,6 @@ public class Bug implements Serializable {
         this.severity = severity;
     }
 
-    //todo posibil doar numele -> scapam de userDto incomplet prin eliminarea buclei infinite
     public User getCreated() {
         return created;
     }
@@ -166,7 +164,6 @@ public class Bug implements Serializable {
         this.created = created;
     }
 
-    //todo posibil doar numele
     public User getAssigned() {
         return assigned;
     }

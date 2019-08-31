@@ -13,7 +13,6 @@ import java.sql.Timestamp;
  */
 public class BugDto implements Serializable {
 
-    //todo BugDto should be String to prevent dependencies from upper level(Higher than business) whit persistence
     private Integer id;
     private String title;
     private String description;

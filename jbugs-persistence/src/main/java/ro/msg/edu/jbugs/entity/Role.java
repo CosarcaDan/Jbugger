@@ -77,5 +77,4 @@ public class Role implements Serializable {
         this.permissionList.removeIf(p -> p.getId().equals(permission.getId()));
     }
 
-    //todo RoleTypeToEnum
 }
