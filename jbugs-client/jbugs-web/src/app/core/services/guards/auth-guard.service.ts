@@ -14,6 +14,21 @@ export class AuthGuardService implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if (localStorage.getItem('token')) {
+      if (state.url == '/dashboard/permissions')
+        if (!this.authService.hasPermission('PERMISSION_MANAGEMENT')) {
+          this.router.navigate(['dashboard']);
+          return false;
+        }
+      if (state.url == '/dashboard/bugs')
+        if (!this.authService.hasPermission('BUG_MANAGEMENT')) {
+          this.router.navigate(['dashboard']);
+          return false;
+        }
+      if (state.url == '/dashboard/users')
+        if (!this.authService.hasPermission('USER_MANAGEMENT')) {
+          this.router.navigate(['dashboard']);
+          return false;
+        }
       return true;
     }
 

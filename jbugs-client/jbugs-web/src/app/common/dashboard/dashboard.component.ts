@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
     ];
 
 
-    this.interval = setInterval(this.getMyNotification.bind(this), 3000);
+    //this.interval = setInterval(this.getMyNotification.bind(this), 3000);
 
     this.intervalRun = true;
   }

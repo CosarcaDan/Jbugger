@@ -13,7 +13,6 @@ public class PathPolicy {
         this.pathPermissions = new HashMap<>();
         pathPermissions.put("^users/log.*", new ArrayList<>());
         pathPermissions.put("^users/renew", new ArrayList<>());
-        pathPermissions.put("^bugs/delete-attachment", new ArrayList<>());
         pathPermissions.put("^users/notifications", new ArrayList<>());
         pathPermissions.put("^users/notifications/.*/seen", new ArrayList<>());
         pathPermissions.put("^files/upload$", new ArrayList<>());
@@ -47,27 +46,31 @@ public class PathPolicy {
 
         permissions.clear();
         permissions.add("BUG_MANAGEMENT");
-        pathPermissions.put("^bugs", new ArrayList<>());
+        pathPermissions.put("^bugs", new ArrayList<>(permissions));
 
         permissions.clear();
         permissions.add("BUG_MANAGEMENT");
-        pathPermissions.put("^users", new ArrayList<>());
+        pathPermissions.put("^users", new ArrayList<>(permissions));
 
         permissions.clear();
         permissions.add("BUG_EXPORT_PDF");
-        pathPermissions.put("^bugs/getPDF", new ArrayList<>());
+        pathPermissions.put("^bugs/getPDF", new ArrayList<>(permissions));
 
         permissions.clear();
         permissions.add("BUG_MANAGEMENT");
-        pathPermissions.put("^bugs/attachments", new ArrayList<>());
+        pathPermissions.put("^bugs/attachments", new ArrayList<>(permissions));
 
         permissions.clear();
         permissions.add("BUG_MANAGEMENT");
-        pathPermissions.put("^bugs/add", new ArrayList<>());
+        pathPermissions.put("^bugs/add", new ArrayList<>(permissions));
 
         permissions.clear();
         permissions.add("BUG_MANAGEMENT");
-        pathPermissions.put("^bugs/[1234567890]+/.*", new ArrayList<>());
+        pathPermissions.put("^bugs/delete-attachment", new ArrayList<>(permissions));
+
+        permissions.clear();
+        permissions.add("BUG_MANAGEMENT");
+        pathPermissions.put("^bugs/[1234567890]+/.*", new ArrayList<>(permissions));
 
         permissions.clear();
         permissions.add("BUG_CLOSE");
