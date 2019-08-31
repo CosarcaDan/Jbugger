@@ -9,14 +9,15 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- * Document me.
- *
- * @author msg systems AG; User Name.
+ * The service for the Attachment Repository created
+ * in the Persistence Layer.
+ * @author msg systems AG; team D.
  * @since 19.1.2
  */
 @Stateless
 public class AttachmentService {
 
+    //injects the Attachment Repository
     @EJB
     private AttachmentRepo attachmentRepo;
 
@@ -29,9 +30,4 @@ public class AttachmentService {
         attachmentRepo.deleteAttachment(id);
     }
 
-//    public AttachmentDto findAttachment(Integer id){
-//        Attachment attachment = attachmentRepo.findAttachment(id);
-//        AttachmentDto attachmentDto = AttachmentDtoMapping.attachmentToAttachmentDto(attachment);
-//        return attachmentDto;
-//    }
 }

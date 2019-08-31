@@ -6,45 +6,48 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * Document me.
- *
- * @author msg systems AG; User Name.
+ * Bug is an entity mapped with the table Bugs from the
+ * MySql msg_training database.
+ * @author msg systems AG; team D.
  * @since 19.1.2
  */
-
 @Entity
 @Table(name = "bugs")
 @NamedQueries({
         @NamedQuery(name = Bug.GET_ALL_BUGS, query = "select b from Bug b"),
         @NamedQuery(name = Bug.DELETE_OLD_BUGS, query = "delete from Bug b where b.targetDate < :date"),
-        @NamedQuery(name = Bug.FINDE_BUG_AFTER_USER_ID, query = "select b from Bug b where b.created = :user or b.assigned = :user"),
-        @NamedQuery(name = Bug.DELETE_BUG_AFTER_USER_ID, query = "delete from Bug b where b.created = :user or b.assigned = :user"),
-
+        @NamedQuery(name = Bug.FIND_BUG_AFTER_USER_ID, query = "select b from Bug b where b.created = :user " +
+                "or b.assigned = :user"),
+        @NamedQuery(name = Bug.DELETE_BUG_AFTER_USER_ID, query = "delete from Bug b where b.created = :user or " +
+                "b.assigned = :user"),
         @NamedQuery(name = Bug.SEARCH_CRITERIA_WITH_STATUS_AND_SEVERITY, query = "select b from Bug b where " +
-                "b.status = :status and b.severity = :severity and b.created.username like :creator and b.assigned.username like :assigned"),
-
+                "b.status = :status and b.severity = :severity and b.created.username like :creator and" +
+                " b.assigned.username like :assigned"),
         @NamedQuery(name = Bug.SEARCH_CRITERIA_WITH_STATUS, query = "select b from Bug b where " +
                 "b.status = :status and b.created.username like :creator and b.assigned.username like :assigned"),
-
         @NamedQuery(name = Bug.SEARCH_CRITERIA_WITH_SEVERITY, query = "select b from Bug b where " +
                 "b.severity = :severity and b.created.username like :creator and b.assigned.username like :assigned"),
-
         @NamedQuery(name = Bug.SEARCH_CRITERIA_WITHOUT_STATUS_AND_SEVERITY, query = "select b from Bug b where " +
                 "b.created.username like :creator and b.assigned.username like :assigned"),
-
 })
 public class Bug implements Serializable {
 
+    /**
+     * Static fields for the possible queries on the bug entity.
+     */
     public static final String GET_ALL_BUGS = "getAllBugs";
     public static final String DELETE_OLD_BUGS = "deleteOldBugs";
     public static final String DELETE_BUG_AFTER_USER_ID = "deleteBugAfterUserId";
-    public static final String FINDE_BUG_AFTER_USER_ID = "Finde_BUG_AFTER_USER_ID";
-    public static final String SEARCH_CRITERIA_WITH_STATUS_AND_SEVERITY = "SearchCriteriaWithStatusAndSeverity";
-    public static final String SEARCH_CRITERIA_WITH_STATUS = "SearchCriteriaWithStatus";
-    public static final String SEARCH_CRITERIA_WITH_SEVERITY = "SearchCriteriaWithSeverity";
-    public static final String SEARCH_CRITERIA_WITHOUT_STATUS_AND_SEVERITY = "SearchCriteriaWithOutStatusAndSeverity";
+    public static final String FIND_BUG_AFTER_USER_ID = "findBugAfterUserId";
+    public static final String SEARCH_CRITERIA_WITH_STATUS_AND_SEVERITY = "searchCriteriaWithStatusAndSeverity";
+    public static final String SEARCH_CRITERIA_WITH_STATUS = "searchCriteriaWithStatus";
+    public static final String SEARCH_CRITERIA_WITH_SEVERITY = "searchCriteriaWithSeverity";
+    public static final String SEARCH_CRITERIA_WITHOUT_STATUS_AND_SEVERITY = "searchCriteriaWithOutStatusAndSeverity";
 
-
+    /**
+     * Mapping the bug's fields with the columns
+     * of the bug table.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -62,8 +65,6 @@ public class Bug implements Serializable {
     @Column(name = "targetDate")
     private Timestamp targetDate;
 
-
-    //ToDo verify if enum works with DB
     @Column(name = "status")
     private Status status;
 
@@ -84,6 +85,11 @@ public class Bug implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_bug")
     private List<Attachment> attachments;
+
+    /**
+     * Getters and setters for each field of the bug
+     * entity.
+     */
 
     public List<Attachment> getAttachments() {
         return attachments;
@@ -157,7 +163,6 @@ public class Bug implements Serializable {
         this.severity = severity;
     }
 
-    //todo posibil doar numele -> scapam de userDto incomplet prin eliminarea buclei infinite
     public User getCreated() {
         return created;
     }
@@ -166,7 +171,6 @@ public class Bug implements Serializable {
         this.created = created;
     }
 
-    //todo posibil doar numele
     public User getAssigned() {
         return assigned;
     }
@@ -179,14 +183,30 @@ public class Bug implements Serializable {
         this.attachments.add(attachment);
     }
 
+    /**
+     * Removes the attachment of a bug after the given id
+     * of the attachment if the id exists.
+     * @param id - the Id of the attachment that has to be
+     *           deleted
+     * */
     public void removeAttachmentAfterId(Integer id) {
         this.attachments.removeIf(attachment -> attachment.getId().equals(id));
     }
 
+    /**
+     * The bug can take 6 possible statuses: new, in progress, fixed,
+     * closed, rejected or info needed. All these statuses are encapsulated
+     * in the Status enumeration.
+     * */
     public enum Status{
         NEW, IN_PROGRESS, FIXED, CLOSED, REJECTED, INFONEEDED
     }
 
+    /**
+     * The bug can have 4 possible severities: critical, high,
+     * medium or low. All these severities are encapsulated
+     * in the Severity enumeration.
+     * */
     public enum Severity{
         CRITICAL, HIGH, MEDIUM, LOW
     }

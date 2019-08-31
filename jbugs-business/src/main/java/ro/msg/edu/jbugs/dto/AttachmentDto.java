@@ -5,9 +5,9 @@ import com.google.gson.Gson;
 import java.io.Serializable;
 
 /**
- * Document me.
- *
- * @author msg systems AG; User Name.
+ * Creates an entity of type AttachmentDto
+ * that can be seen by the client.
+ * @author msg systems AG; team D.
  * @since 19.1.2
  */
 public class AttachmentDto implements Serializable {
@@ -15,9 +15,17 @@ public class AttachmentDto implements Serializable {
     private Integer id;
     private String attContent;
 
+    /**
+     * Default constructor that creates the
+     * entity.
+     */
     public AttachmentDto() {
     }
 
+    /**
+     * Getters and setters for each field
+     * of the attachmentDto.
+     */
     public Integer getId() {
         return id;
     }
@@ -36,8 +44,7 @@ public class AttachmentDto implements Serializable {
 
     public static AttachmentDto fromString(String JSON) {
         Gson g = new Gson();
-        AttachmentDto result = g.fromJson(JSON, AttachmentDto.class);
-        return result;
+        AttachmentDto attachmentDto = g.fromJson(JSON, AttachmentDto.class);
+        return attachmentDto;
     }
-
 }
