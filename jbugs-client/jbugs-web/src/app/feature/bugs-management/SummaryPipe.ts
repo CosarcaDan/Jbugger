@@ -13,7 +13,5 @@ export class SummaryPipe implements PipeTransform {
     } else {
       return value;
     }
-
   }
-
 }

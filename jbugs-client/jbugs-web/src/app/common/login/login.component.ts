@@ -23,15 +23,6 @@ export class LoginComponent implements OnInit {
   password: string;
 
 
-  login() {
-    this.username = this.form.get('username').value.toString();
-    this.password = this.form.get('password').value.toString();
-    this.userLogin = {username: this.username, password: this.password};
-    console.log(this.userLogin);
-    this.authService.login(this.userLogin);
-  }
-
-
   constructor(private router: Router, private userService: UserService, private fb: FormBuilder,
               private authService: AuthService, private modalService: NgbModal) {
     this.form = fb.group({
@@ -41,13 +32,21 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  resolvedCaptcha(captchaResponse) {
-    console.log('Captcha resolved with response ', captchaResponse);
-  }
-
   ngOnInit() {
+    //if the user is already logged in, it navigates to dashboard.
     if (localStorage.getItem('token')) {
       this.router.navigate(['dashboard']);
     }
+  }
+
+  /**
+   * Log in the user with a username and a password.
+   *
+   * */
+  login() {
+    this.username = this.form.get('username').value.toString();
+    this.password = this.form.get('password').value.toString();
+    this.userLogin = {username: this.username, password: this.password};
+    this.authService.login(this.userLogin);
   }
 }

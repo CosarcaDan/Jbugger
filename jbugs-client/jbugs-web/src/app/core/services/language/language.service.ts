@@ -13,6 +13,10 @@ export class LanguageService implements OnInit {
     this.ngOnInit();
   }
 
+  /**
+   * Send a get request to change the language of the labels.
+   *
+   * */
   ngOnInit(): void {
     this.http.get('./assets/labels-' + localStorage.getItem('language') + '.json').subscribe(
       (res: { labels: { label, value }[] }) => {
@@ -22,6 +26,12 @@ export class LanguageService implements OnInit {
     );
   }
 
+  /**
+   * Gets the text of the given label.
+   * @param label - string; the label.
+   *
+   * @return the value of the label.
+   * */
   getText(label: string) {
     if (this.languageLoaded == null || this.languageLoaded != localStorage.getItem('language')) {
       this.ngOnInit();

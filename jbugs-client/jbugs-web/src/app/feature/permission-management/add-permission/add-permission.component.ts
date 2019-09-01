@@ -28,44 +28,50 @@ export class AddPermissionComponent implements OnInit {
   }
 
   createForm() {
-    console.log('roles:', this.roles);
     this.angForm = this.fb.group({
       roles: ['', Validators.required],
       permission: ['', Validators.required]
     });
   }
 
+  /**
+   * Gets the role list.
+   *
+   * */
   getRoles() {
     this.roles = new Array<Role>();
     this.roleService.getRoles().subscribe((data) => {
-      console.log('data:', data);
       // @ts-ignore
       for (let dataKey of data) {
         this.roles.push(dataKey);
       }
-      console.log('roleset: ', this.roles);
     });
   }
 
 
+  /**
+   * Gets the permission list for a selected role.
+   * @param id - number; the id of the role.
+   *
+   * */
   getNewPermissions(id) {
     let role = this.roles.find(r => r.id == id);
-    console.log(role);
     this.permissions = new Array<Permission>();
     this.roleService.getPermissionsNotInRole(role).subscribe((data) => {
-      console.log('data:', data);
       // @ts-ignore
       for (let dataKey of data) {
         this.permissions.push(dataKey);
       }
-      console.log('permissionset: ', this.permissions);
     });
   }
 
+  /**
+   * Adds a permission into the permission list of the selected role.
+   *
+   * */
   addPermission() {
     let role = this.roles.find(r => r.id == this.selectedRole);
     let permissions = this.selectedPermissions.map(p => this.permissions.find((pp) => pp.id == p));
-    console.log(role, permissions);
     this.roleService.addPermissionToRole(role, permissions);
     this.getNewPermissions(role.id);
     // location.reload();

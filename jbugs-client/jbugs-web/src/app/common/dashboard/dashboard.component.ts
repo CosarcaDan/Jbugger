@@ -18,13 +18,16 @@ import {formatDate} from "@angular/common";
 export class DashboardComponent implements OnInit {
 
   items: MenuItem[];
+
   display;
+
+  interval;
+
   languages: any[];
+
   selectedLanguage = localStorage.getItem('language') == 'en' ? 'English' : 'Romanian';
 
   user = this.authService.getUsername();
-
-  interval;
 
   notifications: Notification[];
 
@@ -34,6 +37,8 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    //set the dashboard menu elements and the connection with the next pages
     this.items = [
       {
         label: this.selectedLanguage == 'English' ? 'User management' : 'Administrarea utilizatorilor',
@@ -61,30 +66,48 @@ export class DashboardComponent implements OnInit {
     ];
 
 
-    //this.interval = setInterval(this.getMyNotification.bind(this), 3000);
+    this.interval = setInterval(this.getMyNotification.bind(this), 3000);
 
     this.intervalRun = true;
   }
 
+  /**
+   * Navigate to another link.
+   *
+   * @param link - string; the link to navigate to.
+   *
+   */
   public goto(link) {
     this.router.navigate([link]);
   }
 
+  /**
+   *  Log out the user from the application.
+   *
+   */
   logout() {
     clearInterval(this.interval);
     this.authService.logout();
   }
 
+  /**
+   *  Loads the notification from the notification service into the notification list.
+   *
+   */
   getMyNotification() {
     this.notificationService.getMyNotification(this.user).subscribe((data) => {
       this.notifications = data;
       this.notifications = this.notifications.reverse();
-
     })
   }
 
+  /**
+   * Changes the language of the application when a select button is clicked.
+   *
+   * @param language - string; the language (Romanian/English)
+   *
+   */
   setLanguage(language) {
-    console.log(language);
     if (language == 'Romanian')
       localStorage.setItem('language', 'ro');
     if (language == 'English')
@@ -97,11 +120,19 @@ export class DashboardComponent implements OnInit {
     location.reload();
   }
 
+  /**
+   *  Clears the notifications loading interval when the notification dialog is visible.
+   *
+   */
   notificationDialogClearIntervalWhenVisible() {
     clearInterval(this.interval);
     this.intervalRun = false;
   }
 
+  /**
+   *  Restarts the notifications loading interval when the notification dialog is closed.
+   *
+   */
   notificationDialogStartIntervalWhenVisible() {
     if (!this.intervalRun) {
       this.interval = setInterval(this.getMyNotification.bind(this), 3000);
@@ -109,8 +140,13 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  showNot(notification: Notification) {
-    console.log(notification.type);
+  /**
+   *  Displays the notifications messages in a dialog when the notification is clicked.
+   *
+   * @param notification - Notification; the notification that has been clicked (seen).
+   *
+   */
+  showNotification(notification: Notification) {
     this.notifications.forEach(not => {
       not.show = not.id == notification.id;
     });
@@ -118,13 +154,23 @@ export class DashboardComponent implements OnInit {
     this.notificationService.seen(notification).subscribe();
   }
 
+  /**
+   *  Closes the notification messages dialog.
+   *
+   */
   hide() {
     this.notifications.forEach(not => {
       not.show = false;
     })
   }
 
-
+  /**
+   * Creates the message format of a notification
+   *
+   * @param notification - Notification; the notification that has to be
+   *                        formatted.
+   * @return the notification in the new format.
+   */
   notificationFormatter(notification: Notification): string {
     if (notification.type == "WELCOME_NEW_USER") {
       let user: User = JSON.parse(notification.message);
@@ -224,6 +270,5 @@ export class DashboardComponent implements OnInit {
       return res;
 
     }
-
   }
 }

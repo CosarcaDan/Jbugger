@@ -25,15 +25,25 @@ export class NotificationService {
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Sends a post request to get all notifications of a user.
+   * @param username - string; the user who has notifications.
+   *
+   * @return the url of the post request.
+   * */
   public getMyNotification(username: string): Observable<any> {
     this.user.username = username;
-    console.log('usernameForNotification', username);
     return this.http.post(this.baseUrl, this.user);
   }
 
+  /**
+   * Sends a delete request to set the notification to seen.
+   * @param notification - Notification; the notification that was already seen.
+   *
+   * @return the url of the delete request.
+   * */
   public seen(notification: Notification) {
     return this.http.delete(this.baseUrl + '/' + notification.id + '/seen');
   }
-
 }
 

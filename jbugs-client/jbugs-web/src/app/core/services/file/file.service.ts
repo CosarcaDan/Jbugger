@@ -11,9 +11,13 @@ export class FileService {
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Sends a post request to upload a file.
+   * @param file - the file that has to be uploaded.
+   *
+   * @return the url of the post request.
+   * */
   public uploadFile(file): Observable<any> {
-    console.log('file', file.get('file'));
     return this.http.post(this.base_url + '/upload', file);
   }
-
 }

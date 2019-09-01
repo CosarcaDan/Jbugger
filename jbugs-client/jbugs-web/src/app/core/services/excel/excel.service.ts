@@ -11,6 +11,12 @@ export class ExcelService {
   constructor() {
   }
 
+  /**
+   * Exports the given information as an excel file.
+   * @param json - any[]; the information the has to be exported.
+   * @param excelFileName - string; the name of the resulted excel file.
+   *
+   * */
   public exportAsExcelFile(json: any[], excelFileName: string): void {
 
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
@@ -33,6 +39,12 @@ export class ExcelService {
     this.saveAsExcelFile(excelBuffer, excelFileName);
   }
 
+  /**
+   * Creates a blob with the given data and saves the data as an excel file.
+   * @param buffer - any; the information the has to be saved.
+   * @param fileName - string; the name of the resulted excel file.
+   *
+   * */
   private saveAsExcelFile(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], {
       type: EXCEL_TYPE

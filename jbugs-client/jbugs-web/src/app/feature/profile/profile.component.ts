@@ -38,6 +38,32 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  ngOnInit() {
+    //shows the information data of the logged user.
+    this.username = this.authService.getUsername();
+    this.getUsers();
+    this.userService.getUserByUsername(this.username).subscribe((data) => {
+      this.loggedUser = data;
+    });
+  }
+
+  /**
+   * Gets all users.
+   *
+   * */
+  getUsers() {
+    this.users = new Array<User>();
+    this.userService.getUsers().subscribe((data) => {
+      for (let dataKey of data) {
+        this.users.push(dataKey);
+      }
+    });
+  }
+
+  /**
+   * Changes the initial password of the user.
+   *
+   * */
   changePassword() {
     this.newPassword = this.form.get('newPassword').value;
     this.testPassword = this.form.get('testPassword').value;
@@ -65,7 +91,6 @@ export class ProfileComponent implements OnInit {
             modalRef.componentInstance.message = this.languageService.getText('password-successful');
           },
           (error2 => {
-            console.log('Error', error2);
             const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
             modalRef.componentInstance.message = this.languageService.getText('password-edit-failed') + error2.error.detailMessage;
           })
@@ -92,31 +117,10 @@ export class ProfileComponent implements OnInit {
           modalRef.componentInstance.message = this.languageService.getText('pers-data-edit-successful');
         },
         (error2 => {
-          console.log('Error', error2);
           const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
           modalRef.componentInstance.message = this.languageService.getText('pers-data-edit-failed') + error2.error.detailMessage;
         })
       );
     }
   }
-
-  ngOnInit() {
-    this.username = this.authService.getUsername();
-    this.getUsers();
-    console.log('Current users: ', this.users);
-    this.userService.getUserByUsername(this.username).subscribe((data) => {
-      this.loggedUser = data;
-    });
-  }
-
-  getUsers() {
-    this.users = new Array<User>();
-    this.userService.getUsers().subscribe((data) => {
-      console.log('data:', data);
-      for (let dataKey of data) {
-        this.users.push(dataKey);
-      }
-    });
-  }
-
 }

@@ -19,6 +19,7 @@ import {MessageComponent} from '../../../core/message/message.component';
 })
 export class AddBugComponent implements OnInit {
 
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
   form: FormGroup;
   todayDate = new Date();
   currentLoggedUser;
@@ -26,7 +27,6 @@ export class AddBugComponent implements OnInit {
   allUsers: Array<User>;
   uploadedFileName: string;
   myAtt;
-  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
   title: string;
   description: string;
   version: string;
@@ -68,16 +68,23 @@ export class AddBugComponent implements OnInit {
     this.getUsers();
   }
 
+  /**
+   * Gets all users for the assignedTo field.
+   *
+   * */
   getUsers() {
     this.allUsers = new Array<User>();
     this.userService.getUsers().subscribe((data) => {
-      console.log('data:', data);
       for (let dataKey of data) {
         this.allUsers.push(dataKey);
       }
     });
   }
 
+  /**
+   * Creates a new bug from the form fields and adds it to the bugs list.
+   *
+   * */
   addBug() {
     this.title = this.form.get('title').value.toString();
     this.description = this.form.get('description').value.toString();
@@ -118,7 +125,6 @@ export class AddBugComponent implements OnInit {
         modalRef.componentInstance.message = this.languageService.getText('bug-add-successful');
       },
       (error2 => {
-        console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('bug-add-failed') + this.languageService.getText(error2.error.errorCode);
       })
@@ -127,6 +133,10 @@ export class AddBugComponent implements OnInit {
     this.activeModal.close();
   }
 
+  /**
+   * Edits the bugs attachments.
+   *
+   * */
   onFileChange(event) {
     this.fileSize = event.target.files[0].size / 1024 / 1024; // in MB
     if (this.fileSize > 25) {
@@ -141,27 +151,34 @@ export class AddBugComponent implements OnInit {
     }
   }
 
+  /**
+   * Adds an attachment to the bug.
+   *
+   * */
+  fileUpload() {
+    const formModel = this.prepareSave();
+    if (this.checkFileSize()) {
+      this.fileService.uploadFile(formModel).subscribe(this.clearFile);
+    }
+  }
+
   checkFileSize(): boolean {
     if (this.fileSize > 25) {
       return false;
     }
     return true;
-
   }
 
-  private prepareSave(): FormData {
+  prepareSave(): FormData {
     let input = new FormData();
     input.append('file', this.myAtt[0]);
     return input;
   }
 
-  fileUpload() {
-    const formModel = this.prepareSave();
-    if (this.checkFileSize()) {
-    this.fileService.uploadFile(formModel).subscribe(this.clearFile);
-    }
-  }
-
+  /**
+   * Deletes an attachment of the bug.
+   *
+   * */
   clearFile() {
     this.form.get('attachments').setValue(null);
     this.fileInput.nativeElement.value = '';
