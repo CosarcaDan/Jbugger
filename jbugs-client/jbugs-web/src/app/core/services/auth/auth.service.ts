@@ -6,6 +6,10 @@ import {delay} from 'q';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MessageComponent} from '../../message/message.component';
 
+
+/**
+ * This is the authentication service. It handles everything related to permission and token management
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +19,11 @@ export class AuthService {
   private cachedPermissions: string[] = null;
   private lastPermissionUpdate = Date.now();
   private requestSent: boolean = false;
-  getToken() {
+
+  /**
+   * @return The token stored in memory formatted for the Authorization request
+   */
+  getToken():string {
     let token = localStorage.getItem('token');
     if (!token)
       return 'Bearer ';
@@ -25,9 +33,18 @@ export class AuthService {
     }
     return 'Bearer ' + token;
   }
-  getUsername() {
+
+  /**
+   * @return The username stored in the token
+   */
+  getUsername():string {
     return this.decodeToken(localStorage.getItem('token')).sub;
   }
+
+  /**
+   * This function logs in users and handles eventual errors.
+   * @param user that is going to be logged in
+   */
   public login(user: UserLogin) {
     this.http.post<any>('http://localhost:8080/jbugs/services/users/login', user).subscribe(async (data) => {
       console.log('data', data);
@@ -49,6 +66,10 @@ export class AuthService {
         modalRef.componentInstance.message = "Your User is deactivated. Please contact your administrator!";
     });
   }
+
+  /**
+   * This functions logs out the user and cleans up afterwards.
+   */
   public logout() {
     console.log('un: ', this.getUsername());
     this.http.post<any>('http://localhost:8080/jbugs/services/users/logout', {username: this.getUsername()}).subscribe((data) => {
@@ -58,6 +79,11 @@ export class AuthService {
       console.log('Error', error1.error);
     });
   }
+
+  /**
+   * This function renews the expired tokens.
+   * @param username
+   */
   public renew(username: string) {
     this.http.post<any>('http://localhost:8080/jbugs/services/users/renew', {username: username}).subscribe((data) => {
       console.log(data);
@@ -66,6 +92,10 @@ export class AuthService {
       console.log('Error', error1.error);
     });
   }
+
+  /**
+   * This function gets and caches the permissions of the currently logged in user.
+   */
   public getPermissions() {
     console.log('DING!');
     this.http.post<any>('http://localhost:8080/jbugs/services/users/permissions', {username: this.getUsername()}).subscribe((data) => {
@@ -75,6 +105,12 @@ export class AuthService {
       return data.map(p => p.type);
     });
   }
+
+  /**
+   * This function checks if the permission given as a parameter is in the list of permissions of the current user.
+   * @param permission
+   * @return boolean
+   */
   public hasPermission(permission: string) {
     // console.log('isSet: ',this.cachedPermissions,'last:',this.lastPermissionUpdate,'now:',Date.now(),'reqSent:',this.requestSent);
     if ((this.cachedPermissions == null || this.lastPermissionUpdate + 60000 < Date.now()) && !this.requestSent) {
@@ -91,6 +127,10 @@ export class AuthService {
   /* base64_charIndex
    * Internal helper to translate a base64 character to its integer index.
    */
+  /**
+   * Decodes a base64 encoded character.
+   * @param c
+   */
   private base64_charIndex(c) {
     if (c == '+') {
       return 62;
@@ -100,10 +140,11 @@ export class AuthService {
     }
     return this.b64u.indexOf(c)
   }
-  /* base64_decode
-   * Decode a base64 or base64url string to a JavaScript string.
-   * Input is assumed to be a base64/base64url encoded UTF-8 string.
-   * Returned result is a JavaScript (UCS-2) string.
+  /**
+   * base64_decode
+   * Decode a base64 or base64url string to a string.
+   * @param data is a base64/base64url encoded UTF-8 string.
+   * @return is a JavaScript (UCS-2) string.
    */
   private base64Decode(data: string) {
     let dst = "";
@@ -125,7 +166,12 @@ export class AuthService {
     }
     return decodeURIComponent(dst);
   }
-  // decode token
+
+  /**
+   * Decodes a JWT token
+   * @param token
+   * @return the decoded JWT Token
+   */
   private decodeToken(token: string) {
     let parts = token.split('.');
     if (parts.length !== 3) {
@@ -140,6 +186,12 @@ export class AuthService {
     }
     return JSON.parse(decoded);
   }
+
+  /**
+   * Decodes a JWT and returns the expiration date
+   * @param token JWT token
+   * @return expiration date
+   */
   private getTokenExpirationDate(token: string) {
     let decoded: any;
     decoded = this.decodeToken(token);
@@ -150,6 +202,12 @@ export class AuthService {
     date.setUTCSeconds(decoded.exp);
     return date;
   }
+
+  /**
+   * This function chechks if the given token is expired or not
+   * @param token JWT Token
+   * @param offsetSeconds optional default now.
+   */
   private isTokenExpired(token: string, offsetSeconds?: number) {
     let date = this.getTokenExpirationDate(token);
     offsetSeconds = offsetSeconds || 0;

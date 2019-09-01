@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * This Filter checks if the user form the token has the necessary permissions for the requested operation.
+ */
 @Provider
 public class RestrictedOperationsRequestFilter implements ContainerRequestFilter {
 

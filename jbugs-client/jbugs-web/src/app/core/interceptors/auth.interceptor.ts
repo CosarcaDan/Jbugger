@@ -4,6 +4,9 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../services/auth/auth.service';
 
 @Injectable()
+/**
+ * This interceptor injects the token in every request automatically and also specifies the request format.
+ */
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService) {

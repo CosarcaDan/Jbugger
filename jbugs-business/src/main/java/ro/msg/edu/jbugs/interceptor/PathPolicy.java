@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class defines the Permissions needed for each operation.
+ */
 @Singleton
 public class PathPolicy {
     private HashMap<String, List<String>> pathPermissions;
