@@ -1,6 +1,11 @@
 import {AbstractControl, ValidationErrors} from '@angular/forms';
 
 export class BugValidators {
+
+  /**
+   * Introduced value should not contain
+   * any empty space.
+   * */
   static cannotContainSpace(control: AbstractControl): ValidationErrors | null {
     let value: string = control.value;
     if (value && value.indexOf(' ') >= 0) {

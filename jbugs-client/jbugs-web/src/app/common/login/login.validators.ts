@@ -13,6 +13,10 @@ export class LoginValidators {
     }
   }
 
+  /**
+   * Introduced username should not contain
+   * any uppercase letters.
+   * */
   static cannotContainUpperCaseLetter(control: AbstractControl): ValidationErrors | null {
     let value: string = control.value;
     if (value) {

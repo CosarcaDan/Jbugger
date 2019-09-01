@@ -19,7 +19,7 @@ export class PermissionManagementComponent implements OnInit {
   permissionsNotInRole: Array<Permission>;
   angForm: FormGroup;
   selectedRole: number;
-  private permissionsInRole: Array<Permission>;
+  permissionsInRole: Array<Permission>;
 
   constructor(private roleService: RoleService, private fb: FormBuilder, private router: Router, private languageService: LanguageService) {
   }
@@ -30,64 +30,74 @@ export class PermissionManagementComponent implements OnInit {
   }
 
   createForm() {
-    console.log('roles:', this.roles);
     this.angForm = this.fb.group({
       roles: ['', Validators.required],
       permission: ['', Validators.required]
     });
   }
 
+  /**
+   * Gets the role list.
+   *
+   * */
   getRoles() {
     this.roles = new Array<Role>();
     this.roleService.getRoles().subscribe((data) => {
-      console.log('data:', data);
       for (let dataKey of data) {
         this.roles.push(dataKey);
       }
-      console.log('roleset: ', this.roles);
     });
   }
 
+  /**
+   * Gets the permission list for a selected role (the ones that are not in role and the ones that already exists).
+   * @param id - number; the id of the role.
+   *
+   * */
   getNewPermissions(id) {
     let role = this.roles.find(r => r.id == id);
-    console.log(role);
     this.permissionsNotInRole = new Array<Permission>();
     this.roleService.getPermissionsNotInRole(role).subscribe((data) => {
-      console.log('data:', data);
       for (let dataKey of data) {
         this.permissionsNotInRole.push(dataKey);
       }
-      console.log('permissionset: ', this.permissionsNotInRole);
     });
 
     this.permissionsInRole = new Array<Permission>();
     this.roleService.getPermissionsInRole(role).subscribe((data) => {
-      console.log('data:', data);
       for (let dataKey of data) {
         this.permissionsInRole.push(dataKey);
       }
-      console.log('permissionset: ', this.permissionsInRole);
     });
   }
 
+  /**
+   * Deletes a permission from the permission list of the selected role.
+   *
+   * */
   removePermission(permission) {
     let role = this.roles.find(r => r.id == this.selectedRole);
     //let permissions = this.selectedPermissions.map(p => this.permissionsInRole.find((pp) => pp.id == p));
-    console.log('remove', role, permission);
     this.roleService.removePermissionToRole(role, permission);
   }
 
+  /**
+   * Adds a permission into the permission list of the selected role.
+   *
+   * */
   addPermission(permission) {
     let role = this.roles.find(r => r.id == this.selectedRole);
-    console.log('add', role, permission);
     this.roleService.addPermissionToRole(role, permission);
   }
 
+  /**
+   * Moves elements from one side of the drag and drop to the another side.
+   *
+   * */
   drop(event: CdkDragDrop<Array<Permission>, any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      console.log(event.previousContainer.element.nativeElement.className.match(' inPermissions') != null, event.previousContainer.data[event.previousIndex]);
       if (event.previousContainer.element.nativeElement.className.match(' inPermissions') == null) {
         this.addPermission(event.previousContainer.data[event.previousIndex]);
       } else {
@@ -99,6 +109,4 @@ export class PermissionManagementComponent implements OnInit {
         event.currentIndex);
     }
   }
-
-
 }

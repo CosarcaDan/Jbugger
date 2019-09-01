@@ -128,13 +128,13 @@
 
   <div class="form-group">
     <label for="attachments">{{languageService.getText('attachment')}}:</label><br>
-  <input type="file"
-         id="attachments"
-         accept=".pdf,.doc, .odf, .xlsx, .xls,.docx,.png,.jpg;"
-         (change)="onFileChange($event)"
-         #fileInput
-         formControlName="attachments"
-  >
+    <input type="file"
+           id="attachments"
+           accept=".pdf,.doc, .odf, .xlsx, .xls,.docx,.png,.jpg;"
+           (change)="onFileChange($event)"
+           #fileInput
+           formControlName="attachments"
+    >
     <div class="alert alert-danger"
          *ngIf="form.get('attachments').touched && form.get('attachments').invalid">
       <div *ngIf="form.get('attachments').errors.validateFileExtension">

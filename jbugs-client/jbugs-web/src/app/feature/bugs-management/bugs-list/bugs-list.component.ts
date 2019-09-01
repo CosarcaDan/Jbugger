@@ -28,6 +28,8 @@ export class BugsListComponent implements OnInit {
 
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
+  @ViewChild('dt', undefined) dt: Table;
+
   cols: any[];
 
   status: SelectItem[];
@@ -58,6 +60,21 @@ export class BugsListComponent implements OnInit {
 
   fileSize: number;
 
+  selectedBug: Bug;
+
+  uploadedFileName: string;
+
+  myAtt;
+
+  attachments;
+
+  currentAttachments: Array<Attachment>;
+
+  temporatStatus: string;
+
+  filteredBugs: any[];
+
+  displayDialog: boolean;
 
   bugSearchCriteria: Bug = {
     id: 0,
@@ -72,8 +89,6 @@ export class BugsListComponent implements OnInit {
     assigned: ''
   };
 
-  displayDialog: boolean;
-
   bug: Bug = {
     id: 0,
     title: '',
@@ -86,33 +101,18 @@ export class BugsListComponent implements OnInit {
     created: '',
     assigned: ''
   };
-  selectedBug: Bug;
-  private uploadedFileName: string;
-  private myAtt;
-  attachments;
-  private currentAttachments: Array<Attachment>;
-
-  private temporatStatus: string;
-
-  @ViewChild('dt', undefined)
-  dt: Table;
-
-  filteredBugs: any[];
 
   constructor(private router: Router, private bugServices: BugService, public modalService: NgbModal,
               private authService: AuthService, private fileService: FileService,
               private userService: UserService, private languageService: LanguageService, private excelService: ExcelService) {
-
   }
 
   ngOnInit() {
-//setInterval(getNotifications,1000);    this.getUsers();
-    this.languageService.getText('save');
-    this.languageService.getText('save');
-    this.languageService.getText('save');
-    this.languageService.getText('save');
 
-    //setInterval(getNotifications,1000);
+    this.languageService.getText('save');
+    this.languageService.getText('save');
+    this.languageService.getText('save');
+    this.languageService.getText('save');
 
     this.getUsers();
     this.cols = [
@@ -125,9 +125,7 @@ export class BugsListComponent implements OnInit {
       {field: 'severity', header: this.languageService.getText('severity')},
       {field: 'created', header: this.languageService.getText('createdBy')},
       {field: 'assigned', header: this.languageService.getText('assignedTo')},
-      // {field: 'button', header: ''}
     ];
-
 
     this.status = [
       {label: 'NEW', value: 'NEW'},
@@ -190,6 +188,7 @@ export class BugsListComponent implements OnInit {
       {label: 'CRITICAL', value: 'CRITICAL'},
     ];
 
+    //function that filter after date in the calendar field.
     this.dt.filterConstraints['dateFilter'] = function inCollection(value: any, filter: any): boolean {
       if (filter === undefined || filter === null || (filter.length === 0 || filter === '') && value === null || filter === '') {
         return true;
@@ -206,37 +205,29 @@ export class BugsListComponent implements OnInit {
   }
 
 
+  /**
+   * Gets all users for the bug fields (assigned to/ created by)
+   *
+   * */
   getUsers() {
     this.allUsers = new Array<User>();
     this.userService.getUsers().subscribe((data) => {
-      console.log('data:', data);
       // @ts-ignore
       for (let dataKey of data) {
         this.allUsers.push(dataKey);
       }
       this.mappedUsers = this.allUsers.map(user => {
-        return {label: user.firstName + ' ' + user.lastName + ' (' + user.username + ')', value: user.username};
+          return {label: user.firstName + ' ' + user.lastName + ' (' + user.username + ')', value: user.username};
         }
       );
     });
   }
 
-  getBugs() {
-    this.bugs = [];
-    this.bugServices.getBugs().subscribe((data) => {
-      console.log(data);
-      // @ts-ignore
-      this.bugs = data;
-      console.log(this.bugs);
-      for (var bug of this.bugs) {
-        var date = new Date(bug.targetDate);
-        bug.targetDate = date;
-      }
-    });
-  }
-
+  /**
+   * Searches all the bugs after a given criteria and loads the bugs list into the table.
+   *
+   * */
   public search() {
-    console.log(this.bugSearchCriteria);
     this.bugServices.getBugsAfterSearchCriteria(this.bugSearchCriteria).subscribe((data) => {
       this.bugs = data;
       for (var bug of this.bugs) {
@@ -246,6 +237,10 @@ export class BugsListComponent implements OnInit {
     })
   }
 
+  /**
+   * Opens a modal dialog for adding a new bug in he bug list and reload the data into the table.
+   *
+   * */
   add() {
     const modalRef = this.modalService.open(AddBugComponent, {windowClass: 'add-pop'});
     modalRef.result.then(() => {
@@ -253,14 +248,21 @@ export class BugsListComponent implements OnInit {
     });
   }
 
+  /**
+   * Exports the selected bug from the bugs list in PDF.
+   *
+   * */
   export() {
     this.bugServices.exportInPdf(this.bug).subscribe(s => {
       window.open(s.toString(), '_self');
     })
   }
 
+  /**
+   * Delete the selected bug form the bugs list and reload the data into the table.
+   *
+   * */
   delete(id: number) {
-    console.log('deleted' + id);
     this.bugServices.deleteBugAfterId(id).subscribe(
       (data) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
@@ -270,7 +272,6 @@ export class BugsListComponent implements OnInit {
         });
       },
       (error1 => {
-        console.log('Error', error1);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('bug-close-failed') + this.languageService.getText(error1.error.errorCode);
       }));
@@ -278,8 +279,11 @@ export class BugsListComponent implements OnInit {
     this.search();
   }
 
+  /**
+   * Edit the selected bug form the bugs list and reload the data into the table.
+   *
+   * */
   save() {
-    console.log(this.temporatStatus);
     this.bug.status = this.temporatStatus;
     let attachmentToBeAdded: Attachment = {
       id: null,
@@ -300,7 +304,6 @@ export class BugsListComponent implements OnInit {
         });
       },
       (error2 => {
-        console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('bug-edit-failed') + this.languageService.getText(error2.error.errorCode);
       })
@@ -310,17 +313,21 @@ export class BugsListComponent implements OnInit {
     this.search();
   }
 
-  private prepareSave(): FormData {
-    let input = new FormData();
-    input.append('file', this.myAtt[0]);
-    return input;
-  }
-
+  /**
+   * Upload the selected attachments of the current bug.
+   *
+   * */
   fileUpload() {
     const formModel = this.prepareSave();
     if (this.checkFileSize()) {
       this.fileService.uploadFile(formModel).subscribe(this.clearFile);
     }
+  }
+
+  prepareSave(): FormData {
+    let input = new FormData();
+    input.append('file', this.myAtt[0]);
+    return input;
   }
 
   clearFile() {
@@ -331,6 +338,10 @@ export class BugsListComponent implements OnInit {
       this.fileInput.nativeElement.value = '';
   }
 
+  /**
+   * On row select of the bugs table - shows a dialog with the bug details where you can delete/edit a bug.
+   *
+   * */
   onRowSelect(event) {
     this.getUsers();
     this.getAttachments(event.data).toPromise().then(
@@ -345,6 +356,10 @@ export class BugsListComponent implements OnInit {
     )
   }
 
+  /**
+   * Validators for the bug.
+   *
+   * */
   checkTitle(): boolean {
     if (this.bug.title.length != 0) {
       return true;
@@ -394,17 +409,14 @@ export class BugsListComponent implements OnInit {
 
   }
 
-
   checkFileSize(): boolean {
     if (this.fileSize > 25) {
       return false;
     }
     return true;
-
   }
 
-
-  private cloneBug(b: Bug): Bug {
+  cloneBug(b: Bug): Bug {
     let bug = {
       id: 0,
       title: '',
@@ -423,6 +435,10 @@ export class BugsListComponent implements OnInit {
     return bug;
   }
 
+  /**
+   * Edits the attachments of the selected bug form the bugs list.
+   *
+   * */
   onFileChange(event) {
     this.fileSize = event.target.files[0].size / 1024 / 1024; // in MB
     if (this.fileSize > 25) {
@@ -442,15 +458,20 @@ export class BugsListComponent implements OnInit {
   }
 
 
+  /**
+   * Filter the bugs after the username of the assigned to/ created by user.
+   *
+   * */
   filterBugs(event) {
     this.userService.getUsers().subscribe((users) => {
-      console.log(users);
       this.filteredBugs = users.map((u) => u.username).filter((u) => u.toLowerCase().indexOf(event.query.toLowerCase()) == 0);
-      console.log(this.filteredBugs);
     });
   }
 
-
+  /**
+   * Export the bugs list into excel.
+   *
+   * */
   exportAsXLSX() {
     if (this.dt.hasFilter()) {
       this.excelService.exportAsExcelFile(this.dt.filteredValue, 'bugs');
@@ -459,6 +480,10 @@ export class BugsListComponent implements OnInit {
     }
   }
 
+  /**
+   * Deletes the attachments of the selected bug form the bugs list.
+   *
+   * */
   deleteAttachment(id: number) {
     this.bugServices.deleteAttachments(this.bug, id).subscribe();
     this.getAttachments(this.bug).subscribe(

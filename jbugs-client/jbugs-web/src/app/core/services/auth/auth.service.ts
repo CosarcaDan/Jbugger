@@ -16,6 +16,7 @@ import {MessageComponent} from '../../message/message.component';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal) {
   }
+
   private cachedPermissions: string[] = null;
   private lastPermissionUpdate = Date.now();
   private requestSent: boolean = false;
@@ -23,7 +24,7 @@ export class AuthService {
   /**
    * @return The token stored in memory formatted for the Authorization request
    */
-  getToken():string {
+  getToken(): string {
     let token = localStorage.getItem('token');
     if (!token)
       return 'Bearer ';
@@ -37,7 +38,7 @@ export class AuthService {
   /**
    * @return The username stored in the token
    */
-  getUsername():string {
+  getUsername(): string {
     return this.decodeToken(localStorage.getItem('token')).sub;
   }
 
@@ -124,11 +125,9 @@ export class AuthService {
   private b64c: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';   // base64 dictionary
   private b64u: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';  // base64url dictionary
   private b64pad: string = '=';
-  /* base64_charIndex
+
+  /** base64_charIndex
    * Internal helper to translate a base64 character to its integer index.
-   */
-  /**
-   * Decodes a base64 encoded character.
    * @param c
    */
   private base64_charIndex(c) {
@@ -140,6 +139,7 @@ export class AuthService {
     }
     return this.b64u.indexOf(c)
   }
+
   /**
    * base64_decode
    * Decode a base64 or base64url string to a string.
@@ -149,7 +149,7 @@ export class AuthService {
   private base64Decode(data: string) {
     let dst = "";
     let i = 0, a, b, c, d, z;
-    data+='===';
+    data += '===';
     let len = data.length;
     for (; i < len - 3; i += 4) {
       a = this.base64_charIndex(data.charAt(i + 0));
@@ -219,6 +219,7 @@ export class AuthService {
   }
 
 }
+
 @Component({
   selector: 'ngbd-modal-content',
   template: `
@@ -233,6 +234,7 @@ export class AuthService {
 })
 export class NgbdWelcomeModalContent {
   @Input() name;
+
   constructor(public activeModal: NgbActiveModal) {
   }
 }

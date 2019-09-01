@@ -14,16 +14,30 @@ import {MessageComponent} from '../../../core/message/message.component';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
+
   cols: any[];
+
   users: Array<User>;
+
   selectedUser: User;
+
   newUser: boolean;
+
   displayDialog: boolean;
+
   displayAddDialog: boolean;
+
   selectedRoles: Role[] = [];
+
   role: Role;
+
   roles: Array<Role>;
+
   rolesOfCurrentUser: Array<Role>;
+
+  lengthCurrentUsersRoles;
+
+  language: string;
 
   user: User = {
     id: 0,
@@ -36,8 +50,6 @@ export class UserListComponent implements OnInit {
     username: '',
     status: null,
   };
-  private language: string;
-
 
   constructor(private userService: UserService, private roleService: RoleService, private modalService: NgbModal, private  languageService: LanguageService) {
   }
@@ -60,24 +72,30 @@ export class UserListComponent implements OnInit {
     ];
   }
 
+  /**
+   * Gets all users.
+   *
+   * */
   public getUsers() {
     this.userService.getUsers().subscribe((data) => {
       this.users = data;
     });
   }
 
-  lengthCurrentUsersRoles;
+  /**
+   * On row select it opens a new dialog for editing or activating/deactivating a user from the users list.
+   *
+   * */
   onRowSelect(event) {
     this.newUser = false;
     this.selectedRoles = [];
-    console.log(event.data);
     this.user = JSON.parse(JSON.stringify(event.data));
     this.rolesOfCurrentUser = new Array<Role>();
     this.userService.getUserRoles(this.user.id).subscribe((data) => {
       for (let dataKey of data) {
         this.rolesOfCurrentUser.push(dataKey);
       }
-      this.roles= new  Array<Role>();
+      this.roles = new Array<Role>();
       this.roleService.getRoles().subscribe((data) => {
         for (let dataKey of data) {
           this.roles.push(dataKey);
@@ -85,12 +103,15 @@ export class UserListComponent implements OnInit {
         this.roles.forEach(r => r.checked = this.rolesOfCurrentUser.find(rr => rr.type == r.type) != null);
       });
 
-      console.log(this.roles);
       this.lengthCurrentUsersRoles = this.rolesOfCurrentUser.length;
     });
     this.displayDialog = true;
   }
 
+  /**
+   * Saves the changes after activating a user.
+   *
+   * */
   activateUser() {
     this.user.status = true;
     this.userService.activate(this.user).subscribe(
@@ -103,7 +124,6 @@ export class UserListComponent implements OnInit {
         });
       },
       (error2 => {
-        console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-activate-failed') + this.languageService.getText(error2.error.errorCode);
       }))
@@ -111,6 +131,10 @@ export class UserListComponent implements OnInit {
     this.displayDialog = false;
   }
 
+  /**
+   * Saves the changes after deactivating a user.
+   *
+   * */
   deactivateUser() {
     this.user.status = false;
     this.userService.deactivate(this.user).subscribe(
@@ -129,9 +153,12 @@ export class UserListComponent implements OnInit {
     this.displayDialog = false;
   }
 
+  /**
+   * Saves the changes after editing a user.
+   *
+   * */
   edit() {
     this.getSelectedRoles();
-    console.log(this.selectedRoles);
     this.userService.edit(this.user, this.selectedRoles).subscribe(
       (data: {}) => {
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
@@ -141,27 +168,17 @@ export class UserListComponent implements OnInit {
         });
       },
       (error2 => {
-        console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-edit-failed') + this.languageService.getText(error2.error.errorCode);
       }))
     ;
     this.displayDialog = false;
-    //location.reload();
   }
 
-  getRoles() {
-    this.roles = new Array<Role>();
-    this.roleService.getRoles().subscribe((data) => {
-      for (let dataKey of data) {
-        this.roles.push(dataKey);
-      }
-      for (let role of this.roles) {
-        role.checked = false;
-      }
-    });
-  }
-
+  /**
+   * When one role is selected, add it to the roles list of the user.
+   *
+   * */
   getSelectedRoles() {
     for (let i = 0; i < this.roles.length; i++) {
       if (this.roles[i].checked == true) {
@@ -173,6 +190,10 @@ export class UserListComponent implements OnInit {
     }
   }
 
+  /**
+   * On the add button click a new modal dialog opens for adding a new user to the users list.
+   *
+   * */
   add() {
     const modalRef = this.modalService.open(AddUserComponent, {windowClass: 'add-popup'});
     modalRef.result.then(() => {
@@ -180,6 +201,10 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  /**
+   * On one role click it gets checked.
+   *
+   * */
   onClicked(role, event) {
     for (let i = 0; i < this.roles.length; i++) {
       if (this.roles[i].id == event.target.value) {
@@ -188,6 +213,10 @@ export class UserListComponent implements OnInit {
     }
   }
 
+  /**
+   * Validators for the user fields.
+   *
+   * */
   checkFirstName(): boolean {
     let regex = new RegExp('^[A-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ][a-zA-Zșțăîâäöüßáéóőúű]{0,30}[- ]?[a-zșțăîâäöüáéóőúűßA-ZÜÄÖÂÎĂȚȘÁÉÓŐÚŰ]{0,30}[a-zșțăîâäöüßáéóőúű]$');
     if (regex.test(this.user.firstName)) {

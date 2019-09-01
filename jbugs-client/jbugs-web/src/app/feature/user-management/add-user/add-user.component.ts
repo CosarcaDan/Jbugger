@@ -51,21 +51,26 @@ export class AddUserComponent implements OnInit {
     this.getRoles();
   }
 
+  /**
+   * Gets the roles for the user.
+   *
+   * */
   getRoles() {
     this.roles = new Array<Role>();
     this.roleService.getRoles().subscribe((data) => {
-      console.log('data:', data);
       for (let dataKey of data) {
         this.roles.push(dataKey);
       }
       for (let role of this.roles) {
         role.checked = false;
       }
-      console.log('roleset: ', this.roles);
     });
   }
 
-
+  /**
+   * Gets the values form the form and creates a new user that will be added to the user list.
+   *
+   * */
   addUser() {
     this.firstname = this.form.get('firstname').value.toString();
     this.lastname = this.form.get('lastname').value.toString();
@@ -90,7 +95,6 @@ export class AddUserComponent implements OnInit {
         modalRef.componentInstance.message = this.languageService.getText('user-add-successful');
       },
       (error2 => {
-        console.log('Error', error2);
         const modalRef = this.modalService.open(MessageComponent, {windowClass: 'add-pop'});
         modalRef.componentInstance.message = this.languageService.getText('user-add-failed') + this.languageService.getText(error2.error.errorCode);
       }));
@@ -98,6 +102,10 @@ export class AddUserComponent implements OnInit {
 
   }
 
+  /**
+   * Gets the selected role form the roles list.
+   *
+   * */
   getSelectedRoles() {
     for (let i = 0; i < this.roles.length; i++) {
       if (this.roles[i].checked == true) {
@@ -109,6 +117,10 @@ export class AddUserComponent implements OnInit {
     }
   }
 
+  /**
+   * On a role click it gets checked.
+   *
+   * */
   onClicked(role, event) {
     for (let i = 0; i < this.roles.length; i++) {
       if (this.roles[i].id == event.target.value) {
