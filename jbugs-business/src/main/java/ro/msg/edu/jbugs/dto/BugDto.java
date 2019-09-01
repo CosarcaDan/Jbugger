@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * Document me.
- *
- * @author msg systems AG; User Name.
+ * Creates an entity of type BugDto
+ * that can be seen by the client.
+ * @author msg systems AG; team D.
  * @since 19.1.2
  */
 public class BugDto implements Serializable {
@@ -24,7 +24,19 @@ public class BugDto implements Serializable {
     private String created;
     private String assigned;
 
-    public BugDto(Integer id, String title, String description, String version, Timestamp targetDate, String status, String fixedVersion, String severity, String created, String assigned) {
+    /**
+     * Default constructor that creates the
+     * entity.
+     */
+    public BugDto() {
+    }
+
+    /**
+     * Constructor with parameters for creating a new bug enity.
+     */
+    public BugDto(Integer id, String title, String description, String version,
+                  Timestamp targetDate, String status, String fixedVersion,
+                  String severity, String created, String assigned) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -37,8 +49,10 @@ public class BugDto implements Serializable {
         this.assigned = assigned;
     }
 
-    public BugDto() {
-    }
+    /**
+     * Getters and setters for each field
+     * of the bugDto.
+     */
 
     public Integer getId() {
         return id;

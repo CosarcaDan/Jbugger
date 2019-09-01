@@ -31,26 +31,39 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Document me.
+ * The service for the Bug Repository created
+ * in the Persistence Layer.
  *
- * @author msg systems AG; User Name.
+ * @author msg systems AG; team D.
  * @since 19.1.2
  */
 
 @Stateless
 public class BugService {
 
-    private String filesprefix = "files/";
+    private String filesPrefix = "files/";
 
+    //injects the Bug Repository
     @EJB
     private BugRepo bugRepo;
 
+    //injects the User Repository
     @EJB
     private UserRepo userRepo;
 
+    //injects the service of the notifications
     @EJB
     private NotificationService notificationService;
 
+    /**
+     * Adds a new bug in the database after validating it
+     * and finding the user that created the bug and the user
+     * to whom the bug was assigned by their Id.
+     *
+     * @param bugDto - BugDto, the bugDto that comes from the
+     *               client and has to be inserted
+     * @return the bugDto that was inserted in the database
+     */
     public BugDto addBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
         User creator = userRepo.findUser(Integer.parseInt(bugDto.getCreated()));
@@ -59,39 +72,60 @@ public class BugService {
         return BugDtoMapping.bugToBugDtoComplete(bugRepo.addBug(bug));
     }
 
+    /**
+     * Finds a bug after the given id that comes from the client.
+     *
+     * @param id - Integer; the id for the search criteria
+     * @return bugDto, if the bug was found
+     * @throws BusinessException is no bug with the give id was found
+     */
     public BugDto findBug(Integer id) throws BusinessException {
         try {
             Bug bug = bugRepo.findBug(id);
-            BugDto bugDto = BugDtoMapping.bugToBugDtoComplete(bug);
-            return bugDto;
+            return BugDtoMapping.bugToBugDtoComplete(bug);
         } catch (EntityNotFoundException ex) {
             throw new BusinessException("Bug with given id not found", "msg - 014");
         }
-
     }
 
-    public List<BugDto> getAllBug() {
-        List<Bug> bugList = bugRepo.getAllBugs();
-        List<BugDto> bugDtoList = bugList.stream().map(BugDtoMapping::bugToBugDtoComplete).collect(Collectors.toList());
-        return bugDtoList;
+    /**
+     * @return a list of all bugDtos that has to be sent
+     * to the client
+     */
+    public List<BugDto> getAllBugs() {
+        List<Bug> bugs = bugRepo.getAllBugs();
+        return bugs.stream().map(BugDtoMapping::bugToBugDtoComplete).collect(Collectors.toList());
     }
 
-    public List<BugDto> getBugsAfterCriteris(BugDto bugSearchCriteria) {
+    /**
+     * Sets the criterias for the search of the bugs and returns
+     * the bugs that meet the conditions.
+     *
+     * @param bugSearchCriteria - the bug that contains the criteria
+     *                          for the search
+     * @return a list of all bugDtos with a certain criteria
+     */
+    public List<BugDto> getBugsAfterCriteria(BugDto bugSearchCriteria) {
         String creator;
         String assigned;
         List<Bug> bugList;
         Bug.Status status;
         Bug.Severity severity;
         try {
+            //check if any creator was selected
             creator = userRepo.findUserByUsername(bugSearchCriteria.getCreated()).getUsername();
         } catch (RepositoryException e) {
+            //if no creator was selected, then select all users
             creator = "%";
         }
         try {
+            //check if any user was assigned
             assigned = userRepo.findUserByUsername(bugSearchCriteria.getAssigned()).getUsername();
         } catch (RepositoryException e) {
+            //if no assigned user was selected, then select all users
             assigned = "%";
         }
+        //checks if severities and statuses were selected
         if (bugSearchCriteria.getSeverity().equals("") || bugSearchCriteria.getStatus().equals("")) {
             if (!bugSearchCriteria.getStatus().equals("")) {
                 status = Bug.Status.valueOf(bugSearchCriteria.getStatus());
@@ -102,22 +136,35 @@ public class BugService {
             } else {
                 bugList = bugRepo.getBugsAfterSearchCriteriaUsers(creator, assigned);
             }
+            //severity and status were selected
         } else {
             severity = Bug.Severity.valueOf(bugSearchCriteria.getSeverity());
             status = Bug.Status.valueOf(bugSearchCriteria.getStatus());
             bugList = bugRepo.getBugsAfterSearchCriteriaWithSeverityAndStatus(severity, status, creator, assigned);
         }
-
         return bugList.stream().map(BugDtoMapping::bugToBugDtoComplete).collect(Collectors.toList());
     }
 
+    /**
+     * Deletes all bugs that are older that one year.
+     *
+     * @return 1 if any bug was deleted
+     * 0 if no bug was deleted
+     */
     public Integer deleteOldBugs() {
         Date date = new Date();
         date.setYear(date.getYear() - 1);
-        Integer result = bugRepo.deleteOldBugs(date);
-        return result;
+        return bugRepo.deleteOldBugs(date);
     }
 
+    /**
+     * Updates the status of a bug after the diagramm presented
+     * in the JBugger documentation.
+     *
+     * @param bugDto - BugDto; the bug whose status has to be
+     *               changed
+     * @return the updated bugDto
+     */
     public BugDto updateStatusBug(BugDto bugDto) throws BusinessException {
         Bug bug = bugRepo.findBug(bugDto.getId());
         Bug.Status newStatus = Bug.Status.valueOf(bugDto.getStatus());
@@ -127,7 +174,8 @@ public class BugService {
                 return BugDtoMapping.bugToBugDtoComplete(bug);
             }
         } else if (bug.getStatus().equals(Bug.Status.IN_PROGRESS)) {
-            if (newStatus.equals(Bug.Status.REJECTED) || newStatus.equals(Bug.Status.INFONEEDED) || newStatus.equals(Bug.Status.FIXED)) {
+            if (newStatus.equals(Bug.Status.REJECTED) || newStatus.equals(Bug.Status.INFONEEDED) ||
+                    newStatus.equals(Bug.Status.FIXED)) {
                 bug.setStatus(newStatus);
                 return BugDtoMapping.bugToBugDtoComplete(bug);
             }
@@ -151,6 +199,14 @@ public class BugService {
 
     }
 
+    /**
+     * Closes the status of the given bug if the bug is not closed
+     * yet or the actual status is REJECTED or FIXED like in the
+     * JBugger documentation.
+     *
+     * @param bugDto - BugDto; the bug that has to e closed
+     * @return the bug with its status
+     */
     public BugDto closeBug(BugDto bugDto) throws BusinessException {
         Bug bug = bugRepo.findBug(bugDto.getId());
         if (bug.getStatus().equals(Bug.Status.CLOSED))
@@ -160,8 +216,10 @@ public class BugService {
         bug.setStatus(Bug.Status.CLOSED);
         try {
             BugDto closedBugDto = BugDtoMapping.bugToBugDtoComplete(bug);
-            UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getCreated()));
-            UserDto assignedDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getAssigned()));
+            UserDto creatorDto = UserDtoMapping.
+                    userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getCreated()));
+            UserDto assignedDto = UserDtoMapping.
+                    userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getAssigned()));
             notificationService.createNotificationCloseBug(creatorDto, assignedDto, closedBugDto);
             return closedBugDto;
         } catch (RepositoryException e) {
@@ -169,22 +227,40 @@ public class BugService {
         }
     }
 
-    private boolean isOnlyStatusChanged(BugDto bugdto, Bug bug) {
-        if (!bugdto.getTitle().equals(bug.getTitle()))
+    /**
+     * Checks if only the status of the bug was changed
+     *
+     * @param bugDto - the bugDto from the client with the
+     *               changed
+     * @return true if only the status was changed
+     * false if at least one other attribute was changed
+     */
+    private boolean isOnlyStatusChanged(BugDto bugDto, Bug bug) {
+        if (!bugDto.getTitle().equals(bug.getTitle()))
             return false;
-        if (!bugdto.getVersion().equals(bug.getVersion()))
+        if (!bugDto.getVersion().equals(bug.getVersion()))
             return false;
-        if (!bugdto.getFixedVersion().equals(bug.getFixedVersion()))
+        if (!bugDto.getFixedVersion().equals(bug.getFixedVersion()))
             return false;
-        if (!bugdto.getDescription().equals(bug.getDescription()))
+        if (!bugDto.getDescription().equals(bug.getDescription()))
             return false;
-        if (!bugdto.getSeverity().equals(bug.getSeverity().toString()))
+        if (!bugDto.getSeverity().equals(bug.getSeverity().toString()))
             return false;
-        if (!bugdto.getTargetDate().equals(bug.getTargetDate()))
+        if (!bugDto.getTargetDate().equals(bug.getTargetDate()))
             return false;
-        return bugdto.getAssigned().equals(bug.getAssigned().getUsername());
+        return bugDto.getAssigned().equals(bug.getAssigned().getUsername());
     }
 
+    /**
+     * Validates the bug and updates it in the table if the bug is
+     * found. Before the update, it also checks if the assigned user
+     * and the creator of the bug exist in the database.
+     *
+     * @param bugDto - BugDto; the bug that has to be updated
+     * @return bugDto - the updated bug
+     * @throws BusinessException - if the bug has been assigned/ created
+     *                           by someone who does not exist in the database
+     */
     public BugDto updateBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
         Bug bug = bugRepo.findBug(bugDto.getId());
@@ -204,8 +280,10 @@ public class BugService {
             if (!bug.getStatus().equals(Bug.Status.valueOf(bugDto.getStatus())))
                 updateStatusBug(bugDto);
             BugDto updatedBug = BugDtoMapping.bugToBugDtoComplete(bug);
+            //send notification for edit status of the bug if only the status was changed
             if (onlyStatusChanged) {
                 notificationService.createNotificationBugEditOnlyStatus(oldBugDto, updatedBug, creatorDto, assignedDto);
+                //send edit bug notification if the values of the bug were changed
             } else {
                 notificationService.createNotificationBugEdit(oldBugDto, updatedBug, creatorDto, assignedDto);
             }
@@ -215,12 +293,19 @@ public class BugService {
         }
     }
 
-
+    /**
+     * Creates a new PDF file in which all details of a given bug
+     * are written.
+     *
+     * @param bugDto - BugDto; the bug whose details should be
+     *               written in the new file
+     * @return the URL, where the created PDF file can be downloaded
+     */
     public String makePDF(BugDto bugDto) throws IOException, DocumentException {
         Bug bug = bugRepo.findBug(bugDto.getId());
 
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filesprefix + bug.getTitle() + ".pdf"));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filesPrefix + bug.getTitle() + ".pdf"));
 
         document.open();
         Font titleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
@@ -242,7 +327,6 @@ public class BugService {
         subtitleParagraph.setMultipliedLeading(2.0f);
         subtitleParagraph.setSpacingAfter(2.5f);
         document.add(subtitleParagraph);
-
 
         List<Paragraph> paragraphList = new ArrayList<>();
         newElement("Description: ", bug.getDescription()).forEach(p -> paragraphList.add(p));
@@ -266,6 +350,14 @@ public class BugService {
 
     }
 
+    /**
+     * Adds paragraphs into the PDF file with a given
+     * font, color and text size.
+     *
+     * @param title - String; the name of the new paragraph (Field name of the bug)
+     * @param text  - String; the text of the paragraph (Field value of the bug)
+     * @return the list of the created paragraphs
+     */
     private List<Paragraph> newElement(String title, String text) {
         ArrayList<Paragraph> result = new ArrayList<>();
         Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
@@ -279,11 +371,8 @@ public class BugService {
         subtitleParagraph.setAlignment(Element.ALIGN_LEFT);
         subtitleParagraph.setMultipliedLeading(2.0f);
 //        subtitleParagraph.setSpacingAfter(1.2f);
-
         result.add(subtitleParagraph);
-
         Chunk textChunk = new Chunk(text, font);
-
         Paragraph textParagraph = new Paragraph();
         textParagraph.add(textChunk);
         textParagraph.setAlignment(Element.ALIGN_LEFT);
@@ -295,6 +384,14 @@ public class BugService {
         return result;
     }
 
+    /**
+     * Adds paragraphs into the PDF file with a given
+     * font, color and text size.
+     *
+     * @param title - String; the name of the new paragraph (Field name of the bug)
+     * @param text  - String; the text of the paragraph (Field value of the bug)
+     * @return the list of the created paragraphs
+     */
     private Paragraph newShortElement(String title, String text) {
         Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
@@ -302,7 +399,6 @@ public class BugService {
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLACK);
         Chunk subtitleChunk = new Chunk(title, subtitleFont);
         Chunk textChunk = new Chunk(text, font);
-
         Paragraph result = new Paragraph();
         result.add(subtitleChunk);
         result.add(textChunk);
@@ -312,6 +408,13 @@ public class BugService {
         return result;
     }
 
+
+    /**
+     * Adds the attachments of the bug in the PDF file of the given bug.
+     *
+     * @param bug - the bug whose attachments must be written in the file
+     * @return the list of the created paragraphs for each attachment
+     */
     private List<Paragraph> addAttachments(PdfWriter writer, Bug bug) {
         ArrayList<Paragraph> result = new ArrayList<>();
         Font subtitleFont = FontFactory.getFont("/fonts/Roboto-Bold.ttf",
@@ -319,7 +422,6 @@ public class BugService {
         Font font = FontFactory.getFont("/fonts/Roboto-Regular.ttf",
                 BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL, BaseColor.BLACK);
         Chunk subtitleChunk = new Chunk("Attachments:", subtitleFont);
-
         Paragraph subtitleParagraph = new Paragraph();
         subtitleParagraph.add(subtitleChunk);
         subtitleParagraph.setAlignment(Element.ALIGN_LEFT);
@@ -327,17 +429,15 @@ public class BugService {
 
         result.add(subtitleParagraph);
 
-
         bug.getAttachments().forEach(attachment -> {
 
             PdfFileSpecification fs = null;
             PdfAnnotation att = null;
             try {
                 fs = PdfFileSpecification.fileEmbedded(
-                        writer, filesprefix + attachment.getAttContent(), attachment.getAttContent(), null);
-//                writer.addFileAttachment(String.format("Content: %s", attachment.getAttContent()), fs);
-                att =
-                        PdfAnnotation.createFileAttachment(writer, null, attachment.getAttContent(), fs);
+                        writer, filesPrefix + attachment.getAttContent(),
+                        attachment.getAttContent(), null);
+                att = PdfAnnotation.createFileAttachment(writer, null, attachment.getAttContent(), fs);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -358,17 +458,40 @@ public class BugService {
         return result;
     }
 
+    /**
+     * Returns all attachments of a bug.
+     *
+     * @param bugDto - BugDto; the bug whose attachments
+     *               must be returned
+     * @return list of all attachments of the given bug
+     */
     public List<AttachmentDto> getAttachments(BugDto bugDto) {
         List<Attachment> attachments = bugRepo.findBug(bugDto.getId()).getAttachments();
         return attachments.stream().map(AttachmentDtoMapping::attachmentToAttachmentDto).collect(Collectors.toList());
     }
 
+    /**
+     * Adds a new attachment for a bug.
+     *
+     * @param bugDto        - BugDto; the bug that must
+     *                      have a new attachment
+     * @param attachmentDto - AttachmentDto; the attachment
+     *                      that has to be added to the bug.
+     */
     public void addAttachment(BugDto bugDto, AttachmentDto attachmentDto) {
         Bug bug = bugRepo.findBug(bugDto.getId());
         bug.addAttachment(AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto));
         bugRepo.update(bug);
     }
 
+    /**
+     * Deletes an attchment that belongs to a bugDto.
+     *
+     * @param bugDto - BugDto; the bugDto for which the
+     *               attachment must be deleted
+     * @param id-    Integer; the Id of the bug that has
+     *               to be deleted
+     */
     public void deleteAttachment(BugDto bugDto, Integer id) {
         Bug bug = bugRepo.findBug(bugDto.getId());
         bug.removeAttachmentAfterId(id);

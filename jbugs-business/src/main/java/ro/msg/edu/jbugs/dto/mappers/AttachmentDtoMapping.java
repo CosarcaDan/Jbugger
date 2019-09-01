@@ -1,25 +1,23 @@
 package ro.msg.edu.jbugs.dto.mappers;
 
 import ro.msg.edu.jbugs.dto.AttachmentDto;
-import ro.msg.edu.jbugs.dto.BugDto;
 import ro.msg.edu.jbugs.entity.Attachment;
 
 /**
- * Document me.
- *
- * @author msg systems AG; User Name.
+ * Convert an object of type Attachment to an object of type
+ * AttachmentDto or vice versa.
+ * @author msg systems AG; team D.
  * @since 19.1.2
  */
 public class AttachmentDtoMapping {
 
-    public static Attachment attachmentDtoToAttachmentWithBug(AttachmentDto attachmentDto, BugDto bugDto) {
-        Attachment attachment = new Attachment();
-        attachment.setId(attachmentDto.getId());
-        attachment.setAttContent(attachmentDto.getAttContent());
-        attachment.setBug(BugDtoMapping.bugDtoToBugIncomplete(bugDto));
-        return attachment;
-    }
-
+    /**
+     * Converts an object of type AttachmentDto to an object of
+     * type Attachment.
+     *
+     * @param attachmentDto - the AttachmentDto that has to be converted
+     * @return an object of type Attachment
+     */
     public static Attachment attachmentDtoToAttachment(AttachmentDto attachmentDto) {
         Attachment attachment = new Attachment();
         attachment.setId(attachmentDto.getId());
@@ -27,6 +25,12 @@ public class AttachmentDtoMapping {
         return attachment;
     }
 
+    /**
+     * Converts an object of type Attachment to an object of
+     * type AttachmentDto.
+     * @param attachment - the Attachment that has to be converted
+     * @return an object of type AttachmentDto
+     * */
     public static AttachmentDto attachmentToAttachmentDto(Attachment attachment) {
         AttachmentDto attachmentDto = new AttachmentDto();
         attachmentDto.setId(attachment.getId());
