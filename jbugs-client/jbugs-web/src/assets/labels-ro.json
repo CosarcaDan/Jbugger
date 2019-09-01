@@ -445,6 +445,10 @@
       "value": "Bugul trebuie să fie FIXED sau REJECTED să devină CLOSED!"
     },
     {
+      "label": "msg - 019",
+      "value": "Utilizatorul cu numele de utilizator precizat nu a fost gasit!"
+    },
+    {
       "label": "more_details",
       "value": "Vezi mai multe detalii"
     }
