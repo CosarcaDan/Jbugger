@@ -92,12 +92,12 @@ public class BugService {
      * to the client
      */
     public List<BugDto> getAllBugs() {
-        List<Bug> bugList = bugRepo.getAllBugs();
-        List<BugDto> bugDtoList = bugList
+        List<Bug> bugs = bugRepo.getAllBugs();
+        List<BugDto> bugDtos = bugs
                 .stream()
                 .map(BugDtoMapping::bugToBugDtoComplete)
                 .collect(Collectors.toList());
-        return bugDtoList;
+        return bugDtos;
     }
 
     /**
