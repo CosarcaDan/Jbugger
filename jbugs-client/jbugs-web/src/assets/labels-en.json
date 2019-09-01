@@ -414,7 +414,7 @@
     },
     {
       "label": "msg - 011",
-      "value": "User with given ID not found!"
+      "value": "User with given ID was not found!"
     },
     {
       "label": "msg - 012",
@@ -443,6 +443,14 @@
     {
       "label": "msg - 018",
       "value": "Bug has to to FIXED or REJECTED in order to be CLOSED!"
+    },
+    {
+      "label": "msg - 019",
+      "value": "User with the given Username was not found!"
+    },
+    {
+      "label": "more_details",
+      "value": "View more details"
     }
   ]
 }

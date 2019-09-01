@@ -6,7 +6,7 @@ import {UserLogin} from '../../core/models/userLogin';
 import {Token} from '../../core/models/token';
 import {LoginValidators} from './login.validators';
 import {AuthService} from '../../core/services/auth/auth.service';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-login',

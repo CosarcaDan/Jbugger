@@ -45,15 +45,6 @@ public class Notification implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Notification(Timestamp date, String message, NotificationType type, String url, boolean isSeen, User user) {
-        this.date = date;
-        this.message = message;
-        this.type = type;
-        this.url = url;
-        this.isSeen = isSeen;
-        this.user = user;
-    }
-
     public Notification() {
     }
 
@@ -62,6 +53,15 @@ public class Notification implements Serializable {
         this.message = message;
         this.type = type;
         this.url = url;
+        this.user = user;
+    }
+
+    public Notification(Timestamp date, String message, NotificationType type, String url, boolean isSeen, User user) {
+        this.date = date;
+        this.message = message;
+        this.type = type;
+        this.url = url;
+        this.isSeen = isSeen;
         this.user = user;
     }
 

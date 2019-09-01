@@ -66,7 +66,7 @@ public class RoleRESTController {
     @Path("/remove-permissions")
     @Consumes({MediaType.MULTIPART_FORM_DATA})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response removePermissionsToRole(@NotNull @FormDataParam("role") RoleDto role, @NotNull @FormDataParam("permission") PermissionDto permission) {
+    public Response removePermissionsFromRole(@NotNull @FormDataParam("role") RoleDto role, @NotNull @FormDataParam("permission") PermissionDto permission) {
         Gson gson = new GsonBuilder().create();
         try {
             roleService.removePermissionFromRole(role, permission);

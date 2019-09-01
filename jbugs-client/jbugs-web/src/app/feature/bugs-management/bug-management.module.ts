@@ -24,7 +24,6 @@ import {ExcelService} from '../../core/services/excel/excel.service';
   exports: [
     AddBugComponent,
     SummaryPipe,
-
   ]
 })
 export class BugManagementModule {

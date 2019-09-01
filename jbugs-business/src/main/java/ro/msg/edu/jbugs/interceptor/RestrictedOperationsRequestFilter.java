@@ -64,19 +64,19 @@ public class RestrictedOperationsRequestFilter implements ContainerRequestFilter
             }
 
             if (thePath.get(0).equals("^users/permissions"))
-            if ((thePath.get(0).equals("^users/permissions") && json != null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())))
-                return;
+                if ((thePath.get(0).equals("^users/permissions") && json != null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())))
+                    return;
 
 
-            if(thePath.get(0).equals("^users/changePassword") || thePath.get(0).equals("^users/.*/get"))
-            if ((thePath.get(0).equals("^users/changePassword") && json != null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())) ||
-                    (thePath.get(0).equals("^users/.*/get") && json != null && ctx.getUriInfo().getPath().split("/")[1].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject()))
-            )
-                return;
-            else
-                ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("Permissions missing")
-                        .build());
+            if (thePath.get(0).equals("^users/changePassword") || thePath.get(0).equals("^users/.*/get"))
+                if ((thePath.get(0).equals("^users/changePassword") && json != null && json.split("\"username\":\"")[1].split("\"")[0].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject())) ||
+                        (thePath.get(0).equals("^users/.*/get") && json != null && ctx.getUriInfo().getPath().split("/")[1].equals(TokenManager.decodeJWT(ctx.getHeaderString("Authorization").split(" ")[1]).getSubject()))
+                )
+                    return;
+                else
+                    ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                            .entity("Permissions missing")
+                            .build());
         }
 
         List<String> permissionsRequired = permissions.get(thePath.get(0));

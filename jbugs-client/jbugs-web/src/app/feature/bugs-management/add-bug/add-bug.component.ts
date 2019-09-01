@@ -94,7 +94,10 @@ export class AddBugComponent implements OnInit {
     this.fixedVersion = this.form.get('fixedVersion').value.toString();
     this.severity = this.form.get('severity').value.toString();
     this.created = this.authService.getUsername();
-    this.assigned = this.form.get('assignedTo').value.toString();
+    this.assigned = this.form.get('assignedTo').value;
+    if (this.assigned == null) {
+      this.assigned = this.created;
+    }
 
     let bugToBeAdded: Bug = {
       id: null,

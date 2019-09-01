@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {Router} from '@angular/router';
 import {AuthService} from '../../core/services/auth/auth.service';
-import {NotificationService} from "../../core/services/notification/notification.service";
-import {LanguageService} from "../../core/services/language/language.service";
-import {Notification} from "../../core/models/notification";
-import {User} from "../../core/models/user";
-import {Bug} from "../../core/models/bug";
-import {formatDate} from "@angular/common";
+import {NotificationService} from '../../core/services/notification/notification.service';
+import {LanguageService} from '../../core/services/language/language.service';
+import {Notification} from '../../core/models/notification';
+import {User} from '../../core/models/user';
+import {Bug} from '../../core/models/bug';
+import {formatDate} from '@angular/common';
 
 
 @Component({
@@ -33,7 +33,8 @@ export class DashboardComponent implements OnInit {
 
   intervalRun: boolean;
 
-  constructor(private router: Router, private authService: AuthService, private notificationService: NotificationService, private languageService: LanguageService) {
+  constructor(private router: Router, private authService: AuthService, private notificationService: NotificationService,
+              private languageService: LanguageService) {
   }
 
   ngOnInit() {
@@ -232,8 +233,9 @@ export class DashboardComponent implements OnInit {
     }
     if (notification.type == "BUG_UPDATED") {
       let bugs: Bug[] = JSON.parse(notification.message);
-      let res: string = '<div>' + this.languageService.getText('bugUpdated') + '</div><div>' +
-        this.languageService.getText('oldBugData') + ': <div></div>' +
+      let res: string = '<div>' + this.languageService.getText('bugUpdated') + '!</div><div>' +
+        this.languageService.getText('more_details') + ':' + '<div> <a href\=\"' + notification.url + '\" | safeUrl>here</a>' + '</div>' + '</div><div>' +
+        this.languageService.getText('oldBugData') + ': </div><div>' +
         this.languageService.getText('title') + ' : ' + bugs[0].title + '</div><div>' +
         this.languageService.getText('description') + ' : ' + bugs[0].description.substr(0, 20) + ' ...</div><div>' +
         this.languageService.getText('version') + ' : ' + bugs[0].version + '</div><div>' +
@@ -242,9 +244,8 @@ export class DashboardComponent implements OnInit {
         'Status: ' + ' : ' + bugs[0].status + '</div><div>' +
         this.languageService.getText('targetDate') + ' : ' + formatDate(bugs[0].targetDate, 'dd.MM.yyyy', 'en') + '</div><div>' +
         this.languageService.getText('createdBy') + ' : ' + bugs[0].created + '</div><div>' +
-        this.languageService.getText('assignedTo') + ' : ' + bugs[0].assigned + '</div><div>' + '<div></div><br>' +
-
-        this.languageService.getText('newBugData') + ': <div></div>' +
+        this.languageService.getText('assignedTo') + ' : ' + bugs[0].assigned + '</div><div>' + '<br>' +
+        this.languageService.getText('newBugData') + ': </div><div>' +
         this.languageService.getText('title') + ' : ' + bugs[1].title + '</div><div>' +
         this.languageService.getText('description') + ' : ' + bugs[1].description.substr(0, 20) + ' ...</div><div>' +
         this.languageService.getText('version') + ' : ' + bugs[1].version + '</div><div>' +
@@ -267,8 +268,10 @@ export class DashboardComponent implements OnInit {
         this.languageService.getText('title') + ' : ' + bugs[1].title + '</div><div>' +
 
         'Status: ' + ' : ' + bugs[1].status + '</div><div>' + '</div>';
+
       return res;
 
     }
   }
+
 }

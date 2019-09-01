@@ -1,0 +1,14 @@
+<img src="../../../assets/6db08fca-477c-4338-beca-1dc435d19586_200x200.png"
+     alt="Bug">
+<form>
+  <p><b>{{languageService.getText('title')}}: </b>{{bug.title}}</p>
+  <p><b>{{languageService.getText('description')}}: </b></p>
+  <textarea readonly>{{bug.description}}</textarea>
+  <p><b>{{languageService.getText('version')}}: </b>{{bug.version}}</p>
+  <p><b>{{languageService.getText('fixedVersion')}}: </b>{{bug.fixedVersion}}</p>
+  <p><b>{{languageService.getText('severity')}}: </b>{{bug.severity}}</p>
+  <p><b>Status: </b>{{bug.status}}</p>
+  <p><b>{{languageService.getText('targetDate')}}: </b>{{bug.targetDate | date:'dd.MM.yyyy'}}</p>
+  <p><b>{{languageService.getText('createdBy')}}: </b>{{bug.created}}</p>
+  <p><b>{{languageService.getText('assignedTo')}}: </b>{{bug.assigned}}</p>
+</form>

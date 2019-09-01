@@ -19,11 +19,17 @@ export class AuthGuardService implements CanActivate {
           this.router.navigate(['dashboard']);
           return false;
         }
-      if (state.url == '/dashboard/bugs')
+      if (state.url.match('/dashboard/bugs/[1-9]'))
         if (!this.authService.hasPermission('BUG_MANAGEMENT')) {
           this.router.navigate(['dashboard']);
           return false;
         }
+      if (state.url == '/dashboard/bugs/{id}') {
+        if (!this.authService.hasPermission('BUG_MANAGEMENT')) {
+          this.router.navigate(['dashboard']);
+          return false;
+        }
+      }
       if (state.url == '/dashboard/users')
         if (!this.authService.hasPermission('USER_MANAGEMENT')) {
           this.router.navigate(['dashboard']);

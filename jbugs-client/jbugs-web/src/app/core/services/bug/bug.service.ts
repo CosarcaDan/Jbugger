@@ -25,6 +25,10 @@ export class BugService {
    * @param attachment - Attachment; the attachment of the bug.
    * @return the url of post request.
    * */
+  public getBug(id: number): Observable<Bug> {
+    return this.http.get<Bug>(this.baseUrl + '/' + id);
+  }
+
   public add(bug, attachment): Observable<Bug> {
     let body = new HttpParams()
       .set('bug', JSON.stringify(bug))

@@ -20,17 +20,6 @@ import java.util.Objects;
         @NamedQuery(name = User.QUERY_REMOVE_AFTER_USERNAME,query = "delete from User u where u.username = :username"),
         @NamedQuery(name = User.QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD, query = "select u from User u where u.username = :username and u.password = :password and u.status = 1"),
         @NamedQuery(name = User.QUERY_COUNT_USER_NAME_UNIQUE, query = "select count(u) from User u where u.username = :username "),
-//        @NamedQuery(name = User.GET_USER_PERMISSIONS, query = "Select  p\n" +
-//                "From User u\n" +
-//                "inner join u.roleList ur on u.id = ur.id\n" +
-//                "inner join Role r on ur.id = r.id\n" +
-//                "inner join r.permissionList rp on rp.id = r.id\n" +
-//                "inner join Permission p on p.id = rp.id\n" +
-//                "where u.id in (select us.id\n" +
-//                "                from User us\n" +
-//                "                where us.username = :username)")
-
-
 })
 public class User implements Serializable {
     public static final String QUERY_SELECT_ALL_USER = "findAllUser";
@@ -38,7 +27,6 @@ public class User implements Serializable {
     public static final String QUERY_REMOVE_AFTER_USERNAME = "removeAfterUsername";
     public static final String QUERY_USER_LOGIN_AFTER_USERNAME_PASSWORD = "userLogin";
     public static final String QUERY_COUNT_USER_NAME_UNIQUE = "checkUserNameUnique";
-//    public static final String GET_USER_PERMISSIONS = "get user permissions";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,6 +67,9 @@ public class User implements Serializable {
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = {@JoinColumn(name= "role_id")})
     private List<Role> roles;
 
+    public User() {
+    }
+
     public User(Integer failedLoginAttempt, String firstName, String lastName, String email, String mobileNumber, String password, String username, Boolean status) {
         this.failedLoginAttempt = failedLoginAttempt;
         this.firstName = firstName;
@@ -90,7 +81,16 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public User() {
+    public void addRole(Role role) {
+        if (this.roles.stream().anyMatch(role1 -> role1.getType().equals(role.getType())))
+            return;
+        role.addUserSimple(this);
+        this.roles.add(role);
+    }
+
+    public void deleteRole(Role role) {
+        role.deleteUserSimple(this);
+        this.roles.remove(role);
     }
 
     public List<Role> getRoles() {
@@ -207,18 +207,5 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(failedLoginAttempt, firstName, lastName, email, mobileNumber, password, username, status);
-    }
-
-    public void addRole(Role role) {
-        if (this.roles.stream().anyMatch(role1 -> role1.getType().equals(role.getType())))
-            return;
-
-        role.addUserSimple(this);
-        this.roles.add(role);
-    }
-
-    public void deleteRole(Role role) {
-        role.deleteUserSimple(this);
-        this.roles.remove(role);
     }
 }

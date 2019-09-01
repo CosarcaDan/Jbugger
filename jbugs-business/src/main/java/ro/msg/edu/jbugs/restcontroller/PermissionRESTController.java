@@ -32,7 +32,7 @@ public class PermissionRESTController {
     @Path("/not-in-role")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPermissionsByRole(RoleDto role) {
+    public Response getPermissionsNotInRole(RoleDto role) {
         Gson gson = new GsonBuilder().create();
         try {
             List<PermissionDto> result = permissionService.getPermissionsNotInRole(role);
