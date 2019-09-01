@@ -23,6 +23,19 @@ public class AttachmentDto implements Serializable {
     }
 
     /**
+     * Constructor with parameters that creates a new
+     * AttachmentDto entity.
+     *
+     * @param id         - Integer; the Id of the attachment
+     * @param attContent - String; the name of
+     *                   the attachment
+     */
+    public AttachmentDto(Integer id, String attContent) {
+        this.id = id;
+        this.attContent = attContent;
+    }
+
+    /**
      * Getters and setters for each field
      * of the attachmentDto.
      */

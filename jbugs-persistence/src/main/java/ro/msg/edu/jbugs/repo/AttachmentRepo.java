@@ -54,9 +54,9 @@ public class AttachmentRepo {
      * @param id - Integer; the id of the attachment that
      *           has to be deleted
      * */
-    public void deleteAttachment(Integer id) {
+    public Integer deleteAttachment(Integer id) {
         Query query = entityManager.createNamedQuery(Attachment.DELETE_ATTACHMENT_AFTER_ID);
         query.setParameter("id", id);
-        query.executeUpdate();
+        return query.executeUpdate();
     }
 }

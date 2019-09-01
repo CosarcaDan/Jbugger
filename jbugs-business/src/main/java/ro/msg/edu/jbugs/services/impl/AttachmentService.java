@@ -21,13 +21,26 @@ public class AttachmentService {
     @EJB
     private AttachmentRepo attachmentRepo;
 
+    /**
+     * Adds a new attachment in the table after
+     * converting it from AttachmentDto to Attachment.
+     *
+     * @param attachmentDto - AttachmentDto; the attachment
+     *                      that must be inserted
+     */
     public void addAttachment(AttachmentDto attachmentDto) {
         Attachment attachment = AttachmentDtoMapping.attachmentDtoToAttachment(attachmentDto);
         attachmentRepo.addAttachment(attachment);
     }
 
-    public void deleteAttachment(Integer id) {
-        attachmentRepo.deleteAttachment(id);
+    /**
+     * Deletes an attachment after its id
+     *
+     * @param id - Integer; the id pf the
+     *           attachment that must be removed
+     */
+    public Integer deleteAttachment(Integer id) {
+        return attachmentRepo.deleteAttachment(id);
     }
 
 }

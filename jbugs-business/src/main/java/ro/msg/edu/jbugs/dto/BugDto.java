@@ -32,6 +32,24 @@ public class BugDto implements Serializable {
     }
 
     /**
+     * Constructor with parameters for creating a new bug enity.
+     */
+    public BugDto(Integer id, String title, String description, String version,
+                  Timestamp targetDate, String status, String fixedVersion,
+                  String severity, String created, String assigned) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.version = version;
+        this.targetDate = targetDate;
+        this.status = status;
+        this.fixedVersion = fixedVersion;
+        this.severity = severity;
+        this.created = created;
+        this.assigned = assigned;
+    }
+
+    /**
      * Getters and setters for each field
      * of the bugDto.
      */
