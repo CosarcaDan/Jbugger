@@ -89,7 +89,6 @@ public class UserRepo {
         return result;
     }
 
-    //ToDo Posibil sa facem username in bd unique si sa nu mai folosim functia?
     public boolean isUsernameUnique(String username) {
         try {
             Long numberOfOccurences = entityManager.createNamedQuery(User.QUERY_COUNT_USER_NAME_UNIQUE, Long.class)

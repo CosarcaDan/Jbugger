@@ -23,13 +23,13 @@ public class Validator {
 
     public static void validateBug(BugDto bug) throws BusinessException {
         if(!validateDescription(bug.getDescription())) {
-            throw new BusinessException("Description to short", "msg - 012");
+            throw new BusinessException("Description too short", "msg - 012");
         }
         if(!validateVersion(bug.getVersion())){
             throw new BusinessException("Version Format Invalid", "msg - 013");
         }
         if (bug.getDescription().length() < 250) {
-            throw new BusinessException("Description has to be at least 250 Characters long", "msg - 015");
+            throw new BusinessException("Description too", "msg - 012");
         }
     }
 

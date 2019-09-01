@@ -69,7 +69,7 @@ public class RoleRESTController {
     public Response removePermissionsToRole(@NotNull @FormDataParam("role") RoleDto role, @NotNull @FormDataParam("permission") PermissionDto permission) {
         Gson gson = new GsonBuilder().create();
         try {
-            roleService.removePermissionToRole(role, permission);
+            roleService.removePermissionFromRole(role, permission);
             String response = gson.toJson("All OK!");
             return Response.status(200).entity(response).build();
         } catch (Exception e) {

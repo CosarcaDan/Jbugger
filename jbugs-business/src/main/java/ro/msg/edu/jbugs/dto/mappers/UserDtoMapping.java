@@ -19,7 +19,6 @@ public class UserDtoMapping {
     }
 
     public static User userDtoToUser(UserDto userDto){
-        //todo poate gasit alternativa pentru mappind fara sa facem new User, alternativ trimis atribute la add si construim acolo Userul
         User user =  new User();
         user.setId(userDto.getId());
         user.setFailedLoginAttempt(userDto.getFailedLoginAttempt());

@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
     ];
 
 
-    this.interval = setInterval(this.getMyNotification.bind(this), 3000);
+    //this.interval = setInterval(this.getMyNotification.bind(this), 3000);
 
     this.intervalRun = true;
   }
@@ -78,6 +78,8 @@ export class DashboardComponent implements OnInit {
   getMyNotification() {
     this.notificationService.getMyNotification(this.user).subscribe((data) => {
       this.notifications = data;
+      this.notifications = this.notifications.reverse();
+
     })
   }
 
@@ -222,5 +224,6 @@ export class DashboardComponent implements OnInit {
       return res;
 
     }
+
   }
 }

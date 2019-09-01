@@ -21,9 +21,6 @@ public class Notification implements Serializable {
     public static final String DELETE_NOTIFICATION_AFTER_USER_ID = "deleteNotificationAfterUserId";
     public static final String FIND_ALL_NOTIFICATION_FOR_AN_USER_BY_USERNAME = "findAllNotificationForAnUserByUsername";
 
-    //Todo query for all notificatoins belonging to a user after username
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

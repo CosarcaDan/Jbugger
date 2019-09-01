@@ -28,35 +28,63 @@ public class RoleService {
     @EJB
     private PermissionRepo permissionRepo;
 
+
+    /**
+     * This function adds a role to the repository
+     * @param roleDto the DTO to be added
+     */
     public void addRole(RoleDto roleDto) {
         Role role = RoleDtoMapping.roleDtoToRole(roleDto);
         role.setId(null);
         roleRepo.addRole(role);
     }
 
+    /**
+     * Find a role with a given id
+     * @param id
+     * @return returns the role with the given id.
+     */
     public RoleDto findRole(Integer id) {
         Role role = roleRepo.findRole(id);
-        RoleDto roleDto = RoleDtoMapping.roleToRoleDto(role);
-        return roleDto;
+        return RoleDtoMapping.roleToRoleDto(role);
     }
 
+    /**
+     * Adds a permission to the role
+     * @param roleDto the DTO of the role that the permission is added to
+     * @param permissionDto the DTO that is going to be added to the role
+     */
     public void addPermissionToRole(RoleDto roleDto, PermissionDto permissionDto) {
         Permission permission = permissionRepo.findPermission(permissionDto.getId());
         roleRepo.addPermissionToRole(RoleDtoMapping.roleDtoToRole(roleDto), permission);
     }
 
+    /**
+     * Gat a list of all roles
+     * @return RoleDto list of all roles in the repository
+     */
     public List<RoleDto> getAllRoles() {
         return roleRepo.getAllRoles().stream().map(RoleDtoMapping::roleToRoleDto).collect(Collectors.toList());
     }
 
+    /**
+     * Get the  all permissions of a role
+     * @param roleDto The DTO of the role of which the permissions are returned
+     * @return A list of all permissions from the given role
+     */
     public List<PermissionDto> getPermissionsByRole(RoleDto roleDto) {
         return roleRepo.getPermissionsByRole(RoleDtoMapping.roleDtoToRole(roleDto))
                 .stream().map(PermissionDtoMapping::permissionToPermissionDto).collect(Collectors.toList());
     }
 
-    public void removePermissionToRole(RoleDto roleDto, PermissionDto permissionDto) {
+    /**
+     * Removes the given permission from the given role
+     * @param roleDto the DTO of the role that the permission is removed from
+     * @param permissionDto the DTO that is going to be removed from the role
+     */
+    public void removePermissionFromRole(RoleDto roleDto, PermissionDto permissionDto) {
         Permission permission = permissionRepo.findPermission(permissionDto.getId());
-        roleRepo.removePermissionToRole(RoleDtoMapping.roleDtoToRole(roleDto), permission);
+        roleRepo.removePermissionFromRole(RoleDtoMapping.roleDtoToRole(roleDto), permission);
     }
 
 

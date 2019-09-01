@@ -85,12 +85,14 @@ public class UserRESTController {
         Gson gson = new GsonBuilder().create();
         try {
             List<Permission> userPerm = userService.getUserPermissionsByUsername(user.getUsername());
-            StringBuilder response = new StringBuilder("[");
+            StringBuilder response = new StringBuilder();
+            response.append("[");
             userPerm.forEach(p -> {
                 response.append(gson.toJson(PermissionDtoMapping.permissionToPermissionDto(p)));
                 response.append(",");
             });
-            response.deleteCharAt(response.length() - 1);
+            if(response.charAt(response.length() - 1)!='[')
+                response.deleteCharAt(response.length() - 1);
             response.append("]");
             return Response.status(200).entity(response.toString()).build();
         } catch (BusinessException e) {

@@ -32,7 +32,6 @@ public class NotificationService {
 
     public void createNotificationNewUser(UserDto receiver) {
         Gson gson = new GsonBuilder().create();
-        //todo exclude password
         String welcomeMessage = gson.toJson(receiver);
         NotificationDto notificationDto = new NotificationDto(0, new Timestamp(System.currentTimeMillis()), welcomeMessage, "WELCOME_NEW_USER", "", false, receiver.getUsername());
         Notification notification = NotificationDtoMapping.notificationDtoTonotification(notificationDto, UserDtoMapping.userDtoToUser(receiver));

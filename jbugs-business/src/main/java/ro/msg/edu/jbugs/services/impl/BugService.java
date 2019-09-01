@@ -119,7 +119,6 @@ public class BugService {
     }
 
     public BugDto updateStatusBug(BugDto bugDto) throws BusinessException {
-        //todo notification BUG_STATUS_UPDATED: creator assigned
         Bug bug = bugRepo.findBug(bugDto.getId());
         Bug.Status newStatus = Bug.Status.valueOf(bugDto.getStatus());
         if (bug.getStatus().equals(Bug.Status.NEW)) {
@@ -164,7 +163,6 @@ public class BugService {
             UserDto creatorDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getCreated()));
             UserDto assignedDto = UserDtoMapping.userToUserDtoWithoutBugId(userRepo.findUserByUsername(closedBugDto.getAssigned()));
             notificationService.createNotificationCloseBug(creatorDto, assignedDto, closedBugDto);
-            //toDo notification BUG_CLOSED r:creator assigned
             return closedBugDto;
         } catch (RepositoryException e) {
             throw new BusinessException(e);
@@ -185,10 +183,8 @@ public class BugService {
         if (!bugdto.getTargetDate().equals(bug.getTargetDate()))
             return false;
         return bugdto.getAssigned().equals(bug.getAssigned().getUsername());
-        //todo changed attachemnt
     }
 
-    //Todo Validations
     public BugDto updateBug(BugDto bugDto) throws BusinessException {
         Validator.validateBug(bugDto);
         Bug bug = bugRepo.findBug(bugDto.getId());
@@ -207,20 +203,18 @@ public class BugService {
             bug.setAssigned(assigned);
             if (!bug.getStatus().equals(Bug.Status.valueOf(bugDto.getStatus())))
                 updateStatusBug(bugDto);
-            //todo notification BUG_UPDATED r: bugCreator, AssignedTo
             BugDto updatedBug = BugDtoMapping.bugToBugDtoComplete(bug);
             if (onlyStatusChanged) {
                 notificationService.createNotificationBugEditOnlyStatus(oldBugDto, updatedBug, creatorDto, assignedDto);
             } else {
                 notificationService.createNotificationBugEdit(oldBugDto, updatedBug, creatorDto, assignedDto);
             }
-            return updatedBug; //todo see if status has been schanged
+            return updatedBug;
         } catch (RepositoryException e) {
             throw new BusinessException(e);
         }
     }
 
-    //ToDo export bug excel
 
     public String makePDF(BugDto bugDto) throws IOException, DocumentException {
         Bug bug = bugRepo.findBug(bugDto.getId());
