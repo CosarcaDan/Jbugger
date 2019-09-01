@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -54,8 +55,7 @@ public class NotificationRepo {
     public Integer deleteNotificationAfterUserId(User user) {
         Query query = entityManager.createNamedQuery(Notification.DELETE_NOTIFICATION_AFTER_USER_ID);
         query.setParameter("user", user);
-        Integer result = query.executeUpdate();
-        return result;
+        return query.executeUpdate();
     }
 
     /**
@@ -77,7 +77,34 @@ public class NotificationRepo {
      * @return the updated Notification
      */
     public Notification update(Notification notification) {
-        Notification res = entityManager.merge(notification);
-        return res;
+        return entityManager.merge(notification);
     }
+
+    /**
+     * Removes old notifications
+     *
+     * @return the number of comments deleted
+     */
+    public Integer removeOld() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -360);
+        java.sql.Date oneYear = new java.sql.Date(cal.getTimeInMillis());
+        Query query = entityManager.createNamedQuery(Notification.REMOVE_OLD_NOTIFICATIONS);
+        query.setParameter("expiryDate", oneYear);
+        return query.executeUpdate();
+    }
+
+    /**
+     * Removes notifications older than a given time interval
+     *
+     * @param miliExpirationDelta time interval for which the notifications are kept
+     * @return the number of notifications deleted
+     */
+    public Integer removeOld(Integer miliExpirationDelta) {
+        java.sql.Timestamp oneYear = new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis() - miliExpirationDelta);
+        Query query = entityManager.createNamedQuery(Notification.REMOVE_OLD_NOTIFICATIONS);
+        query.setParameter("expiryDate", oneYear);
+        return query.executeUpdate();
+    }
+
 }

@@ -40,8 +40,7 @@ public class CommentRepo {
         java.sql.Date oneYear = new java.sql.Date(cal.getTimeInMillis());
         Query query = entityManager.createNamedQuery(Comment.REMOVE_OLD_COMMENTS);
         query.setParameter("expiryDate",oneYear);
-        int update = query.executeUpdate();
-        return update;
+        return query.executeUpdate();
     }
 
     public Integer deleteCommentAfterUserId(User user) {

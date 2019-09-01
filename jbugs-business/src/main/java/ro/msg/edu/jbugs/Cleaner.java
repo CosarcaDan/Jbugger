@@ -2,6 +2,7 @@ package ro.msg.edu.jbugs;
 
 import ro.msg.edu.jbugs.interceptors.LoggingInterceptor;
 import ro.msg.edu.jbugs.repo.CommentRepo;
+import ro.msg.edu.jbugs.repo.NotificationRepo;
 
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
@@ -14,11 +15,11 @@ import javax.interceptor.Interceptors;
 public class Cleaner {
     @EJB
     private CommentRepo commentRepo;
+    @EJB
+    private NotificationRepo notificationRepo;
 
     @Schedule(minute = "*/3", hour = "*")
     public void clean() {
-        Integer commentres = commentRepo.removeOld();
-//        String message = "Bugs closed: "+ bugres+" \nComments deleted: "+commentres+". ";
-//        Email.sendMail("Report", message);
+        Integer notifications = notificationRepo.removeOld(60000*3);
     }
 }

@@ -14,12 +14,14 @@ import java.sql.Timestamp;
 @Table(name = "notifications")
 @NamedQueries({
         @NamedQuery(name = Notification.DELETE_NOTIFICATION_AFTER_USER_ID, query = "delete from Notification n where n.user = :user "),
-        @NamedQuery(name = Notification.FIND_ALL_NOTIFICATION_FOR_AN_USER_BY_USERNAME, query = "Select n from Notification n where n.user.username = :username")
+        @NamedQuery(name = Notification.FIND_ALL_NOTIFICATION_FOR_AN_USER_BY_USERNAME, query = "Select n from Notification n where n.user.username = :username"),
+        @NamedQuery(name = Notification.REMOVE_OLD_NOTIFICATIONS, query = "delete from Notification n where n.date< :expiryDate ")
 }
 )
 public class Notification implements Serializable {
     public static final String DELETE_NOTIFICATION_AFTER_USER_ID = "deleteNotificationAfterUserId";
     public static final String FIND_ALL_NOTIFICATION_FOR_AN_USER_BY_USERNAME = "findAllNotificationForAnUserByUsername";
+    public static final String REMOVE_OLD_NOTIFICATIONS = "remove old notifications";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
